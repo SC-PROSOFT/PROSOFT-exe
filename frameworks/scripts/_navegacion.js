@@ -74,7 +74,7 @@ function _eventoBotones() {
         idOpcion = dataOpcion.id.toString(),
         nuevaLista = buscar_opcion(idOpcion),
         data = data_opc(idOpcion),
-        TIPO_EMPRESA = '1';
+        TIPO_EMPRESA = $_USUA_GLOBAL[0].TIPO_EMPRE
 
     if (
         idOpcion == '0A1' ||
@@ -96,6 +96,15 @@ function _eventoBotones() {
             ////////////
             if (data.Id == '0A') _validarOpcion_0A()
             ////////////
+        } else if (data.Tipo == 'SALUD'){
+            if (TIPO_EMPRESA == 'H'){
+                mostrar_menu(nuevaLista);
+                set_titulo(idOpcion);
+            } else {
+                var msj
+                msj = msjError('15');
+                jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> ${msj}`})
+            }
         } else {
             mostrar_menu(nuevaLista);
             set_titulo(idOpcion);

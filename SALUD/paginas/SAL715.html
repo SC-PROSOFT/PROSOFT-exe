@@ -1,0 +1,87 @@
+<script src="../js/SAL715.js"></script>
+
+
+<div class="portlet-title">
+    <div class="caption">
+        <a id="opcSalir" onclick="cambioForm('FORM-INICIO.html')">
+            <i class="fa fa-mail-reply"></i>
+            <span class="caption-subject font-dark sbold">Incrementar Tarifas</span>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <br><br>
+    <form method="post">
+        <div id="cuerpo-prosoft" class="portlet-body">
+            <div class="portlet-box">
+                <div class="form-body ">
+                    <div class="panel panel-prosoft">
+                        <div class="caption panel-heading panel-heading-prosoft" style="background-color: #035096">
+                            <span class="caption-subject bold " style="color: floralwhite">Datos Incrementar Tarifas</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group form-md-line-input">
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-circle-left" style="border:1px solid #035096; background-color: #FFFFFF">
+                                            <label class="control-label bold font-xsmall" for="cod_apert" style="color: floralwhite">
+                                                <font color="#035096">Tarifa Procesar:</font>
+                                            </label>
+                                        </span>
+
+                                        <input type="text" id="cod_tarif_105" class="form-control input-circle-right bold font-xsmall text-center focus-blue"
+                                            style="border:1px solid #035096; background-color: #FFFFFF" maxlength="2"
+                                            autofocus required>
+                                        <span class="help-block bold font-xsmall">
+                                            <font color="black" size="-7"><b>99_para_todos</b></font>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-circle-left" style="border:1px solid #035096; background-color: #FFFFFF">
+                                            <label class="control-label bold font-xsmall" for="cod_apert" style="color: floralwhite">
+                                                <font color="#035096">Porcen Incremento:</font>
+                                            </label>
+                                        </span>
+                                        <input type="text" id="porc_incr" class="form-control input-circle-right bold font-xsmall text-center focus-blue"
+                                            style="border:1px solid #035096; background-color: #FFFFFF" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-circle-left" style="border:1px solid #035096; background-color: #FFFFFF">
+                                            <label class="control-label bold font-xsmall" for="cod_apert" style="color: floralwhite">
+                                                <font color="#035096">Grupo:</font>
+                                            </label>
+                                        </span>
+                                        <input type="text" id="grupo" class="form-control input-circle-right bold font-xsmall text-center focus-blue"
+                                            style="border:1px solid #035096; background-color: #FFFFFF" maxlength="2">
+                                    </div>
+                                </div>
+                                <br><br><br>
+                                <div class="col-md-offset-1 col-sm-offset-1 col-lg-3 col-md-3 col-sm-3">
+                                    <label SIZE=06 style="text-align:right" class="bold" id="descrp_tar"></label>
+                                </div>
+                            </div>
+                            <!-- Llamado del gif  al momento del click-->
+                            <center>
+                                <div class="col-lg-5 col-md-5 col-sm-3" id="GIF"></div><br>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-10 col-lg-offset-11">
+                        <div class="col-lg-5 col-md-5 col-sm-3">
+                            <button id="btn_guardar" value="Grabar" onclick="show()" type="button" class="btn input-circle"
+                                style="border:1px solid #FFFFFF; background-color: #035096">
+                                <font color="#FFFFFF">Grabar</font>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

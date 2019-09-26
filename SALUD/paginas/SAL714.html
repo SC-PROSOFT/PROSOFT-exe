@@ -1,0 +1,347 @@
+<div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
+    <div class="portlet light box-center box-title" style="margin: 0 auto;">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject bold">Ficha de control de sistema de vigilancia alimentario y nutricional
+                    (SISVAN)</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="portlet light no-padding">
+        <div class="portlet-body no-padding">
+            <form class="form-horizontal">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-12 col-sm-12 col-xs-12">Novedad:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="novSer714" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs" id="fecha">
+                                <label class="col-md-7 col-sm-7 col-xs-7 text-label">
+                                    Fecha Apertura:
+                                </label>
+                                <div class="input-group col-md-7 col-sm-7 col-xs-7 float-left">
+                                    <input id="fechAper714" type="text" maxlength="10" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs" id="nroficha">
+                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">
+                                    Numero Ficha:
+                                </label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6 float-left">
+                                    <input id="numeroFic714" type="text" maxlength="6" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div class="inline-inputs" id="tercero">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Identificacion:
+                                </label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="cedula_714" type="text" maxlength="15" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="cedulaBtn_714" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-7">
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7">
+                                    Nombre:
+                                </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="nombreSer714" type="text" maxlength="54" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs" id="edad">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Edad:
+                                </label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="edadSer714" type="text" maxlength="3" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7">
+                                    Sexo:
+                                </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="sexoSer714" type="text" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs" id="barrio">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Barrio:
+                                </label>
+                                <div class="input-group col-md-7 col-sm-7 col-xs-7">
+                                    <input id="barrioSer714" type="text" maxlength="20" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        data-orden="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Direccion:
+                                </label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="direccSer714" type="text" maxlength="30" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs">
+                                <label class="col-md-5 col-sm-5 col-xs-5">
+                                    Ciudad:
+                                </label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="ciudadSer714" type="text" maxlength="20" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Telefono:
+                                </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="telefSer714" disabled="disabled" type="text" maxlength="10" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-5 col-xs-5">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs" id="centrosalud">
+                                <label class="col-md-7 col-sm-7 col-xs-7">
+                                    Centro de Salud:
+                                </label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="centroSer714" type="text" maxlength="20" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-7 col-xs-7">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Zona:
+                                </label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="zonaSer714" disabled="disabled" maxlength="1" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Regimen:
+                                </label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="regmnSer714" disabled="disabled" type="text" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Etnia:
+                                </label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="etniaSer714" disabled="disabled" type="text" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs" id="lactancia">
+                                <label class="col-md-12 col-sm-12 col-xs-12">
+                                    Lactancia Actual?
+                                </label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="LactaSer714" type="text"  maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-5 col-xs-5">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="inline-inputs">
+                                <label class="col-md-8 col-sm-8 col-xs-8">
+                                    Exclusiva?
+                                </label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="exclSer714" type="text" maxlength="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="inline-inputs" id="meses">
+                                <label class="col-md-12 col-sm-12 col-xs-12">
+                                    Meses Lactancia Exclusiva:
+                                </label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="mesLactaSer714" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs" id="program">
+                                <label class="col-md-7 col-sm-7 col-xs-7">
+                                    Programa:
+                                </label>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                    <input id="progrSer714" type="text" data-orden="1" maxlength="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="f8progr714" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descrProgr714" type="text" maxlength="25" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TABLA 1 -->
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <table id="tablasisva714" class="table table-light table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Meses</th>
+                                    <th>Peso</th>
+                                    <th>Talla</th>
+                                    <th>IMC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!--TABLA 2-->
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <table id="tablasis714" class="table table-light table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Meses</th>
+                                    <th>Peso</th>
+                                    <th>Talla</th>
+                                    <th>IMC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs" id="fechcrea">
+                                <label class="col-md-7 col-sm-7 col-xs-7 text-label">
+                                    Creacion:
+                                </label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4 float-left">
+                                    <input id="operdCrea714" type="text" maxlength="4" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5 float-left">
+                                    <input id="fechaCrea714" type="text" maxlength="6" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs" id="fechmodf">
+                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">
+                                    Modificacion:
+                                </label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4 float-left">
+                                    <input id="operModf714" maxlength="4" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5 float-left">
+                                    <input id="fechaModf714" maxlength="6" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../../SALUD/JS/SAL714.js" type="text/javascript"></script>

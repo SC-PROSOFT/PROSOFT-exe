@@ -1,0 +1,190 @@
+<script src="../js/ser11B.js" type="text/javascript"></script>
+<!--<script src="../../script/js/ser821.js" type="text/javascript"></script>
+<script>
+    $('#box').load('../../paginas/SER821.html')
+</script>
+<div id="box"></div>-->
+ 
+<div class="portlet-title">
+    <div class="caption">
+        <a id="opcSalir" onclick="cambioForm('FORM-INICIO.html')">
+            <i class="fa fa-mail-reply"></i>
+            <span class="caption-subject font-dark sbold">Programa De Salud</span>
+        </a>
+    </div>
+</div>
+<div id="cuerpo-prosoft" class="portlet-body">
+    <div class="portlet-box">
+        <div class="form-body ">
+            <div class="col-md-14 panel panel-prosoft">
+                <div class="caption panel-heading panel-heading-prosoft" style="background-color: #035096">
+                    <span class="caption-subject bold uppercase blanco">ACTUALIZACION UNIDADES DE
+                        ATENCION
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group form-md-line-input">
+                        <div class="col-md-offset-2 col-sm-offset-1">
+                            <div class="col-lg-4 col-md-5 col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left cajas">
+                                        <label class=" control-label bold font-xsmall blanco">
+                                            <span class="azul">Codigo:</span>
+                                        </label>
+                                    </span>
+                                    <input id="codigo11B" type="text" class="form-control focus-blue uppercase cajas">
+                                    <span id="F8Cod11b" class="input-group-btn input-circle-right">
+                                        <a class="btn btn-outline blue input-circle-right" data-placement="top" data-toggle="tooltip"
+                                            title="Ventana de busqueda">
+                                        <i class="icon-magnifier"></i>
+                                        </a>
+
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-circle-left cajas">
+                                    <label class=" control-label bold font-xsmall blanco">
+                                        <span class="azul">Descripcion:</span>
+                                    </label>
+                                </span>
+                                <input id="descrip11B" type="text" disabled class="form-control input-circle-right focus-blue cajas caja-deshabilitada">
+                            </div>
+                        </div>
+                        <div class="form-group form-md-line-input">
+                            <div class="col-md-offset-2 col-sm-offset-2">
+                                <div class="col-lg-9 col-md-9 col-sm-9 encabezado-delineado">
+                                    <span>Edades</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-sm-offset-1">
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left cajas">
+                                        <label class=" control-label bold font-xsmall blanco">
+                                            <span class="azul">Minima:</span>
+                                        </label>
+                                    </span>
+                                    <select id="unidEdadMin11B" class="form-control input-sm cajas" style="width: 40%;">
+                                        <option value="A">Año</option>
+                                        <option value="M">Mes</option>
+                                        <option value="D">Dia</option>
+                                    </select>
+                                    <input id="edadMin11B" type="text" class="form-control focus-blue uppercase input-circle-right cajas"
+                                        style="width:60%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-circle-left cajas">
+                                    <label class=" control-label bold font-xsmall blanco">
+                                        <span class="azul">Maxima:</span>
+                                    </label>
+                                </span>
+                                <select id="unidEdadMax11B" class="form-control input-sm cajas center" style="width: 30%;">
+                                    <option value="A">Año</option>
+                                    <option value="M">Mes</option>
+                                    <option value="D">Dia</option>
+                                </select>
+                                <input id="edadMax11B" type="text" disabled class="form-control focus-blue uppercase input-circle-right cajas"
+                                    style="width:70%">
+                            </div>
+                        </div>
+                        <div class="form-group form-md-line-input">
+                            <div class="col-md-offset-2 col-sm-offset-2">
+                                <div class="col-lg-9 col-md-9 col-sm-9 encabezado-delineado"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-sm-offset-1">
+                            <div class="col-lg-4 col-md-5 col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle-left cajas">
+                                        <label class=" control-label bold font-xsmall blanco">
+                                            <span class="azul">Centro De Costos:</span>
+                                        </label>
+                                    </span>
+                                    <input id="cenCos11B" disabled type="text" class="form-control focus-blue uppercase cajas">
+                                    <span id="F8Cen11b" class="input-group-btn input-circle-right">
+                                        <a class="btn btn-outline blue input-circle-right" data-placement="top" data-toggle="tooltip"
+                                            title="Ventana de busqueda">
+                                        <i class="icon-magnifier"></i>
+                                        </a>
+
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-circle-left cajas">
+                                    <label class=" control-label bold font-xsmall blanco">
+                                        <span class="azul">Descripcion:</span>
+                                    </label>
+                                </span>
+                                <input id="descripCos11B" type="text" disabled class="form-control input-circle-right focus-blue cajas caja-deshabilitada">
+                            </div>
+                        </div>
+                        <div class="form-group form-md-line-input">
+                            <div class="col-md-offset-2 col-sm-offset-2">
+                                <div class="col-lg-9 col-md-9 col-sm-9 encabezado-delineado"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-4 col-sm-offset-5">
+                            <div class="col-lg-5 col-md-5 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-circle cajas">
+                                        <label class=" control-label bold font-xsmall blanco">
+                                            <span class="azul">Activar Unidad ?</span>
+                                        </label>
+
+                                        <div class="md-radio-inline">
+                                            <div class="md-radio">
+                                                <input type="radio" id="actUniS" name="radio2" class="md-radiobtn">
+                                                <label for="actUniS">
+                                                    <span class="inc"></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> si </label>
+                                            </div>
+                                            <div class="md-radio">
+                                                <input type="radio" id="actUniN" name="radio2" class="md-radiobtn"
+                                                    checked="">
+                                                <label for="actUniN">
+                                                    <span class="inc"></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> no </label>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <center>
+        <div class="col-lg-5 col-md-5 col-sm-3" id="GIF"></div><br>
+    </center>
+</div>
+
+<div class="form-group form-md-line-input">
+    <div class="col-lg-offset-5 col-md-offset-5 col-sm-offset-5">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <button id="btn_grabar_11B" type="button" class="btn sbold input-circle boton-grabar-blanco">
+                <i id="save" class="fa fa-save"></i>
+                <span>Grabar</span>
+            </button>
+            <button id="btn_grabar_11B-2" onclick="showGIF()" type="button" class="btn sbold input-circle boton-azul">
+                <i id="save" class="fa fa-save"></i>
+                <span>Grabar</span>
+            </button>
+        </div>
+    </div>
+</div>
