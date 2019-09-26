@@ -1,0 +1,414 @@
+<style>
+    .form-horizontal .form-group {
+    float: left;
+}
+</style>
+<div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
+    <div class="portlet light box-center box-title" style="margin: 0 auto;">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject bold">9,4,1 - Elaboración de Facturas</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="portlet light col-md-12 col-sm-12 col-xs-12">
+    <div class="portlet-body">
+        <form class="form-horizontal">
+            <div class="col-md-6 col-sm-6 col-xs-6 no-padding">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-5 col-sm-5 col-xs-12">Suc:</label>
+                            <div class="input-group col-md-7 col-sm-7 col-xs-12" id="SU_401">
+                                <input id="unidades_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-5 col-sm-5 col-xs-5">Servicio:</label>
+                            <div class="input-group col-md-6 col-sm-6 col-xs-6" id="SERVICE_401">
+                                <input id="claseservicio_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
+                            </div>
+                            <button type="button" id="claseservicioBtn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-5 col-sm-5 col-xs-12">Compr:</label>
+                            <div class="input-group col-md-7 col-sm-7 col-xs-12" id="COMPR_401">
+                                <input id="compr_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-5 col-sm-5 col-xs-12">Fecha:</label>
+                            <div class="input-group col-md-7 col-sm-7 col-xs-12" id="FECHA_401">
+                                <input id="fecha_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-5 col-sm-5 col-xs-12">Factura:</label>
+                            <div class="input-group col-md-2 col-sm-2 col-xs-12" id="FACTURA_401">
+                                <input id="factura_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
+                            </div>
+                            <button type="button" id="claseservicioBtn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-12" id="FACTURAD_401">
+                                <input id="facturad_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-5 col-sm-5 col-xs-12">P.ingreso:</label>
+                            <div class="input-group col-md-7 col-sm-7 col-xs-12" id="PINGRESO_401">
+                                <input id="pingreso_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 0; padding-left: 10px;">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="DATOSP">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-4 col-sm-4 col-xs-12">Cliente(Entid):</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-12" id="CLIENTE_401">
+                                <input id="cliente_401" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                    maxlength="12">
+                            </div>
+                            <button type="button" id="claseservicioBtn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-7 col-sm-7 col-xs-12">
+                                <input id="cliented_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="40">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-4 col-sm-4 col-xs-12">Paciente:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-12" id="PACIENTE_401">
+                                <input id="paciente_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="15">
+                            </div>
+                            <button type="button" id="claseservicioBtn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-7 col-sm-7 col-xs-12">
+                                <input id="paciented_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="40">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Sexo:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12">
+                                <input id="sexo_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Edad:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12">
+                                <input id="edad_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3 col-sm-3 col-xs-6 no-padding">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="elementos-tabla">
+                    <div class="col-md-12 col-sm-12 col-xs-12" id="primer-elemento">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-4 col-xs-12">Cod.Servicio:</label>
+                            <div class="input-group col-md-2 col-sm-2 col-xs-12" id="CODSERVICIO_401">
+                                <input id="codservicio1_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="2">
+                            </div>
+                            <button type="button" id="codservicioBtn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-2 col-sm-2 col-xs-2" id="CODSERVICIO2_401">
+                                <input id="codservicio2_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="13">
+                            </div>
+                            <button type="button" id="codservicio2Btn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Detalle:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12">
+                                <input id="detalle_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Almac:</label>
+                            <div class="input-group col-md-5 col-sm-5 col-xs-11" id="ALMACEN_401">
+                                <input id="almac_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                            <button type="button" id="almacBtn_401" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Cant:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12" id="CANT_41">
+                                <input id="cant_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Und:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12">
+                                <input id="und_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Vlr Unit:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12" id="VLRUNIT_41">
+                                <input id="vlrunit_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                    maxlength="11">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-8 col-xs-12">Vlr Total:</label>
+                            <div class="input-group col-md-6 col-sm-4 col-xs-12" id="VLRTOTAL_41">
+                                <input id="vlrtotal_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                    maxlength="11">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-6" style="padding-right: 0; padding-left: 10px;">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="elementos-adicionales">
+                    <table id="TABLA_401" class="table table-light table-striped">
+                        <thead>
+                            <tr>
+                                <th>Cod.servicio</th>
+                                <th>Detalle</th>
+                                <th>Almac</th>
+                                <th>Cant</th>
+                                <th>Und</th>
+                                <th>Valor Unit</th>
+                                <th>Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="VALOR">
+
+                <div class="col-md-3 col-sm-4 col-xs-4">
+                    <div class="inline-inputs">
+                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                            <input id="vlrtot_41" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Valor Iva</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="valoriva_41" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Copago</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="COPAGO_41">
+                            <input id="copago_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Neto Factura</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="netofact_41" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="DETALLECITA">
+
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="inline-inputs">
+                        <label class="col-md-4 col-sm-4 col-xs-4">Especialidad</label>
+                        <div class="input-group col-md-2 col-sm-3 col-xs-3" id="ESPEC_41">
+                            <input id="espec_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                maxlength="3">
+                        </div>
+                        <button type="button" id="especBtn_41" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                            <i class="icon-magnifier"></i></button>
+                        <div class="input-group col-md-5 col-sm-4 col-xs-4">
+                            <input id="despec_41" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-4 col-sm-4 col-xs-4">Centro de costos</label>
+                        <div class="input-group col-md-2 col-sm-3 col-xs-3" id="CCOSTOS_41">
+                            <input id="ccostos_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                maxlength="4">
+                        </div>
+                        <button type="button" id="ccostosBtn_41" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                            <i class="icon-magnifier"></i></button>
+                        <div class="input-group col-md-5 col-sm-4 col-xs-4">
+                            <input id="dccostos_41" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Convenio</label>
+                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                            <input id="convenio_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Estr</label>
+                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                            <input id="estrato_401" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="salto-linea"></div>
+
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="inline-inputs">
+                        <label class="col-md-4 col-sm-4 col-xs-4">Atendido por</label>
+                        <div class="input-group col-md-2 col-sm-3 col-xs-3" id="ATEND_41">
+                            <input id="atend_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                        </div>
+                        <button type="button" id="especBtn_41" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                            <i class="icon-magnifier"></i></button>
+                        <div class="input-group col-md-5 col-sm-4 col-xs-4">
+                            <input id="datend_41" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="inline-inputs">
+                        <label class="col-md-4 col-sm-4 col-xs-4">Solicitante</label>
+                        <div class="input-group col-md-2 col-sm-3 col-xs-3" id="SOLIC_41">
+                            <input id="solic_41" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                        </div>
+                        <button type="button" id="solicBtn_41" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                            <i class="icon-magnifier"></i></button>
+                        <div class="input-group col-md-5 col-sm-4 col-xs-4">
+                            <input id="dsolic_41" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-8 col-xs-8">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Tipo Afiliacion</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="tipoafiliacion_401" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="DIVFACTURA">
+                <div class="col-md-5 col-sm-4 col-xs-4">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Divis. fact.</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="CAP_41">
+                            <input id="cap_41" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="5"
+                                data-orden="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="ULTIMOSDATOS_401">
+                <div class="col-md-5 col-sm-4 col-xs-4">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Ciudad</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="ciudad_401" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+</form>
+</div>
+</div>
+<script src="../../SALUD/JS/SAL41.js" type="text/javascript"></script>
