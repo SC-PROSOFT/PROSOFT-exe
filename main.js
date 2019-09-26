@@ -3,6 +3,7 @@ const argv = require('process').argv;
 const jquery = require('jquery');
 const mysql = require('mysql');
 
+
 let template = [{
   label: 'Edit',
   submenu: [{
