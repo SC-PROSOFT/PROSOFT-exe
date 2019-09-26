@@ -1,0 +1,598 @@
+{
+    "Menu": [
+        {
+            "Id": "01",
+            "Descripcion": "Identificacion del paciente",
+            "Opc-segu": "IS767",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "SER110C",
+                    "dll": "SALUD\\SER110C.dll"
+                }
+            ]
+        },
+        {
+            "Id": "02",
+            "Descripcion": "Notas terapia y nutricion",
+            "Opc-segu": "ISH2",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "HC004",
+                    "dll": "HICLIN\\HC004.dll"
+                }
+            ]
+        },
+        {
+            "Id": "03",
+            "Descripcion": "Apertura historia clinica",
+            "Opc-segu": "ISH3",
+            "Href": "../../HICLIN/PAGINAS/hc-01.html"
+        },
+        {
+            "Id": "04",
+            "Descripcion": "Evolucion Med. / Control",
+            "Opc-segu": "ISH4",
+            "Sub": [
+                {
+                    "Id": "041",
+                    "Descripcion": "Evolucion medica",
+                    "Opc-segu": "ISH41",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC002",
+                            "dll": "HICLIN\\HC002.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "042",
+                    "Descripcion": "Interpretacion de resultados",
+                    "Opc-segu": "ISH42",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC012",
+                            "dll": "HICLIN\\HC012.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "043",
+                    "Descripcion": "Solo formulacion",
+                    "Opc-segu": "ISH44",
+                    "Href": "../../HICLIN/PAGINAS/HC-02F.html"
+                },
+                {
+                    "Id": "044",
+                    "Descripcion": "Nota sin atencion",
+                    "Opc-segu": "ISH41",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC044",
+                            "dll": "HICLIN\\HC044.dll"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "05",
+            "Descripcion": "Procesos de enfermeria",
+            "Opc-segu": "ISH5",
+            "Sub": [
+                {
+                    "Id": "051",
+                    "Descripcion": "Notas enfermeria y signos",
+                    "Opc-segu": "ISH51",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC003",
+                            "dll": "HICLIN\\HC003.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "052",
+                    "Descripcion": "Registro de enfermeria",
+                    "Opc-segu": "ISH52",
+                    "Sub": [
+                        {
+                            "Id": "0521",
+                            "Descripcion": "Administracion de medicamentos",
+                            "Opc-segu": "ISH42",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC003A",
+                                    "dll": "HICLIN\\HC003A.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0522",
+                            "Descripcion": "Registro signos vitales",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC522",
+                                    "dll": "HICLIN\\HC522.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0523",
+                            "Descripcion": "Registro glucometrias",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC523",
+                                    "dll": "HICLIN\\HC523.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0524",
+                            "Descripcion": "Registro de oxigeno",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC524",
+                                    "dll": "HICLIN\\HC524.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0525",
+                            "Descripcion": "Control neurologico",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC525",
+                                    "dll": "HICLIN\\HC525.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0526",
+                            "Descripcion": "Control de liquidos",
+                            "Opc-segu": "IS46",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC526",
+                                    "dll": "HICLIN\\HC526.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0527",
+                            "Descripcion": "Devolucion medicamentos",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC527",
+                                    "dll": "HICLIN\\HC527.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0528",
+                            "Descripcion": "Test de aldrede",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC528",
+                                    "dll": "HICLIN\\HC528.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0529",
+                            "Descripcion": "Hoja de gastos",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC529",
+                                    "dll": "HICLIN\\HC529.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "052A",
+                            "Descripcion": "Control de transfusion",
+                            "Opc-segu": "IS45",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC52A",
+                                    "dll": "HICLIN\\HC52A.dll"
+                                }
+                            ]
+                        }
+
+
+
+                    ]    
+                },
+                {
+                    "Id": "053",
+                    "Descripcion": "Resumen facturacion X paci",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "SER120",
+                            "dll": "SALUD\\SER120.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "054",
+                    "Descripcion": "Resumen facturacion X tipo",
+                    "Opc-segu": "IS44",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "SER604",
+                            "dll": "SALUD\\SER604.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "055",
+                    "Descripcion": "AIEPI nidos",
+                    "Opc-segu": "ISH55",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "AIEPI000",
+                            "dll": "HICLIN\\AIEPI000.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "056",
+                    "Descripcion": "Control de vacunacion",
+                    "Opc-segu": "ISH56",
+                    "Sub": [
+                        {
+                            "Id": "0561",
+                            "Descripcion": "Registro de vacunacion",
+                            "Opc-segu": "ISH51",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "VACUNAS",
+                                    "dll": "HICLIN\\VACUNAS.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0562",
+                            "Descripcion": "Reimpresion de vacunacion",
+                            "Opc-segu": "ISH51",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "VACUNASI",
+                                    "dll": "HICLIN\\VACUNASI.dll"
+                                }
+                            ]
+                        }
+
+
+
+                    ]
+            
+                },
+                {
+                    "Id": "057",
+                    "Descripcion": "Control de desarrollo",
+                    "Opc-segu": "ISH57",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "PYP1",
+                            "dll": "HICLIN\\PYP1.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "058",
+                    "Descripcion": "Reimprime control de desarrollo",
+                    "Opc-segu": "ISH58",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "PYP1I",
+                            "dll": "HICLIN\\PYP1I.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "059",
+                    "Descripcion": "Interpretacion citologia",
+                    "Opc-segu": "ISH59",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC003C",
+                            "dll": "HICLIN\\HC003C.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "05A",
+                    "Descripcion": "Interpretacion patologia",
+                    "Opc-segu": "ISH5A",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC003D",
+                            "dll": "HICLIN\\HC003D.dll"
+                        }
+                    ]
+                }
+
+            ]
+            
+        },
+        {
+            "Id": "06",
+            "Descripcion": "Otros procesos historia",
+            "Opc-segu": "ISH6",
+            "Sub": [
+                {
+                    "Id": "061",
+                    "Descripcion": "Asignar cama o factura",
+                    "Opc-segu": "ISH61",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC601",
+                            "dll": "HICLIN\\HC601.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "062",
+                    "Descripcion": "Elaborar pedidos farmacia",
+                    "Opc-segu": "ISH62",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC602",
+                            "dll": "HICLIN\\HC602.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "063",
+                    "Descripcion": "Reimprimir pedidos farmacia",
+                    "Opc-segu": "ISH63",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC603",
+                            "dll": "HICLIN\\HC603.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "064",
+                    "Descripcion": "Habilitar historia blanco",
+                    "Opc-segu": "ISH64",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC604",
+                            "dll": "HICLIN\\HC604.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "065",
+                    "Descripcion": "Cierre historia, epicrisis",
+                    "Opc-segu": "ISH65",
+                    "Sub": [
+                        {
+                            "Id": "0651",
+                            "Descripcion": "Cierre historia clinica",
+                            "Opc-segu": "ISH651",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC605",
+                                    "dll": "HICLIN\\HC605.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0652",
+                            "Descripcion": "Reapertura historica clinica",
+                            "Opc-segu": "ISH652",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC605B",
+                                    "dll": "HICLIN\\HC605B.dll"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "066",
+                    "Descripcion": "Formulario APACHE II",
+                    "Sub": [
+                        {
+                            "Id": "0661",
+                            "Descripcion": "Diligenciar APACHE",
+                            "Opc-segu": "ISH66",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC606",
+                                    "dll": "HICLIN\\HC606.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0662",
+                            "Descripcion": "Reimprimir APACHE",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC6062",
+                                    "dll": "HICLIN\\HC6062.dll"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "067",
+                    "Descripcion": "Diligenciar APACHE",
+                    "Opc-segu": "ISH67",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC607",
+                            "dll": "HICLIN\\HC607.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "068",
+                    "Descripcion": "Correccion formulario NoPos",
+                    "Opc-segu": "ISH68",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC608",
+                            "dll": "HICLIN\\HC608.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "069",
+                    "Descripcion": "Correccion formulario NoPos",
+                    "Opc-segu": "ISH69",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC609",
+                            "dll": "HICLIN\\HC609.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "06A",
+                    "Descripcion": "Firma form. NOPOS especialis",
+                    "Opc-segu": "ISH6A",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC610",
+                            "dll": "HICLIN\\HC610.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "06B",
+                    "Descripcion": "Reg anteced. bacteria resist",
+                    "Opc-segu": "ISH6B",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC611",
+                            "dll": "HICLIN\\HC611.dll"
+                        }
+                    ]
+                },
+                {
+                    "Id": "06C",
+                    "Descripcion": "Demanda inducida",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC612",
+                            "dll": "HICLIN\\HC612.dll"
+                        }
+                    ]
+                }
+
+
+
+            ]
+        },
+        {
+            "Id": "07",
+            "Descripcion": "Submenu impresion historia",
+            "Href": ""
+        },
+        {
+            "Id": "08",
+            "Descripcion": "Submenu procesos cirugia"
+        },
+        {
+            "Id": "09",
+            "Descripcion": "Informe historia clinica",
+            "Href": ""
+        },
+        {
+            "Id": "0A",
+            "Descripcion": "Otros Formularios",
+            "Href": ""
+        },
+        {
+            "Id": "0B",
+            "Descripcion": "Referencia/Contrareferencia",
+            "Sub": [
+                {
+                    "Id": "0B1",
+                    "Descripcion": "Config. clases de tanque"
+                },
+                {
+                    "Id": "0B2",
+                    "Descripcion": "Actualizar tanques"
+                },
+                {
+                    "Id": "0B3",
+                    "Descripcion": "Meidición de tanques"
+                }
+            ]
+        },
+        {
+            "Id": "0C",
+            "Descripcion": "Submenu P.Q.R."
+        },
+        {
+            "Id": "0D",
+            "Descripcion": "Actualizacion de tablas",
+            "Href": ""
+        },
+        {
+            "Id": "0E",
+            "Descripcion": "Menu de ayudas del sistema",
+            "Href": ""
+        },
+        {
+            "Id": "0G",
+            "Descripcion": "Muestra imagenes asociadas",
+            "Href": ""
+        }
+    ]
+}

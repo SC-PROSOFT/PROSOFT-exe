@@ -1,0 +1,1208 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <title>Historia clínica oncología</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Sarabun:100,200,300,400,500,600,700,800" rel="stylesheet">
+    <link href="../frameworks/assets//global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+    <link href="../frameworks/assets//global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+        type="text/css">
+    <link href="../frameworks/assets//global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../frameworks/assets//global/css/components-rounded.min.css" rel="stylesheet" id="style_components"
+        type="text/css">
+    <link href="../frameworks/assets//global/css/plugins.min.css" rel="stylesheet" type="text/css">
+
+    <link href="../frameworks/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css">
+    <link href="../frameworks/assets/layouts/layout6/css/layout.css" rel="stylesheet" type="text/css">
+    <link href="../frameworks/assets/layouts/layout6/css/custom.min.css" rel="stylesheet" type="text/css">
+    <link href="../style/style_v2.css" rel="stylesheet" type="text/css">
+    <link href="../style/formatos-style.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <script src="../frameworks/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="../frameworks/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <link href="../frameworks/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid #c7c5c5;
+            /* border-radius: 4px; */
+        }
+
+        .select2-container .select2-selection--single {
+            box-sizing: border-box;
+            cursor: pointer;
+            display: block;
+            font-size: 13px;
+            padding-top: 4px;
+            height: 40px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="page-content page-content-popup">
+            <div class="page-fixed-main-content" style="margin-left: 0px;">
+                <div class="page-content-fixed-header">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <a>HISTORIA CLÍNICA ONCOLOGÍA</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row" id="body_hc9004">
+
+                    <div class="col-md-12">
+                        <div class="portlet light">
+                            <div class="portlet-title">
+                                <div class="col-md-12">
+
+                                    <div class="col-md-3">
+                                        <label id="fecha_hc_9004">22/07/2019</label>
+                                    </div>
+                                    <div class="col-md-6" style="text-align:center">
+                                        <span class="caption-subject bold uppercase">Historia clínica oncología N°___
+                                            <span id="n_historia">00000112036684001000132</span>
+                                        </span>
+                                    </div>
+                                    <button id="llenar_form" type="button">Llenar formulario</button>
+
+                                </div>
+                            </div>
+                            <div class="portlet-body uppercase">
+                                <form class="form-horizontal">
+                                    <div id="fase-inicio" class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                                        <div class="col-md-12 col-sm-2 col-xs-6">
+                                            <h6><strong>1. Motivo de Consulta</strong> </h6>
+                                            <textarea   required="true" class="form-control" maxlength="380"  id="motiv_hc" rows="8"
+                                                style="width: 100%;resize:none;"  data-orden="1"
+                                                required="true"></textarea>
+                                        </div>
+                                        <div class="col-md-12 col-sm-2 col-xs-6">
+                                            <h6><strong>2. Enfermedad actual</strong></h6>
+                                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                <textarea   required="true" class="form-control" maxlength="19000" id="enf_act_hc"
+                                                    rows="8" style="width: 100%;resize:none;" required="true"
+                                                    data-orden="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--3. control general -->
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="fase-control1">
+                                        <div class="caption ">
+                                            <h6><strong>3. Control general</strong></h6>
+                                        </div>
+                                        <br>
+                                        <div id="seccion_control1">
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>% Act. del
+                                                    factor </label>
+                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                    <select   required="true"
+                                                    data-orden="1" id="porc_act_factor_9004"  required="true" class="form-control ">
+                                                        <option value="0">
+                                                            &lt; 1% </option>
+                                                        <option value="1"> &gt; 1%
+                                                        </option>
+                                                        <option value="2"> &gt; 5% y &lt; 40%</option>
+                                                        <option value="3">
+                                                            Desconocido</option>
+                                                        <option value="9">No aplica</option>
+                                                    </select >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>Presencia de
+                                                    inhibidores</label>
+                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                    <select   id="inhibidores_9004" required="true"
+                                                    data-orden="2"   required="true" class="form-control" >
+                                                        <option value="0">Baja Rta o &lt; 5 UB</option>
+                                                        <option value="1">
+                                                            Alta Rta o &gt; 5 UB</option>
+                                                        <option value="2">No Presenta inhibidores</option>
+                                                        <option value="3">Desconocido</option>
+                                                        <option value="9">No aplica</option>
+                                                    </select >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>fecha Últ.reporte
+                                                    inhibidores</label>
+                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                    <input  required="true"
+                                                    data-orden="3" id="fecha_ult_repor_inhib_9004" type="text"
+                                                         required="true" class="form-control fecha " style="height:42px">
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>Ha recibido ITI</label>
+                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+
+                                                    <select   required="true"
+                                                    data-orden="4"id="ha_recibido_iti_9004"  required="true" class="form-control ">
+                                                        <option value="S">Si</option>
+                                                        <option value="N">No</option>
+                                                        <option value="9">No aplica</option>
+                                                    </select >
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>Esta recibiendo ITI</label>
+                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+
+                                                    <select   required="true"
+                                                    data-orden="5"id="esta_recibiendo_iti_9004"  required="true" class="form-control ">
+                                                        <option value="S">Si</option>
+                                                        <option value="N">No</option>
+                                                        <option value="9">No aplica</option>
+                                                    </select >
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>Tiempo en ITI (meses)</label>
+                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+
+                                                    <input  required="true"
+                                                    data-orden="6" id="tiempo_en_iti_9004" type="text"  required="true" class="form-control "
+                                                        maxlength="2">
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-md-12 col-sm-12 col-xs-12 padding-ceros margin-top">
+                                                <div class="col-md-2 col-sm-2 col-xs-6">
+                                                    <label>Hemartrosis</label>
+                                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                        <select  required="true"
+                                                        data-orden="7" id="hemartrosis_9004"  required="true" class="form-control ">
+                                                            <option value="S">Si</option>
+                                                            <option value="N">No</option>
+                                                            <option value="9">No aplica</option>
+                                                        </select >
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-6">
+                                                    <label >VHC</label>
+                                                                    <div class=" input-group col-md-12 col-sm-12
+                                                        col-xs-12 padding-ceros">
+                                                        <select   required="true"
+                                                        data-orden="8" id="vhc_9004"  required="true" class="form-control ">
+                                                            <option value="S">Si</option>
+                                                            <option value="N">No</option>
+                                                            <option value="9">No aplica</option>
+                                                        </select >
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>VHB</label>
+                                                <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                    <select   required="true"
+                                                    data-orden="9" id="vhb_9004"  required="true" class="form-control ">
+                                                        <option value="S">Si</option>
+                                                        <option value="N">No</option>
+                                                        <option value="9">No aplica</option>
+                                                    </select >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                                <label>VIH</label>
+                                                <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                    <select  required="true"
+                                                    data-orden="10" id="vih_9004"  required="true" class="form-control ">
+                                                        <option value="S">Si</option>
+                                                        <option value="N">No</option>
+                                                        <option value="9">No aplica</option>
+                                                    </select >
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6  ">
+                                                <label>Artropatía hemo. crónica</label>
+                                                <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                    <select   required="true"
+                                                    data-orden="11" id="artropatia_hemo_cron_9004"
+                                                         required="true" class="form-control col-md-2">
+                                                        <option value="S">Si</option>
+                                                        <option value="N">No</option>
+                                                        <option value="9">No aplica
+                                                        </option>
+                                                    </select >
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-6  ">
+                                                <label>Nro Articulac.comprometidas</label>
+                                                <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                    <input   type="text" required="true"
+                                                    data-orden="12" id="nro_art_compro_9004"  required="true" class="form-control" 
+                                                        style="width:190px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sangrados -->
+                                    <div id="seccion_Sangrados" class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                        <div class="caption ">
+                                            <label><strong>Sangrados y hemorragias:</strong></label>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                            <label>Sangrado
+                                                iliopsoas</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                <select   id="san_iliopsoas_hc_9004"  required="true" class="form-control ">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                    <option value="9">No aplica</option>
+                                                </select >
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                            <label>Sangrado tejidos blandos</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                <select   id="san_tejidos_blandos_9004"  required="true" class="form-control ">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                    <option value="9">No aplica
+                                                    </option>
+                                                </select >
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                            <label>Sangrado intracraneal</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                                <select   id="san_intracraneal_9004"  required="true" class="form-control ">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                    <option value="9">No aplica
+                                                    </option>
+                                                </select >
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                            <label>Sangrado cuello o garganta</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">             
+                                                <select   id="san_cuello_garganta_9004"  required="true" class="form-control ">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                    <option value="9">No aplica
+                                                    </option>
+                                                </select >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                            <label>Sangrado oral</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+
+                                                <select   id="san_oral_9004"  required="true" class="form-control ">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                    <option value="9">No aplica
+                                                    </option>
+                                                </select >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                            <label>Otros Sangrados</label>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+
+                                                <select   id="san_otras_9004"  required="true" class="form-control ">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                    <option value="9">No aplica
+                                                    </option>
+                                                </select >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /control general -->
+                            </div>
+                            <!-- 8. Examen físico -->
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center margin-top"
+                                id="fase-control">
+                                <div class="caption ">
+                                    <h6><strong>4. Examen General</strong></h6>
+                                </div>
+                                <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                    <textarea   required="true" class="form-control"  maxlength="19000" id="exa_general_hc" rows="5"
+                                        style="width: 100%;resize:none;"></textarea>
+                                </div>
+                                <!-- /Examen físico -->
+                            </div>
+
+                            <!--4. Medidas antropometricas -->
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center margin-top"
+                                id="fase-control">
+                                <div class="caption ">
+                                    <h6><strong>4. Medidas antropométricas</strong></h6>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Peso</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="peso_hc_9004" type="text"  required="true" class="form-control"  maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Talla</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="talla_hc" type="text"  required="true" class="form-control" ">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Superficie corporal</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="sup_corp_hc" type="text"  required="true" class="form-control " ">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>IMC</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="imc_corp_hc" type="text"  required="true" class="form-control " ">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Perímetro cefálico</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="per_cef_hc" type="text"  required="true" class="form-control ">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Perímetro toráxico</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="per_tora_hc" type="text"  required="true" class="form-control ">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Perímetro abdominal</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <input  " id="per_abdo_hc" type="text"  required="true" class="form-control ">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 5. Antecedentes -->
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center margin-top"
+                                id="fase-control">
+                                <div class="caption ">
+                                    <h5><strong>5. Antecedentes</strong></h5>
+                                </div>
+                                <!-- Antecedentes familiares -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                    <div class="caption ">
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-sm-2 col-xs-6">
+                                                <label style="font-size: 13px;"><strong>Antecedentes
+                                                        Familiares:</strong></label>
+                                                        <br><br>
+                                                <select    required="true" class="form-control"style="margin-left:15px;width:195px" id="ante_famil_9004">
+                                                    <option value="0">no tiene antecedentes</option>
+
+                                                    <option value="1">madre</option>
+
+                                                    <option value="2">padre</option>
+
+                                                    <option value="3">1 hermano</option>
+
+                                                    <option value="4">2 hermanos</option>
+
+                                                    <option value="5">1 hermana</option>
+
+                                                    <option value="6">2 hermanas</option>
+
+                                                    <option value="7">padre y madre </option>
+
+                                                    <option value="8">Padre y 1 hermano</option>
+
+                                                    <option value="9">padre y 2 hermanos</option>
+
+                                                    <option value="10">padre y 1 hermana</option>
+
+                                                    <option value="11">padre y 2 hermanas</option>
+
+                                                    <option value="12">madre y 1 hermano</option>
+
+                                                    <option value="13">madre y 2 hermanos</option>
+
+                                                    <option value="14">madre y 1 hermana</option>
+
+                                                    <option value="15">madre y 1 hermanas</option>
+
+                                                    <option value="16">1 sobrina</option>
+
+                                                    <option value="17">2 sobrinas</option>
+
+                                                    <option value="18">1 sobrino</option>
+
+                                                    <option value="19">2 sobrinos</option>
+
+                                                    <option value="20">desconocido</option>
+
+                                                    <option value="99">no aplica</option>
+                                                </select >
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-2 col-xs-6  ">
+                                        <h6><strong>Otros Antecedentes familiares</strong> </h6>
+                                        <textarea   required="true" class="form-control"  maxlength="19000" id="famil_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+                                    <!-- /antecedentes familiares -->
+                                </div>
+                                <!-- antecedentes medicos -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                    <div class="caption ">
+                                        <label style="font-size: 13px;"><strong>Antecedentes Médicos:</strong></label>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>Nª atenciones urg. hemofilica</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="nro_atencion_urg_hemo_hc_9004" type="text"  required="true" class="form-control "
+                                                max="99">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>Nª eventos hospitalarios hemofilia</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="nro_even_hospi_hemo_hc_9004" type="text"  required="true" class="form-control "
+                                                max="99">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-2 col-xs-6  ">
+                                        <h6><strong>Otros Antecedentes médicos</strong> </h6>
+                                        <textarea   required="true" class="form-control"  maxlength="19000" id="medic_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+                                    <!-- /antecedentes medicos -->
+                                </div>
+                                <!-- antecedentes hemorragicos -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                    <div class="caption ">
+                                        <label style="font-size: 13px;"><strong>Antecedentes
+                                                hemorragicos:</strong></label>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-7 col-sm-6 col-xs-6">
+                                            <label>No.hemartrosis espontaneas(últ.12 meses)</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="nro_hemar_espon_12mes_hc_9004" type="text"  required="true" class="form-control "
+                                                max="99">
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-7 col-sm-6 col-xs-6">
+                                            <label>No.hemartrosis traumáticas(últ.12 meses)</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="nro_hemar_traum_12mes_hc_9004" type="text"  required="true" class="form-control "
+                                                max="99">
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-7 col-sm-6 col-xs-6">
+                                            <label>No.otras hemorragias espontaneas diferentes a hemartrosis(últ.12 meses)</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="nro_otr_hemor_12mes_9004" type="text"  required="true" class="form-control "
+                                                max="99">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                        <h6><strong>Otros antecedentes hemorragicos</strong> </h6>
+                                        <textarea   required="true" class="form-control"  maxlength="19000" id="hemor_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+
+                                    <!-- /antecedentes hemorragicos -->
+                                </div>
+                                <!-- antecedentes quirúrgicos -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                    <div class="caption ">
+                                        <label style="font-size: 13px;"><strong>Antecedentes
+                                                Quirúrgicos:</strong></label>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-7 col-sm-6 col-xs-6">
+                                            <label>reemplazos articulares</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="remplazos_articulares_9004"  required="true" class="form-control ">
+                                                <option value="S">Si</option>
+                                                <option value="N">No</option>
+                                                <option value="9">No aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-7 col-sm-6 col-xs-6">
+                                            <label>Reemplazos artic. en los
+                                                últimos 12 meses</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="remplazos_art_12mes_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-7 col-sm-6 col-xs-6">
+                                            <label>No.hemorragias asociadas a procedimientos</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="nro_hemor_proc_12mes_9004" type="text"  required="true" class="form-control "
+                                                max="99">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                        <h6><strong>Otros antecedentes quirúrgicos</strong> </h6>
+                                        <textarea   required="true" class="form-control"  maxlength="19000" id="quiru_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+
+                                    <!-- /antecedentes quirúrgicos -->
+                                </div>
+                                <!-- antecedentes farmacológicos -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top" id='fase-farmaco'>
+                                    <div class="caption ">
+                                        <label style="font-size: 13px;"><strong>Antecedentes farmacológicos:</strong></label>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>factor recibido</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="factor_recibido_9004"  required="true" class="form-control ">
+                                                <option value="0">FVIII</option>
+                                                <option value="1">FIX</option>
+                                                <option value="2">Plasma fresco congelado</option>
+                                                <option value="3">Crioprecipitado</option>
+                                                <option value="4">Desconocido</option>
+                                                <option value="5">No recibido</option>
+                                                <option value="9">No aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>esquema recibido</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="esquema_recibido_9004"  required="true" class="form-control ">
+                                                <option value="0">A demanda</option>
+                                                <option value="1">Prof. primaria</option>
+                                                <option value="2">Prof. secundaria</option>
+                                                <option value="3">Prof. terciaria</option>
+                                                <option value="4">Prof. intermitente</option>
+                                                <option value="5">Sin tratamiento</option>
+                                                <option value="6">Desconocido</option>
+                                                <option value="9">No aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>fecha inicio 1er tratamiento</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <input  " id="fecha_ini_prim_trat_9004" type="text"
+                                                class=" form-control  padding-ceros fecha" style="height:6%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>anafilaxis</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="anafilaxis_9004" style="width:190px;"  required="true" class="form-control ">
+                                                <option value="S">SI</option>
+                                                <option value="N">NO</option>
+                                                <option value="9">No aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-6 margin-top">
+                                        <label>Factor que produjo anafilaxis</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros ui-widget ">
+                                            <select   data-orden='1' required='true' id="cum_causa_anafil_9004" type="text"  required="true" class="form-control cum ">
+                                                <option value="0">No recibió medicamento</option>
+                                            </select >
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                        <h6><strong>Antecedente tóxico alérgico</strong> </h6>
+                                        <textarea   required="true" class="form-control" data-orden='2' required='true' maxlength="19000" id="toxic_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+                                </div>
+                                <!-- antecedentes traumáticos -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                    <div class="caption ">
+                                        <label style="font-size: 13px;"><strong>Antecedentes
+                                                traumáticos:</strong></label>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-8 col-sm-6 col-xs-6">
+                                            <label>fracturas/osteopenlas/osteoporosis</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="fract_osteo_9004" type="text"  required="true" class="form-control " max="99">
+                                                <option value="S">si</option>
+                                                <option value="N">no</option>
+                                                <option value="9">no aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-md-4 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                        <div class="col-md-4 col-sm-6 col-xs-6">
+                                            <label>pseudotumores</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="pseudotumores_9004" type="text"  required="true" class="form-control " max="99">
+                                                <option value="S">si</option>
+                                                <option value="N">no</option>
+                                                <option value="9">no aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                        <h6><strong>Otros antecedentes traumáticos</strong> </h6>
+                                        <textarea   required="true" class="form-control"  maxlength="19000" id="traum_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+
+                                </div>
+                                <!-- antecedentes gineco-obstetricos -->
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+                                    <div class="caption ">
+                                        <label style="font-size: 13px;"><strong>Antecedentes
+                                                Gineco-obstétricos</strong></label>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>estado de gestacion</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="embarazo_hc"  required="true" class="form-control" >
+                                                <!-- es hombre -->
+                                                <option value="9">no aplica</option>
+                                                <!-- es mujer -->
+                                                <option value="1">1er trimestre embarazo</option>
+                                                <option value="2">2do trimestre embarazo</option>
+                                                <option value="3">3er trimestre embarazo</option>
+                                                <option value="4">no declara</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>Planificacion familiar:</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select    required="true" class="form-control"  id="plan_famil_9004">
+                                                <option value="0">Planificacion</option>
+                                                <option value="1">Consejeria genetica</option>
+                                                <option value="2">Planificacion y consejeria genetica</option>
+                                                <option value="3">No aplica</option>
+                                                <option value="4">Ninguno</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                        <h6><strong>Otros antecedentes Gineco-obstétricos</strong> </h6>
+                                        <textarea   required="true" class="form-control"  maxlength="19000" id="ginec_hc" rows="5"
+                                            style="width: 100%;resize:none;"></textarea>
+                                    </div>
+                                    <!-- /antecedentes gineco-obstetricos -->
+                                </div>
+                            </div>
+                            <!-- 6. Diagnóstico -->
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center margin-top"
+                                id="fase-control">
+                                <div class="caption ">
+                                    <h6><strong>6. Diagnóstico</strong></h6>
+                                </div>
+                                <div class="col-md-3 col-sm-2 col-xs-6 margin-top">
+                                    <label>edad dx</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 padding-ceros">
+                                            <input  " id="vlr_edad_dx_9004" type="text"  required="true" class="form-control" >
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select   id="unid_edad_dx_9004"  required="true" class="form-control" >
+                                                <option value="A">Año</option>
+                                                <option value="M">Mes</option>
+                                                <option value="D">Dia</option>
+                                                <option value="9">Sin dato</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Motivo de prueba dx</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <select   id="motivo_prueba_dx_9004"  required="true" class="form-control" >
+
+                                            <option value="0">Madre portadora conocida</option>
+                                            <option value="1">Otro historial familiar</option>
+                                            <option value="2">Sintoma hemorragico</option>
+                                            <option value="3">Otro</option>
+                                            <option value="4">Desconocido</option>
+                                        </select >
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-2 col-xs-6 margin-top">
+                                    <label>fecha dx</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-7 padding-ceros">
+                                            <input  " id="fecha_dx_9004" type="text"  required="true" class="form-control" 
+                                                style="height:42px">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <select   id="fecha_dx_select_hc_9004"  required="true" class="form-control padding-ceros fecha">
+                                                <option value="SI">Si</option>
+                                                <option value="1800-01-01">Desconocida</option>
+                                                <option value="1811-01-01">Dato no disponible, el DX se realizo en otra
+                                                    EPS</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                    <label>Tipo de deficiencia</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros" style="width:190px;">
+                                        <select   id="tipo_def_dx_9004"  required="true" class="form-control" >
+
+                                            <option value="0">factor VIII(hemofilia A)</option>
+                                            <option value="1">factor IX (hemofilia B)</option>
+                                            <option value="2">portadora</option>
+                                            <option value="3">von wilebrand</option>
+                                            <option value="4">fibrinogeno</option>
+                                            <option value="5">protombina</option>
+                                            <option value="6">fv y fviii</option>
+                                            <option value="8">fvii</option>
+                                            <option value="9">fx</option>
+                                            <option value="A">fxi</option>
+                                            <option value="b">fxiii</option>
+                                        </select >
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top">
+                                    <label>Severidad</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <select   id="severidad_dx_9004"  required="true" class="form-control" >
+
+                                            <option value="0">leve</option>
+                                            <option value="1">moderado</option>
+                                            <option value="2">severo</option>
+                                            <option value="3">desconocido</option>
+                                            <option value="9">no aplica</option>
+                                        </select >
+                                    </div>
+                                </div>
+                                <!-- /Diagnóstico -->
+                            </div>
+                            <!-- 7. Análisis -->
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center margin-top"
+                                id="fase-control">
+                                <div class="caption ">
+                                    <h6><strong>7. Análisis y Plan </strong></h6>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>profesional que lidera la atención</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select   id="prof_lider_atencion_9004"  required="true" class="form-control" >
+                                                <option value="0">hematológo</option>
+                                                <option value="1">medico general</option>
+                                                <option value="2">medico familiar</option>
+                                                <option value="4">ortopedista</option>
+                                                <option value="9">no aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas hematología</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_hematologia_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas ortopedia</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_ortopedia_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>intervención por enfermería profesional</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select   id="inter_prof_enfer_9004"  required="true" class="form-control" >
+                                                <option value="S">si</option>
+                                                <option value="N">no</option>
+                                                <option value="9">no aplica</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas odontología</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_odontologia_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas nutrición</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_nutricion_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas t. social</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_t_social_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas fisiatría</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_fisiatria_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas psicología</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_psicologia_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas de química farmacéutica</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_com_quim_farma_9004" type="text"  required="true" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-3 col-sm-12 col-xs-12 margin-top padding-ceros">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label>N° consultas fisioterapia</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input  " id="nro_con_fisioterapia_9004" type="text"  required="true" class="form-control ">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 padding-ceros">
+                                    <div class=" col-md-3 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                        <label>Cum pos</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="cum_pos_9004"
+                                                class="ui-widget cum-pos form-control padding-ceros ">
+                                                <option value="0">No recibió medicamento pos</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-3 col-sm-2 col-xs-6 margin-top ">
+                                        <label>Cum no pos</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="cum_nopos_9004" class="cum-nopos ui-widget form-control  ">
+                                                <option value="0">No recibió medicamento no pos</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-2 col-xs-6 margin-top padding-ceros ">
+                                        <label>Cum pos otros</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="cum_otros1_trat_9004" class="cum-pos form-control ui-widget">
+                                                <option value="0">No recibió medicamento</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-2 col-xs-6 margin-top ">
+                                        <label>Cum no pos otros</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="cum_otros2_trat_9004" class="cum-nopos form-control ui-widget">
+                                                <option value="0">No recibió medicamento</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12  margin-top">
+
+                                    <div class="caption ">
+                                        <label><strong>Tratamiento actual</strong></label>
+                                    </div>
+                                    <div class=" col-md-2 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                        <label>Factor recibido</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="factor_recibido_act_9004"  required="true" class="form-control ">
+                                                <option value="0">Concentrado de factor VIII</option>
+                                                <option value="1">Concentrado de factor IX</option>
+                                                <option value="2">FVIIRa (Factor recombinante activado)</option>
+                                                <option value="3">CCPa (Concentrado complejo de protombina activado)
+                                                </option>
+                                                <option value="4">Plasma fresco congelado</option>
+                                                <option value="5">Crioprecipitado</option>
+                                                <option value="6">No aplica</option>
+                                                <option value="7">Paciente con hemofilia no recibe tratamiento
+                                                </option>
+                                                <option value="9">No aplica (Usuario con coagulopatía a hemofilia)
+                                                </option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                        <label>Esquema recibido</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="esquema_recibido_act_9004"  required="true" class="form-control ">
+                                                <option value="0">A demanda</option>
+                                                <option value="1">Prof. primaria</option>
+                                                <option value="2">Prof. secundaria</option>
+                                                <option value="3">Prof. terciaria</option>
+                                                <option value="4">Prof. intermitente</option>
+                                                <option
+                                                    title="requirio manejo adicional en el periodo de conrte por trauma o intervención quirúrgica"
+                                                    value="5">Usuario en profilaxis</option>
+                                                <option value="9"
+                                                    title="Usuario con coagulopatía diferente a hemofilia"> No
+                                                    aplica
+                                                </option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-2 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                        <label title="Última dosis">Dosis</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <div class="col-md-7 padding-ceros">
+                                                <select   id="dosis_select _9004"  required="true" class="form-control" >
+                                                    <option value="0">Seleccionar</option>
+                                                    <option value="9998">No aplica (usuario hemofílico con manejo a
+                                                        demanda)</option>
+                                                    <option value="9999">No aplica (usuario con coagulopatía
+                                                        diferente a
+                                                        hemofilia)</option>
+                                                </select >
+                                            </div>
+                                            <div class="col-md-5 ">
+                                                <input  " id="ult_dosis_act_9004" type="text"  required="true" class="form-control"  min="1"
+                                                    maxlength="2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-2 col-sm-2 col-xs-6 margin-top">
+                                        <label>Frecuencia/Semana</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="frecuencia_semana_9004"  required="true" class="form-control ">
+                                                <option title="usuario hemofílico no recibe profilaxis" value="0">No
+                                                    aplica (usuario hemofílico)</option>
+                                                <option value="1">1 vez por semana</option>
+                                                <option value="2">2 veces por semana</option>
+                                                <option value="3">3 veces por semana</option>
+                                                <option value="4">4 veces por semana</option>
+                                                <option value="5">Más de 4 veces por semana</option>
+                                                <option title="Usuario con coagulopatía diferente a hemofilia"
+                                                    value="9">No aplica (usuario con coagulopatía)</option>
+
+                                            </select >
+
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                        <label>UI/DL totales admin. en el periodo</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <div class="col-md-7 padding-ceros">
+                                                <select   id="ui_dl_select _9004"  required="true" class="form-control" >
+                                                    <option value="0">Seleccionar</option>
+                                                    <option value="9998"
+                                                        title="usuario hemofílico con manejo en profilaxis">No
+                                                        aplica
+                                                        (usuario hemofílico)</option>
+                                                    <option value="9999" title="usuario con coagulopatía diferente a
+                                                                   hemofilia">No aplica (usuario con coagulopatía)
+                                                    </option>
+                                                </select >
+                                            </div>
+                                            <div class="col-md-5 ">
+                                                <input  " id="uild_periodo_9004" type="text"  required="true" class="form-control"  min="1"
+                                                    maxlength="3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-3 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                        <label>N° aplicaciones de factor en el periodo</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <div class="col-md-7 padding-ceros">
+                                                <select   id="apl_factor_select _9004"  required="true" class="form-control" >
+                                                    <option value="1">Seleccionar</option>
+                                                    <option value="0" title="usuario hemofílico sin manejo a demanda">No
+                                                        aplica (usuario hemofílico)</option>
+                                                    <option value="9999" title="usuario con coagulopatía diferente a
+                                                                   hemofilia">No aplica (usuario con coagulopatía)
+                                                    </option>
+                                                </select >
+                                            </div>
+                                            <div class="col-md-5 ">
+                                                <input  " id="nro_apl_factor_9004" type="text"  required="true" class="form-control"  min="1"
+                                                    maxlength="3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-2 col-sm-2 col-xs-6 margin-top padding-ceros">
+                                        <label>Modalidad aplicación</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="modalidad_apl_trat_9004"  required="true" class="form-control ">
+                                                <option value="0">institucional</option>
+                                                <option value="1">Domiciliario</option>
+                                                <option value="2">Mixto</option>
+                                                <option value="9"
+                                                    title="Usuario con coagulopatía diferente a hemofilia">No aplica
+                                                    (Usuario con coagulopatía)</option>
+                                            </select >
+                                        </div>
+                                    </div>
+                                    <div class=" ccol-md-2 col-sm-2 col-xs-6 margin-top ">
+                                        <label>Via de administración</label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                            <select   id="via_admin_9004"  required="true" class="form-control ">
+                                                <option value="0">Acceso periférico</option>
+                                                <option value="1">Acceso central</option>
+                                                <option value="2">Mixto</option>
+                                                <option value="9"
+                                                    title="Usuario con coagulopatía diferente a hemofilia">No aplica
+                                                    (Usuario con coagulopatía)</option>
+                                            </select >
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                    <h6><strong>Análisis y plan</strong> </h6>
+                                    <textarea   required="true" class="form-control"  maxlength="19000" id="analisis_hc" rows="7"
+                                        style="width: 100%;resize:none;"></textarea>
+                                </div>
+                                <!-- /Análisis -->
+                            </div>
+
+                            <!-- 10. Observaciones -->
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center margin-top"
+                                id="fase-control">
+                                <div class="caption ">
+                                    <h6><strong>10. Observaciones</strong></h6>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-6 margin-top ">
+                                    <label>Novedades</label>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-ceros">
+                                        <select   id="novedades_9004"  required="true" class="form-control ">
+                                            <option value="0">No presenta novedad</option>
+                                            <option value="1">Usuario ingresó a la EAPB con diagnóstico de hemofilia
+                                            </option>
+                                            <option value="2">Usuario antiguo en la EAPB, se realizó nuevo
+                                                diagnóstico
+                                                de hemofilia</option>
+                                            <option value="3">Usuario antiguo en la EAPB y antiguo DX de hemofilia
+                                                que
+                                                no le habia sido incluido en el reporte
+                                            </option>
+                                            <option value="4">Usuario que falleció</option>
+                                            <option value="5">Usuario que se desafilió</option>
+                                            <option value="6">Usuario para eliminar de la base de datos por
+                                                correción
+                                                luego de auditoria interna o de CAC</option>
+                                            <option value="7">Usuario que firmo salida voluntaria del tratamiento
+                                            </option>
+                                            <option value="8">Usuario con cambio de tipo o numero de ID(mismo
+                                                usuario
+                                                con nuevo ID)
+                                            </option>
+                                            <option value="9">Usuario abandonó el tratamiento y es imposible de
+                                                ubicar
+                                            </option>
+                                            <option value="A">Usuario no incluido en el reporte anterior y esta
+                                                Fallecido en el momento del reporte actual</option>
+                                        </select >
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-2 col-xs-6  margin-top">
+                                    <div class="caption ">
+                                        <h6><strong>Otras observaciones</strong></h6>
+                                    </div>
+                                    <textarea   required="true" class="form-control"  id="observaciones_9004" rows="6"
+                                        style="width: 100%;resize:none;" maxlength="2850"></textarea>
+                                </div>
+                                <button id="btn_grabar" ="true" type="button">Grabar</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    </div>
+
+    <!-- Librerias -->
+    <script src="../frameworks/assets/global/plugins/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="../script/ajax.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <!-- API impresion (pdf,xls,cvb) -->
+    <script src="../script/api_impresion.js"></script>
+    <script src="../script/moment.js"></script>
+    <!-- <script src="../script/Notificaciones.js"></script> -->
+    <!-- <script src="../script/_CON851.js"></script> -->
+    <script src="../script/_validarInputs.js"></script>
+    <script src="../script/hc9004.js" type="text/javascript"></script>
+    <script src="msjProsoft.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+{
+  "name": "Estandar",
+  "version": "1.0.0",
+  "description": "Sc Prosoft S.A.S",
+  "main": "./main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "Sc Prosoft <administracion@prosoft.com.co>",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0"
+  },
+  "build": {
+    "appId": "prosoft_electronv1",
+    "asar": true,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/pr.ico",
+      "files": [
+        "!**/node_modules/*",
+        "!**/app/*",
+        "!**/nbproject/*",
+        "!**/CEREALES/*",
+        "!**/HICLIN/*",
+        "!**/SALUD/*"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": false,
+      "include": "build/installer.nsh"
+    }
+  },
+  "dependencies": {
+    "jquery": "^3.4.0",
+    "mysql": "^2.17.1"
+  }
+}

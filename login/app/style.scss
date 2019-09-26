@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+
+
+*{
+    box-sizing: border-box;  
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+a:link{ text-decoration: none;}
+
+html,body{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background: #fff;
+}
+
+
+header{
+    width: 100%;
+    height: 10%;
+    padding: 15px 0 0 15px;
+
+    #logo-prosoft{
+        background: url(../imagenes/logo.png);
+        width: auto;
+        height: 100%;
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+}
+
+main{
+    height: 85%;
+    width: 100%; 
+    display: flex;
+    align-items: center;   
+
+    #content{
+        height: auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        margin: 0 auto;
+    }
+}
+
+#box-form{
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+    -webkit-box-pack: end;
+
+    .box-content{
+        background: #FFF;
+        border-radius: 3px;
+        box-shadow: 0px 0px 80px 0px rgba(77,84,124,0.09);
+        height: auto;
+        width: 500px;
+        max-width: 100%;
+        z-index: 999;
+    }
+
+    .header{
+        width: 100%;          
+        color: #636576;        
+        font-size: 20px;
+        font-weight: 450;        
+        text-align: center;        
+        margin-top: 30px;
+    }
+
+    .mid{
+        width: 100%;
+        height: auto;
+        padding: 30px 40px 0px 40px; 
+    }
+
+    .actions_form{
+        display: grid;
+        align-items: center;
+        grid-template-columns: 60% 40%;
+
+        .recov_pass{
+            font-size: 12px;
+            color: #2257ce;
+            font-weight: 400;
+            transition: all 500ms;
+        }
+
+        .recov_pass:hover{
+            text-decoration: underline;
+        }
+    }
+
+    input,button{
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;    
+        border: none;
+        outline: none;
+        transition: all 500ms;
+    }
+
+    input{
+        width: 100%;
+        padding: 8px 10px;
+        margin-bottom: 30px;
+        color: #495057;
+        border-bottom: 1px solid #ebedf2;
+        font-size: 14px;
+    }
+
+    input:focus{
+        border-bottom-color: #264cc4;
+    }
+
+    button{
+        padding: 12px 0px;          
+        width: 100%;
+        color: #FFF;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 2px;
+        background: #2257ce;
+        box-shadow: 0px 4px 16px 0px rgba(34, 114, 206, 0.21);
+        // float: right;
+    }
+
+    button:hover{
+        background: #1440a2;
+    }
+
+    .footer{
+        padding-top: 30px;
+        padding-bottom: 30px;
+        margin-top: 30px;
+        border-top: 1px solid #ebedf2;
+        text-align: center;
+        font-size: 14px;
+        color: #A5A7BB;
+        font-weight: 400;
+
+        a{
+            font-size: 14px;
+            color: #2257ce;
+            font-weight: 500;
+        }
+    }
+}
+
+#box-image{
+    height: 100%; 
+    
+    .imagen-cover{
+        min-height: 100% !important;
+        border-radius: 0 3px 3px 0;
+        box-shadow: 0px 0px 80px 0px rgba(77, 84, 124, 0.09);
+        width: 450px;
+        max-width: 100%;
+        position: relative;
+    }
+
+    .imagen-cover::before{
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: url(http://gladstonebuild.com/wp-content/uploads/2017/01/2226.jpg);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        // background-size: cover;
+        filter: grayscale(1);
+        border-radius: 0 3px 3px 0;
+    }
+}
+
+
+.logo-content{
+    width: 100%;
+    height: 100px;
+    padding: 10px 0;
+}
+
+#logo{
+    background: url(../../imagenes/logo/0844003380.BMP);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    filter: drop-shadow(0 0 0.5rem #fff);
+}
+
+footer{
+    height: 5%;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+
+    .left-foot{
+        font-weight: 500;
+        font-size: 12px;
+        color: #A5A7BB;
+    }
+}
