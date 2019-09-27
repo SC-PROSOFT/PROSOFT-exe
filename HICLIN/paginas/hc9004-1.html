@@ -1015,12 +1015,461 @@ PO - Pablo Olguin 25/09/2019 -- Re-diseño
                 </select>
               </div>
             </div>
+          </div>
+        </div>
+        <!--Análisis-->
+        <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_6_title">
+          <div class="portlet light box-center box-title" style="margin: 0 auto;">
+            <div class="portlet-title">
+              <div class="caption">
+                <span class="caption-subject bold">Análisis y Plan</span>
+              </div>
+              <div class="actions">
+                <a class="btn btn-outline white btn-sm" data="volver">
+                  Pag 6.
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+          <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_diagnostico_hc_9004">
+            <div class="col-md-6 col-sm-8 col-xs-12">
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">profesional que lidera la atención:</label>
+                <select id="prof_lider_atencion_hc_9004" required="true" class="form-control" data-orden="1">
+                  <option value="0">hematológo</option>
+                  <option value="1">medico general</option>
+                  <option value="2">medico familiar</option>
+                  <option value="4">ortopedista</option>
+                  <option value="9">no aplica</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-8 col-xs-8">
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Intervención por enfermería profesional:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="inter_prof_enfer_hc_9004" required="true" class="form-control" data-orden="2">
+                    <option value="S">si</option>
+                    <option value="N">no</option>
+                    <option value="9">no aplica</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <label>&nbsp;</label>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label>Número de consultas: </label>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> hematología:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_hematologia_hc_9004" type="number" data-orden="3" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> ortopedia:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_ortopedia_hc_9004" type="number" data-orden="4" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> odontología:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_odontologia_hc_9004" type="number" data-orden="5" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
 
 
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> nutrición:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_nutricion_hc_9004" type="number" data-orden="6" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> terapia social:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_t_social_hc_9004" type="number" data-orden="7" required="true" class="form-control"
+                    maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> fisiatría:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_fisiatria_hc_9004" type="number" data-orden="8" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> psicología:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_psicologia_hc_9004" type="number" data-orden="9" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> química farmacéutica:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_com_quim_farma_hc_9004" type="number" data-orden="10" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12"> fisioterapia:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_con_fisioterapia_hc_9004" type="number" data-orden="11" required="true"
+                    class="form-control" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <label>&nbsp;</label>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label>&nbsp;</label>
+              <label>Administración de medicamentos: </label>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-8">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Cum pos otros:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="cum_otros1_trat_hc_9004" required="true" class="form-control" data-orden="12">
+                    <option value="0">No recibió medicamento pos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-8">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Cum no pos:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="cum_nopos_hc_9004" required="true" class="form-control" data-orden="13">
+                    <option value="0">No recibió medicamento no pos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-8">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Cum pos otros:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="cum_otros1_trat_hc_9004" required="true" class="form-control" data-orden="14">
+                    <option value="0">No recibió medicamento pos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-8">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Cum no pos otros:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="cum_otros2_trat_hc_9004" required="true" class="form-control" data-orden="15">
+                    <option value="0">No recibió medicamento no pos</option>
+                  </select>
+                </div>
+              </div>
+              <label>&nbsp;</label>
+            </div>
+
+            <label>&nbsp;</label>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label>Tratamiento actual: </label>
+              <label>&nbsp;</label>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-8">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Factor recibido:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="factor_recibido_act_hc_9004" required="true" class="form-control" data-orden="16">
+                    <option value="0">Concentrado de factor VIII</option>
+                    <option value="1">Concentrado de factor IX</option>
+                    <option value="2">FVIIRa (Factor recombinante activado)</option>
+                    <option value="3">CCPa (Concentrado complejo de protombina activado)
+                    </option>
+                    <option value="4">Plasma fresco congelado</option>
+                    <option value="5">Crioprecipitado</option>
+                    <option value="6">No aplica</option>
+                    <option value="7">Paciente con hemofilia no recibe tratamiento
+                    </option>
+                    <option value="9">No aplica (Usuario con coagulopatía a hemofilia)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-8">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Factor recibido:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="esquema_recibido_act_hc_9004" required="true" class="form-control" data-orden="17">
+                    <option value="0">A demanda</option>
+                    <option value="1">Prof. primaria</option>
+                    <option value="2">Prof. secundaria</option>
+                    <option value="3">Prof. terciaria</option>
+                    <option value="4">Prof. intermitente</option>
+                    <option
+                      title="requirio manejo adicional en el periodo de conrte por trauma o intervención quirúrgica"
+                      value="5">Usuario en profilaxis</option>
+                    <option value="9" title="Usuario con coagulopatía diferente a hemofilia"> No aplica</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Aplica para últ. dosis:</label>
+                <select id="dosis_select_hc_9004" required="true" class="form-control" data-orden="18">
+                  <option value="0">Si aplica</option>
+                  <option value="9998">No aplica (usuario hemofílico con manejo ademanda)</option>
+                  <option value="9999">No aplica (usuario con coagulopatía diferente a hemofilia)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12">Últ. dosis:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="ult_dosis_acthc_9004" type="number" data-orden="19" required="true" class="form-control"
+                    maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12">Fr. semana:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="frecuencia_semana_hc_9004" required="true" class="form-control" data-orden="20">
+                    <option title="usuario hemofílico no recibe profilaxis" value="0">No aplica (usuario hemofílico)
+                    </option>
+                    <option value="1">1 vez por semana</option>
+                    <option value="2">2 veces por semana</option>
+                    <option value="3">3 veces por semana</option>
+                    <option value="4">4 veces por semana</option>
+                    <option value="5">Más de 4 veces por semana</option>
+                    <option title="Usuario con coagulopatía diferente a hemofilia" value="9">No aplica (usuario con
+                      coagulopatía)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-5 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Se administraron UI/DL en el periodo:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="frecuencia_semana_hc_9004" required="true" class="form-control" data-orden="21">
+                    <option title="usuario hemofílico no recibe profilaxis" value="0">No aplica (usuario hemofílico)
+                    </option>
+                    <option value="0">Si se administraron</option>
+                    <option value="9998" title="usuario hemofílico con manejo en profilaxis">No aplica (usuario
+                      hemofílico)</option>
+                    <option value="9999" title="usuario con coagulopatía diferente a hemofilia">No aplica (usuario con
+                      coagulopatía) </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12">UI/DL administrados por periodo:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="uild_periodo_hc_9004" type="number" data-orden="22" required="true" class="form-control"
+                    maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Se suministraron aplicaciones del factor:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="apl_factor_select_hc_9004" required="true" class="form-control" data-orden="22">
+                    <option title="usuario hemofílico no recibe profilaxis" value="0">No aplica (usuario hemofílico)
+                    </option>
+                    <option value="0">Si se administraron</option>
+                    <option value="9998" title="usuario hemofílico con manejo en profilaxis">No aplica (usuario
+                      hemofílico)</option>
+                    <option value="9999" title="usuario con coagulopatía diferente a hemofilia">No aplica (usuario con
+                      coagulopatía) </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-8 col-sm-8 col-xs-12">No. aplicaciones del factor por periodo:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <input id="nro_apl_factor_hc_9004" type="number" data-orden="23" required="true" class="form-control"
+                    maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Via de administración:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="via_admin__hc_9004" required="true" class="form-control" data-orden="24">
+                    <option value="0">Acceso periférico</option>
+                    <option value="1">Acceso central</option>
+                    <option value="2">Mixto</option>
+                    <option value="9" title="Usuario con coagulopatía diferente a hemofilia">No aplica
+                      (Usuario con coagulopatía)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;">
+              <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+              <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+              <label>Análisis y plan: </label>
+              <textarea id="analisis_hc_9004" rows="35" maxlength="200"
+                class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="25" style="max-height: 200px"></textarea>
+              <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+            </div>
 
           </div>
-
         </div>
+        <!---Observaciones-->
+        <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_7_title">
+          <div class="portlet light box-center box-title" style="margin: 0 auto;">
+            <div class="portlet-title">
+              <div class="caption">
+                <span class="caption-subject bold">Observaciones</span>
+              </div>
+              <div class="actions">
+                <a class="btn btn-outline white btn-sm" data="volver">
+                  Pag 6.
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+          <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_observaciones_hc_9004">
+            <div class="col-md-6 col-sm-8 col-xs-12">
+              <label>&nbsp;</label>
+              <div class="inline-inputs">
+                <label class="col-md-12 col-sm-8 col-xs-12">Novedades:</label>
+                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                  <select id="via_admin__hc_9004" required="true" class="form-control" data-orden="1">
+                    <option value="0">No presenta novedad</option>
+                    <option value="1">Usuario ingresó a la EAPB con diagnóstico de hemofilia
+                    </option>
+                    <option value="2">Usuario antiguo en la EAPB, se realizó nuevo
+                      diagnóstico
+                      de hemofilia</option>
+                    <option value="3">Usuario antiguo en la EAPB y antiguo DX de hemofilia
+                      que
+                      no le habia sido incluido en el reporte
+                    </option>
+                    <option value="4">Usuario que falleció</option>
+                    <option value="5">Usuario que se desafilió</option>
+                    <option value="6">Usuario para eliminar de la base de datos por
+                      correción
+                      luego de auditoria interna o de CAC</option>
+                    <option value="7">Usuario que firmo salida voluntaria del tratamiento
+                    </option>
+                    <option value="8">Usuario con cambio de tipo o numero de ID(mismo
+                      usuario
+                      con nuevo ID)
+                    </option>
+                    <option value="9">Usuario abandonó el tratamiento y es imposible de
+                      ubicar
+                    </option>
+                    <option value="A">Usuario no incluido en el reporte anterior y esta
+                      Fallecido en el momento del reporte actual</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;">
+              <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+              <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+              <label>Otras observaciones: </label>
+              <textarea id="observaciones_hc_9004" rows="35" maxlength="200"
+                class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="2" style="max-height: 200px"></textarea>
+              <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <button id="btn_grabar_9004" type="button" class="btn blue-madison  col-md-4"
+                style="text-align:center">Grabar</button>
+            </div>
+
+          </div>
+        </div>
+        <!--Fin-->
     </div>
   </div>
   </form>
