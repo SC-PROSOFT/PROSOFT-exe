@@ -14,6 +14,7 @@
         tipo: 'json',
         tablaSql: null,
         consultaSql: null,
+        db: null,
         lenguaje: {
             lengthMenu: "Mostrar _MENU_ por página",
             zeroRecords: "No hay datos disponibles",
@@ -58,7 +59,9 @@
         },
 
         _initSql: function () {
-            var connection = mysql.createConnection($CONEXION_BD);
+            var db_tmp = $.parseJSON((JSON.stringify($CONEXION_BD)));
+            db_tmp.database = $.ventanaDatos.db || db_tmp.database;
+            var connection = mysql.createConnection(db_tmp);
 
             connection.connect(function (err) {
                 if (err) {
@@ -355,10 +358,10 @@
     }
 
     _ventanaDatos = function (params) {
+        console.log(params)
         $.ventanaDatos.titulo = params.titulo || $.ventanaDatos.titulo;
         $.ventanaDatos.tipo = 'json';
         $.ventanaDatos.tipo = params.tipo || $.ventanaDatos.tipo;
-        console.log($.ventanaDatos.tipo)
         if ($.ventanaDatos.tipo == 'mysql') {
             if (!params.callback) {
                 alert('Callback sin definir');
@@ -368,6 +371,7 @@
                 $.ventanaDatos.tablaSql = params.tablaSql;
                 $.ventanaDatos.callback_esc = params.callback_esc;
                 $.ventanaDatos.consultaSql = params.consultaSql || false;
+                $.ventanaDatos.db = params.db;
                 $.ventanaDatos._init();
             }
         } else {
@@ -386,6 +390,7 @@
                 $.ventanaDatos.callback = params.callback;
                 $.ventanaDatos.orden = params.orden;
                 $.ventanaDatos.callback_esc = params.callback_esc;
+                $.ventanaDatos.db = params.db;
                 $.ventanaDatos._init();
             }
         }
