@@ -1,8 +1,7 @@
 var $_LOTE_MENUCHECK = [];
 
 _validarOpcion_0A = function () {
-    var SUCU = $_USUNET[11] || '2';
-    // var SUCU = '3';
+    var SUCU = $_USUA_GLOBAL[0]['MENU_SUC'] || '2';
 
     if (SUCU == '2') {
         var tmp = buscar_opcion("0A");
@@ -11,6 +10,7 @@ _validarOpcion_0A = function () {
     } else if (SUCU == '1') {
         _consultaSql({
             sql: 'SELECT * FROM sc_archpref',
+            db: $CONTROL,
             callback: function (error, results, fields) {
                 if (error) throw error;
                 else {
@@ -34,6 +34,7 @@ _validarOpcion_0A = function () {
     } else if (SUCU == '3') {
         _consultaSql({
             sql: 'SELECT * FROM sc_sucur',
+            db: 'datos_pros',
             callback: function (error, results, fields) {
                 if (error) throw error;
                 else {
@@ -86,6 +87,7 @@ _CON855A = function (prefijo, acceso) {
 
     _consultaSql({
         sql: sql_temp,
+        db: 'datos_pros',
         callback: function (error, results, fields) {
             var temp = [];
             if (results.length > 0) {

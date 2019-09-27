@@ -8,7 +8,27 @@ $(document).ready(function () {
     loader('show');
     _iniciar_menu_his();
     $('#busqpaci_his').val('94475639');
+    setTimeout("conectSql()", 1000);
+    
 });
+
+function conectSql(){
+    console.log('entra a la consulta')
+    _consultaSql({
+        sql: "Select * from sc_archprof",
+        callback: function (error, results, fields) {
+            if (error) throw error;
+            else {
+                if (JSON.parse(JSON.stringify(results))[0].length == 0) {
+                    console.debug(results);
+                } else {
+                    console.debug(results);
+                    console.log(JSON.parse(JSON.stringify(results)));
+                }
+            }
+        }
+    });
+}
 
 function _iniciar_menu_his() {
     var data = datosEnvio() + localStorage['Usuario'].trim();

@@ -74,15 +74,19 @@ function _eventoBotones() {
         idOpcion = dataOpcion.id.toString(),
         nuevaLista = buscar_opcion(idOpcion),
         data = data_opc(idOpcion),
-        TIPO_EMPRESA = $_USUA_GLOBAL[0].TIPO_EMPRE
+        TIPO_EMPRESA = $_USUA_GLOBAL[0].TIPO_EMPRE,
+        modulo = localStorage['Modulo'];
 
     if (
-        idOpcion == '0A1' ||
-        idOpcion == '0A2' ||
-        idOpcion == '0A3' ||
-        idOpcion == '0A4' ||
-        idOpcion == '0A5' ||
-        idOpcion == '0A6'
+        (modulo == 'NEW') &&
+        (
+            idOpcion == '0A1' ||
+            idOpcion == '0A2' ||
+            idOpcion == '0A3' ||
+            idOpcion == '0A4' ||
+            idOpcion == '0A5' ||
+            idOpcion == '0A6'
+        )
     ) {
         _toggleNav();
         _CON855A(data['Mask-lote'], '2')
@@ -96,14 +100,14 @@ function _eventoBotones() {
             ////////////
             if (data.Id == '0A') _validarOpcion_0A()
             ////////////
-        } else if (data.Tipo == 'SALUD'){
-            if (TIPO_EMPRESA == 'H'){
+        } else if (idOpcion == '097' && data.Tipo == 'SALUD') {
+            if (TIPO_EMPRESA == 'H') {
                 mostrar_menu(nuevaLista);
                 set_titulo(idOpcion);
             } else {
                 var msj
                 msj = msjError('15');
-                jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> ${msj}`})
+                jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> ${msj}` })
             }
         } else {
             mostrar_menu(nuevaLista);
@@ -137,7 +141,8 @@ function _eventoBotones() {
 }
 
 function _validarSegu(datos) {
-    var segw = $_USUNET[14].trim()
+    console.log(datos)
+    var segw = $_USUA_GLOBAL[0]['SEG-MOV'];
 
     // var segw = "8",
     validarSegw = datos["Seg-w"] ? datos["Seg-w"].find(element => element == segw) : false;

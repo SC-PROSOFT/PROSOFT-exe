@@ -1,51 +1,21 @@
 const path = require('path'),
     mysql = require('mysql');
 
-var $_USUNET,
-    $_RUTA_LOGO,
-    $_IP_DATOS = false,
-    $datosUsuar = []
-    $CONEXION_BD= {};
+$CONEXION_BD = {},
+    $CONTROL = '',
+    $_USUA_GLOBAL = '';
 
 $(document).ready(function () {
-    if (localStorage['Modulo'] == 'MIG'){
+    if (localStorage['Modulo'] == 'MIG') {
         cargarMenu()
     } else {
-        _verificarSesion();
+        _cargarUsuario();
     }
-    $('#cerrar_menu_user').click(function (){
+    $('#cerrar_menu_user').click(function () {
         var url = path.join(__dirname, '../../login/login.html');
         window.location.href = url;
     });
 });
-
-function _verificarSesion() {
-    var url = get_url("app/INDEX00.dll");
-    var datos_envio = localStorage.Sesion + '|' + localStorage.Contab + '|' + localStorage.Mes;
-    SolicitarDll({ datosh: datos_envio }, _onVerificarSesion, url);
-}
-
-function _onVerificarSesion(data) {
-    var res = data.split('|');
-    if (res[0] == '00') {
-        $_USUNET = res
-        console.log($_USUNET)
-        let mes = evaluarMes_min(localStorage.Mes);
-        $('title').html(`
-        \\${localStorage.Contab}\\${mes}
-        &nbsp&nbsp&nbsp&nbsp&nbsp
-        ${localStorage.Usuario} 
-        ${localStorage.Nombre} 
-        `)
-        
-        $('#user_menu_user').html(localStorage.Usuario + " - " + localStorage.Nombre);
-        $('#lblEmpresa').html($_USUNET[1].trim())
-         cargarMenu();
-        _cargarUsuario();
-    } else {
-        plantillaError(res[0], res[1], res[2]);
-    }
-}
 
 function _cargarUsuario() {
     var url = get_url("app/CONTAB/CONUSUA.dll");
@@ -61,18 +31,30 @@ function _onCargarUsuario(data) {
         SolicitarDatos(
             null,
             function (data) {
+                cargarMenu();
                 $_USUA_GLOBAL = data.DATOSUSUA;
                 $_USUA_GLOBAL[0].NIT = parseInt($_USUA_GLOBAL[0].NIT);
-                console.log($_USUA_GLOBAL);
-                //$_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim() || "123456";
-                $_CLAVESQL = "123456";
+                $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
                 $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
+
+                let mes = evaluarMes_min(localStorage.Mes);
+                $('title').html(`
+                \\${localStorage.Contab}\\${mes}
+                &nbsp&nbsp&nbsp&nbsp&nbsp
+                ${localStorage.Usuario} 
+                ${localStorage.Nombre} 
+                `)
+
+                $('#user_menu_user').html(localStorage.Usuario + " - " + localStorage.Nombre);
+                $('#lblEmpresa').html($_USUA_GLOBAL[0].NOMBRE);
                 
+                let database = localStorage.Contab + "_" + localStorage.Mes;
+                $CONTROL = localStorage.Contab + "_13";
                 $CONEXION_BD = {
                     host: localStorage.IP_DATOS,
                     user: $_USUARIOSQL,
                     password: $_CLAVESQL,
-                    database: localStorage.Contab
+                    database: database
                 };
 
                 var arrayEliminar = [];
@@ -91,7 +73,7 @@ function _onEliminarJsonUSU(data) {
     var res = data.split('|');
     if (res[0].trim() == "00") {
         console.debug('Finish');
-    }else {
+    } else {
         console.error(res[1]);
         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
     }
@@ -115,7 +97,7 @@ function CON851P(codigo, funCancel, funAccept, a) {
         callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
             if (a == undefined) {
                 console.log(result)
-                result == true ? setTimeout(funAccept,10) : setTimeout(funCancel,10);
+                result == true ? setTimeout(funAccept, 10) : setTimeout(funCancel, 10);
             }
             else {
                 if (result == true) {
@@ -197,10 +179,10 @@ function CON851B(code, func) {
 }
 
 function con851B_Deshab(id) {
-    setTimeout(function (){
+    setTimeout(function () {
         $('#' + id).css('background-color', '#cc0000');
-    },300);
-    
+    }, 300);
+
     //$(id).css("background-color", "#ca3c3c !important");
 }
 
@@ -479,7 +461,7 @@ function validarChecked(nombreCaja, dato) {
     }
 }
 
-function datosEnvio(){
+function datosEnvio() {
     var data = localStorage.getItem('Sesion').trim() + "|" + localStorage.getItem('Contab').trim() + "|" + localStorage.getItem('Mes').trim() + "|";
     return data;
 }
@@ -515,16 +497,18 @@ function LLAMADO_DLL(params) {
             console.debug(datos_envio);
             SolicitarDll({ datosh: datos_envio }, params.callback, urlDll(params.nombredll, params.carpeta));
         }
-    // }
-    // else {
-    //     console.debug(datos_envio);
-    //     SolicitarDll({ datosh: datos_envio }, params.callback, urlDll(params.nombredll, params.carpeta));
+        // }
+        // else {
+        //     console.debug(datos_envio);
+        //     SolicitarDll({ datosh: datos_envio }, params.callback, urlDll(params.nombredll, params.carpeta));
     }
 }
 
 _consultaSql = function (params) {
-    console.log($CONEXION_BD)
-    var connection = mysql.createConnection($CONEXION_BD);
+    var connect = $.parseJSON((JSON.stringify($CONEXION_BD)));
+    connect.database = params.db || $CONEXION_BD.database;
+
+    var connection = mysql.createConnection(connect);
     connection.connect();
     connection.query(params.sql, params.callback);
     connection.end();
