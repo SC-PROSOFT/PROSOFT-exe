@@ -21,6 +21,7 @@ function _ventanaGrupo(e) {
         _ventanaDatos({
             titulo: "GRUPOS DE SERVICIO",
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_gruposer',
             callback_esc: function () {
                 _validarConsulta711()
@@ -40,6 +41,7 @@ function _ventanaContab(e) {
         _ventanaDatos({
             titulo: "VENTANA PLAN DE CUENTAS",
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_archmae',
             callback_esc: function () {
                 conContab_711
