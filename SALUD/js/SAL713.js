@@ -300,18 +300,16 @@ function on_datosTbla713(data) {
     var date = data.split('|');
     $_DESCRIPTAB = date[1].trim();
     $_CODTAB = date[2].trim();
-    $_GRSERTAB = date[3].trim();
-    $_CODSERTAB = date[4].trim();
-    $_FORMLIQTAB = date[5].trim();
-    $_MONTOTAB = date[6].trim();
-    $_INCREMTAB = date[7].trim();
-    $_CTACONTAB = date[8].trim();
-    $_CODPAQTAB = date[9].trim();
-    $_CODRIPSTAB = date[10].trim();
-    $_INSUMOTAB = date[11].trim();
-    $_CANTDIATAB = date[12].trim();
-    $_DIVTAB = date[13].trim();
-    $_EXTENTAB = date[14].trim();
+    $_FORMLIQTAB = date[3].trim();
+    $_MONTOTAB = date[4].trim();
+    $_INCREMTAB = date[5].trim();
+    $_CTACONTAB = date[6].trim();
+    $_CODPAQTAB = date[7].trim();
+    $_CODRIPSTAB = date[8].trim();
+    $_INSUMOTAB = date[9].trim();
+    $_CANTDIATAB = date[10].trim();
+    $_DIVTAB = date[11].trim();
+    $_EXTENTAB = date[12].trim();
 
     if (date[0].trim() == '00') {
         if ($_NovedSal713 == '7') {
@@ -363,34 +361,16 @@ function _mostrarDatos713() {
 
 // ELIMINAR REGISTRO
 function _eliminaDatos713() {
-
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSal713
-    datos_envio += '|'
-    datos_envio += $_llavetab
-
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _elimRegis713, get_url('/SALUD/APP/SAL713-02.DLL'));
+    LLAMADO_DLL({
+        dato: [$_NovedSal713, $_llavetab],
+        callback: function (data) {
+            validarResp_713(data, $_llavetab)
+        },
+        nombredll: 'SAL713-02',
+        carpeta: 'SALUD'
+    })
 }
 
-function _elimRegis713(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
-        switch (parseInt($_NovedSal713)) {
-            case 9:
-                mensaje = "Eliminado correctamente"
-                break;
-        }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
-    } else {
-        CON852(temp[0], temp[1], temp[2]);
-    }
-}
 
 
 /// NOVEDAD 7 ////
@@ -585,76 +565,6 @@ function extensa713() {
     )
 }
 
-// function enviarDatos713() {
-
-//     var monto = cerosIzq($("#monto_713").val(), 12);
-//     var ctacontab = cerosIzq($("#contab_713").val(), 11);
-//     var codpaq = cerosIzq($("#integ_713").val(), 10);
-//     var codrips = cerosIzq($("#codtari_713").val(), 11);
-//     var cantiddias = cerosIzq($("#cantidaddias713").val(), 3);
-//     var divis = cerosIzq($("#divis_713").val(), 2);
-//     var extend = espaciosDer($("#descrpexten_713").val(), 120);
-//     var operd = $_ADMINW
-
-//     let datos_envio = datosEnvio();
-//     datos_envio += '|'
-//     datos_envio += $_NovedSal713
-//     datos_envio += '|'
-//     datos_envio += $_llavetab
-//     datos_envio += '|'
-//     datos_envio += $_DESCRIPTAB
-//     datos_envio += '|'
-//     datos_envio += $_LIQUID
-//     datos_envio += '|'
-//     datos_envio += monto
-//     datos_envio += '|'
-//     datos_envio += ctacontab
-//     datos_envio += '|'
-//     datos_envio += codpaq
-//     datos_envio += '|'
-//     datos_envio += codrips
-//     datos_envio += '|'
-//     datos_envio += $_INSUMO
-//     datos_envio += '|'
-//     datos_envio += cantiddias
-//     datos_envio += '|'
-//     datos_envio += $_TARIF
-//     datos_envio += '|'
-//     datos_envio += divis
-//     datos_envio += '|'
-//     datos_envio += extend
-//     datos_envio += '|'
-//     datos_envio += operd
-//     datos_envio += '|'
-//     datos_envio += $fechfin
-//     console.debug(datos_envio);
-//     SolicitarDll({ datosh: datos_envio }, validarResp_713, get_url('/APP/SALUD/SAL713-02.DLL'));
-//     alert(datos_envio)
-// }
-
-
-// function _cambios713(data) {
-//     alert(data)
-//     _inputControl('reset');
-//     _toggleNav();
-//     var temp = data.split('|')
-//     console.log(temp)
-//     if (temp[0].trim() == '00') {
-//         var mensaje
-//         switch (parseInt($_NovedSal713)) {
-//             case 7:
-//                 mensaje = "Creado Correctamente"
-//                 break;
-//             case 8:
-//                 mensaje = "Modificado correctamente"
-//                 break;
-//         }
-//         jAlert({ titulo: 'Notificacion', mensaje: mensaje })
-//     } else {
-//         CON852(temp[0], temp[1], temp[2]);
-//     }
-// }
-
 function enviarDatos713() {
     var monto = cerosIzq($("#monto_713").val(), 12);
     var ctacontab = cerosIzq($("#contab_713").val(), 11);
@@ -665,109 +575,34 @@ function enviarDatos713() {
     var extend = espaciosDer($("#descrpexten_713").val(), 120);
     var operd = $_ADMINW
 
+    console.debug($_llavetab + ' llave enviada')
     LLAMADO_DLL({
         dato: [$_NovedSal713, $_llavetab, $_DESCRIPTAB, $_LIQUID, monto, ctacontab, codpaq, codrips, $_INSUMO, cantiddias, $_TARIF, divis, extend, operd, $fechfin],
-        callback: function (data) {
-            validarResp_713(data, $_llavetab, $_DESCRIPTAB)
-        },
+        callback: validarElimi713,
         nombredll: 'SAL713-02',
         carpeta: 'SALUD'
     })
 }
 
-
-function validarResp_713(data, $_llavetab, $_DESCRIPTAB) {
+function validarElimi713(data) {
+    console.debug(data)
     loader('hide');
     var rdll = data.split('|');
-    console.log(rdll[0])
+
     if (rdll[0].trim() == '00') {
-        switch (parseInt($_NovedSal713)) {
-            case 7:
-                _consultaSql({
-                    sql: `INSERT INTO sc_tabla VALUES ('${$_llavetab}', '${$_DESCRIPTAB}');`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas713();
-                                        console.log('fin del programa')
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas713();
-                                        console.log('fin del programa')
-                                    });
-                            }
-                        }
-                    }
-                })
+        var msj
+        switch ($_NovedSal713) {
+            case '7': msj = 'Creado correctamente'
                 break;
-            case 8:
-                _consultaSql({
-                    sql: `UPDATE sc_tabla 
-                    SET descripcion='${$_DESCRIPTAB}' 
-                    WHERE llave = '${$_llavetab}' `,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas713()
-                                        console.log('fin del programa')
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas713();
-                                        console.log('fin del programa')
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 9:
-                _consultaSql({
-                    
-                    sql: `DELETE FROM sc_tabla WHERE llave = '${$_llavetab}'`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas713()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas713()
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
+            case '8': msj = 'Modificado correctamente'
+
         }
+        jAlert({ titulo: 'Notificacion', mensaje: msj },
+            function () {
+                _toggleNav();
+                console.log('fin del programa')
+            });
     } else {
         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
-
-function limpiarCajas713() {
-    _toggleNav();
-    _inputControl('reset');
-    _inputControl('disabled');
-
-}
-

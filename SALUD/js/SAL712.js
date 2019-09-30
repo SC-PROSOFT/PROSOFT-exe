@@ -20,6 +20,7 @@ function _ventanaGrptar(e) {
         _ventanaDatos({
             titulo: "GRUPOS DE SERVICIO",
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_grupotar',
             callback_esc: function () {
                 _validarDato712()
@@ -162,30 +163,12 @@ function _eliminaDatos712() {
 
     LLAMADO_DLL({
         dato: [$_NovedSer712, codgSer712],
-        callback:_eliminaRegis712, 
-        // function (data) { validarResp_712(data, codgSer712) },
+        callback: function (data) { validarResp_712(data, codgSer712) },
         nombredll: 'SAL712-02',
         carpeta: 'SALUD'
     })
 }
 
-function _eliminaRegis712(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
-        switch (parseInt($_NovedSer712)) {
-            case 9:
-                mensaje = "Eliminado correctamente"
-                break;
-        }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
-    } else {
-        CON852(temp[0], temp[1], temp[2]);
-    }
-}
 
 
 /// NOVEDAD 7 ////
@@ -201,150 +184,107 @@ function detalle712() {
     )
 }
 
+
 function envioDatSer712() {
+    var novd712 = $_NovedSer712
     var desc712 = espaciosDer($('#descripSer712').val(), 25)
 
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSer712
-    datos_envio += '|'
-    datos_envio += $_COD712
-    datos_envio += '|'
-    datos_envio += desc712
-
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio}, _elimaRegs712, get_url('/APP/SALUD/SAL712-02.DLL'));
-
-    // LLAMADO_DLL({
-    //     dato: [novd712, codg712, desc712],
-    //     callback: _elimaRegs712,
-    //     nombredll: 'SAL712-02',
-    //     carpeta: 'SALUD'
-    // })
+    LLAMADO_DLL({
+        dato: [novd712, $_COD712, desc712],
+        callback: function (data) {
+            validarResp_712(data, $_COD712, desc712)
+        },
+        nombredll: 'SAL712-02',
+        carpeta: 'SALUD'
+    })
 }
 
-
-function _elimaRegs712(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
+function validarResp_712(data, $_COD712, desc712) {
+    loader('hide');
+    var rdll = data.split('|');
+    console.log(rdll[0])
+    if (rdll[0].trim() == '00') {
         switch (parseInt($_NovedSer712)) {
             case 7:
-                mensaje = "Creado Correctamente"
+                _consultaSql({
+                    sql: `INSERT INTO sc_grupotar VALUES ('${$_COD712}', '${desc712}');`,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas712();
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas712();
+                                    });
+                            }
+                        }
+                    }
+                })
                 break;
             case 8:
-                mensaje = "Modificado correctamente"
+                _consultaSql({
+                    sql: `UPDATE sc_grupotar SET descripcion='${desc712}' WHERE codigo = '${$_COD712}' `,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas712()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas712();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 9:
+                _consultaSql({
+                    sql: `DELETE FROM sc_grupotar WHERE codigo = '${$_COD712}'`,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas712()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas712()
+                                    });
+                            }
+                        }
+                    }
+                })
                 break;
         }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
     } else {
-        CON852(temp[0], temp[1], temp[2]);
+        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
 
+function limpiarCajas712() {
+    _toggleNav();
+    _inputControl('reset');
+    _inputControl('disabled');
 
-
-// function envioDatSer712() {
-//     var novd712 = $_NovedSer712
-//     var codg712 = $_COD712
-//     var desc712 = espaciosDer($('#descripSer712').val(), 25)
-
-//     LLAMADO_DLL({
-//         dato: [novd712, codg712, desc712],
-//         callback: function (data) {
-//             validarResp_712(data, codg712, desc712)
-//         },
-//         nombredll: 'SAL712-02',
-//         carpeta: 'SALUD'
-//     })
-// }
-
-// function validarResp_712(data, codg712, desc712) {
-//     loader('hide');
-//     var rdll = data.split('|');
-//     console.log(rdll[0])
-//     if (rdll[0].trim() == '00') {
-//         switch (parseInt($_NovedSer712)) {
-//             case 7:
-//                 _consultaSql({
-//                     sql: `INSERT INTO sc_grupotar VALUES ('${codg712}', '${desc712}');`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas712();
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas712();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 8:
-//                 _consultaSql({
-//                     sql: `UPDATE sc_grupotar SET descripcion='${desc712}' WHERE codigo = '${codg712}' `,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas712()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas712();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 9:
-//                 _consultaSql({
-//                     sql: `DELETE FROM sc_grupotar WHERE codigo = '${codg712}'`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas712()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas712()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//         }
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-// }
-
-// function limpiarCajas712() {
-//     _toggleNav();
-//     _inputControl('reset');
-//     _inputControl('disabled');
-
-// }
+}
 
 // FUNCIONES PARA DATOS NUEVOS
 function buscarDescrip_712(data) {
