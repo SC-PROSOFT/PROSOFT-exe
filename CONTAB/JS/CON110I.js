@@ -13,31 +13,14 @@ $(document).ready(function () {
         { input: 'pref', app: '110I', funct: _ventanaPrefijo },
     ]);
     loader('hide');
-    //CON850(_evaluarNovedad);
-    llamado_prueba_power()
+    CON850(_evaluarNovedad);
 });
-
-function llamado_prueba_power(){
-    _validarSegu({
-        "Id": "0111",
-        "Descripcion": "Datos del usuario",
-        "Opc-segu": "C111",
-        "Tipo": "POWER",
-        "Params": [
-          {
-            "formulario": "CON110A",
-            "dll": "CONTAB\\CON110A.dll"
-          }
-        ]
-      })
-}
 
 function _ventanaLote(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'Ventana Lotes',
             tipo: 'mysql',
-            db: 'datos_pros',
             tablaSql: 'sc_archlote',
             callback_esc: function () {
                 recibirLote_110I();
@@ -56,7 +39,6 @@ function _ventanaPrefijo(e) {
         _ventanaDatos({
             titulo: 'Ventana Prefijos',
             tipo: 'mysql',
-            db: $CONTROL,
             tablaSql: 'sc_archpref',
             callback_esc: function () {
                 recibirPref_110I();
@@ -396,7 +378,6 @@ function validarRespuesta_110I(data, loteEnvio, nombreEnvio, consecEnvio, prefij
             case 7:
                 _consultaSql({
                     sql: `INSERT INTO sc_archlote VALUES ('${loteEnvio}', '${nombreEnvio}');`,
-                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
@@ -423,9 +404,8 @@ function validarRespuesta_110I(data, loteEnvio, nombreEnvio, consecEnvio, prefij
                 _consultaSql({
                     sql: `
                     UPDATE sc_archlote 
-                    SET nombre='${nombreEnvio}'
+                    SET descripcion='${nombreEnvio}'
                     WHERE codigo = '${loteEnvio}' `,
-                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
@@ -452,7 +432,6 @@ function validarRespuesta_110I(data, loteEnvio, nombreEnvio, consecEnvio, prefij
                 console.log(`DELETE FROM sc_archlote WHERE codigo = '${loteEnvio}'`)
                 _consultaSql({
                     sql: `DELETE FROM sc_archlote WHERE codigo = '${loteEnvio}'`,
-                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
