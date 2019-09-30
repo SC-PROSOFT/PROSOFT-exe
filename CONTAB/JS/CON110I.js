@@ -23,8 +23,8 @@ function _ventanaLote(e) {
             tipo: 'mysql',
             db: 'datos_pros',
             tablaSql: 'sc_archlote',
-            callback_esc: function () {
-                recibirLote_110I();
+            callback_esc: function(){
+                $('#lote_110I').focus();
             },
             callback: function (data) {
                 console.log(data)
@@ -43,7 +43,7 @@ function _ventanaPrefijo(e) {
             db: $CONTROL,
             tablaSql: 'sc_archpref',
             callback_esc: function () {
-                recibirPref_110I();
+                $('#pref_110I').focus()
             },
             callback: function (data) {
                 console.log(data)
@@ -55,18 +55,16 @@ function _ventanaPrefijo(e) {
     }
 }
 
-
-
 function _evaluarNovedad(novedad) {
     $('#novCon110i').val(novedad.id + ' - ' + novedad.descripcion)
-    $NOVEDAD_110I = parseInt(novedad.id)
+    $NOVEDAD_110I = novedad.id;
     switch ($NOVEDAD_110I) {
-        case 7:
-        case 8:
-        case 9:
+        case '7':
+        case '8':
+        case '9':
             recibirLote_110I()
             break;
-        default:
+        case 'F':
             _toggleNav();
             break;
     }

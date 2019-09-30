@@ -77,7 +77,7 @@ function _ventanaCentroCosto_109(e) {
             db: $CONTROL,
             tablaSql: 'sc_archcos',
             callback_esc: function () {
-                validar_Sucursal_109();
+                $('#suc_109').focus()
             },
             callback: function (data) {
                 console.log(data)
@@ -96,7 +96,7 @@ function _ventanaAlmacen_109(e) {
             db: $CONTROL,
             tablaSql: 'sc_almac',
             callback_esc: function () {
-                validar_Costo_109();
+                $('#centroCosto_109').focus()
             },
             callback: function (data) {
                 console.log(data)
@@ -115,7 +115,7 @@ function _ventanaListaEnvio_109(e) {
             db: 'datos_pros',
             tablaSql: 'sc_sucur',
             callback_esc: function () {
-                validar_Almacen_109();
+                $('#almacen_109').focus()
             },
             callback: function (data) {
                 console.log(data)
