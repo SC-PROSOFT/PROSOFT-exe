@@ -91,8 +91,8 @@ function _eventoBotones() {
         _toggleNav();
         _CON855A(data['Mask-lote'], '2')
     } else if (nuevaLista != false) {
-        if (data.Tipo == 'MULTI') {
-            let busqueda = _buscarArray(TIPO_EMPRESA, nuevaLista),
+        if (data.Tipo == 'MULTI' && idOpcion == '094') {
+            let busqueda = TIPO_EMPRESA == 'H' ? _buscarArray('2', nuevaLista) : _buscarArray('1', nuevaLista),
                 lista = buscar_opcion(busqueda);
             mostrar_menu(lista);
             set_titulo(idOpcion);
@@ -115,10 +115,9 @@ function _eventoBotones() {
         }
     } else {
         if (data.Tipo == 'F01') {
-            console.log($_LOTE_MENUCHECK)
             if (data.Params[0]["dll-suc"][$_LOTE_MENUCHECK.lote2]) {
                 data.lote = $_LOTE_MENUCHECK
-                _validarSegu(data)
+                _validarVentanaMain(data)
             } else console.error('Lote sin definir');
         } else if (data.Tipo == 'ERROR') {
             var msj
@@ -132,7 +131,7 @@ function _eventoBotones() {
                     load_contenido(data.Href);
                 }
             } else {
-                _validarSegu(data);
+                _validarVentanaMain(data);
             }
         } else {
             console.error('Programa sin definir')
@@ -140,16 +139,13 @@ function _eventoBotones() {
     }
 }
 
-function _validarSegu(datos) {
+function _validarSegu(datos, callback) {
     console.log(datos)
     var segw = $_USUA_GLOBAL[0]['SEG-MOV'];
-
-    // var segw = "8",
     validarSegw = datos["Seg-w"] ? datos["Seg-w"].find(element => element == segw) : false;
 
     if (validarSegw) {
-        console.error('Bloqueado SEG-W')
-        CON851B(segw)
+        callback('-1');
     } else {
         var datosEnvio = localStorage.Sesion
             + '|' + localStorage.Contab
@@ -159,37 +155,22 @@ function _validarSegu(datos) {
 
         SolicitarDll({ datosh: datosEnvio },
             function (data) {
-                on_validarSegu(data, datos)
+                console.log(data.split('|')[0])
+                if (data.split('|')[0] == '00') callback('0');;
             },
             get_url("app/CON904.DLL")
         );
     }
 }
 
-function on_validarSegu(data, datos) {
-    var res = data.split('|');
-    if (res[0] == '00') {
-        if (datos.Href) {
-            load_contenido(datos.Href);
-        } else if (datos.Js) {
-            loadScript(datos.Js)
-        }
-        else {
-            _abrirPower(datos)
-        }
-    } else {
-        jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> Opción restringida` })
-    }
-}
-
-function _abrirPower(data) {
+function _validarScript_bat(data){
     var lote = data.lote;
-    if (data.Tipo == 'F01') {
-        if (data.Params[0]['dll-suc'][lote.lote2]) {
-            data.Params[0].dll = data.Params[0]['dll-suc'][lote.lote2].dll;
-            data.Params[0].formulario = data.Params[0]['dll-suc'][lote.lote2].formulario;
-            data.Params[0].Sucursal = lote.lote1;
-            data.Params[0]['Tipo-comp'] = lote.lote1 + lote.lote2;
+    if (data.tipo == 'F01') {
+        if (data.params[0]['dll-suc'][lote.lote2]) {
+            data.params[0].dll = data.params[0]['dll-suc'][lote.lote2].dll;
+            data.params[0].formulario = data.params[0]['dll-suc'][lote.lote2].formulario;
+            data.params[0].sucursal = lote.lote1;
+            data.params[0]['Tipo-comp'] = lote.lote1 + lote.lote2;
         }
     }
     var modulo = localStorage.Modulo
@@ -197,12 +178,12 @@ function _abrirPower(data) {
         mes = evaluarMes_min(localStorage.Mes),
         usuario = espaciosDer(localStorage.Usuario, 4),
         clave = espaciosDer(localStorage.Clave, 8),
-        formulario = data.Params[0].formulario,
-        dll = data.Params[0].dll,
-        sucursal = data.Params[0].Sucursal ? espaciosDer(data.Params[0].Sucursal, 1) : ' ',
-        tipoComp = data.Params[0]['Tipo-comp'] ? espaciosDer(data.Params[0]['Tipo-comp'], 2) : '  ',
-        tipoOpcion = data.Params[0]['Tipo-Opcion'] ? espaciosDer(data.Params[0]['Tipo-Opcion'], 2) : '  ',
-        tr_pre005 = data.Params[0]['tr_pre005'] ? cerosIzq(data.Params[0]['tr_pre005'], 2) : '  ';
+        formulario = data.params[0].formulario,
+        dll = data.params[0].dll,
+        sucursal = data.params[0].sucursal ? espaciosDer(data.params[0].sucursal, 1) : ' ',
+        tipoComp = data.params[0]['Tipo-comp'] ? espaciosDer(data.params[0]['Tipo-comp'], 2) : '  ',
+        tipoOpcion = data.params[0]['Tipo-Opcion'] ? espaciosDer(data.params[0]['Tipo-Opcion'], 2) : '  ',
+        tr_pre005 = data.params[0]['tr_pre005'] ? cerosIzq(data.params[0]['tr_pre005'], 2) : '  ';
 
     var params = usuario
         + "-" + clave
@@ -217,17 +198,16 @@ function _abrirPower(data) {
         + "-\\" + contab
         + "-" + tr_pre005
         + "-";
-    console.log(params)
+    
     var titulo = contab + "\\"
         + mes
         + "     "
-        + data.Id.substring(1, data.Id.length).split('').join(',') + " "
-        + data.Descripcion
+        + data.id.substring(1, data.id.length).split('').join(',') + " "
+        + data.descripcion
         + "     "
         + usuario;
 
     var nombre_bat = "C:\\PROSOFT\\TEMP\\MENU-" + localStorage.Sesion.trim() + ".BAT";
-    // var nombre_bat = "C:\\PROSOFT\\TEMP\\MENU.BAT";
 
     var batch
     switch (modulo) {
@@ -250,38 +230,11 @@ function _abrirPower(data) {
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
     }
-
-    console.log(nombre_bat);
-    fs.writeFile(nombre_bat, batch, function (err) {
-        if (err) console.error('Error escribiendo bat: \n\n' + err);
-        else {
-            // $('#body_main').html('')
-            _cargarEventos('off');
-            jAlert({
-                mensaje: `<div style="text-align: center;">`
-                    + `Debe cerrar el siguiente programa: <br>`
-                    + `<b>${data.Id.substring(1, data.Id.length).split('').join('-')} - ${data.Descripcion}</b>`
-                    + `</div>`,
-                titulo: 'Esperando power',
-                autoclose: false,
-                btnCancel: false,
-                footer: false
-            }, function () { });
-
-            exe(nombre_bat, function (err, data) {
-                if (err) console.error('Error ejecutando bat: \n\n' + err);
-                else {
-                    fs.unlink(nombre_bat, function (err) {
-                        if (err) console.error('Error eliminando bat: \n\n' + err);
-                        else {
-                            _cargarEventos('on');
-                            jAlert_close();
-                        }
-                    });
-                }
-            });
-        }
-    });
+    let retornar = {
+        nombre_bat: nombre_bat,
+        batch: batch
+    }
+    return retornar;
 }
 
 function _eventoRegresar() {
@@ -292,7 +245,6 @@ function _eventoRegresar() {
         var data = data_opc(idOpcion)
         if (data.Tipo == "MULTI") idOpcion = idOpcion.slice(0, -1);
         let nuevaLista = buscar_opcion(idOpcion.toString());
-        console.log(idOpcion)
         mostrar_menu(nuevaLista, idOpcion);
     }
     set_titulo(idOpcion)
@@ -347,17 +299,8 @@ function buscar_opcion(idOpcion) {
         let id_tmp = $_ARRAY[i].Id.substring(0, $_ARRAY[i].Id.length - 1);
         if (id_tmp === idOpcion) retorno.push($_ARRAY[i]);
     }
-
     if (retorno.length == 0) retorno = false;
     return retorno;
-}
-
-function load_contenido(url) {
-    loader('show');
-    $('#body_main').load(url, function () {
-        console.log('entro a abrir programa')
-        _toggleNav();
-    })
 }
 
 function data_opc(idOpcion) {

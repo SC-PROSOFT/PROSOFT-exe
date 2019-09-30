@@ -84,17 +84,17 @@ _CON855A = function (prefijo, acceso) {
 
     if (acceso == '1') sql_temp = `SELECT * FROM sc_archlote WHERE codigo LIKE '${prefijo}%'`
     else if (acceso == '2') sql_temp = `SELECT * FROM sc_archlote WHERE codigo LIKE '%${prefijo}'`
-
     _consultaSql({
         sql: sql_temp,
         db: 'datos_pros',
         callback: function (error, results, fields) {
             var temp = [];
+            console.log(results)
             if (results.length > 0) {
                 results.forEach(function (el, idx) {
                     let codigo = el.codigo,
-                        cod1 = codigo[0]
-                    descripcion = el.descripcion.substring(0, 6);
+                        cod1 = codigo[0],
+                        descripcion = el.nombre.substring(0, 6);
                     if (descripcion != 'COMPRA' && (codigo != "6C" || codigo != "60" || codigo != "6A")) {
                         if (cod1 == "0" || cod1 == "1" || cod1 == "I" || cod1 == "E" || cod1 == "C") {
 
@@ -107,7 +107,7 @@ _CON855A = function (prefijo, acceso) {
                     array: temp,
                     titulo: 'Lotes por documento',
                     indices: [
-                        { id: 'codigo', label: 'descripcion' }
+                        { id: 'codigo', label: 'nombre' }
                     ],
                     callback_f: _toggleNav
                 }, function (data) {

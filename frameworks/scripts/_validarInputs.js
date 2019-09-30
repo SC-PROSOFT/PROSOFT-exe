@@ -93,9 +93,18 @@
             var anteriorItm = $(form + ' [data-orden="' + anterior + '"');
 
             anteriorItm.attr('disabled', 'true');
+            $(anteriorItm)
+                .parent('div')
+                .next('button.f8-Btn')
+                .attr('disabled', 'true');
 
-            if (siguienteItm.length > 0) siguienteItm.removeAttr('disabled').focus().select();
-            else $.validar._fin();
+            if (siguienteItm.length > 0) {
+                $(siguienteItm)
+                    .parent('div')
+                    .next('button.f8-Btn')
+                    .removeAttr('disabled');
+                siguienteItm.removeAttr('disabled').focus().select();
+            }else $.validar._fin();
         },
 
 
@@ -107,8 +116,18 @@
             var anteriorItm = $(form + ' [data-orden="' + anterior + '"');
 
             siguienteItm.attr('disabled', 'true');
+            $(siguienteItm)
+                .parent('div')
+                .next('button.f8-Btn')
+                .attr('disabled', 'true');
 
-            if (anteriorItm.length > 0) anteriorItm.removeAttr('disabled').focus().select();
+            if (anteriorItm.length > 0) {
+                anteriorItm.removeAttr('disabled').focus().select();
+                $(anteriorItm)
+                    .parent('div')
+                    .next('button.f8-Btn')
+                    .removeAttr('disabled');
+            }
             else $.validar._inicio();
         }
     }
