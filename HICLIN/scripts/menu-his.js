@@ -73,7 +73,7 @@ function _ventanaPacientes(e) {
     }
 }
 function ir_hc9004(){
-    $("#body_main").load("../../HICLIN/paginas/hc9004-1.html");
+    $("#body_main").load("../../HICLIN/paginas/hc9004.html");
  }
 function validarPaciente() {
     validarInputs({
