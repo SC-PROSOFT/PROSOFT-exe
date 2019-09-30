@@ -21,6 +21,7 @@ function _ventanaLote(e) {
         _ventanaDatos({
             titulo: 'Ventana Lotes',
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_archlote',
             callback_esc: function () {
                 recibirLote_110I();
@@ -39,6 +40,7 @@ function _ventanaPrefijo(e) {
         _ventanaDatos({
             titulo: 'Ventana Prefijos',
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_archpref',
             callback_esc: function () {
                 recibirPref_110I();
@@ -378,6 +380,7 @@ function validarRespuesta_110I(data, loteEnvio, nombreEnvio, consecEnvio, prefij
             case 7:
                 _consultaSql({
                     sql: `INSERT INTO sc_archlote VALUES ('${loteEnvio}', '${nombreEnvio}');`,
+                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
@@ -404,8 +407,9 @@ function validarRespuesta_110I(data, loteEnvio, nombreEnvio, consecEnvio, prefij
                 _consultaSql({
                     sql: `
                     UPDATE sc_archlote 
-                    SET descripcion='${nombreEnvio}'
+                    SET nombre='${nombreEnvio}'
                     WHERE codigo = '${loteEnvio}' `,
+                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
@@ -432,6 +436,7 @@ function validarRespuesta_110I(data, loteEnvio, nombreEnvio, consecEnvio, prefij
                 console.log(`DELETE FROM sc_archlote WHERE codigo = '${loteEnvio}'`)
                 _consultaSql({
                     sql: `DELETE FROM sc_archlote WHERE codigo = '${loteEnvio}'`,
+                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
