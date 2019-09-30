@@ -74,6 +74,7 @@ function _ventanaCentroCosto_109(e) {
         _ventanaDatos({
             titulo: 'Ventana Centros De Costos',
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_archcos',
             callback_esc: function () {
                 validar_Sucursal_109();
@@ -92,6 +93,7 @@ function _ventanaAlmacen_109(e) {
         _ventanaDatos({
             titulo: 'Ventana de Almacenes',
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_almac',
             callback_esc: function () {
                 validar_Costo_109();
@@ -110,6 +112,7 @@ function _ventanaListaEnvio_109(e) {
         _ventanaDatos({
             titulo: 'Ventana de Sucursales',
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_sucur',
             callback_esc: function () {
                 validar_Almacen_109();
@@ -521,6 +524,7 @@ function validar_Costo_109() {
 function busquedaCosto_109(costo) {
     _consultaSql({
         sql: `SELECT * FROM sc_archcos WHERE codigo LIKE '${costo}%'`,
+        db: $CONTROL,
         callback: function (error, results, fields) {
             console.log(results)
             if (error) throw error;
@@ -564,6 +568,7 @@ function validar_Almacen_109() {
 function busquedaAlmacen_109(almacen) {
     _consultaSql({
         sql: `SELECT * FROM sc_almac WHERE codigo LIKE '${almacen}%'`,
+        db: $CONTROL,
         callback: function (error, results, fields) {
             if (error) throw error;
             else {
@@ -590,8 +595,7 @@ function validar_lista_109() {
         function () { validar_Almacen_109() },
         function () {
             var lista = cerosIzq($('#listaEnvio_109').val(), 2)
-            agregarFilaTabla()
-            // busquedaSucursal_109(lista)
+            busquedaSucursal_109(lista)
         }
     )
 }
@@ -599,6 +603,7 @@ function validar_lista_109() {
 function busquedaSucursal_109(sucursal) {
     _consultaSql({
         sql: `SELECT * FROM sc_sucur WHERE cod_sucur LIKE '${sucursal}%'`,
+        db: 'datos_pros',
         callback: function (error, results, fields) {
             if (error) throw error;
             else {
@@ -1013,6 +1018,7 @@ function baseDatos_109(sql, estado) {
     console.log(sql)
     _consultaSql({
         sql: sql,
+        db: $CONTROL,
         callback: function (error, results, fields) {
             if (error) throw error;
             else {
