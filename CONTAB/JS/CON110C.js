@@ -159,31 +159,6 @@ function _evaluardatonovedad_con110c() {
     }
 }
 
-// function _evaluarcodtercero110c() {
-//     console.debug('evaluar codtercero');
-//     validarInputs({
-//         form: '#CODCLIEN_CON110C',
-//         orden: "1"
-//     },
-//         function () { CON850(_datonovedad_con110c); },
-//         _consultatercero
-//     )
-// }
-
-// function _consultatercero() {
-//     $_CODTERCEROW = $('#codclien_con110c').val();
-//     // $_CODTERCEROW = $_COD_TER  
-//     console.debug($_CODTERCEROW, 'novedad 8');
-//     console.log($_CODTERCEROW.padStart(10, '0'));
-
-//     let datos_envio = datosEnvio();
-//     datos_envio += '|'
-//     datos_envio += $_CODTERCEROW.padStart(10, '0');
-//     console.debug(datos_envio);
-//     SolicitarDll({ datosh: datos_envio }, _dataCON110C_01_110C, get_url('/CONTAB/APP/CON110C_01.DLL'));
-
-// }
-
 // function _dataCON110C_01_110C(data) {
 //     console.debug(data, 'CON110C_01');
 //     var date = data.split('|');
@@ -203,14 +178,19 @@ function _evaluardatonovedad_con110c() {
 //     }
 // }
 
-
 function revisarpermisos_con110c() {
     $_OPSEGU = 'C12' + $_NOVEDADCON110C;
     console.log($_OPSEGU, "_revisarpermisosCON90402");
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_OPSEGU;
-    SolicitarDll({ datosh: datos_envio }, _dataCON904_01_110C, get_url("/APP/CONTAB/CON904.DLL"));
+    LLAMADO_DLL({
+        dato: [$_ADMINW, $_OPSEGU],
+        callback: _dataCON904_01,
+        nombredll: 'CON904',
+        carpeta: 'CONTAB'
+    });
+    // let datos_envio = datosEnvio();
+    // datos_envio += '|'
+    // datos_envio += $_OPSEGU;
+    // SolicitarDll({ datosh: datos_envio }, _dataCON904_01_110C, get_url("/APP/CONTAB/CON904.DLL"));
 }
 
 function _dataCON904_01_110C(data) {
@@ -273,6 +253,7 @@ function _codlcon110c() {
 
 function _leertercero_con110c(){
     console.debug($_CODTERCEROW, '_leertercero');
+    
     let datos_envio = datosEnvio()
     datos_envio += '|'
     datos_envio += $_CODTERCEROW.padStart(10, '0');
@@ -463,10 +444,7 @@ function _evaluardato1apellido_con110c() {
 function _aceptarapellido1_con110c(){
     console.log('aceptar apellido 1')
     $_APEL1TER2W = $('#1erapellido_con110c').val();
-    // $_DESCRIPTER2W = $('#1erapellido_con110c').val();
-    // $_APEL1TER2W = $_DESCRIPTER2W.substring(0,20); 
-    // $_APEL2TER2W = $_DESCRIPTER2W.substring(20,40); 
-    // $_NOMB1TER2W = $_DESCRIPTER2W.substring(40,70); 
+   
     if($_APEL1TER2W.trim() == ''){
         CON851('02', '02', null, 'error', 'error');
         _evaluardato1apellido_con110c()
@@ -506,10 +484,7 @@ function _evaluardatonombre_con110c(){
 function _aceptarnombres_con110c(){
     console.debug('aceptar nombre')
     $_NOMB1TER2W = $('#nombres_con110c').val();
-    // $_DESCRIPTER2W = $('#1erapellido_con110c').val();
-    // $_APEL1TER2W = $_DESCRIPTER2W.substring(0,20); 
-    // $_APEL2TER2W = $_DESCRIPTER2W.substring(20,40); 
-    // $_NOMB1TER2W = $_DESCRIPTER2W.substring(40,70); 
+   
     if($_NOMB1TER2W.trim() == ''){
         CON851('02', '02', null, 'error', 'error');
         _evaluardatonombre_con110c(); 
@@ -539,7 +514,7 @@ function _datodireccion_con110c(){
     }
 }
 function _evaluarciudad_con110c(){
-    console.debug('evaluar ciudad');
+    console.log('evaluar ciudad');
     validarInputs({
         form: '#CIUDAD_CON110C',
         orden: "1"
@@ -550,15 +525,19 @@ function _evaluarciudad_con110c(){
 }
 
 function _datociudad_con110c(){
-    console.debug('DATO ciudad');
+    console.log('DATO ciudad');
     $_CODCIUTERCEW = $('#ciudad_con110').val();
-
     if($_CODCIUTERCEW.trim() == ''){
-        console.debug('IF');
+        CON851('01', '01', null, 'error', 'error');   
         _evaluarciudad_con110c(); 
-    }else{
-       
-        console.debug('ELSE');
+    }else{     
+        console.log('ELSE', $_CODCIUTERCEW);
+        // LLAMADO_DLL({
+        //     dato: [$_CODCIUTERCEW],
+        //     callback: _dataCON110C_05_110C,
+        //     nombredll: 'CON110C_05',
+        //     carpeta: 'CONTAB'
+        // });
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_CODCIUTERCEW;
@@ -568,7 +547,7 @@ function _datociudad_con110c(){
 }
 
 function _dataCON110C_05_110C(data) {
-    console.debug(data, 'CON110C_05 CIUDAD');
+    console.log(data, 'CON110C_05 CIUDAD');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCIUTERW = date[1].trim();
@@ -585,7 +564,7 @@ function _dataCON110C_05_110C(data) {
 }
 
 function _evaluartelind_con110c(){
-    console.debug('evaluar TEL IND');
+    console.log('evaluar TEL IND');
     validarInputs({
         form: '#IND_CON110C',
         orden: "1"
@@ -616,6 +595,7 @@ function _datotelefonoterc_con110c(){
 }
 function _evaluarcedula_con110c(){
     console.debug('evaluar TEL IND');
+    $('#cc_con110c').val('0');
     validarInputs({
         form: '#CC_CON110C',
         orden: "1"
@@ -679,6 +659,7 @@ function validacionestipodoc_con110c(){
     if (($_TIPOIDTERCEW.trim() == '') && (( $_CODTERCEROW > '800000000') && ( $_CODTERCEROW < '999000000'))){
         $_TIPOIDTERCEW = 'NI - Numero Identidad Tributaria'; 
         $("#tipoident_con110c").val($_DESCRIPMARCAARTW);
+        _evaluaractividades_con110c(); 
     }else{
         _evaluaractividades_con110c(); 
     }
@@ -697,7 +678,7 @@ function _datoactividad_con110c(){
     $_ACTIVICATERCEW = $("#activi_con110c").val();
     if($_ACTIVICATERCEW == '00'){
         CON851('02', '02', null, 'error', 'error');
-        _evaluaractividades()   
+        _evaluaractividades_con110c()  
     }else{
         let datos_envio = datosEnvio();
         datos_envio += '|'
@@ -717,6 +698,7 @@ function _dataCON110C_06_110C(data){
         _evaluarcomercial_con110c(); 
     }
     else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
         _evaluaractividades_con110c(); 
     }
     else {
@@ -898,6 +880,7 @@ function _dataCON110C_07_110C(data){
         }
     }
     else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
         _evaluarentidad_con110c(); 
     }
     else {
@@ -938,6 +921,7 @@ function _dataCON110C_08_110C(data){
         _evaluarfactorvent_con110c();  
     }
     else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
         _evaluarconvenio_con110c(); 
     }
     else {
@@ -948,7 +932,9 @@ function _dataCON110C_08_110C(data){
 
 function _evaluarfactorvent_con110c(){
     console.log('evaluar FACTOR VENT');
-    $('#tabla2').click();
+    $('#tabla2').click(); 
+    $('#factventas_con110c').val('1');
+    $('#factventasd_con110c').val('0');
     validarInputs({
         form: '#FACTVENTAS_CON110C',
         orden: "1"
@@ -1024,8 +1010,11 @@ function _datovendedor_con110c(){
     }else{
         $_VENDTERCEW = $('#vendedor_con110').val();
        if($_VENDTERCEW == '00000'){
-            $_VENDTERCEW = ''; 
+            $_VENDTERCEW = '00000'; 
+            $_DESCRIPVENDTERW = ''
             $("#vendedor_con110").val($_VENDTERCEW);
+            $("#descripvendedor_con110c").val($_DESCRIPVENDTERW);
+            _datopago_con110c(); 
        }else{
           _validacionesfpago_con110c(); 
        }
@@ -1038,7 +1027,9 @@ function _mostrarvendedro_con110c(){
             CON851('02', '02', null, 'error', 'error'); 
             _datovendedor_con110c(); 
         }else{
-
+            $_PAGOTERCEW = '02'; 
+            $("#formapago_110c").val($_PAGOTERCEW);
+            _evaluarplazo_con110c(); 
         }
     }else{
         let datos_envio = datosEnvio();
@@ -1056,9 +1047,10 @@ function _dataCON110C_09_110C(){
     $_DESCRIPVENDTERW = date[1].trim();
     if (swinvalid == '00') {
         $("#descripvendedor_con110c").val($_DESCRIPVENDTERW);
-        
+        _datopago_con110c();   
     }
     else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
         _evaluarvendedor_con110c(); 
     }
     else {
@@ -1066,40 +1058,39 @@ function _dataCON110C_09_110C(){
     }
 }
 
-
-
-
 function _validacionesfpago_con110c(){
+    console.log('VALIDACIONESF PAGO')
+
     if(($_CONTADOUSU == 'N') && ($_PAGOTERCEW == '01')){
-       $_PAGOTERCEW = 02; 
+       $_PAGOTERCEW = '02'; 
        $("#formapago_110c").val($_PAGOTERCEW);
        _evaluarplazo_con110c(); 
-    }
-    // if(($_SWSALUD = '1') || (($_ACTIVICATERCEW = '02') ||($_ACTIVICATERCEW = '03') || ($_ACTIVICATERCEW = '04') || ($_ACTIVICATERCEW = '05') || ($_ACTIVICATERCEW = '92'))){
-    //    $_PAGOTERCEW = 02; 
-    //    $("#formapago_110c").val($_PAGOTERCEW);
-    // }
-    else if(($_ACTIVICATERCEW == '02') ||($_ACTIVICATERCEW == '03') || ($_ACTIVICATERCEW == '04') || ($_ACTIVICATERCEW == '05') || ($_ACTIVICATERCEW == '92')){
-       $_PAGOTERCEW = 02; 
+    }else if(($_ACTIVICATERCEW == '02') ||($_ACTIVICATERCEW == '03') || ($_ACTIVICATERCEW == '04') || ($_ACTIVICATERCEW == '05') || ($_ACTIVICATERCEW == '92')){
+       $_PAGOTERCEW = '02'; 
        $("#formapago_110c").val($_PAGOTERCEW);
+    //    _datosvehiculo_con110c();
+       _evaluarplazo_con110c(); 
+    }else if(($_ACTIVICATERCEW == '01') && ($_PAGOTERCEW == '00')){
+        $_PAGOTERCEW = '02'; 
+        $("#formapago_110c").val($_PAGOTERCEW);
+        _evaluarplazo_con110c();
+
+    }else if(($_CUOTASUSU = '4') && ($_ACTIVICATERCEW == '12')){
+        // INVOKE POW-SELF "CALLFORM" USING "CON820A" "C:\PROG\CONTAB\CON110C.DLL"
+        _datopago_con110c(); 
     }else{
-        if(($_ACTIVICATERCEW == '01') && ($_PAGOTERCEW == '00')){
-            $_PAGOTERCEW = 02; 
-            $("#formapago_110c").val($_PAGOTERCEW);
-        }else if(($_CUOTASUSU = '4') && ($_ACTIVICATERCEW == '12')){
-            // INVOKE POW-SELF "CALLFORM" USING "CON820A" "C:\PROG\CONTAB\CON110C.DLL"
-            _datopago_con110c(); 
-        }else{
-            $_FPAGOLNK = $_PAGOTERCEW; 
-            $("#formapago_110c").val($_PAGOTERCEW);
-            // INVOKE POW-SELF "CALLFORM" USING "CON820" "C:\PROG\CONTAB\CON820.DLL"
-            $_PAGOTERCEW =  $_FPAGOLNK; 
-        }
+        // $_FPAGOLNK = $_PAGOTERCEW; 
+        // console.log($_FPAGOLNK); 
+        // $("#formapago_110c").val($_FPAGOLNK);
+        // INVOKE POW-SELF "CALLFORM" USING "CON820" "C:\PROG\CONTAB\CON820.DLL"
+        // $_PAGOTERCEW =  $_FPAGOLNK; 
+        // _datopago_con110c(); 
+        _datopago_con110c(); 
     }
-    
 }
 
 function _datopago_con110c(){
+    console.log('datopago')
     if(($_CUOTASUSU == '4') && ($_ACTIVICATERCEW == '12')){
         var pago  = [
             { "COD": "01", "DESCRIP": "Contado" },
@@ -1156,24 +1147,384 @@ function _evaluarformapago_con110c(pago) {
                 CON851('02', '02', null, 'error', 'error'); 
                 _validacionesfpago_con110c(); 
             }else{
-                // validacionestipodoc_con110c();
+                _evaluarplazo_con110c();
             }      
             break;
         default:
         _evaluarcomercial_con110c();
             break;
     }
-    $("#formapago_110c").val(documento.COD + " - " + documento.DESCRIP);
+    $("#formapago_110c").val(pago.COD + " - " + pago.DESCRIP);
 }
 
+function _evaluarplazo_con110c(){
+    console.log('evaluar PLAZO');
+    validarInputs({
+        form: '#PLAZO_CON110C',
+        orden: "1"
+    },
+        function () { _evaluarcuposmvm_con110c(); },
+        _datoplazo_con110c
+    )
+}
+function _datoplazo_con110c(){
+    $_PLAZOTERCEW = $('#plazo_110c').val();
+    if(($_ACTIVICATERCEW == '02') ||($_ACTIVICATERCEW == '03') || ($_ACTIVICATERCEW == '04') || ($_ACTIVICATERCEW == '05') || ($_ACTIVICATERCEW == '92')){
+        _evaluargrado_con110c(); 
+    }else{
+        _evaluarzona_con110c(); 
+    }
+}
+function _evaluarzona_con110c(){
+    console.log('evaluar ZONA');
+    validarInputs({
+        form: '#ZONA_CON110C',
+        orden: "1"
+    },
+        function () { _evaluarplazo_con110c(); },
+        _datozona_con110c
+    )
+}
+function _datozona_con110c(){
+    $_CODZONAW = $('#zona_110c').val();
+    if(($_CODZONAW.trim() == '') || ($_CODZONAW == '00')){
+        $_ZONATERCEW = $_CODZONAW; 
+        $_PASOW = '9'; 
+        _leerzonayrutas_con110c(); 
+    }else{
+        $_TIPOZONA = '1'; 
+        $_ZONATERCEW = $_TIPOZONA + $_CODZONAW; 
+        let datos_envio = datosEnvio();
+        datos_envio += '|'
+        datos_envio += $_CODZONAW;
+        console.debug(datos_envio);
+        SolicitarDll({ datosh: datos_envio }, _dataCON110C_10_110C, get_url('/APP/CONTAB/CON110C_10.DLL'));
+    }
+}
 
+function _dataCON110C_10_110C(data){
+    console.log(data, 'CON110C_09 ZONA');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPZONAW = date[1].trim();
+    if (swinvalid == '00') {
+        $("#zonad_110c").val($_DESCRIPZONAW);
+        _evaluarrutas_con110c();   
+    }
+    else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarzona_con110c(); 
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
+    
+function _leerzonayrutas_con110c(){
+    if((($_ZONATERCEW == '') || ($_ZONATERCEW == '00')) || (($_RUTATERCEW == '') || ($_RUTATERCEW == '00'))){
+        if((($_NITUSU == '0830505217') || ($_NITUSU == '0822006141')) && ($_ACTIVICATERCEW == '01')){
+            CON851('02', '02', null, 'error', 'error'); 
+            _evaluarzona_con110c();  
 
+        }else{
+            if($_PASOW == '9'){
+                $_DESCRIPZONAW = ''; 
+                $("#zonad_110c").val($_DESCRIPZONAW);
+                _evaluarrutas_con110c();   
+            }else{
+                $_DESCRIPRUTAW = ''; 
+                $("#rutad_110c").val($_DESCRIPRUTAW);
+                _evaluarorden_con110c();  
+            }
+        }
+    }
+}
+function _evaluarrutas_con110c(){
+    console.log('evaluar RUTAS');
+    validarInputs({
+        form: '#RUTA_110C',
+        orden: "1"
+    },
+        function () { _evaluarzona_con110c(); },
+        _datorutas_con110c
+    )
+}
 
+function _datorutas_con110c(){
+    $_CODRUTAW = $('#ruta_110c').val();
+    if(($_CODRUTAW.trim() == '') || ($_CODRUTAW == '00')){
+        $_RUTATERCEW = $_CODRUTAW; 
+        _leerzonayrutas_con110c();
+    }else{
+        $_TIPOZONA = '2'; 
+        $_RUTATERCEW = $_TIPOZONA + $_CODRUTAW; 
+        let datos_envio = datosEnvio();
+        datos_envio += '|'
+        datos_envio += $_CODRUTAW;
+        console.debug(datos_envio);
+        SolicitarDll({ datosh: datos_envio }, _dataCON110C_101_110C, get_url('/APP/CONTAB/CON110C_10.DLL'));
+    }
+}
+function _dataCON110C_101_110C(data){
+    console.log(data, 'CON110C_10 RUTAS');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPRUTAW = date[1].trim();
+    if (swinvalid == '00') {
+        $("#rutad_110c").val($_DESCRIPRUTAW);
+        _evaluarorden_con110c();   
+    }
+    else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarrutas_con110c();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
 
+function _evaluarorden_con110c(){
+    console.log('evaluar ORDEN');
+    validarInputs({
+        form: '#ORDEN_110C',
+        orden: "1"
+    },
+        function () { _evaluarrutas_con110c(); },
+        _datoorden_con110c
+    )
+}
 
+function _datoorden_con110c(){
+    $_ORDENTERCEW = $('#orden_110c').val();
 
+    if(($_NOVEDADCON110C == '8') && ($.isNumeric($_ACTIVICATERCEW))){
+        $_ACTIVICATERCEW = '000'; 
+        $("#actica_110c").val($_ACTIVICATERCEW);
+        _evaluaractica_con110c()
+    }else{
+        _evaluaractica_con110c(); 
+    }   
+}
 
+function _evaluaractica_con110c(){
+    console.log('evaluar ACT ICA ');
+    validarInputs({
+        form: '#ACTICA_110C',
+        orden: "1"
+    },
+        function () { _evaluarorden_con110c(); },
+        _datoactica_con110c
+    )
+}
+function _datoactica_con110c(){
+    $_ACTIVICAW = $('#actica_110c').val();
+    if($_ACTIVICAW.trim() == ''){
+        $_ACTIVICATERCEW= ''; 
+        _evaluarporcentica_con110c(); 
+    }else{
+        $_ACTIVICATERCEW = $_ACTIVICAW; 
+        if($.isNumeric($_ACTIVICATERCEW)){
+            CON851('57', '57', null, 'error', 'error');
+            _evaluaractica_con110c()
+        }else{
+            _evaluarporcentica_con110c(); 
+        }
+    }
+}
+function _evaluarporcentica_con110c(){
+    console.log('evaluar PORCENT ICA ');
+    validarInputs({
+        form: '#PORCENTICA_110C',
+        orden: "1"
+    },
+        function () { _evaluaractica_con110c(); },
+        _datoporcentica_con110c
+    )
+}
+function _datoporcentica_con110c(){
+    $_PORCICATERCEW = $('#porcetica_110c').val();
+    _evaluarporcentret_con110c();
+}
+function _evaluarporcentret_con110c(){
+    console.log('evaluar PORCENT RET ');
+    validarInputs({
+        form: '#PORCETRETEN_110C',
+        orden: "1"
+    },
+        function () { _evaluarporcentica_con110c(); },
+        _datoporcentret_con110c
+    )
+}
+function _datoporcentret_con110c(){
+    $_PORCRETTERCEW= $('#porcentreten_110c').val();
+    if((($_GRADOTERCEW == '0') || ($_GRADOTERCEW.trim() == '')) && ($_NOVEDADCON110C == '8')){
+        $_GRADOTERCEW = '9'; 
+        $("#grdnegocio_110c").val($_GRADOTERCEW);
+        _evaluargrado_con110c()
+    }else{
+        _evaluargrado_con110c()
+    }
+}
 
+function _evaluargrado_con110c(){
+    console.log('evaluar GRADO');
+    validarInputs({
+        form: '#GRDNEGOCIO_110C',
+        orden: "1"
+    },
+        function () { _evaluarporcentica_con110c(); },
+        _datogradonegocio_con110c
+    )
+}
+
+function _datogradonegocio_con110c(){
+    $_GRADOTERCEW = $('#grdnegocio_110c').val();
+    if($_NITUSU == '0800202522'){
+        if($_ACTIVICATERCEW == '01'){
+            if(($_GRADOTERCEW == '1') || ($_GRADOTERCEW == '2') || ($_GRADOTERCEW == '3') || ($_GRADOTERCEW == '4')){
+                ///// CONTINUE 
+                consultagradonegocio_con110c(); 
+
+            }else{
+                CON851('02', '02', null, 'error', 'error');
+                _evaluargrado_con110c(); 
+            }   
+        }else{
+            consultagradonegocio_con110c(); 
+        }
+    }else{
+        _evaluarIVA_con110c(); 
+    }
+}
+function consultagradonegocio_con110c(){
+    let datos_envio = datosEnvio();
+    datos_envio += '|'
+    datos_envio += $_GRADOTERCEW;
+    console.debug(datos_envio);
+    SolicitarDll({ datosh: datos_envio }, _dataCON110C_11_110C, get_url('/APP/CONTAB/CON110C_11.DLL'));
+}
+
+function _dataCON110C_11_110C(data){
+    console.log(data, 'CON110C_11 GRADO');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPGRADTERW = date[1].trim();
+    if (swinvalid == '00') {
+        $("#grdnegociod_110c").val($_DESCRIPGRADTERW);
+        _evaluarIVA_con110c(); 
+    }
+    else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluargrado_con110c(); 
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
+
+function _evaluarIVA_con110c(){
+    var iva  = [
+        { "COD": "1", "DESCRIP": "Regimen Comun" },
+        { "COD": "2", "DESCRIP": "Regimen Simplificado" },
+        { "COD": "3", "DESCRIP": "No Responsable" },
+        { "COD": "9", "DESCRIP": "No Aplica" }
+    ]
+    POPUP({
+        array: iva,
+        titulo: 'I.V.A',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _evaluargrado_con110c
+    },
+        _validariva_con110c);
+}
+
+function _validariva_con110c(iva) {
+$_REGIVATERCEW = iva.COD;
+switch (iva.COD) {
+    case "1":
+    case "2":
+    case "3":
+    case "9":
+        _evaluarcalificacion_con110c();
+        break;
+    default:
+    _evaluargrado_con110c();
+        break;
+}
+$("#iva_110c").val(iva.COD + " - " + iva.DESCRIP);
+}
+function _evaluarcalificacion_con110c(){
+    var calificacion  = [
+        { "COD": "1", "DESCRIP": "Excelente" },
+        { "COD": "2", "DESCRIP": "Bueno" },
+        { "COD": "3", "DESCRIP": "Regular" },
+        { "COD": "4", "DESCRIP": "Malo" },
+        { "COD": "9", "DESCRIP": "No Aplica" }
+    ]
+    POPUP({
+        array: calificacion,
+        titulo: 'Calificacion',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _evaluarIVA_con110c
+    },
+        _validarcalificacion_con110c);
+}
+
+function _validarcalificacion_con110c(calificacion) {
+$_REGIVATERCEW = calificacion.COD;
+switch (iva.COD) {
+    case "1":
+    case "2":
+    case "3":
+    case "9":
+        // _evaluarcalificacion_con110c();
+        _validarchecked_con110c(); 
+        break;
+    default:
+    _evaluarIVA_con110c();
+        break;
+}
+$("#calif_110c").val(calificacion.COD + " - " + calificacion.DESCRIP);
+}
+function _validarchecked_con110c(){
+
+    $('#rut_110c').is(':checked') ? $_RUTTERCEW == 'S' : $_RUTTERCEW == 'N';
+    $('#contribuyente_con110c').is(':checked') ? $_GRANCONTRIBTERCEW == 'S' : $_GRANCONTRIBTERCEW == 'N';
+    $('#retenedor_con110c').is(':checked') ? $_RETETERCEW == 'S' : $_RETETERCEW == 'N';
+    if($_RETETERCEW == 'S'){
+        setTimeout(_evaluarbaseret_con110c, 50);
+    }else{
+        $('#reteivacompra_con110c').is(':checked') ? $_RETIVACOMPTERCEW == 'S' : $_RETIVACOMPTERCEW == 'N';
+        $('#causareteiva_con110c').is(':checked') ?  $_RETIVATERCEW == 'S' :  $_RETIVATERCEW == 'N';
+        $('#exento_con110c').is(':checked') ? $_EXENTRETTERCEW == 'S' : $_EXENTRETTERCEW == 'N';
+        $('#cobroseg_con110c').is(':checked') ? $_SEGUROTERCEW == 'S' : $_SEGUROTERCEW == 'N';
+        $('#datacredito_con110c').is(':checked') ? $_DATACRETERCEW == 'S' : $_DATACRETERCEW == 'N';
+        $('#acuerdopago_con110c').is(':checked') ? $_ACUEPAGOTERCEW == 'S' : $_ACUEPAGOTERCEW == 'N';
+
+        $('#capitado_con110c').is(':checked') ? $_CAPITADOTERCEW == 'S' : $_CAPITADOTERCEW == 'N';
+        $('#nitcliente_con110c').is(':checked') ? $_NITCLITERCEW == 'S' : $_NITCLITERCEW == 'N';
+        $('#icav_con110c').is(':checked') ? $_RETICAVTERCEW == 'S' : $_RETICAVTERCEW == 'N';
+        $('#excluiriva_con110c').is(':checked') ? $_EXIVATERCEW== 'S' : $_EXIVATERCEW == 'N';
+    }
+}
+
+function _evaluarbaseret_con110c(){
+    console.log('evaluar BASE RET');
+    validarInputs({
+        form: '#BASERET_110C',
+        orden: "1"
+    },
+        function () { _evaluarporcentica_con110c(); },
+        _datoagenteret_con110c
+    )
+}
+function _datoagenteret_con110c(){
+    $_GRADOTERCEW = $('#baseret_con110c').val();
+}
 
 
 
@@ -1290,6 +1641,21 @@ function _dataCON110C_02(data) {
 }
 
 function _mostrardatos_con110c() {
+    $_RUTTERCEW == 'S' ? $('#rut_110c')[0].checked = true : $('#rut_110c')[0].checked = false;
+    $_GRANCONTRIBTERCEW == 'S' ? $('#contribuyente_con110c')[0].checked = true : $('#contribuyente_con110c')[0].checked = false;
+    $_RETETERCEW == 'S' ? $('#retenedor_con110c')[0].checked = true : $('#retenedor_con110c')[0].checked = false;
+    $_RETIVACOMPTERCEW == 'S' ? $('#reteivacompra_con110c')[0].checked = true : $('#reteivacompra_con110c')[0].checked = false;
+    $_RETIVATERCEW == 'S' ? $('#causareteiva_con110c')[0].checked = true : $('#causareteiva_con110c')[0].checked = false;
+    $_EXENTRETTERCEW == 'S' ? $('#exento_con110c')[0].checked = true : $('#exento_con110c')[0].checked = false;
+    $_SEGUROTERCEW == 'S' ? $('#cobroseg_con110c')[0].checked = true : $('#cobroseg_con110c')[0].checked = false;
+    $_DATACRETERCEW == 'S' ? $('#datacredito_con110c')[0].checked = true : $('#datacredito_con110c')[0].checked = false;
+    $_ACUEPAGOTERCEW == 'S' ? $('#acuerdopago_con110c')[0].checked = true : $('#acuerdopago_con110c')[0].checked = false;
+    $_CAPITADOTERCEW == 'S' ? $('#capitado_con110c')[0].checked = true : $('#capitado_con110c')[0].checked = false;
+    $_NITCLITERCEW == 'S' ? $('#nitcliente_con110c')[0].checked = true : $('#nitcliente_con110c')[0].checked = false;
+    $_RETICAVTERCEW == 'S' ? $('#icav_con110c')[0].checked = true : $('#icav_con110c')[0].checked = false;
+    $_BLOQTERCEW == 'S' ? $('#bloquearvend_cpm110c')[0].checked = true : $('#bloquearvend_cpm110c')[0].checked = false;
+    $_EXIVATERCEW == 'S' ? $('#excluiriva_con110c')[0].checked = true : $('#excluiriva_con110c')[0].checked = false;
+   
     $('#codclien_con110c').val($_CODTERCEROW);
     $('#dv_con110c').val($_DVTERCEROW);
     $_DIACUMPLETERCEW = $_FECHACUMPTERCEW.substring(4, 6);
@@ -1311,7 +1677,6 @@ function _mostrardatos_con110c() {
     $('#actividadd_con110c').val($_DESCRIPACTTERW);
     $('#convenio_con110c').val($_CONVENIOTERCEW);
     // $('#conveniod_con110c').val();
-    $('#rut_con110c').val($_RUTTERCEW);
     $('#nomcom_con110c').val($_NOMCOMERTERCEW);
     $('#datos_con110c').val($_OTROSTERCEW);
     $('#contact_con110c').val($_CONTACTTERCEW);
@@ -1352,20 +1717,8 @@ function _mostrardatos_con110c() {
     $('#grdnegociod_110c').val($_DESCRIPGRADTERW);
     $('#iva_110c').val($_REGIVATERCEW);
     $('#calif_110c').val($_CALIFITERCEW);
-    $('#contribuyente_con110c').val($_GRANCONTRIBTERCEW);
-    $('#retenedor_con110c').val($_RETETERCEW);
     $('#baseret_con110c').val($_VLRBASERETTERCEW);
-    $('#reteivacompra_con110c').val($_RETIVACOMPTERCEW);
-    $('#causareteiva_con110c').val($_RETIVATERCEW);
-    $('#exento_con110c').val($_EXENTRETTERCEW);
-    $('#cobroseg_con110c').val($_SEGUROTERCEW);
-    $('#datacredito_con110c').val($_DATACRETERCEW);
-    $('#acuerdopago_con110c').val($_ACUEPAGOTERCEW);
-    $('#capitado_con110c').val($_CAPITADOTERCEW);
-    $('#nitcliente_con110c').val($_NITCLITERCEW);
-    $('#icav_con110c').val($_RETICAVTERCEW);
-    $('#bloquearvend_cpm110c').val($_BLOQTERCEW);
-    $('#excluiriva_con110c').val($_EXIVATERCEW);
+
     // $('#hectaria_con110c').val();
     $('#marca_con110c').val($_MARCATERCEW);
     $('#empresa_con110c').val($_EMPRESAVEHTERCEW);
