@@ -28,7 +28,8 @@
             "Id": "03",
             "Descripcion": "Apertura historia clinica",
             "Opc-segu": "ISH3",
-            "Href": "../../HICLIN/PAGINAS/hc-01.html"
+            "Tipo": "JS",
+            "JS": "../../HICLIN/scripts/menu-h03.js"
         },
         {
             "Id": "04",

@@ -35,8 +35,7 @@
         },
         _loadScript: function () {
             let elemento = document.createElement("script");
-            elemento.onload = callback;
-            elemento.src = $.ventanaMain.JS;
+            elemento.src = $.ventanaMain.js;
             document.querySelector("head").appendChild(elemento);
         },
         _ventana_power: function () {

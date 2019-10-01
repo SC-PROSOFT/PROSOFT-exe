@@ -27,7 +27,7 @@ function _onCargarUsuario(data) {
     var res = data.split('|');
     var json = res[1].trim();
     if (res[0].trim() == '00') {
-        var url = "http://" + localStorage.IP_DATOS + "/MAIN-ELECT/progdatos/json/" + json + ".JSON";
+        var url = get_url("temp/" + json);
         SolicitarDatos(
             null,
             function (data) {

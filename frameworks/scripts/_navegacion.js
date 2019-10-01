@@ -59,7 +59,6 @@ function _cargarEventos(estado) {
             $(document).on('keydown', _eventoTeclas);
             $(document).on('click', '#regresar', _eventoRegresar)
             $(document).on('click', '#salir', salir_modulo)
-            // $('#body_main').html('');
             break;
         case "off":
             $(document).off('click', '.opcion-menu', _eventoBotones)
@@ -155,7 +154,6 @@ function _validarSegu(datos, callback) {
 
         SolicitarDll({ datosh: datosEnvio },
             function (data) {
-                console.log(data.split('|')[0])
                 if (data.split('|')[0] == '00') callback('0');;
             },
             get_url("app/CON904.DLL")
