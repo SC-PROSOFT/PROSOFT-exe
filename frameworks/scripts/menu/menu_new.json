@@ -313,8 +313,8 @@
           "Descripcion": "Datos de terceros",
           "Opc-segu": "C13",
           "Sub": [
-			{
-			  "Id": "0131",
+            {
+              "Id": "0131",
               "Descripcion": "Actualizacion de terceros",
               "Opc-segu": "C131",
               "Tipo": "HTML",
@@ -3583,6 +3583,7 @@
             {
               "Id": "091B",
               "Descripcion": "Actualiza prefijos de factura",
+              "Opc-segu": "I1B",
               "Tipo": "HTML",
               "Href": "../../INVENT/paginas/INV109.html"
             },
@@ -4625,16 +4626,18 @@
               "Sub": [
                 {
                   "Id": "09421",
-                  "Descripcion": "Apertura facturas",
-                  "Opc-segu": "S41",
-                  "Sub": [
-                    {
-                      "Id": "094211",
-                      "Descripcion": "Apertura de facturas",
-                      "Tipo": "HTML",
-                      "Href": "../../SALUD/PAGINAS/SER108.html"
-                    }
-                  ]
+                  "Descripcion": "Elaborar facturas",
+                  "Opc-segu": "I41",
+                  "Seg-w": [
+                    "1",
+                    "3",
+                    "4",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/PAGINAS/SAL41.html"
                 }
               ]
             }
@@ -6031,116 +6034,185 @@
               "Id": "0971",
               "Descripcion": "Menu act. Maestros de salud",
               "Sub": [
-                  {
-                      "Id": "09711",
-                      "Descripcion": "Actualizar grupos cups",
-                      "Opc-segu": "IS11",
-                      "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SAL711.html"
-                  },
-                  {
-                      "Id": "09712",
-                      "Descripcion": "Actualizar nombres tarifas",
-                      "Opc-segu": "IS12",
-                      "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SAL712.html"
-                  },
-                  {
-                      "Id": "09713",
-                      "Descripcion": "Actualizar tarifas servicios",
-                      "Opc-segu": "IS13",
-                      "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SAL713.html"
-                  },
-                  {
-                      "Id": "09714",
-                      "Descripcion": "Actualizar ficha sisvan",
-                      "Opc-segu": "IS14",
-                      "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SAL714.html"
-                  },
-                  {
-                      "Id": "09715",
-                      "Descripcion": "Incrementar tarifas"
-                  },
-                  {
-                      "Id": "09716",
-                      "Descripcion": "Duplicar tarifas"
-                  },
-                  {
-                      "Id": "09717",
-                      "Descripcion": "Actualizar servicios hospit.",
-                      "Opc-segu": "IS17",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL717.html"
-                  },
-                  {
-                      "Id": "09718",
-                      "Descripcion": "Actualizar codigos cups",
-                      "Opc-segu": "IS18",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL718.html"
-                  },
-                  {
-                      "Id": "09719",
-                      "Descripcion": "Actualiza personal atiende",
-                      "Opc-segu": "IS19",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL719.html"
-                  },
-                  {
-                      "Id": "0971A",
-                      "Descripcion": "Actualiza especialidad x cup",
-                      "Opc-segu": "IS1A",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL71A.html"
-                  },
-                  {
-                      "Id": "0971B",
-                      "Descripcion": "Actualizar unidad atencion",
-                      "Opc-segu": "IS1B",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL71B.html"
-                  },
-                  {
-                      "Id": "0971C",
-                      "Descripcion": "Actualizar division facturac",
-                      "Opc-segu": "IS1C",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL71C.html"
-                  },
-                  {
-                      "Id": "0971D",
-                      "Descripcion": "Actualizar colegios",
-                      "Opc-segu": "IS1D",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL71D.html"
-                  },
-                  {
-                      "Id": "0971E",
-                      "Descripcion": "Equivalencia operad. Datalab"
-                  },
-                  {
-                      "Id": "0971G",
-                      "Descripcion": "Actualiza paquete integral"
-                  },
-                  {
-                      "Id": "0971H",
-                      "Descripcion": "Actualiza comunidad",
-                      "Opc-segu": "IS1H",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL71H.html"
-                  },
-                  {
-                      "Id": "0971I",
-                      "Descripcion": "Actualiza reguardo",
-                      "Opc-segu": "IS1I",
-                      "Tipo": "HTML",
-                      "Href":"../../SALUD/paginas/SAL71I.html"
-                  }
+                {
+                  "Id": "09711",
+                  "Descripcion": "Actualizar grupos cups",
+                  "Opc-segu": "IS11",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL711.html"
+                },
+                {
+                  "Id": "09712",
+                  "Descripcion": "Actualizar nombres tarifas",
+                  "Opc-segu": "IS12",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL712.html"
+                },
+                {
+                  "Id": "09713",
+                  "Descripcion": "Actualizar tarifas servicios",
+                  "Opc-segu": "IS13",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL713.html"
+                },
+                {
+                  "Id": "09714",
+                  "Descripcion": "Actualizar ficha sisvan",
+                  "Opc-segu": "IS14",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL714.html"
+                },
+                {
+                  "Id": "09715",
+                  "Descripcion": "Incrementar tarifas"
+                },
+                {
+                  "Id": "09716",
+                  "Descripcion": "Duplicar tarifas"
+                },
+                {
+                  "Id": "09717",
+                  "Descripcion": "Actualizar servicios hospit.",
+                  "Opc-segu": "IS17",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL717.html"
+                },
+                {
+                  "Id": "09718",
+                  "Descripcion": "Actualizar codigos cups",
+                  "Opc-segu": "IS18",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL718.html"
+                },
+                {
+                  "Id": "09719",
+                  "Descripcion": "Actualiza personal atiende",
+                  "Opc-segu": "IS19",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL719.html"
+                },
+                {
+                  "Id": "0971A",
+                  "Descripcion": "Actualiza especialidad x cup",
+                  "Opc-segu": "IS1A",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71A.html"
+                },
+                {
+                  "Id": "0971B",
+                  "Descripcion": "Actualizar unidad atencion",
+                  "Opc-segu": "IS1B",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71B.html"
+                },
+                {
+                  "Id": "0971C",
+                  "Descripcion": "Actualizar division facturac",
+                  "Opc-segu": "IS1C",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71C.html"
+                },
+                {
+                  "Id": "0971D",
+                  "Descripcion": "Actualizar colegios",
+                  "Opc-segu": "IS1D",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71D.html"
+                },
+                {
+                  "Id": "0971E",
+                  "Descripcion": "Equivalencia operad. Datalab"
+                },
+                {
+                  "Id": "0971G",
+                  "Descripcion": "Actualiza paquete integral"
+                },
+                {
+                  "Id": "0971H",
+                  "Descripcion": "Actualiza comunidad",
+                  "Opc-segu": "IS1H",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71H.html"
+                },
+                {
+                  "Id": "0971I",
+                  "Descripcion": "Actualiza reguardo",
+                  "Opc-segu": "IS1I",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71I.html"
+                }
               ]
-              
-           }
+            },
+            {
+              "Id": "0972",
+              "Descripcion": "Menu listado de tarifas"
+            },
+            {
+              "Id": "0973",
+              "Descripcion": "Menu de convenios"
+            },
+            {
+              "Id": "0974",
+              "Descripcion": "Auditoria de facturas",
+              "Opc-segu": "",
+              "Tipo": "POWER",
+              "Sub": [
+                {
+                  "Id": "09741",
+                  "Descripcion": "Apertura facturas",
+                  "Opc-segu": "S41",
+                  "Sub": [
+                    {
+                      "Id": "097411",
+                      "Descripcion": "Apertura de facturas",
+                      "Opc-segu": "S41",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/PAGINAS/SER108.html"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09742",
+                  "Descripcion": "Listado de facturacion"
+                },
+                {
+                  "Id": "09743",
+                  "Descripcion": "Submenu impresion de facturas"
+                },
+                {
+                  "Id": "09744",
+                  "Descripcion": "Resumen fact. por tipo"
+                },
+                {
+                  "Id": "09745",
+                  "Descripcion": "Informe por paciente"
+                },
+                {
+                  "Id": "09746",
+                  "Descripcion": "Resumen de cirugias X entidad"
+                },
+                {
+                  "Id": "09747",
+                  "Descripcion": "Listado de facturas abiertas"
+                },
+                {
+                  "Id": "09748",
+                  "Descripcion": "Informe de copagos X factura"
+                },
+                {
+                  "Id": "09749",
+                  "Descripcion": "Anexo a factura de capacitacion"
+                },
+                {
+                  "Id": "0974A",
+                  "Descripcion": "Submenu boleta de salida"
+                },
+                {
+                  "Id": "0974B",
+                  "Descripcion": "Submenu solicitud autorizacion"
+                }
+              ]
+            }
           ]
         },
         {
