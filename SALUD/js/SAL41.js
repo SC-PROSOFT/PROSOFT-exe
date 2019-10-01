@@ -15,7 +15,7 @@ $(document).ready(function () {
     _inputControl("reset");
     _inputControl("disabled");
     $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;
-    $_ADMINW = localStorage.cod_oper ? localStorage.cod_oper : false;
+    $_ADMINW = localStorage.getItem('Usuario').trim() ? localStorage.getItem('Usuario').trim() : false;
     $_FECHA_LNK = $_USUA_GLOBAL[0].FECHALNK;
     $_MESLNK = $_FECHA_LNK.substring(2, 4);
     $_ANOLNK = $_FECHA_LNK.substring(0, 2);
@@ -291,37 +291,26 @@ function _Revisardato_41() {
 }
 
 function _Datounidad_41() {
-    console.debug('SER873');
     let datos_envio = datosEnvio()
-    SolicitarDll({ datosh: datos_envio }, _dataSER873_41, get_url('/SALUD/APP/SER873.DLL'));
-    // _consultaSql({
-    //     sql: 'SELECT * FROM sc_unser',
-    //     callback: function (error, results, fields) {
-    //         if (error) throw error;
-    //         else {
-    //             unidades = JSON.stringify(results);
-    //             $_UNDSERVICIO_401 = JSON.parse(unidades)
-    //             _UndServicio_41();
-    //         }
-    //     }
-    // })
+    datos_envio += localStorage.getItem('Usuario').trim()
+    SolicitarDll({ datosh: datos_envio }, _dataSER873_41, get_url('app/SALUD/SER873.DLL'));
 }
 
 function _dataSER873_41(data) {
     data = data.split('|');
     var json = data[1].trim();
-    let rutaJson = get_url('/progdatos/json/' + json + '.JSON');
+    let rutaJson = 'http://' + localStorage.IP_DATOS + ':8050/progdatos/json/' + json + '.JSON';
     if (data[0].trim() == '00') {
         SolicitarDatos(
             null,
             function (data) {
                 $_UNDSERVICIO_401 = data.UNIDSERV;
+                $_UNDSERVICIO_401.pop();
                 console.debug(data, json);
                 let arrayEliminar = [];
                 arrayEliminar.push(json);
                 _eliminarJson(arrayEliminar, on_eliminarJsonTablatar_41);
                 _UndServicio_41();
-                console.debug('cree el json y lo elimine de unidades de servicio');
             },
             rutaJson
         );
@@ -332,10 +321,21 @@ function _dataSER873_41(data) {
 }
 
 function _UndServicio_41() {
+    $_UNIDSERVICIO_401 = [];
+    for (var i in $_UNDSERVICIO_401){
+        if ($_UNDSERVICIO_401[i].estado.trim() == 'ACTIVA'){
+            $_UNIDSERVICIO_401.push($_UNDSERVICIO_401[i]);
+            console.debug($_UNIDSERVICIO_401)
+        }
+    }
     loader("hide");
     POPUP({
-        array: $_UNDSERVICIO_401,
-        titulo: "UNIDADES DE SERVICIO"
+        array: $_UNIDSERVICIO_401,
+        titulo: "UNIDADES DE SERVICIO",
+        indices: [
+            { label:'descripcion' }
+        ],
+        callback_f: _Revisardato_41
     },
         _evaluarSER873_41);
 }
@@ -346,33 +346,34 @@ function _evaluarSER873_41(data) {
     _inputControl('reset');
     _inputControl('disabled');
 
-    $_UNIDADES = data.id;
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case "A":
-        case "B":
-        case "C":
-        case "D":
-        case "E":
-        case "G":
-        case "I":
-        case "J":
+    $_UNIDADES = data.codigo;
+    console.debug(data.codigo);
+    switch (data.codigo) {
+        case '01':
+        case '02':
+        case '03':
+        case '04':
+        case '05':
+        case '06':
+        case '07':
+        case '08':
+        case '09':
+        case '11':
+        case '12':
+        case '13':
+        case '21':
+        case '22':
+        case '31':
+        case '32':
+        case '51':
             _Validarunidaddeservicio_41();
             break;
         default:
             _toggleNav();
             break;
     }
-    $_UNSER = data.id + " " + data.descripcion;
-    $_UNSERW = data.id;
+    $_UNSER = data.codigo + " " + data.descripcion;
+    $_UNSERW = data.codigo;
     for (var i in $_UNDSERVICIO_401) {
         if ($_UNDSERVICIO_401[i].codigo == $_UNSERW) {
             $_EDADMAXSERV = $_UNDSERVICIO_401[i].EDADMAX;
@@ -397,15 +398,12 @@ function _Validarunidaddeservicio_41() {
 }
 
 function _Datosucursal_41() {
-    LLAMADO_DLL({
-        dato: [$_ADMINW],
-        callback: _dataCON003_01,
-        nombredll: 'CON003',
-        carpeta: 'CONTAB'
-    });
+    let datos_envio = datosEnvio()
+    datos_envio += localStorage.getItem('Usuario').trim()
+    SolicitarDll({ datosh: datos_envio }, _dataCON003_41_01, get_url('app/CONTAB/CON003.DLL'));
 }
 
-function _dataCON003_01(data) {
+function _dataCON003_41_01(data) {
     console.debug(data, ' CON003_01');
     var date = data.split('|');
     $_NOMBREOPERW = date[0].trim();
@@ -741,12 +739,10 @@ function _Revisarpermisos_41() {
 
 function _infoCON904_01_41() {
     $_OPSEGU = "I41" + $_CLFACT;
-    LLAMADO_DLL({
-        dato: [$_ADMINW, $_OPSEGU],
-        callback: _dataCON904_01_41,
-        nombredll: 'CON904',
-        carpeta: 'CONTAB'
-    });
+    let datos_envio = datosEnvio()
+    datos_envio += localStorage.getItem('Usuario').trim()
+    datos_envio += '|' + $_OPSEGU
+    SolicitarDll({ datosh: datos_envio }, _dataCON904_01_41, get_url('app/CONTAB/CON904.DLL'));
 }
 function _dataCON904_01_41(data) {
     console.debug(data, "CON904-01");
@@ -975,7 +971,7 @@ function _Evaluarnumeroctl_41() {
 function _validarnumeroctl() {
     let datos_envio = datosEnvio()
         + '|' + $_NROFACT.padStart(6, '0');
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_01, get_url('/SALUD/APP/SAL41-01.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_01, get_url('APP/SALUD/SAL41-01.DLL'));
 }
 function _dataSAL41_01(data) {
     console.debug(data, "SAL41-01");
@@ -1049,12 +1045,16 @@ function _Encabezar2_41() {
     }
 }
 function _infoSER865A_41() {
-    var dispensacion = '[{"COD": "1", "DESCRIP": "NORMAL"},{"COD": "2","DESCRIP": "AUTOMATICA"}]'
+    var dispensacion = '[{"codigo": "1", "descripcion": "NORMAL"},{"codigo": "2","descripcion": "AUTOMATICA"}]'
     var dispensaciones = JSON.parse(dispensacion);
     var titulo = 'Facturacion';
     POPUP({
         array: dispensaciones,
-        titulo: titulo
+        titulo: titulo,
+        indices:[
+            {id:'codigo',label:'descripcion'}
+        ],
+        callback_f: _Evaluarservicio_41
     },
         _evaluarSER865A_41);
 
@@ -1090,15 +1090,18 @@ function _infoSER865_41() {
     var titulo = 'Facturacion';
     POPUP({
         array: medicamentos,
-        titulo: titulo
+        titulo: titulo,
+        indices:[
+            {id:'codigo',label:'descripcion'}
+        ]
     },
         _evaluarSER865_41);
 }
 function _evaluarSER865_41(data) {
     loader('hide');
     _inputControl('disabled');
-    $_TIPODRFACT = data.id;
-    switch (parseInt(data.id)) {
+    $_TIPODRFACT = data.codigo;
+    switch (parseInt(data.codigo)) {
         case 1:
         case 2:
         case 3:
@@ -1166,7 +1169,6 @@ function _Evaluarfecha_41() {
         function () { _Revisardato_41() },
         _Controlfecha_41
     )
-    fechaMask.updateValue();
 }
 
 function _Controlfecha_41() {
@@ -1466,7 +1468,7 @@ function _Validarnrofact_41() {
             + '|' + $_PREFIJOFACT
             + '|' + $_NROCTAFACT.padStart(6, '0');
         console.debug(datos_envio);
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_02, get_url('/SALUD/APP/SAL41-02.DLL'));
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_02, get_url('APP/SALUD/SAL41-02.DLL'));
     }
 }
 
@@ -1525,6 +1527,8 @@ function _dataSAL41_02(data) {
     }
     else if (date[0].trim() == "01") {
         CON851('01', '01', null, 'error', 'error');
+        $('#facturad_401').val('');
+        _Evaluarnrofact_41();
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -1813,10 +1817,11 @@ function _Leerconvenio_41() {
     if ($_PREFIJOFACT == "E") {
         if ($_MESFACT == $_MESACT) {
             let datos_envio = datosEnvio()
+            datos_envio += $_ADMINW
                 + '|' + $_CONVENIONUM
                 + '|' + $_PREFIJOFACT
                 + '|' + $_NROFACT;
-            SolicitarDll({ datosh: datos_envio }, _dataSAL41_03, get_url('/SALUD/APP/SAL41-03.DLL'));
+            SolicitarDll({ datosh: datos_envio }, _dataSAL41_03, get_url('APP/SALUD/SAL41-03.DLL'));
         }
         else {
             CON851('91', '91', null, 'error', 'error');
@@ -1826,10 +1831,11 @@ function _Leerconvenio_41() {
     }
     else {
         let datos_envio = datosEnvio()
+        datos_envio += $_ADMINW
             + '|' + $_CONVENIONUM
             + '|' + $_PREFIJOFACT
             + '|' + $_NROFACT;
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_03, get_url('/SALUD/APP/SAL41-03.DLL'));
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_03, get_url('APP/SALUD/SAL41-03.DLL'));
     }
 }
 function _dataSAL41_03(data) {
@@ -1872,6 +1878,7 @@ function _dataSAL41_03(data) {
     $_HNAYUDTAR = date[27].trim();
     $_HNANESTAR = date[28].trim();
     let json = date[29].trim();
+    $_BASEMEDTAR = date[30].trim();
     let rutaJson = get_url('/progdatos/json/' + json + '.JSON');
     SolicitarDatos(
         null,
@@ -1976,7 +1983,11 @@ function SER822_41() {
     var titulo = 'PUERTA DE INGRESO';
     POPUP({
         array: puertaingreso,
-        titulo: titulo
+        titulo: titulo,
+        indices: [
+            {id: 'codigo', label: 'descripcion'}
+        ],
+        callback_f: _Evaluarnrofact_41
     },
         _evaluarSER822_41);
 
@@ -1984,12 +1995,12 @@ function SER822_41() {
 function _evaluarSER822_41(data) {
     loader('hide');
     _inputControl('disabled');
-    $_PUERTAINGW = data.id;
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
+    $_PUERTAINGW = data.codigo;
+    switch (data.codigo) {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
             _Validarpuertaingreso_41();
             break;
         default:
@@ -2065,14 +2076,15 @@ function _Cliente_41() {
     }
     else {
         let datos_envio = datosEnvio()
+        datos_envio += $_ADMINW
             + '|' + $_NITFACT;
         console.debug(datos_envio);
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_04, get_url('/SALUD/APP/SAL41-04.DLL'));
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_04, get_url('APP/SALUD/SAL41-04.DLL'));
     }
 }
 
 function _dataSAL41_04(data) {
-    console.debug(data, "sal41-04");
+    console.debug(data, "SAL41-04");
     var date = data.split("|");
     $_DESCRIPTER = date[1].trim();
     $_ACTTER = date[2].trim();
@@ -2142,38 +2154,34 @@ function _Mostrarcliente_41() {
         _Evaluarcliente_41();
     }
     else {
-        LLAMADO_DLL({
-            dato: [$_NITFACT],
-            callback: _dataINV401_06_02_41,
-            nombredll: 'INV401-06',
-            carpeta: 'SALUD'
-        });
+        let datos_envio = datosEnvio()
+        datos_envio += $_ADMINW
+            + '|' + $_NITFACT;
+        console.debug(datos_envio);
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_042, get_url('APP/SALUD/SAL41-04.DLL'));
     }
 }
-function _dataINV401_06_02_41(data) {
-    console.debug(data, "INV401-06");
+function _dataSAL41_042(data) {
+    console.debug(data, "SAL41-04");
     var date = data.split("|");
-    var swinvalid = date[0].trim();
-    var swinvalid1 = date[1].trim();
-    $_DESCRIPTER = date[2].trim();
-    $_ACTTER = date[3].trim();
-    $_ENTIDADTER = date[4].trim();
-    if (swinvalid == "00") {
-        if (swinvalid1 == "00") {
-            if ($_DESCRIPNUM.trim() == '') {
-                // $('#cliente_401').val($_NITFACT);
-                $('#cliented_401').val($_DESCRIPTER);
-                _Calcularmes_41();
-            }
-            else {
-                // $('#cliente_401').val($_NITFACT);
-                $('#cliented_401').val($_DESCRIPNUM);
-                _Calcularmes_41();
-            }
+    $_DESCRIPTER = date[1].trim();
+    $_ACTTER = date[2].trim();
+    $_ENTIDADTER = date[3].trim();
+    $_DESCRIPTER2 = date[4].trim();
+    if (date[0].trim() == '00'){
+        if ($_DESCRIPNUM.trim() == '') {
+            // $('#cliente_401').val($_NITFACT);
+            $('#cliented_401').val($_DESCRIPTER);
+            _Calcularmes_41();
         }
         else {
-            _Crearcliente_41();
+            // $('#cliente_401').val($_NITFACT);
+            $('#cliented_401').val($_DESCRIPNUM);
+            _Calcularmes_41();
         }
+    }
+    else if (date[0].trim() == "01") {
+        _Crearcliente_41();
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav)
@@ -2739,7 +2747,7 @@ function _Leerpaciente_41() {
     datos_envio += '|'
     datos_envio += $_IDHISTORIAFACT.padStart(15, '0');
     console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_05, get_url("/SALUD/APP/SAL41-05.DLL"));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_05, get_url("APP/SALUD/SAL41-05.DLL"));
 }
 
 function _dataSAL41_05(data) {
@@ -2796,7 +2804,7 @@ function _dataSAL41_05(data) {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_OPSEGU;
-        SolicitarDll({ datosh: datos_envio }, _dataCON904S_01_41, get_url("/CONTAB/APP/CON904S.DLL"));
+        SolicitarDll({ datosh: datos_envio }, _dataCON904S_01_41, get_url("APP/CONTAB/CON904S.DLL"));
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav)
@@ -3289,7 +3297,7 @@ function _Buscarconsultas2_41() {
     datos_envio += '|'
     datos_envio += $_OPSEGU;
     console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _dataCON904S_04_41, get_url("/CONTAB/APP/CON904S.DLL"));
+    SolicitarDll({ datosh: datos_envio }, _dataCON904S_04_41, get_url("APP/CONTAB/CON904S.DLL"));
 }
 function _dataCON904S_04_41(data) {
     console.debug(data, 'CON904S_04');
@@ -3325,13 +3333,17 @@ function _Viaacceso_41() {
     var viaacceso = JSON.parse(viasdeacceso);
     POPUP({
         array: viaacceso,
-        titulo: "VIA DE ACCESO"
+        titulo: "VIA DE ACCESO",
+        indices:[
+            {id: 'codigo', label: 'descripcion'}
+        ],
+        callback_f: _Evaluaridhistoriafact_41
     },
         _evaluarviaacceso_41);
 }
 
 function _evaluarviaacceso_41(data) {
-    switch (data.id) {
+    switch (data.codigo) {
         case '1':
         case '2':
         case '3':
@@ -3347,7 +3359,7 @@ function _evaluarviaacceso_41(data) {
         case 'D':
         case 'E':
         case 'G':
-            _Datocruenta_41();
+            setTimeout(_Datocruenta_41, 400);
             break;
         default:
             _Datopaciente_41();
@@ -3375,13 +3387,17 @@ function _Datocruenta_41() {
     var intervencion = JSON.parse(intervenciones);
     POPUP({
         array: intervencion,
-        titulo: "INTERVENCION"
+        titulo: "INTERVENCION",
+        indices:[
+            {id:'codigo', label:'descripcion'}
+        ],
+        callback_f: _Evaluaridhistoriafact_41
     },
         _Evaluarintervencion_41);
 }
 
 function _Evaluarintervencion_41(data) {
-    switch (data.id) {
+    switch (data.codigo) {
         case '1':
         case '2':
             $_CRUENTAW = data.id;
@@ -3414,7 +3430,7 @@ function _Dato1_41() {
             let datos_envio = datosEnvio();
             datos_envio += '|'
             datos_envio += $_OPSEGU;
-            SolicitarDll({ datosh: datos_envio }, _dataCON904S_05_41, get_url("/CONTAB/APP/CON904S.DLL"));
+            SolicitarDll({ datosh: datos_envio }, _dataCON904S_05_41, get_url("APP/CONTAB/CON904S.DLL"));
         }
     }
     else {
@@ -3811,40 +3827,27 @@ function _Leerarticulo2_41() {
     else if ($_CLFACT == '0') {
         $_TIPOART = '0';
         $_GRUPOART = $_GRUPOFACT;
-        $_NUMEROART = $_CODARTFACT;
+        $_NUMEROART = $_CODARTCTL;
         $_CLASEART = $_CLASEARTFACT;
         $_CODART = $_TIPOART + $_GRUPOART + $_NUMEROART + $_CLASEART;
-        // LLAMADO_DLL({
-        //     dato: [$_CODART],
-        //     callback: _dataINV401_12_41,
-        //     nombredll: 'INV401-12',
-        //     carpeta: 'SALUD'
-        // })
         let datos_envio = datosEnvio();
-        datos_envio += '|'
-        datos_envio += $_CODART;
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_06, get_url("/SALUD/APP/SAL41-06.DLL"));
+        datos_envio += $_ADMINW
+        datos_envio += '|' + $_CODART;
+        console.debug(datos_envio);
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_06, get_url("APP/SALUD/SAL41-06.DLL"));
     }
     else {
         if (($_GRUPOFACT == 'XM') || ($_GRUPOFACT == 'XP') || ($_GRUPOFACT == 'XN')) {
             $_LLAVETAB = $_CODTABW + $_TIPOTABW + $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
             $_LLAVECUP = $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
-            // LLAMADO_DLL({
-            //     dato: [$_LLAVETAB, $_NITUSU, $_CONVENIONUM],
-            //     callback: _dataINV401_13_41,
-            //     nombredll: 'INV401_13',
-            //     carpeta: 'SALUD'
-            // })
             let datos_envio = datosEnvio();
-            datos_envio += '|'
-            datos_envio += $_LLAVETAB;
-            datos_envio += '|'
-            datos_envio += $_NITUSU;
-            datos_envio += '|'
-            datos_envio += $_CONVENIONUM;
+            datos_envio += $_ADMINW
+            datos_envio += '|' + $_LLAVETAB;
+            datos_envio += '|' + $_NITUSU;
+            datos_envio += '|' + $_CONVENIONUM;
             datos_envio += '|' + $_LLAVECUP;
             console.debug(datos_envio);
-            SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("/SALUD/APP/SAL41-07.DLL"));
+            SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("APP/SALUD/SAL41-07.DLL"));
         }
         else {
             $_ALMFACT = '     ';
@@ -3865,7 +3868,7 @@ function _Leerarticulo2_41() {
             datos_envio += $_CONVENIONUM;
             datos_envio += '|' + $_LLAVECUP;
             console.debug(datos_envio);
-            SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("/SALUD/APP/SAL41-07.DLL"));
+            SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("APP/SALUD/SAL41-07.DLL"));
         }
     }
 }
@@ -5252,7 +5255,7 @@ function _Datoabono3_41() {
             let datos_envio = datosEnvio();
             datos_envio += '|'
             datos_envio += $_OPSEGU;
-            SolicitarDll({ datosh: datos_envio }, _dataCON904S_06_41, get_url("/CONTAB/APP/CON904S.DLL"));
+            SolicitarDll({ datosh: datos_envio }, _dataCON904S_06_41, get_url("APP/CONTAB/CON904S.DLL"));
         }
     }
 }
@@ -5332,7 +5335,7 @@ function _Datocopago_41() {
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_OPSEGU;
-    SolicitarDll({ datosh: datos_envio }, _dataCON904S_07_41, get_url("/CONTAB/APP/CON904S.DLL"));
+    SolicitarDll({ datosh: datos_envio }, _dataCON904S_07_41, get_url("APP/CONTAB/CON904S.DLL"));
 }
 
 function _dataCON904S_07_41(data) {
@@ -5406,7 +5409,11 @@ function _Aceptartipocopago_41() {
                     var titulo = 'Tipo de pago';
                     POPUP({
                         array: copago,
-                        titulo: titulo
+                        titulo: titulo,
+                        indices:[
+                            {id:'codigo',label:'descripcion'}
+                        ],
+                        callback_f: _Evaluarcopagoestimfact_41
                     },
                         _EvaluarSER822A_41);
                 }
@@ -5426,7 +5433,11 @@ function _EvaluarSER822A_41(data) {
                 var titulo = 'Forma de pago';
                 POPUP({
                     array: tipodepago,
-                    titulo: titulo
+                    titulo: titulo,
+                    indices:[
+                        {id:'codigo',label:'descripcion'}
+                    ],
+                    callback_f: _Aceptartipocopago_41
                 },
                     _EvaluarCON820_41);
             }
@@ -5514,7 +5525,7 @@ function _Leerespec_41() {
     let datos_envio = datosEnvio()
         + '|' + $_ESPECLAB.padStart(3, '0');
     console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_08, get_url('/SALUD/APP/SAL41-08.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_08, get_url('APP/SALUD/SAL41-08.DLL'));
 }
 
 function _dataSAL41_08(data) {
@@ -5716,7 +5727,7 @@ function _Leercosto_41() {
     $('#ccostos_41').val($_COSTOFACT);
     let datos_envio = datosEnvio()
         + '|' + $_COSTOFACT.padStart(4, '0');
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_09, get_url('/SALUD/APP/SAL41-09.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_09, get_url('APP/SALUD/SAL41-09.DLL'));
 
 }
 function _dataSAL41_09(data) {
@@ -6030,7 +6041,7 @@ function _Validardiag1_41() {
     let datos_envio = datosEnvio()
     datos_envio += '|'
     datos_envio += $_DIAG1
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_101, get_url('/SALUD/APP/SAL41-10.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_101, get_url('APP/SALUD/SAL41-10.DLL'));
 }
 
 function _dataSAL41_101(data) {
@@ -6065,7 +6076,7 @@ function _Validardiag2_41() {
     let datos_envio = datosEnvio()
     datos_envio += '|'
     datos_envio += $_DIAG2
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_102, get_url('/SALUD/APP/SAL41-10.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_102, get_url('APP/SALUD/SAL41-10.DLL'));
 }
 
 function _dataSAL41_102(data) {
@@ -6100,7 +6111,7 @@ function _Validardiag3_41() {
     let datos_envio = datosEnvio()
     datos_envio += '|'
     datos_envio += $_DIAG3
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_103, get_url('/SALUD/APP/SAL41-10.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_103, get_url('APP/SALUD/SAL41-10.DLL'));
 }
 
 function _dataSAL41_103(data) {
@@ -6161,7 +6172,7 @@ function _Validarcupcirugia() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_CUPPAQINTFACT.padEnd(13, ' ');
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_072, get_url("/SALUD/APP/SAL41-07.DLL"));
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_072, get_url("APP/SALUD/SAL41-07.DLL"));
     }
 }
 
@@ -6190,7 +6201,11 @@ function _Cerrarventanadetalle_41() {
             var causaestado = JSON.parse(causasestado);
             POPUP({
                 array: causaestado,
-                titulo: "Causa del Evento"
+                titulo: "Causa del Evento",
+                indices: [
+                    {id: 'codigo', label:'descripcion'}
+                ],
+                callback_f: _Cerrarventanadetalle_41
             },
                 _evaluarSER828_41);
         }
@@ -6433,7 +6448,7 @@ function _Validarmedotrfact_41() {
         let datos_envio = datosEnvio()
         datos_envio += '|'
         datos_envio += $_MEDOTRFACT.padStart(10, '0');
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_11, get_url('/SALUD/APP/SAL41-11.DLL'))
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_11, get_url('APP/SALUD/SAL41-11.DLL'))
     }
 }
 function _dataSAL41_11(data) {
@@ -6631,11 +6646,11 @@ function _Validarremite_41() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_REMITEFACT.padStart(10, '0');
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_042, get_url('/SALUD/APP/SAL41-04.DLL'));
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_043, get_url('APP/SALUD/SAL41-04.DLL'));
     }
 }
 
-function _dataSAL41_042(data) {
+function _dataSAL41_043(data) {
     console.debug(data);
     var date = data.split('|');
     $_DESCRIPTER = date[1].trim();
@@ -6650,7 +6665,7 @@ function _dataSAL41_042(data) {
             let datos_envio = datosEnvio();
             datos_envio += '|'
             datos_envio += $_REMITEFACT.padStart(10, '0');
-            SolicitarDll({ datosh: datos_envio }, _dataSAL41_112, get_url('/SALUD/APP/SAL41-11.DLL'));
+            SolicitarDll({ datosh: datos_envio }, _dataSAL41_112, get_url('APP/SALUD/SAL41-11.DLL'));
         }
     }
     else if (date[0].trim() == '01') {
@@ -6747,7 +6762,11 @@ function _Datocondicion_41() {
             var titulo = 'Condicion usuaria';
             POPUP({
                 array: estadousuaria,
-                titulo: titulo
+                titulo: titulo,
+                indices: [
+                    {id:'codigo', label:'descripcion'}
+                ],
+                callback_f: _Datocondicion_41
             },
                 _evaluarSER826_41);
         }
@@ -6764,7 +6783,7 @@ function _Leercondic_41() {
         case '0':
             $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
                 '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">NP APLICA ESTADO</label>' +
+                '<label class="col-md-12 col-sm-12 col-xs-12">NO APLICA ESTADO</label>' +
                 '</div>' +
                 '</div>');
             _Leercondic2_41()
@@ -6845,15 +6864,19 @@ function _Tipoproced_41() {
     var titulo = 'Tipo procedimiento';
     POPUP({
         array: tipoprocedimiento,
-        titulo: titulo
+        titulo: titulo,
+        indices: [
+            { id:'codigo',label:'descripcion'}
+        ],
+        callback_f: _Tipoproced_41
     },
         _evaluarSER829_41);
 }
 
 function _evaluarSER829_41(data) {
-    $_TIPOPROCESTAD = data.id;
-    console.debug(data.id, data)
-    switch (data.id) {
+    $_TIPOPROCESTAD = data.codigo;
+    console.debug(data.codigo, data)
+    switch (data.codigo) {
         case '1':
             $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
                 '<div class="inline-inputs">' +
@@ -6919,13 +6942,17 @@ function SER830() {
     var titulo = 'Personal que atiende';
     POPUP({
         array: personalatiende,
-        titulo: titulo
+        titulo: titulo,
+        indices:[
+            {id:'codigo',label:'descripcion'}
+        ],
+        callback_f: SER830
     },
         _evaluarSER830_41);
 }
 function _evaluarSER830_41(data) {
     console.debug(data);
-    switch (data.id) {
+    switch (data.codigo) {
         case 1:
         case 2:
         case 3:
@@ -7094,7 +7121,11 @@ function _SER834A() {
     personalatiende = JSON.parse(personalatiende);
     POPUP({
         array: personalatiende,
-        titulo: 'Finalidad de la consulta'
+        titulo: 'Finalidad de la consulta',
+        indices:[
+            {id:'codigo',label:'descripcion'}
+        ],
+        callback_f: _SER834A
     },
         _evaluarSER834A_41);
 }
@@ -7270,7 +7301,7 @@ function _Datocronico2_41() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_CRONICOFACT.padStart(3, '0');
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_12, get_url('/SALUD/APP/SAL41-12.DLL'));
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_12, get_url('APP/SALUD/SAL41-12.DLL'));
     }
 }
 
@@ -7323,7 +7354,7 @@ function _Validarcapitacion_41() {
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_CONTROLCAPESTAD.padStart(2, '0');
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_13, get_url('/SALUD/APP/SAL41-13'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_13, get_url('APP/SALUD/SAL41-13'));
 }
 function _dataSAL41_13(data) {
     console.debug(data);
@@ -7617,7 +7648,7 @@ function _Leerfactura2_41() {
     datos_envio += '|' + $_VLRIVA3FACT
     datos_envio += '|' + $_EMPRESAPACIRIPS
     console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_15, get_url('/SALUD/APP/SAL41-15.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataSAL41_15, get_url('APP/SALUD/SAL41-15.DLL'));
 }
 function _dataSAL41_15(data) {
     console.debug(data);
@@ -7628,7 +7659,7 @@ function _dataSAL41_15(data) {
     datos_envio += '|' + $_SECUNUM
     datos_envio += '|' + $_NROFACT
     datos_envio += '|' + $_FECHAFACT
-    SolicitarDll({ datosh: datos_envio }, _dataCON007X_02_41, get_url('/CONTAB/APP/CON007X.DLL'));
+    SolicitarDll({ datosh: datos_envio }, _dataCON007X_02_41, get_url('APP/CONTAB/CON007X.DLL'));
 }
 function _dataCON007X_02_41(data) {
     console.debug(data);
@@ -7958,7 +7989,7 @@ function _Imprimir7_41() {
         let datos_envio = datosEnvio()
         datos_envio += '|' + $_CONTROLCAPNUM
         datos_envio += '|' + $_FECHAFACT
-        SolicitarDll({ datosh: datos_envio }, _dataSAL41_16, get_url("/SALUD/APP/SAL41-16.DLL")); //FALTA
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_16, get_url("APP/SALUD/SAL41-16.DLL")); //FALTA
     }
 }
 
@@ -9063,4 +9094,5 @@ function _MaskDate_41() {
             }
         }
     });
+    fechaMask.updateValue();
 } 
