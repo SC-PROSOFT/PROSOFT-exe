@@ -20,6 +20,7 @@ function _ventanaSerHosp(e) {
         _ventanaDatos({
             titulo: "SERVICIOS HOSPITALARIOS",
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_servhos',
             callback_esc: function () {
                 _validarDato()
@@ -119,11 +120,11 @@ function _validarDato() {
                         case 7:
                             if (!busquedaArray) {
                                 detalle717()
-                               
+
                             } else {
                                 CON851('00', '00', null, 'error', 'error');
                                 _validarDato()
-                               
+
                             }
                             break;
                         case 8:
@@ -210,38 +211,39 @@ function detalle717() {
 
 function envioDatSer717() {
     var novd717 = $_NovedSer717
-    var codg717 = $_COD717
     var desc717 = espaciosDer($('#descripServh717').val(), 25)
 
     LLAMADO_DLL({
-        dato: [novd717, codg717, desc717],
-        callback: _limpiarDatos717,
+        dato: [novd717, $_COD717, desc717],
+        callback: function (data) {
+            validarResp_717(data, $_COD717, desc717)
+        },
         nombredll: 'SAL717-02',
         carpeta: 'SALUD'
     })
 }
 
 
-function _limpiarDatos717(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
-        switch (parseInt($_NovedSer717)) {
-            case 7:
-                mensaje = "Creado Correctamente"
-                break;
-            case 8:
-                mensaje = "Modificado correctamente"
-                break;
-        }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
-    } else {
-        CON852(temp[0], temp[1], temp[2]);
-    }
-}
+// function _limpiarDatos717(data) {
+//     _inputControl('reset');
+//     _toggleNav();
+//     var temp = data.split('|')
+//     console.log(temp)
+//     if (temp[0].trim() == '00') {
+//         var mensaje
+//         switch (parseInt($_NovedSer717)) {
+//             case 7:
+//                 mensaje = "Creado Correctamente"
+//                 break;
+//             case 8:
+//                 mensaje = "Modificado correctamente"
+//                 break;
+//         }
+//         jAlert({ titulo: 'Notificacion', mensaje: mensaje })
+//     } else {
+//         CON852(temp[0], temp[1], temp[2]);
+//     }
+// }
 
 // function envioDatSer717() {
 //     var novd717 = $_NovedSer717
@@ -259,89 +261,92 @@ function _limpiarDatos717(data) {
 // }
 
 
-// function validarResp_717(data, codg717, desc717) {
-//     loader('hide');
-//     var rdll = data.split('|');
-//     console.log(rdll[0])
-//     if (rdll[0].trim() == '00') {
-//         switch (parseInt($_NovedSer717)) {
-//             case 7:
-//                 _consultaSql({
-//                     sql: `INSERT INTO sc_servhos VALUES ('${codg717}', '${desc717}');`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas717();
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas717();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 8:
-//                 _consultaSql({
-//                     sql: `UPDATE sc_servhos SET descrip_serv='${desc717}' WHERE codigo = '${codg717}' `,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas717()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas717();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 9:
-//                 _consultaSql({
-//                     sql: `DELETE FROM sc_servhos WHERE codigo = '${codg717}'`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas717()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas717()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//         }
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-// }
+function validarResp_717(data, $_COD717, desc717) {
+    loader('hide');
+    var rdll = data.split('|');
+    console.log(rdll[0])
+    if (rdll[0].trim() == '00') {
+        switch (parseInt($_NovedSer717)) {
+            case 7:
+                _consultaSql({
+                    sql: `INSERT INTO sc_servhos VALUES ('${$_COD717}', '${desc717}');`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas717();
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas717();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 8:
+                _consultaSql({
+                    sql: `UPDATE sc_servhos SET nombre='${desc717}' WHERE codigo = '${$_COD717}' `,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas717()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas717();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 9:
+                _consultaSql({
+                    sql: `DELETE FROM sc_servhos WHERE codigo = '${$_COD717}'`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas717()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas717()
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+        }
+    } else {
+        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+    }
+}
 
-// function limpiarCajas717() {
-//     _toggleNav();
-//     _inputControl('reset');
-//     _inputControl('disabled');
+function limpiarCajas717() {
+    _toggleNav();
+    _inputControl('reset');
+    _inputControl('disabled');
 
-// }
+}
 
 // FUNCIONES PARA DATOS NUEVOS
 function buscarDescrip_717(data) {

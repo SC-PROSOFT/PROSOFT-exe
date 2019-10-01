@@ -1,7 +1,7 @@
 /* NOMBRE RM --> SER134 // NOMBRE ELECTR --> SAL714 */
 
 var $_NovedSer714, $_COD_PACI, $_COD_MAESTROS;
-var $fechareg, fechaActual714, $cedula, $_DATOSW, $_fechacrea, $fchmodf, $FECHAPERT714, $fecrea;
+var $fechareg, fechaActual714, $cedula, $_DATOSW, $_fechacrea, $fchmodf, $FECHAPERT714, $fecrea, $fechaper;
 var arrayDatos714, arrayPrograma;
 
 $(document).ready(function () {
@@ -10,7 +10,7 @@ $(document).ready(function () {
         { input: 'cedula', app: '714', funct: _ventanaTercr }
     ]);
 
-    $_ADMINW = localStorage.cod_oper ? localStorage.cod_oper : false;
+    $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
     loader('hide');
     CON850(_evaluarCON850);
 });
@@ -19,15 +19,17 @@ $(document).ready(function () {
 function _ventanaTercr(e) {
     loader('hide');
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos_lite({
+        _ventanaDatos({
             titulo: 'Ventana Pacientes',
+            tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_pacie',
-            indice: ['cedula', 'nombre'],
-            mascara: [
-                {
-                }
-            ],
-            minLength: 1,
+            // indice: ['nombre', 'cedula'],
+            // mascara: [
+            //     {
+            //     }
+            // ],
+            // minLength: 1,
             callback_esc: function () {
                 _validarDatPaci714()
             },
@@ -65,15 +67,21 @@ function _validarFechAper() {
     var mm = aa.getMonth() + 1;
     var dd = aa.getDate();
 
-    $_FCREA = aa.getFullYear() + (mm < 10 ? '0' : '') + mm + (dd < 10 ? '0' : '') + dd;
-    $('#fechaCrea714').val($_FCREA.trim());
+   
+    $_fechacr = aa.getFullYear() + (mm < 10 ? '0' : '') + mm + (dd < 10 ? '0' : '') + dd;
+    $('#fechaCrea714').val($_fechacr);
+  
+    $_feccrea = $_fechacr;
 
-    $creafec = $_FCREA;
+    $_ANOREG = $_feccrea.substring(2, 4)
+    $_MESREG = $_feccrea.substring(4, 6)
+    $_DIAREG = $_feccrea.substring(6, 8)
 
-    $_fechacrea = aa.getFullYear() + (mm < 10 ? '0' : '') + mm + (dd < 10 ? '0' : '') + dd;
+    $fchcreacion = $_ANOREG + $_MESREG + $_DIAREG
 
-    $fechacr = aa.getFullYear() + '/' + (mm < 10 ? '0' : '') + mm + '/' + (dd < 10 ? '0' : '') + dd;
-    $('#fechAper714').val($fechacr.trim());
+    $fechaper = aa.getFullYear() + '/' + (mm < 10 ? '0' : '') + mm + '/' + (dd < 10 ? '0' : '') + dd;
+    $('#fechAper714').val($fechaper);
+    
 
     validarNroFicha714()
 }
@@ -85,7 +93,8 @@ function validarNroFicha714() {
             orden: '1'
         },
         function () { CON850(_evaluarCON850); },
-        function () { validarIdentif714(); }
+        // function () { validarIdentif714(); }
+        validarIdentif714
     )
 }
 
@@ -101,7 +110,7 @@ function validarIdentif714() {
             let datos_envio = datosEnvio()
             datos_envio += '|'
             datos_envio += $_CEDUPAC
-            SolicitarDll({ datosh: datos_envio }, on_datoSisvan714, get_url('/SALUD/APP/SAL714-01.DLL'));
+            SolicitarDll({ datosh: datos_envio }, on_datoSisvan714, get_url('/APP/SALUD/SAL714-01.DLL'));
         }
     )
 }
@@ -144,7 +153,7 @@ function on_datoSisvan714(data) {
     }
     else if (date[0].trim() == '01') {
         if ($_NovedSer714 == '7') {
-            edadPacinte();
+            edadPacinte714();
         }
         else {
             CON851('01', '01', null, 'error', 'Error');
@@ -168,7 +177,7 @@ function _datosPaci714() {
 
     $FECHAPERT714 = $_ANOREG + $_MESREG + $_DIAREG
 
-    $("#fechAper714").val(fechfn)
+    $("#fechAper714").val($fechaper)
     $("#cedula_714").val($_CODSIS);
     $('#nombreSer714').val($_NOMSIS);
     $('#sexoSer714').val($_SEXOPACI);
@@ -257,7 +266,7 @@ function _elimRegis714(data) {
 
 // NOVEDAD 7 //
 
-function edadPacinte() {
+function edadPacinte714() {
     $('#nombreSer714').val($_NOMSIS);
     $('#sexoSer714').val($_SEXOPACI);
     $('#direccSer714').val($_DIRECPACI);
@@ -275,7 +284,7 @@ function edadPacinte() {
     var edadpaciente = moment($_ANOPACI + $_MESPACI + $_DIAPACI, "YYYYMMDD").fromNow();
     $_EDADPACIE = edadpaciente.substring(5, 7);
     $_EDADPACIE == 2019 - $_ANOPACI
-    if ( $_EDADPACIE > 28  ) {
+    if ($_EDADPACIE > 28) {
         $('#edadSer714').val($_EDADPACIE + ' Años');
         CON851('74', '74', null, 'error', 'error');
         CON850(_evaluarCON850)
@@ -284,55 +293,49 @@ function edadPacinte() {
         if ($_EDADPACIE > 10) {
             console.debug('años')
             $('#edadSer714').val($_EDADPACIE + ' Años');
-            _validarZona714()
+            fechaCrea714()
         } else {
-            console.debig('meses')
+            console.debug('meses')
             $('#edadSer714').val($_EDADPACIE + ' Meses');
-            fechaCrea()
+            fechaCrea714()
         }
     }
-    fechaCrea()
+    
 }
 
-function fechaCrea() {
-    var aa = new Date();
-    var mm = aa.getMonth() + 1;
-    var dd = aa.getDate();
-
-    $_FCREA = aa.getFullYear() + (mm < 10 ? '0' : '') + mm + (dd < 10 ? '0' : '') + dd;
-    $('#fechaCrea714').val($_FCREA.trim());
-
-    $creafec = $_FCREA;
-
-    $_ANOREG = $creafec.substring(2, 4)
-    $_MESREG = $creafec.substring(4, 6)
-    $_DIAREG = $creafec.substring(6, 8)
-
-    $fecrea = $_ANOREG + $_MESREG + $_DIAREG
-
-    operdCrea()
-}
-
-function operdCrea() {
-    $('#operdCrea714').val($_ADMINW.trim());
-    validaOperd()
-}
-
-
-function validaOperd() {
-    $('#operModf714').val($_ADMINW.trim());
-    fechaModf()
-}
-
-function fechaModf() {
+function fechaCrea714() {
     var d = new Date();
     var mes = d.getMonth() + 1;
     var dia = d.getDate();
 
+    var fchactual = d.getFullYear() + (mes < 10 ? '0' : '') + mes + (dia < 10 ? '0' : '') + dia;
+
+ 
+    $('#fechaCrea714').val(fchactual.trim());
+
+    operdCrea714()
+}
+
+
+function operdCrea714() {
+    $('#operdCrea714').val($_ADMINW.trim());
+    validaOperd714()
+}
+
+
+function validaOperd714() {
+    $('#operModf714').val($_ADMINW.trim());
+    fechaModf714()
+}
+
+function fechaModf714() {
+    var d = new Date();
+    var mes = d.getMonth() + 1;
+    var dia = d.getDate();
     var fechamodf = d.getFullYear() + '/' + (mes < 10 ? '0' : '') + mes + '/' + (dia < 10 ? '0' : '') + dia;
 
     $_fecmodf = d.getFullYear() + (mes < 10 ? '0' : '') + mes + (dia < 10 ? '0' : '') + dia;
-    $('#fechaModf714').val(fechamodf.trim());
+    $('#fechaModf714').val($_fecmodf.trim());
 
     $modfec = $_fecmodf;
 
@@ -351,39 +354,39 @@ function _validarZona714() {
     switch (evaluarzona) {
         case "U":
             $('#zonaSer714').val("U - URBANA");
-            _validarSexo();
+            _validarSexo714();
             break;
         case "R":
             $('#zonaSer714').val("R - RURAL");
-            _validarSexo();
+            _validarSexo714();
             break;
         default:
             $('#zonaSer714').val("NO REGISTRA");
-            _validarSexo();
+            _validarSexo714();
             break;
     }
 }
 
-function _validarSexo() {
+function _validarSexo714() {
     $_SEXO = $_SEXOPACI;
     var evaluarzona = $_SEXO.trim();
     switch (evaluarzona) {
         case "F":
             $('#sexoSer714').val("F - FEMENINO");
-            _validaRegimen();
+            _validaRegimen714();
             break;
         case "M":
             $('#sexoSer714').val("M - MASCULINO");
-            _validaRegimen();
+            _validaRegimen714();
             break;
         default:
             $('#sexoSer714').val("NO REGISTRA");
-            _validaRegimen();
+            _validaRegimen714();
             break;
     }
 }
 
-function _validaRegimen() {
+function _validaRegimen714() {
     $_TIPOPACI = $_REGMPACI
     var evaluar = $_TIPOPACI.trim();
     switch (evaluar) {
@@ -392,234 +395,272 @@ function _validaRegimen() {
             break;
         case "S":
             $('#regmnSer714').val("S - SUBSIDIADO");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         case "V":
             $('#regmnSer714').val("V - VINCULADO");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         case "P":
             $('#regmnSer714').val("P - PARTICULAR");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         case "O":
             $('#regmnSer714').val("O - OTRO TIPO");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         case "D":
             $('#regmnSer714').val("D - DESPLAZ CONT");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         case "E":
             $('#regmnSer714').val("E - DESPLAZ SUBS");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         case "F":
             $('#regmnSer714').val("F - DESPLAZ VINC");
-            _validaEtnia();
+            _validaEtnia714();
             break;
         default:
             $('#regmnSer714').val("NO REGISTRA");
-            _validaEtnia();
+            _validaEtnia714();
             break;
     }
 }
 
-function _validaEtnia() {
+function _validaEtnia714() {
     $_ETNIA = $_ETNPACI
     var evalua = $_ETNIA.trim();
     switch (evalua) {
         case "1":
             $('#etniaSer714').val("1 - INDIGENA");
-            validarBarrio();
+            validarBarrio714();
             break;
         case "2":
             $('#etniaSer714').val("2 - RAIZAL");
-            validarBarrio();
+            validarBarrio714();
             break;
         case "3":
             $('#etniaSer714').val("3 - GITANO");
-            validarBarrio();
+            validarBarrio714();
             break;
         case "4":
             $('#etniaSer714').val("4 - AFROCOL");
-            validarBarrio();
+            validarBarrio714();
             break;
         case "5":
             $('#etniaSer714').val("5 - ROM");
-            validarBarrio();
+            validarBarrio714();
             break;
         case "6":
             $('#etniaSer714').val("6 - MESTIZO");
-            validarBarrio();
+            validarBarrio714();
             break;
         case "9":
             $('#etniaSer714').val("9 - NO APLICA");
-            validarBarrio();
+            validarBarrio714();
             break;
         default:
             $('#etniaSer714').val("NO REGISTRA");
-            validarBarrio();
+            validarBarrio714();
             break;
     }
 }
 
-function validarBarrio() {
+function validarBarrio714() {
+    console.debug('validar barrio')
     validarInputs(
         {
             form: "#barrio",
             orden: '1'
         },
         function () { validarIdentif714(); },
-        _validarCntrSalud
+        _validarCntrSalud714
     )
 }
 
-function _validarCntrSalud() {
+function _validarCntrSalud714() {
+    console.debug('centro de salud');
     validarInputs(
         {
             form: "#centrosalud",
             orden: '1'
         },
-        function () { validarBarrio(); },
-        _datoLact
+        function () { validarBarrio714(); },
+        _datoLact714
     )
 }
 
 
-function _datoLact() {
-    var datoslacta = '[{"codigo": "1","descripcion": "SI"},{"codigo": "2", "descripcion": "NO"}]';
-    var datoslacta = JSON.parse(datoslacta);
+function _datoLact714() {
+
+    var datosLacta = [
+        { "COD": "1", "DESCRIP": "Si" },
+        { "COD": "2", "DESCRIP": "No" }
+    ]
+
     POPUP({
-        array: datoslacta,
-        titulo: 'Lactancia Actual?'
-    },
-        _evaluardatolact_714
-    );
+        array: datosLacta,
+        titulo: 'Lactancia Actual?',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _validarCntrSalud714
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+            case '2':
+                $('#LactaSer714').val(data.DESCRIP.trim())
+                $_LACTA = data.DESCRIP.trim()
+                setTimeout(validarExcluLactan714, 300);
+                break;
+        }
+    })
 }
 
-function _evaluardatolact_714(data) {
-    $_LACTA = data.descripcion;
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-            validarExcluLactan();
-            break;
-        default:
-            _validarCntrSalud();
-            break;
-    }
-    $('#LactaSer714').val(data.descripcion);
-}
 
-function validarExcluLactan() {
-    var datosexcl = '[{"codigo": "1","descripcion": "SI"},{"codigo": "2", "descripcion": "NO"}]';
-    var datosexcl = JSON.parse(datosexcl);
+function validarExcluLactan714() {
+
+    var datosExclus = [
+        { "COD": "1", "DESCRIP": "Si" },
+        { "COD": "2", "DESCRIP": "No" }
+    ]
+
     POPUP({
-        array: datosexcl,
-        titulo: 'Exclusiva?'
-    },
-        _evaluarExcl_714
-    );
+        array: datosExclus,
+        titulo: 'Lactancia Exclusiva?',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _datoLact714
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+                $('#exclSer714').val(data.DESCRIP.trim())
+                $_EXCL = data.DESCRIP.trim()
+                setTimeout(validarMeses714, 300);
+                break;
+            case '2':
+                $('#exclSer714').val(data.DESCRIP.trim())
+                $_EXCL = data.DESCRIP.trim()
+                setTimeout(validarProgra714, 300);
+                break;
+        }
+    })
 }
 
-function _evaluarExcl_714(data) {
-    $_EXCL = data.descripcion;
-    switch (parseInt(data.id)) {
-        case 1:
-            validarMeses();
-            break;
-        case 2:
-            validarProgra();
-            break;
-        default:
-            _datoLact();
-            break;
-    }
-    $('#exclSer714').val(data.descripcion);
-}
-
-function validarMeses() {
+function validarMeses714() {
     validarInputs(
         {
             form: "#meses",
             orden: '1'
         },
-        function () { validarExcluLactan(); },
+        function () { validarExcluLactan714(); },
         function () {
-            validarMesLac();
+            validarMesLac714();
         }
     )
 }
 
-function validarMesLac() {
+function validarMesLac714() {
     $_meses = $('#mesLactaSer714').val();
 
     if ($_meses > 9) {
         CON851('03', '03', null, 'error', 'error');
-        validarMeses()
+        validarMeses714()
     } else {
-        validarProgra();
+        validarProgra714();
     }
 }
+function validarProgra714() {
 
-function validarProgra() {
-    var datoprogr = '[{"codigo": "1", "descripcion": "DESAYUNO INFANTIL"},{"codigo": "2", "descripcion": "RESTAURANTE ESCOLAR"},{"codigo": "3", "descripcion": "RECUPERACION NUTRICIONAL"},{"codigo": "4","descripcion": "REFRIGERIOS"},{"codigo": "5", "descripcion": "FAMILIAS EN ACCION"},{"codigo": "6", "descripcion": "HOGAR INFANTIL"},{"codigo": "7", "descripcion": "RED UNIDOS"},{"codigo": "8", "descripcion": "NO SABE"},{"codigo": "9", "descripcion": "NINGUNO"}]';
-    var datoprogra = JSON.parse(datoprogr);
+    var datoProgr = [
+        { "COD": "1", "DESCRIP": "DESAYUNO INFANTIL" },
+        { "COD": "2", "DESCRIP": "RESTAURANTE ESCOLAR" },
+        { "COD": "3", "DESCRIP": "RECUPERACION NUTRICIONAL" },
+        { "COD": "4", "DESCRIP": "REFRIGERIOS" },
+        { "COD": "5", "DESCRIP": "FAMILIAS EN ACCION" },
+        { "COD": "6", "DESCRIP": "HOGAR INFANTIL" },
+        { "COD": "7", "DESCRIP": "RED UNIDOS" },
+        { "COD": "8", "DESCRIP": "NO SABE" },
+        { "COD": "9", "DESCRIP": "NINGUNO" }
+    ]
     POPUP({
-        array: datoprogra,
-        titulo: 'Programa Nutricional'
-    },
-        _evaluarprograma
-    );
+        array: datoProgr,
+        titulo: 'Incrementar Tarifa',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _datoLact714
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+                $_PROGRM = "DI"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '2':
+                $_PROGRM = "RE"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '3':
+                $_PROGRM = "RN"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '4':
+                $_PROGRM = "RF"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '5':
+                $_PROGRM = "FA"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '6':
+                $_PROGRM = "HI"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '7':
+                $_PROGRM = "RU"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '8':
+                $_PROGRM = "NS"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+            case '9':
+                $_PROGRM = "NI"
+                $('#progrSer714').val($_PROGRM)
+                $("#descrProgr714").val(data.DESCRIP.trim());
+                $_PROGRM = data.COD.trim()
+                datosCompletos714();
+                break;
+        }
+    })
 }
 
-function _evaluarprograma(data) {
-    $_PROGRM = (data.id);
-    switch (parseInt(data.id)) {
-        case 1:
-            $_PROGRM = "DI"
-            datosCompletos714()
-            break;
-        case 2:
-            $_PROGRM = "RE"
-            datosCompletos714()
-            break;
-        case 3:
-            $_PROGRM = "RN"
-            datosCompletos714()
-            break;
-        case 4:
-            $_PROGRM = "FA"
-            datosCompletos714()
-            break;
-        case 5:
-            $_PROGRM = "FA"
-            datosCompletos714()
-            break;
-        case 6:
-            $_PROGRM = "HI"
-            datosCompletos714()
-            break;
-        case 7:
-            $_PROGRM = "RU"
-            datosCompletos714()
-            break;
-        case 8:
-            $_PROGRM = "NS"
-            datosCompletos714()
-            break;
-        case 9:
-            $_PROGRM = "NI"
-            datosCompletos714()
-            break;
-        default:
-            _datoLact();
-            break;
-    }
-    $('#progrSer714').val($_PROGRM)
-    $("#descrProgr714").val(data.descripcion);
-}
 
 function datosCompletos714() {
     var cedula = cerosIzq($_CEDUPAC.trim(), 15)
@@ -633,8 +674,6 @@ function datosCompletos714() {
     $operCre = $_ADMINW
     $operMdfc = $_ADMINW
 
-
-
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_NovedSer714
@@ -643,7 +682,7 @@ function datosCompletos714() {
     datos_envio += '|'
     datos_envio += ficha
     datos_envio += '|'
-    datos_envio += $FECHAPERT714
+    datos_envio += $fechaper
     datos_envio += '|'
     datos_envio += centsald
     datos_envio += '|'
@@ -659,14 +698,14 @@ function datosCompletos714() {
     datos_envio += '|'
     datos_envio += $operCre
     datos_envio += '|'
-    datos_envio += $fecrea
+    datos_envio += $fchcreacion
     datos_envio += '|'
     datos_envio += $operMdfc
     datos_envio += '|'
     datos_envio += $fchmodf
 
     console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, validarElimi714, get_url('/SALUD/APP/SAL714-02.DLL'));
+    SolicitarDll({ datosh: datos_envio }, validarElimi714, get_url('/APP/SALUD/SAL714-02.DLL'));
 
 }
 
