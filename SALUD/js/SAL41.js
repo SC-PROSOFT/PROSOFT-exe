@@ -4,7 +4,7 @@ var $_DESCRIPTER = new Array();
 var $_NOM_PAC = new Array();
 var $_SECUNUM, $_SECUNUM1, $_SECUNUM2, $_TIPO_COMP = "1  ", $_NROFACT, $_OPSEGU, $_NRONUM, $_SWINVALID, $_SECUOTROS, $_NROOTROS, $_NROCTAFACT, $_LLAVESALIDANUM;
 var $_FECHARETNUM, $_FECHASIGFACT, $_FECHAFACT, $_SWORDSERV, $_ARTFACT, $_MULTFACT;
-var $_HORACITFACT = '';
+var $_DIASTRATAFACT = $_CODLOTEFACT = $_HORACITFACT = $_DATOSETCUP =  '';
 var $_facturas_A = [], $_facturas_P = [], $_facturas_T = [];
 
 var $_CANTMAX, $_VALORBRUTO, $_VALORBASE1IVA, $_VALORBASE2IVA, $_VALORBASE3IVA;
@@ -291,6 +291,7 @@ function _Revisardato_41() {
 }
 
 function _Datounidad_41() {
+    console.debug('SER873');
     let datos_envio = datosEnvio()
     SolicitarDll({ datosh: datos_envio }, _dataSER873_41, get_url('/SALUD/APP/SER873.DLL'));
     // _consultaSql({
@@ -306,28 +307,28 @@ function _Datounidad_41() {
     // })
 }
 
-function _dataSER873_41(data){
-data = data.split('|');
-var json = data[1].trim();
-let rutaJson = get_url('/progdatos/json/' + json + '.JSON');
-if (data[0].trim() == '00'){
-    SolicitarDatos(
-        null,
-        function (data) {
-            $_UNDSERVICIO_401 = data.UNIDSERV;
-            console.debug(data, json);
-            let arrayEliminar = [];
-            arrayEliminar.push(json);
-            _eliminarJson(arrayEliminar, on_eliminarJsonTablatar_41);
-            _UndServicio_41();
-            console.debug('cree el json y lo elimine de unidades de servicio');
-        },
-        rutaJson
-    );
-}
-else {
-    CON852(data[0],data[1],data[2],_toggleNav)
-}
+function _dataSER873_41(data) {
+    data = data.split('|');
+    var json = data[1].trim();
+    let rutaJson = get_url('/progdatos/json/' + json + '.JSON');
+    if (data[0].trim() == '00') {
+        SolicitarDatos(
+            null,
+            function (data) {
+                $_UNDSERVICIO_401 = data.UNIDSERV;
+                console.debug(data, json);
+                let arrayEliminar = [];
+                arrayEliminar.push(json);
+                _eliminarJson(arrayEliminar, on_eliminarJsonTablatar_41);
+                _UndServicio_41();
+                console.debug('cree el json y lo elimine de unidades de servicio');
+            },
+            rutaJson
+        );
+    }
+    else {
+        CON852(data[0], data[1], data[2], _toggleNav)
+    }
 }
 
 function _UndServicio_41() {
@@ -374,13 +375,13 @@ function _evaluarSER873_41(data) {
     $_UNSERW = data.id;
     for (var i in $_UNDSERVICIO_401) {
         if ($_UNDSERVICIO_401[i].codigo == $_UNSERW) {
-            $_EDADMAXSERV = $_UNDSERVICIO_401[i].edad_max;
+            $_EDADMAXSERV = $_UNDSERVICIO_401[i].EDADMAX;
             $_UNDEDADMAXSERV = $_EDADMAXSERV.substring(0, 1);
             $_VLREDADMAXSERV = $_EDADMAXSERV.substring(1, 4);
-            $_EDADMINSERV = $_UNDSERVICIO_401[i].edad_min;
+            $_EDADMINSERV = $_UNDSERVICIO_401[i].EDADMIN;
             $_UNDEDADMINSERV = $_EDADMINSERV.substring(0, 1);
             $_VLREDADMINSERV = $_EDADMAXSERV.substring(1, 4);
-            $_CCOSTOSERV = $_UNDSERVICIO_401[i].costo_unid;
+            $_CCOSTOSERV = $_UNDSERVICIO_401[i].CENCOS;
         }
     }
 }
@@ -1156,6 +1157,7 @@ function _Controldispensacion_41() {
 }
 
 function _Evaluarfecha_41() {
+    _MaskDate_41();
     validarInputs(
         {
             form: "#FECHA_401",
@@ -1164,7 +1166,6 @@ function _Evaluarfecha_41() {
         function () { _Revisardato_41() },
         _Controlfecha_41
     )
-    _MaskDate_41();
     fechaMask.updateValue();
 }
 
@@ -2122,10 +2123,12 @@ function _dataSAL41_04(data) {
 }
 
 function _Crearcliente_41() {
-    bootbox.dialog({
-        message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Actualización Maestro de terceros...</div>',
-        closeButton: false
-    });
+    // bootbox.dialog({
+    //     message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Actualización Maestro de terceros...</div>',
+    //     closeButton: false
+    // });
+    vector = ['on', 'Actualizando maestro de pacientes...']
+    _EventocrearSegventana(vector, _Evaluarcliente_41);
     setTimeout(_Actualizacionmaestros_41, 50);
 }
 
@@ -2808,10 +2811,12 @@ function _dataCON904S_01_41(data) {
         if ((swinvalid1 == '00') && ($_SWCREAR == '0')) {
             $_SWCREAR = '1';
             // ACTUALIZACION DE MAESTRO DE PACIENTES SER110C
-            bootbox.dialog({
-                message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Actualización de pacientes...</div>',
-                closeButton: false
-            });
+            // bootbox.dialog({
+            //     message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Actualización de pacientes...</div>',
+            //     closeButton: false
+            // });
+            vector = ['on', 'Actualizando maestro de pacientes...']
+            _EventocrearSegventana(vector, _Evaluaridhistoriafact_41);
             vector = ['another', 'SALUD/PAGINAS/SAL7767.html']
             _Seconndwindow({ params: vector });
             // setTimeout(_Actualizacionmaestrosu_41, 50);
@@ -3823,6 +3828,7 @@ function _Leerarticulo2_41() {
     else {
         if (($_GRUPOFACT == 'XM') || ($_GRUPOFACT == 'XP') || ($_GRUPOFACT == 'XN')) {
             $_LLAVETAB = $_CODTABW + $_TIPOTABW + $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
+            $_LLAVECUP = $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
             // LLAMADO_DLL({
             //     dato: [$_LLAVETAB, $_NITUSU, $_CONVENIONUM],
             //     callback: _dataINV401_13_41,
@@ -3836,12 +3842,14 @@ function _Leerarticulo2_41() {
             datos_envio += $_NITUSU;
             datos_envio += '|'
             datos_envio += $_CONVENIONUM;
+            datos_envio += '|' + $_LLAVECUP;
             console.debug(datos_envio);
             SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("/SALUD/APP/SAL41-07.DLL"));
         }
         else {
             $_ALMFACT = '     ';
             $_LLAVETAB = $_CODTABW + $_TIPOTABW + $_GRUPOFACT + $_CODARTFACT.padEnd(8, ' ');
+            $_LLAVECUP = $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
             // LLAMADO_DLL({
             //     dato: [$_LLAVETAB, $_NITUSU, $_CONVENIONUM],
             //     callback: _dataINV401_13_41,
@@ -3855,6 +3863,7 @@ function _Leerarticulo2_41() {
             datos_envio += $_NITUSU;
             datos_envio += '|'
             datos_envio += $_CONVENIONUM;
+            datos_envio += '|' + $_LLAVECUP;
             console.debug(datos_envio);
             SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("/SALUD/APP/SAL41-07.DLL"));
         }
@@ -4029,8 +4038,18 @@ function _dataSAL41_07(data) {
     $_DESCRIPTAB = date[2].trim();
     $_DESCRIP1TAB = $_DESCRIPTAB.substring(0, 1);
     $_GRSERTAB = date[3].trim();
-    $_MONTOTAB = date[4].trim();
-    $_MONTOTAB = parseFloat($_MONTOTAB);
+    $_MONTOTAB = date[4];
+    // console.debug($_MONTOTAB, $_MONTOTAB.length);
+    let montotab1 = $_MONTOTAB.substring(0,11);
+    montotab1 = montotab1.replace('.', '');
+    montotab1 = parseInt(montotab1);
+    isNaN(montotab1) ? montotab1 = 0 : montotab1 = montotab1;
+    console.debug(montotab1);
+    let montotab2 = $_MONTOTAB.substring(11,14);
+    montotab2 = parseFloat(montotab2);
+    console.debug(montotab2);
+    $_MONTOTAB = montotab1 + montotab2;
+    console.debug($_MONTOTAB)
     $_FORMALIQTAB = date[5].trim();
     $_NIVELCUP = date[6].trim();
     $_CISCUP = date[7].trim();
@@ -4998,7 +5017,6 @@ function _Total_41() {
 }
 
 function _Almacenartabla() {
-    $_DIASTRATAFACT.trim() == '' ? $_DIASTRATAFACT = 0 : $_DIASTRATAFACT = $_DIASTRATAFACT;
     // let almfact = $_ALMFACT;
     // let artfact = $_ARTFACT;
     // let codelotefact = $_CODLOTEFACT;
@@ -5006,16 +5024,21 @@ function _Almacenartabla() {
     // let vlrfact = $_VALORBRUTO;
     // let diastratafact = $_DIASTRATAFACT;
     // let vlrresultfact = $_VLRLATERFACT;
-    if ($('#TABLA_401 tbody tr').length < 1) {
+    if ($('#TABLA_401 tbody tr').length < 2) {
+        $_DIASTRATAFACT.trim() == '' ? $_DIASTRATAFACT = 0 : $_DIASTRATAFACT = $_DIASTRATAFACT;
+        $_CODLOTEFACT.trim() == '' ? $_CODLOTEFACT = '    ' : $_CODLOTEFACT = $_CODLOTEFACT;
         // $TABLAFACT = [$_ALMFACT, $_ARTFACT, $_CODLOTEFACT, $_CANTFACT, $_VALORBRUTO,$_DIASTRATAFACT, $_VLRLATERFACT]
-        $TABLAFACT = '[{"ALMFACT":"${$_ALMFACT}"},{"ARTFACT":"${$_ARTFACT}"},{"CODLOTEFACT":"${$_CODLOTEFACT}"},{"CANTFACT":"${$_CANTFACT}"},{"VLRFACT":"${$_VALORBRUTO}"},{"DIASTRATAFACT":"${$_DIASTRATAFACT}"},{"VLRLATERFACT":"${$_VLRLATERFACT}"},{"DATOSETCUP":"${$_DATOSETCUP}"},{"CISCUP":"${$_CISCUP}"},{"DESCRIPCUP":"${$_DESCRIPCUP}"},{"CODCUP":"${$_CODSERTAB}"}]'
-        console.debug($_TABLAFACT)
+        $TABLAFACT = '[{"ALMFACT":"' + $_ALMFACT + '","ARTFACT":"' + $_ARTFACT + '","CODLOTEFACT":"' + $_CODLOTEFACT + '","CANTFACT":"' + $_CANTFACT + '","VLRFACT":"' + $_VALORBRUTO + '","DIASTRATAFACT":"' + $_DIASTRATAFACT + '","VLRLATERFACT":"' + $_VLRLATERFACT + '","DATOSETCUP":"' + $_DATOSETCUP + '","CISCUP":"' + $_CISCUP + '","DESCRIPCUP":"' + $_DESCRIPCUP + '","CODCUP":"' + $_CODSERTAB + '"}]'
+        $TABLAFACT = JSON.parse($TABLAFACT);
+        console.debug($TABLAFACT);
     }
     else {
-        $TABLAFACT2 = '[{"ALMFACT":"${$_ALMFACT}"},{"ARTFACT":"${$_ARTFACT}"},{"CODLOTEFACT":"${$_CODLOTEFACT}"},{"CANTFACT":"${$_CANTFACT}"},{"VLRFACT":"${$_VALORBRUTO}"},{"DIASTRATAFACT":"${$_DIASTRATAFACT}"},{"VLRLATERFACT":"${$_VLRLATERFACT}"},{"DATOSETCUP":"${$_DATOSETCUP}"},{"CISCUP":"${$_CISCUP}"},{"DESCRIPCUP":"${$_DESCRIPCUP}"},{"CODCUP":"${$_CODSERTAB}"}]'
+        // $TABLAFACT2 = '[{"ALMFACT":"' + $_ALMFACT + '","ARTFACT":"' + $_ARTFACT + '","CODLOTEFACT":"' + $_CODLOTEFACT + '","CANTFACT":"' + $_CANTFACT + '","VLRFACT":"' + $_VALORBRUTO + '","DIASTRATAFACT":"' + $_DIASTRATAFACT + '","VLRLATERFACT":"' + $_VLRLATERFACT + '","DATOSETCUP":"' + $_DATOSETCUP + '","CISCUP":"' + $_CISCUP + '","DESCRIPCUP":"' + $_DESCRIPCUP + '","CODCUP":"' + $_CODSERTAB + '"}]'
+        $TABLAFACT2 = '{"ALMFACT":"' + $_ALMFACT + '","ARTFACT":"' + $_ARTFACT + '","CODLOTEFACT":"' + $_CODLOTEFACT + '","CANTFACT":"' + $_CANTFACT + '","VLRFACT":"' + $_VALORBRUTO + '","DIASTRATAFACT":"' + $_DIASTRATAFACT + '","VLRLATERFACT":"' + $_VLRLATERFACT + '","DATOSETCUP":"' + $_DATOSETCUP + '","CISCUP":"' + $_CISCUP + '","DESCRIPCUP":"' + $_DESCRIPCUP + '","CODCUP":"' + $_CODSERTAB + '"}'
+        $TABLAFACT2 = JSON.parse($TABLAFACT2);
         $TABLAFACT.push($TABLAFACT2);
         // $TABLAFACT = [$_TABLAFACT, $_ALMFACT, $_ARTFACT, $_CODLOTEFACT, $_CANTFACT, $_VALORBRUTO,$_DIASTRATAFACT, $_VLRLATERFACT]
-        console.debug($_TABLAFACT)
+        console.debug($TABLAFACT)
     }
 }
 
@@ -5663,11 +5686,11 @@ function _Aceptarcosto() {
                 _Datocccosto_41();
             }
             else {
-                _Leercosto_41();
+                _Datocccosto_41();
             }
         }
         else {
-            _Datocccosto_41();
+            _Leercosto_41();
         }
     }
 }
@@ -7945,7 +7968,7 @@ function _dataSAL41_16(data) {
 }
 
 function _Imprimir8_41() {
-    if ((($_CLFACT == '0') && ($_NITUSU == '0822005339')) || (($_REDEXTERNUM == 'S') && ($_DIAGNCUP = ! 'N'))){
+    if ((($_CLFACT == '0') && ($_NITUSU == '0822005339')) || (($_REDEXTERNUM == 'S') && ($_DIAGNCUP = ! 'N'))) {
         //SER421 OTRA OPCION _dataSER4213_41
     }
     if (($_NITUSU == '0900264583') && ($_DIAGNCUP = ! 'N') && ($_CODDIAGESTAD[0].trim() == '')) {
