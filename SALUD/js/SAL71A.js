@@ -3,7 +3,7 @@
 var $_NovedSer71A, arraycups, $_fechaact, $arrayprofes;
 
 $(document).ready(function () {
-    $_ADMINW = localStorage.cod_oper ? localStorage.cod_oper : false;
+    $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
 
     _toggleF8([
         { input: 'espec1', app: '71A', funct: _datoEspec },
@@ -42,21 +42,22 @@ $(document).ready(function () {
 });
 
 // --> F8 CUPS //
-// $(document).on('keydown', '#grupo71A', 
 function _ventanGrp(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "VENTANA CODIGO CUPS",
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_archcups',
             callback_esc: function () {
-                _validarConsulta
+                _validarConsulta71A
             },
             callback: function (data) {
                 console.debug(data);
                 var grupo = data.codigo.trim();
                 $('#grupo_71A').val(grupo.substring(0, 2));
                 $('#codigo_71A').val(grupo.substring(2, 6));
+                $('#descrip71A').val(data.descripcion.trim());
                 _enterInput('#codigo_71A');
             }
         });
@@ -68,6 +69,7 @@ function _ventanCodig(e) {
         _ventanaDatos({
             titulo: "VENTANA CODIGO CUPS",
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_archcups',
             callback_esc: function () {
                 _validarConsulta
@@ -77,6 +79,7 @@ function _ventanCodig(e) {
                 var grupo = data.codigo.trim();
                 $('#grupo_71A').val(grupo.substring(0, 2));
                 $('#codigo_71A').val(grupo.substring(2, 6));
+                $('#descrip71A').val(data.descripcion.trim());
                 _enterInput('#codigo_71A');
             }
         });
@@ -102,7 +105,8 @@ function _datoEspec(e) {
             _ventanaDatos({
                 titulo: 'Ventana De Especialidades',
                 tipo: 'mysql',
-                tablaSql: 'sc_archespcup',
+                db: 'datos_pros',
+                tablaSql: 'sc_archesp',
                 callback_esc: function () {
                     profesiona71A()
                 },
@@ -150,7 +154,7 @@ function on_jsonProfesion71A(data) {
                 var arrayEliminar = [];
                 arrayEliminar.push(json)
                 _eliminarJson(arrayEliminar, on_eliminarJsonPr71A);
-                crearJsonDatos_71A();
+                // crearJsonDatos_71A();
             },
             rutaJson
         );
@@ -167,58 +171,12 @@ function on_eliminarJsonPr71A(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
         console.debug('json eliminado')
-    } else {
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
-
-
-
-function crearJsonDatos_71A() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonDatos71A,
-        nombredll: 'SAL71A-01',
-        carpeta: 'SALUD'
-    })
-}
-
-function on_jsonDatos71A(data) {
-    console.debug(data);
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url('/progdatos/json/' + json + '.JSON');
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arraycups = data.CUPS
-                arraycups.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_eliminarJson71A);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function on_eliminarJson71A(data) {
-    console.log(data);
-    loader('hide');
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        loader('hide');
         CON850(_evaluarCON850);
     } else {
         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
     }
 }
+
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
@@ -230,7 +188,7 @@ function _evaluarCON850(novedad) {
         case 7:
         case 8:
         case 9:
-            _validarConsulta();
+            _validarConsulta71A();
             break;
         default:
             _toggleNav();
@@ -239,7 +197,7 @@ function _evaluarCON850(novedad) {
     $('#novSer71A').val(novedad.id + ' - ' + novedad.descripcion)
 }
 
-function _validarConsulta() {
+function _validarConsulta71A() {
     validarInputs(
         {
             form: "#consulta",
@@ -249,92 +207,133 @@ function _validarConsulta() {
         function () {
             var grupo11 = $('#grupo_71A').val();
             var codig11 = $('#codigo_71A').val();
+            $codigo71A = grupo11 + codig11;
 
-            var codigo71A = grupo11 + codig11;
-
-            $_codglob = codigo71A
-
-            var busquedaArray = buscarDescrip_71A(codigo71A);
-            switch (codigo71A) {
-                case codigo71A.trim().length == 0:
-                    CON851('14', '14', null, 'error', 'error');
-                    _validarConsulta()
-                    break;
-                default:
-                    switch (parseInt($_NovedSer71A)) {
-                        case 7:
-                            if (!busquedaArray) {
-                                $("#descrip71A").val(busquedaArray.DESCRIP);
-                                fechaActual()
-                            } else {
-                                CON851('00', '00', null, 'error', 'error');
-                                _validarConsulta()
-                            }
-                            break;
-                        case 8:
-                        case 9:
-                            if (!busquedaArray) {
-                                CON851('01', '01', null, 'error', 'error');
-                                _validarConsulta()
-                            } else {
-                                _llenarDatSer101(busquedaArray)
-                            }
-                            break;
-                    }
-                    break;
-            }
+            let datos_envio = datosEnvio()
+            datos_envio += '|'
+            datos_envio += $codigo71A
+            SolicitarDll({ datosh: datos_envio }, datoCups71A, get_url('/APP/SALUD/SAL71A-C.DLL'));
         }
     )
 }
 
-function _llenarDatSer101(data) {
-    var grupo = data.CODIGO.trim();
+
+function datoCups71A(data) {
+    console.debug(data);
+    var date = data.split('|');
+
+    $_CODCUP71A = date[2].trim();
+    $_DESCRCUPS71A = date[3].trim();
+    $_ESPEC1_71A = date[4].trim();
+    $_ESPEC2_71A = date[5].trim();
+    $_ESPEC3_71A = date[6].trim();
+    $_ESPEC4_71A = date[7].trim();
+    $_ESPEC5_71A = date[8].trim();
+    $_ESPEC6_71A = date[9].trim();
+    $_ESPEC7_71A = date[10].trim();
+    $_ESPEC8_71A = date[11].trim();
+    $_ESPEC9_71A = date[12].trim();
+    $_ESPEC10_71A = date[13].trim();
+    $_ESPEC11_71A = date[14].trim();
+    $_ESPEC12_71A = date[15].trim();
+    $_ESPEC13_71A = date[16].trim();
+    $_ESPEC14_71A = date[17].trim();
+    $_ESPEC15_71A = date[18].trim();
+    $_ESPEC16_71A = date[19].trim();
+    $_ESPEC17_71A = date[20].trim();
+    $_ESPEC18_71A = date[21].trim();
+    $_ESPEC19_71A = date[22].trim();
+    $_ESPEC20_71A = date[23].trim();
+    $_ESPEC21_71A = date[24].trim();
+    $_ESPEC22_71A = date[25].trim();
+    $_ESPEC23_71A = date[26].trim();
+    $_ESPEC24_71A = date[27].trim();
+    $_ESPEC25_71A = date[28].trim();
+    $_ESPEC26_71A = date[29].trim();
+    $_ESPEC27_71A = date[30].trim();
+    $_ESPEC28_71A = date[31].trim();
+    $_ESPEC29_71A = date[32].trim();
+    $_OPER71A = date[33].trim();
+    $_FECHACUPS71A = date[34].trim();
+    $_SEXOCUP71A = date[35].trim();
+    $_ATIEND71A = date[36].trim();
+    $_PYP71A = date[37].trim();
+    $_TIPO71A = date[38].trim();
+    $_FINALD71A = date[39].trim();
+
+    if (date[0].trim() == '00') {
+        if ($_NovedSer71A == '7') {
+            CON851('00', '00', null, 'error', 'Error');
+            _validarConsulta71A();
+        }
+        else {
+            _llenadoDatos71A()
+        }
+    }
+    else if (date[0].trim() == '01') {
+        if ($_NovedSer71A == '7') {
+            fechaAct71A();
+        }
+        else {
+            CON851('01', '01', null, 'error', 'Error');
+            _validarConsulta71A();
+        }
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+
+}
+
+
+function _llenadoDatos71A() {
+    var grupo = $_CODCUP71A;
     $('#grupo_71A').val(grupo.substring(0, 2));
     $('#codigo_71A').val(grupo.substring(2, 6));
-    $('#descrip71A').val(data.DESCRIP.trim());
-    $('#espec1_71A').val(data.ESPECIALD1.trim());
-    $('#espec2_71A').val(data.ESPECIALD2.trim());
-    $('#espec3_71A').val(data.ESPECIALD3.trim());
-    $('#espec4_71A').val(data.ESPECIALD4.trim());
-    $('#espec5_71A').val(data.ESPECIALD5.trim());
-    $('#espec6_71A').val(data.ESPECIALD6.trim());
-    $('#espec7_71A').val(data.ESPECIALD7.trim());
-    $('#espec8_71A').val(data.ESPECIALD8.trim());
-    $('#espec9_71A').val(data.ESPECIALD9.trim());
-    $('#espec10_71A').val(data.ESPECIALD10.trim());
-    $('#espec11_71A').val(data.ESPECIALD11.trim());
-    $('#espec12_71A').val(data.ESPECIALD12.trim());
-    $('#espec13_71A').val(data.ESPECIALD13.trim());
-    $('#espec14_71A').val(data.ESPECIALD14.trim());
-    $('#espec15_71A').val(data.ESPECIALD15.trim());
-    $('#espec16_71A').val(data.ESPECIALD16.trim());
-    $('#espec17_71A').val(data.ESPECIALD17.trim());
-    $('#espec18_71A').val(data.ESPECIALD18.trim());
-    $('#espec19_71A').val(data.ESPECIALD19.trim());
-    $('#espec20_71A').val(data.ESPECIALD20.trim());
-    $('#espec21_71A').val(data.ESPECIALD21.trim());
-    $('#espec22_71A').val(data.ESPECIALD22.trim());
-    $('#espec23_71A').val(data.ESPECIALD23.trim());
-    $('#espec24_71A').val(data.ESPECIALD24.trim());
-    $('#espec25_71A').val(data.ESPECIALD25.trim());
-    $('#espec26_71A').val(data.ESPECIALD26.trim());
-    $('#espec27_71A').val(data.ESPECIALD27.trim());
-    $('#espec28_71A').val(data.ESPECIALD28.trim());
-    $('#espec29_71A').val(data.ESPECIALD29.trim());
-    $('#oper71A').val(data.OPER.trim())
-    $('#fecha71A').val(data.FECHA.trim())
-    $('#sexo71A').val(data.SEXO.trim())
-    $('#persona71A').val(data.ATIENDE.trim());
-    $('#pyp71A').val(data.PYP.trim());
-    $('#proced71A').val(data.TIP_PROC.trim());
-    $('#finalidad71A').val(data.FINALIDAD.trim());
+    $('#descrip71A').val($_DESCRCUPS71A);
+    $('#espec1_71A').val($_ESPEC1_71A);
+    $('#espec2_71A').val($_ESPEC2_71A);
+    $('#espec3_71A').val($_ESPEC3_71A);
+    $('#espec4_71A').val($_ESPEC4_71A);
+    $('#espec5_71A').val($_ESPEC5_71A);
+    $('#espec6_71A').val($_ESPEC6_71A);
+    $('#espec7_71A').val($_ESPEC7_71A);
+    $('#espec8_71A').val($_ESPEC8_71A);
+    $('#espec9_71A').val($_ESPEC9_71A);
+    $('#espec10_71A').val($_ESPEC10_71A);
+    $('#espec11_71A').val($_ESPEC11_71A);
+    $('#espec12_71A').val($_ESPEC12_71A);
+    $('#espec13_71A').val($_ESPEC13_71A);
+    $('#espec14_71A').val($_ESPEC14_71A);
+    $('#espec15_71A').val($_ESPEC15_71A);
+    $('#espec16_71A').val($_ESPEC16_71A);
+    $('#espec17_71A').val($_ESPEC17_71A);
+    $('#espec18_71A').val($_ESPEC18_71A);
+    $('#espec19_71A').val($_ESPEC19_71A);
+    $('#espec20_71A').val($_ESPEC20_71A);
+    $('#espec21_71A').val($_ESPEC21_71A);
+    $('#espec22_71A').val($_ESPEC22_71A);
+    $('#espec23_71A').val($_ESPEC23_71A);
+    $('#espec24_71A').val($_ESPEC24_71A);
+    $('#espec25_71A').val($_ESPEC25_71A);
+    $('#espec26_71A').val($_ESPEC26_71A);
+    $('#espec27_71A').val($_ESPEC27_71A);
+    $('#espec28_71A').val($_ESPEC28_71A);
+    $('#espec29_71A').val($_ESPEC29_71A);
+    $('#oper71A').val($_OPER71A)
+    $('#fecha71A').val($_FECHACUPS71A)
+    $('#sexo71A').val($_SEXOCUP71A)
+    $('#persona71A').val($_ATIEND71A);
+    $('#pyp71A').val($_PYP71A);
+    $('#proced71A').val($_TIPO71A);
+    $('#finalidad71A').val($_FINALD71A);
 
     switch (parseInt($_NovedSer71A)) {
         case 8:
-            fechaActual()
+            fechaAct71A()
             break;
         case 9:
-            CON851P('54', _validarConsulta, _eliminaDatos71A)
+            CON851P('54', _validarConsulta71A, _eliminaDatos71A)
             break;
     }
 }
@@ -366,7 +365,7 @@ function validarElim71A(data) {
 
 /// NOVEDAD 7 ////
 
-function fechaActual() {
+function fechaAct71A() {
     var d = new Date();
     var mes = d.getMonth() + 1;
     var dia = d.getDate();
@@ -376,110 +375,161 @@ function fechaActual() {
     $_fechaact = fchactual
     $('#fecha71A').val($_fechaact.trim());
 
-    operd()
+    operd71A()
 }
 
-function operd() {
+function operd71A() {
     $('#oper71A').val($_ADMINW.trim());
-    _datoPYP()
+    _datoPYP71A()
 }
 
-function _datoPYP() {
-    var datospyp = '[{"codigo": "1","descripcion": "SI"},{"codigo": "2", "descripcion": "NO"}]';
-    var datospyp = JSON.parse(datospyp);
+function _datoPYP71A() {
+    var datosPyp = [
+        { "COD": "1", "DESCRIP": "Si" },
+        { "COD": "2", "DESCRIP": "No" }
+    ]
+
     POPUP({
-        array: datospyp,
-        titulo: 'PYP?'
-    },
-        _evaluardatopyp
-    );
+        array: datosPyp,
+        titulo: 'PYP?',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _validarConsulta71A
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+                $('#pyp71A').val(data.DESCRIP.trim())
+                $_PYP = data.DESCRIP.trim()
+                setTimeout(validarProce71A, 300);
+                break;
+            case '2':
+                $('#pyp71A').val(data.DESCRIP.trim())
+                $_PYP = data.DESCRIP.trim()
+                setTimeout(validarFinalidad, 300);
+                break;
+        }
+    })
 }
 
-function _evaluardatopyp(data) {
-    $_PYP = data.descripcion
-    switch (parseInt(data.id)) {
-        case 1:
-            validarTipoProce();
-            break;
-        case 2:
-            validarSexo71A();
-            break;
-        default:
-            _validarConsulta();
-            break;
-    }
-    $('#pyp71A').val(data.descripcion);
-}
+function validarProce71A() {
+    var datoProce = [
+        { "COD": "1", "DESCRIP": "Diagnostico" },
+        { "COD": "2", "DESCRIP": "Terapeutico" },
+        { "COD": "3", "DESCRIP": "Proteccion Especifica" },
+        { "COD": "4", "DESCRIP": "Detec. Temprana Enferm Genr" },
+        { "COD": "5", "DESCRIP": "Destc. Temprana Enferm Prof" },
+        { "COD": "9", "DESCRIP": "No Aplica" }
+    ]
 
-function validarTipoProce() {
-    var datoproce = '[{"codigo": "1", "descripcion": "DIAGNOSTICO"},{"codigo": "2", "descripcion": "TERAPEUTICO"},{"codigo": "3", "descripcion": "PROTECCION ESPECIFICA"},{"codigo": "4","descripcion": "DETEC TEMPRNA ENFER GENER"},{"codigo": "5", "descripcion": "DETEC TEMPRNA ENFER PROF"},{"codigo": "9", "descripcion": "NO APLICA"}]';
-    var datoproces = JSON.parse(datoproce);
     POPUP({
-        array: datoproces,
-        titulo: 'Tipo Procedimiento'
-    },
-        _evaluarprocedimiento);
+        array: datoProce,
+        titulo: 'Tipo Procedimiento',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _datoPYP71A
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '9':
+                $('#proced71A').val(data.COD.trim() + "-" + data.DESCRIP.trim());
+                $_PROCED = data.DESCRIP.trim()
+                setTimeout(validarFinalidad71A, 300);
+                break;
+        }
+    })
 }
 
-function _evaluarprocedimiento(data) {
-    $_PROCED = (data.id).trim();
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 9:
-            console.debug($_PROCED);
-            validarFinalidad();
-            break;
-        default:
-            _datoPYP();
-            break;
-    }
-    $('#proced71A').val(data.id + "-" + data.descripcion);
-}
+function validarFinalidad71A() {
+    var datoFinald = [
+        { "COD": "1", "DESCRIP": "Atencion Parto Puerperio" },
+        { "COD": "2", "DESCRIP": "Atencion Recien Nacido" },
+        { "COD": "3", "DESCRIP": "Atencion Planf. Familiar" },
+        { "COD": "4", "DESCRIP": "Atencion Alt. Crecm y Desarrollo <10" },
+        { "COD": "5", "DESCRIP": "Deteccion Alter Desarrollo Jov" },
+        { "COD": "6", "DESCRIP": "Deteccion Alter Embarazo" },
+        { "COD": "7", "DESCRIP": "Deteccion Alter Adulto" },
+        { "COD": "8", "DESCRIP": "Deteccion Alter Agud Vis" },
+        { "COD": "9", "DESCRIP": "Deteccion Enfermed Profes" },
+        { "COD": "10", "DESCRIP": "No Aplica" },
+        { "COD": "11", "DESCRIP": "Patologia Cronica" }
+    ]
 
-function validarFinalidad() {
-    var datofinal = '[{"codigo": "1","descripcion": "ATENCION PARTO PUERPERIO"},{"codigo": "2", "descripcion": "ATENCION RECIEN NACIDO"},{"codigo": "3", "descripcion": "ATENCION PLANIF FAMILIAR"},{"codigo": "4","descripcion": "ATEN ALT CREC Y DES < 10"},{"codigo": "5", "descripcion": "DETECC ALT DESARR JOVEN"},{"codigo": "6", "descripcion": "DETECC ALTER EMBARAZO"},{"codigo": "7", "descripcion": "DETECC ALTER ADULTO"},{"codigo": "8", "descripcion": "DETECC ALTER AGUD VIS"},{"codigo": "9", "descripcion": "DETECC ENFERMD PROFES"},{"codigo": "A", "descripcion": "NO APLICA"},{"codigo": "B", "descripcion":"PATOLOGIA CRONICA"}]';
-    var datofinales = JSON.parse(datofinal);
     POPUP({
-        array: datofinales,
-        titulo: 'Finalidad de Consulta'
-    },
-        _evaluarFinal
-    )
+        array: datoFinald,
+        titulo: 'Finalidad de Consulta',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: validarProce71A
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '10':
+            case '11':
+                $('#finalidad71A').val(data.COD.trim() + "-" + data.DESCRIP.trim());
+                $_FINAL = data.COD.trim()
+                setTimeout(validarSexo71A, 300);
+                break;
+        }
+    })
 }
 
-function _evaluarFinal(data) {
-    $_FINAL = data.id
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case "A":
-        case "B":
-            if ($_FINAL == "A") {
-                $_FINAL = 10
-                validarSexo71A()
-            } else if ($_FINAL == "B") {
-                $_FINAL = 11
-                validarSexo71A()
-            }
-            validarSexo71A();
-            break;
-        default:
-            validarTipoProce();
-            break;
-    }
-    $('#finalidad71A').val(data.id + "-" + data.descripcion);
-}
+
+
+// function validarFinalidad() {
+//     var datofinal = '[{"codigo": "1","descripcion": "ATENCION PARTO PUERPERIO"},{"codigo": "2", "descripcion": "ATENCION RECIEN NACIDO"},{"codigo": "3", "descripcion": "ATENCION PLANIF FAMILIAR"},{"codigo": "4","descripcion": "ATEN ALT CREC Y DES < 10"},{"codigo": "5", "descripcion": "DETECC ALT DESARR JOVEN"},{"codigo": "6", "descripcion": "DETECC ALTER EMBARAZO"},{"codigo": "7", "descripcion": "DETECC ALTER ADULTO"},{"codigo": "8", "descripcion": "DETECC ALTER AGUD VIS"},{"codigo": "9", "descripcion": "DETECC ENFERMD PROFES"},{"codigo": "A", "descripcion": "NO APLICA"},{"codigo": "B", "descripcion":"PATOLOGIA CRONICA"}]';
+//     var datofinales = JSON.parse(datofinal);
+//     POPUP({
+//         array: datofinales,
+//         titulo: 'Finalidad de Consulta'
+//     },
+//         _evaluarFinal
+//     )
+// }
+
+// function _evaluarFinal(data) {
+//     $_FINAL = data.id
+//     switch (parseInt(data.id)) {
+//         case 1:
+//         case 2:
+//         case 3:
+//         case 4:
+//         case 5:
+//         case 6:
+//         case 7:
+//         case 8:
+//         case 9:
+//         case "A":
+//         case "B":
+//             if ($_FINAL == "A") {
+//                 $_FINAL = 10
+//                 validarSexo71A()
+//             } else if ($_FINAL == "B") {
+//                 $_FINAL = 11
+//                 validarSexo71A()
+//             }
+//             validarSexo71A();
+//             break;
+//         default:
+//             validarTipoProce();
+//             break;
+//     }
+//     $('#finalidad71A').val(data.id + "-" + data.descripcion);
+// }
 
 function validarSexo71A() {
     var datosexo = '[{"codigo": "1","descripcion": "FEMENINO"},{"codigo": "2", "descripcion": "MASCULINO"}]';
@@ -531,7 +581,7 @@ function validarEspecialidad_71A(id) {
         },
         function () {
             if (id == '1') {
-                _validarConsulta()
+                _validarConsulta71A()
             } else {
                 validarEspecialidad_71A(parseInt(id) - 1)
             }
@@ -556,7 +606,7 @@ function validarEspecialidad_71A(id) {
                 }
             } else {
                 _consultaSql({
-                    sql: `SELECT * FROM sc_archespcup WHERE especialidad = '${codigoEspec71A}'`,
+                    sql: `SELECT * FROM sc_archesp WHERE especialidad = '${codigoEspec71A}'`,
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
