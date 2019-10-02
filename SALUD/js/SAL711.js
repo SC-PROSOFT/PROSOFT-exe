@@ -70,7 +70,7 @@ function on_jsonGrupSer711(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     var json = date[1].trim();
-    var rutaJson = get_url('/progdatos/json/' + json + '.JSON');
+    var rutaJson = get_url("temp/" + json);
     if (swinvalid == '00') {
         SolicitarDatos(
             null,
@@ -117,7 +117,7 @@ function on_Ctamay711(data) {
     var rdll = data.split('|');
     if (rdll[0].trim() == '00') {
         var json = rdll[1].trim();
-        var rutaJson = get_url('/progdatos/json/' + json + '.JSON');
+        var rutaJson = get_url("temp/" + json);
         SolicitarDatos(
             null,
             function (data) {

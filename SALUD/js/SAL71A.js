@@ -144,7 +144,7 @@ function on_jsonProfesion71A(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     var json = date[1].trim();
-    var rutaJson = get_url('/progdatos/json/' + json + '.JSON');
+    var rutaJson = get_url("temp/" + json);
     if (swinvalid == '00') {
         SolicitarDatos(
             null,
@@ -154,7 +154,6 @@ function on_jsonProfesion71A(data) {
                 var arrayEliminar = [];
                 arrayEliminar.push(json)
                 _eliminarJson(arrayEliminar, on_eliminarJsonPr71A);
-                // crearJsonDatos_71A();
             },
             rutaJson
         );
