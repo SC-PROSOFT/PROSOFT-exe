@@ -405,7 +405,7 @@ function _datoPYP71A() {
             case '2':
                 $('#pyp71A').val(data.DESCRIP.trim())
                 $_PYP = data.DESCRIP.trim()
-                setTimeout(validarFinalidad, 300);
+                setTimeout(validarFinalidad71A, 300);
                 break;
         }
     })
@@ -437,7 +437,7 @@ function validarProce71A() {
             case '5':
             case '9':
                 $('#proced71A').val(data.COD.trim() + "-" + data.DESCRIP.trim());
-                $_PROCED = data.DESCRIP.trim()
+                $_PROCED = data.COD.trim()
                 setTimeout(validarFinalidad71A, 300);
                 break;
         }
@@ -489,71 +489,56 @@ function validarFinalidad71A() {
 
 
 
-// function validarFinalidad() {
-//     var datofinal = '[{"codigo": "1","descripcion": "ATENCION PARTO PUERPERIO"},{"codigo": "2", "descripcion": "ATENCION RECIEN NACIDO"},{"codigo": "3", "descripcion": "ATENCION PLANIF FAMILIAR"},{"codigo": "4","descripcion": "ATEN ALT CREC Y DES < 10"},{"codigo": "5", "descripcion": "DETECC ALT DESARR JOVEN"},{"codigo": "6", "descripcion": "DETECC ALTER EMBARAZO"},{"codigo": "7", "descripcion": "DETECC ALTER ADULTO"},{"codigo": "8", "descripcion": "DETECC ALTER AGUD VIS"},{"codigo": "9", "descripcion": "DETECC ENFERMD PROFES"},{"codigo": "A", "descripcion": "NO APLICA"},{"codigo": "B", "descripcion":"PATOLOGIA CRONICA"}]';
-//     var datofinales = JSON.parse(datofinal);
-//     POPUP({
-//         array: datofinales,
-//         titulo: 'Finalidad de Consulta'
-//     },
-//         _evaluarFinal
-//     )
-// }
+function validarSexo71A() {
 
-// function _evaluarFinal(data) {
-//     $_FINAL = data.id
+    var datoSexo = [
+        { "COD": "1", "DESCRIP": "Femenino" },
+        { "COD": "2", "DESCRIP": "Masculino" }
+    ]
+
+    POPUP({
+        array: datoSexo,
+        titulo: 'Sexo?',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: _datoPYP71A
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+            case '2':
+                $('#sexo71A').val(data.DESCRIP.trim())
+                $_SEX0 = data.COD.trim()
+                profesiona71A();
+                break;
+        }
+    })
+}
+
+
+// function validarSexo71A() {
+//     var datosexo = '[{"codigo": "1","descripcion": "FEMENINO"},{"codigo": "2", "descripcion": "MASCULINO"}]';
+//     var datosexo = JSON.parse(datosexo);
+//     POPUP({
+//         array: datosexo,
+//         titulo: 'SEXO?'
+//     },
+//         _evaluardatosexo
+//     );
+// }
+// function _evaluardatosexo(data) {
+//     $_SEX0 = data.descripcion
 //     switch (parseInt(data.id)) {
 //         case 1:
 //         case 2:
-//         case 3:
-//         case 4:
-//         case 5:
-//         case 6:
-//         case 7:
-//         case 8:
-//         case 9:
-//         case "A":
-//         case "B":
-//             if ($_FINAL == "A") {
-//                 $_FINAL = 10
-//                 validarSexo71A()
-//             } else if ($_FINAL == "B") {
-//                 $_FINAL = 11
-//                 validarSexo71A()
-//             }
-//             validarSexo71A();
+//             profesiona71A();
 //             break;
 //         default:
-//             validarTipoProce();
+//             _datoPYP();
 //             break;
 //     }
-//     $('#finalidad71A').val(data.id + "-" + data.descripcion);
+//     $('#sexo71A').val(data.descripcion);
 // }
-
-function validarSexo71A() {
-    var datosexo = '[{"codigo": "1","descripcion": "FEMENINO"},{"codigo": "2", "descripcion": "MASCULINO"}]';
-    var datosexo = JSON.parse(datosexo);
-    POPUP({
-        array: datosexo,
-        titulo: 'SEXO?'
-    },
-        _evaluardatosexo
-    );
-}
-
-function _evaluardatosexo(data) {
-    $_SEX0 = data.descripcion
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-            profesiona71A();
-            break;
-        default:
-            _datoPYP();
-            break;
-    }
-    $('#sexo71A').val(data.descripcion);
-}
 
 function profesiona71A() {
     _ventanaDatos({
@@ -671,11 +656,12 @@ function envioDatos_71A() {
     var espcup28 = cerosIzq($("#espec28_71A").val(), 3)
     var espcup29 = cerosIzq($("#espec29_71A").val(), 3)
     var procd = cerosIzq($_PROCED, 1);
+    var finaldad = cerosIzq($_FINAL, 2)
 
     LLAMADO_DLL({
         dato: [$_NovedSer71A, codgcp, espcup1, espcup2, espcup3, espcup4, espcup5, espcup6, espcup7, espcup8, espcup9, espcup10,
             espcup11, espcup12, espcup13, espcup14, espcup15, espcup16, espcup17, espcup18, espcup19, espcup20, espcup21, espcup22,
-            espcup23, espcup24, espcup25, espcup26, espcup27, espcup28, espcup29, $_ADMINW, $_fechaact, sexenvr, atiencup, pypenvr, procd, $_FINAL],
+            espcup23, espcup24, espcup25, espcup26, espcup27, espcup28, espcup29, $_ADMINW, $_fechaact, sexenvr, atiencup, pypenvr, procd, finaldad],
         callback: _limpiarDatos71A,
         nombredll: 'SAL71A-02',
         carpeta: 'SALUD'
