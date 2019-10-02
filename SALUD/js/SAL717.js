@@ -48,7 +48,7 @@ function on_jsonGruptar717(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     var json = date[1].trim();
-    var rutaJson = get_url('/progdatos/json/' + json + '.JSON');
+    var rutaJson = get_url("temp/" + json);
     if (swinvalid == '00') {
         SolicitarDatos(
             null,
