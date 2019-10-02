@@ -44,7 +44,11 @@ function validarInicioModulo(){
         if (modulo == 'PRS' || modulo == 'SEP') $('#mesIngreso').attr('hidden', true);
     }
     var mes = moment().format('MM');
-    $('#mesIngreso').val(mes);
+    if (modulo == 'HIC'){
+        $('#mesIngreso').val('13');    
+    }else{
+        $('#mesIngreso').val(mes);
+    }
 }
 
 function _faseValidarClave(){
@@ -77,6 +81,7 @@ $(document).on('click', '.btn-edit', function () {
 
 function _cargarDatos() {
     var url = get_url('datos/SC-USU-NET.JSON');
+    console.log(url)
     $.getJSON(url, function (data) {
         $_CONTAB = data.Usunet[0].CONTAB;
         $_CONTAB.pop();

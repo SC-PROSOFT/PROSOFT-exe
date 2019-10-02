@@ -513,8 +513,3 @@ _consultaSql = function (params) {
     connection.query(params.sql, params.callback);
     connection.end();
 }
-
-
-function urlJson(nomJson) {
-    return 'http://' + localStorage.IP_DATOS.trim() + '/MAIN-ELECT/progdatos/json/' + nomJson + '.JSON';
-}
