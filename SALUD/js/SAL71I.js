@@ -20,6 +20,7 @@ function _ventanaResgard (e) {
         _ventanaDatos({
             titulo: "NOMBRES DE COMUNIDADES",
             tipo: 'mysql',
+            db: $CONTROL,
             tablaSql: 'sc_gruporesgu',
             callback_esc: function () {
                 _validarDato71I()
@@ -27,6 +28,7 @@ function _ventanaResgard (e) {
             callback: function (data) {
                 console.debug(data);
                 $('#codigo_71I').val(data.codigo.trim())
+                $('#descripSer71I').val(data.nombre.trim())
                 _enterInput('#codigo_71I');
             }
         });
@@ -67,13 +69,13 @@ function _validarDato71I() {
             datos_envio += '|'
             datos_envio += $codigo_71I
 
-            SolicitarDll({ datosh: datos_envio }, on_nomResgu71H, get_url('/SALUD/APP/SAL71I-01.DLL'));
+            SolicitarDll({ datosh: datos_envio }, on_nomResgu71I, get_url('/APP/SALUD/SAL71I-01.DLL'));
 
         }
     )
 }
 
-function on_nomResgu71H(data) {
+function on_nomResgu71I(data) {
     console.debug(data);
     var date = data.split('|');
     $_CODRESGU = date[1].trim();
@@ -119,28 +121,17 @@ function _llenarCampos71I() {
 // ELIMINAR REGISTRO
 function _eliminaDatos71I() {
 
-        let datos_envio = datosEnvio();
-        datos_envio += '|'
-        datos_envio += $_NovedSer71I
-        datos_envio += '|'
-        datos_envio +=  $codigo_71I
-
-        console.debug(datos_envio);
-        SolicitarDll({ datosh: datos_envio }, _eliminar71I, get_url('/SALUD/APP/SAL71I-02.DLL'));
+    LLAMADO_DLL({
+        dato: [$_NovedSer71I, $codigo_71I],
+        callback: function (data) {
+            baseDatos71I(data, $codigo_71I)
+        },
+        nombredll: 'SAL71I-02',
+        carpeta: 'SALUD'
+    })
 }
 
-function _eliminar71I(data) {
-    loader('hide');
-    var rdll = data.split('|');
 
-    if (rdll[0].trim() == '00') {
-        jAlert({ titulo: 'Notificacion', mensaje: "Eliminado correctamente" },
-            function () { _toggleNav(); });
-    } else {
-        console.log(rdll)
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
-}
 
 /// NOVEDAD 7 ////
 
@@ -156,128 +147,103 @@ function detalle71I() {
 }
 
 function envioDatSer71I() {
-    var descpr71I = espaciosDer($('#descripSer71I').val(), 25)
+        var descpr71I = espaciosDer($('#descripSer71I').val(), 25)
 
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSer71I
-    datos_envio += '|'
-    datos_envio +=  $codigo_71I
-    datos_envio += '|'
-    datos_envio += descpr71I
-
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, guardarDatos71I, get_url('/APP/SALUD/SAL71I-02.DLL'));
-
+    LLAMADO_DLL({
+        dato: [$_NovedSer71I, $codigo_71I, descpr71I],
+        callback: function (data) {
+            baseDatos71I(data, $codigo_71I)
+        },
+        nombredll: 'SAL71I-02',
+        carpeta: 'SALUD'
+    })
 }
 
 
-function guardarDatos71I(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
-        switch (parseInt($_NovedSer71H)) {
+function baseDatos71I(data, $codigo_71I, desc71I) {
+    loader('hide');
+    var rdll = data.split('|');
+    console.log(rdll[0])
+    if (rdll[0].trim() == '00') {
+        switch (parseInt($_NovedSer71I)) {
             case 7:
-                mensaje = "Creado Correctamente"
+                _consultaSql({
+                    sql: `INSERT INTO sc_gruporesgu VALUES ('${$codigo_71I}', '${desc71I}');`,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas71I();
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas71I();
+                                    });
+                            }
+                        }
+                    }
+                })
                 break;
             case 8:
-                mensaje = "Modificado correctamente"
+                _consultaSql({
+                    sql: `UPDATE sc_gruporesgu SET nombre='${desc71I}' WHERE codigo = '${$codigo_71I}' `,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas71I()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas71I();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 9:
+                _consultaSql({
+                    sql: `DELETE FROM sc_gruporesgu WHERE codigo = '${$codigo_71I}'`,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCajas71I()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
+                                    function () {
+                                        limpiarCajas71I()
+                                    });
+                            }
+                        }
+                    }
+                })
                 break;
         }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
     } else {
-        CON852(temp[0], temp[1], temp[2]);
+        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
 
+function limpiarCajas71I() {
+    _toggleNav();
+    _inputControl('reset');
+    _inputControl('disabled');
 
-
-
-
-// function validarResp_71I(data, codg71I, desc71I) {
-//     loader('hide');
-//     var rdll = data.split('|');
-//     console.log(rdll[0])
-//     if (rdll[0].trim() == '00') {
-//         switch (parseInt($_NovedSer71I)) {
-//             case 7:
-//                 _consultaSql({
-//                     sql: `INSERT INTO sc_gruporesgu VALUES ('${codg71I}', '${desc71I}');`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas71I();
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas71I();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 8:
-//                 _consultaSql({
-//                     sql: `UPDATE sc_gruporesgu SET descripcion='${desc71I}' WHERE codigo = '${codg71I}' `,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas71I()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas71I();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 9:
-//                 _consultaSql({
-//                     sql: `DELETE FROM sc_gruporesgu WHERE codigo = '${codg71I}'`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas71I()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas71I()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//         }
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-// }
-
-// function limpiarCajas71I() {
-//     _toggleNav();
-//     _inputControl('reset');
-//     _inputControl('disabled');
-
-// }
+}
 

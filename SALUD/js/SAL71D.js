@@ -1,6 +1,6 @@
 /* NOMBRE RM --> SER11A // NOMBRE ELECTR --> SAL71D */
 
-var $_NovedSer71D, arraycoleg, $_fechaact, $arrayprofes;
+var $_NovedSer71D, arraycoleg, $_fechaact, $arrayprofes, $CIUDCOLG71D;
 
 $(document).ready(function () {
 
@@ -20,13 +20,14 @@ function _ventanColeg(e) {
         _ventanaDatos({
             titulo: "VENTANA DE INSTITUCIONES",
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_coleg',
             callback_esc: function () {
                 _validarColeg71D()
             },
             callback: function (data) {
                 console.debug(data);
-                var coleg71D = data.codigo.trim();
+                var coleg71D = data.codigo.trim();     
                 $('#tipo_71D').val(coleg71D.substring(0, 1));
                 $('#ciudad_71D').val(coleg71D.substring(1, 6));
                 $('#codigo_71D').val(coleg71D.substring(6, 12));
@@ -42,14 +43,18 @@ function _ventanCiudad(e) {
         _ventanaDatos({
             titulo: "VENTANA CIUDADES",
             tipo: 'mysql',
+            db: 'datos_pros',
             tablaSql: 'sc_archciud',
             callback_esc: function () {
                 _validarColeg71D
             },
             callback: function (data) {
-                console.debug(data);
-                $('#codciud_71D').val(data.codigo);
-                $('#ciudad_71D').val(data.ciudad);
+                console.debug(data);                           
+                $CIUDCOLG71D = data.nombre.trim()
+                $('#codciud_71D').val(data.cuenta);
+                $('#ciudad71D').val($CIUDCOLG71D);
+                $('#ciudcoleg_71D').val($CIUDCOLG71D);
+
                 _enterInput('#codciud_71D');
             }
         });
@@ -94,7 +99,7 @@ function _validarColeg71D() {
             let datos_envio = datosEnvio()
             datos_envio += '|'
             datos_envio += $colegio71D
-            SolicitarDll({ datosh: datos_envio }, on_datosColeg71D, get_url('/SALUD/APP/SAL71D-01.DLL'));
+            SolicitarDll({ datosh: datos_envio }, on_datosColeg71D, get_url('/APP/SALUD/SAL71D-01.DLL'));
         }
     )
 }
@@ -103,15 +108,15 @@ function on_datosColeg71D(data) {
     console.debug(data);
 
     var date = data.split('|');
-    $_CODCOLEG = date[2].trim();
-    $_NOMBCOLEG = date[3].trim();
-    $_NUCLEOCOLEG = date[4].trim();
-    $_CODCIUDCOLEG = date[5].trim();
-    $_ZONACOLEG = date[6].trim();
-    $_DIRECCOLEG = date[7].trim();
-    $_TELFNCOLEG = date[8].trim();
-    $_CODCIUDAD = date[9].trim();
-    $_CIUDAD = date[10].trim();
+    $_CODCOLEG71D = date[2].trim();
+    $_NOMBCOLEG71D = date[3].trim();
+    $_NUCLEOCOLEG71D = date[4].trim();
+    $_CODCIUDCOLEG71D = date[5].trim();
+    $_ZONACOLEG71D = date[6].trim();
+    $_DIRECCOLEG71D = date[7].trim();
+    $_TELFNCOLEG71D = date[8].trim();
+    $_CODCIUDAD71D = date[9].trim();
+    $_CIUDAD71D = date[10].trim();
 
     if (date[0].trim() == '00') {
         if ($_NovedSer71D == '7') {
@@ -139,19 +144,19 @@ function on_datosColeg71D(data) {
 
 
 function _llenarDatos71D() {
-    var colg71D = $_CODCOLEG;
-    console.debug($_TELFNCOLEG); 
+    var colg71D = $_CODCOLEG71D
+    console.debug($_TELFNCOLEG71D);
     $('#tipo_71D').val(colg71D.substring(0, 1));
     $('#ciudad_71D').val(colg71D.substring(1, 6));
     $('#codigo_71D').val(colg71D.substring(6, 12));
-    $('#ciudcoleg_71D').val($_CIUDAD);
-    $('#descrip71D').val($_NOMBCOLEG)
-    $('#nucleo71D').val($_NUCLEOCOLEG)
-    $('#codciud_71D').val($_CODCIUDAD);
-    $('#ciudad71D').val($_CIUDAD)
-    $('#zona71D').val($_ZONACOLEG);
-    $('#direcc71D').val($_DIRECCOLEG);
-    $('#telefono71D').val($_TELFNCOLEG);
+    $('#ciudcoleg_71D').val($_CIUDAD71D);
+    $('#descrip71D').val($_NOMBCOLEG71D)
+    $('#nucleo71D').val($_NUCLEOCOLEG71D)
+    $('#codciud_71D').val($_CODCIUDAD71D);
+    $('#ciudad71D').val($_CIUDAD71D)
+    $('#zona71D').val($_ZONACOLEG71D);
+    $('#direcc71D').val($_DIRECCOLEG71D);
+    $('#telefono71D').val($_TELFNCOLEG71D);
 
     switch (parseInt($_NovedSer71D)) {
         case 8:
@@ -166,29 +171,15 @@ function _llenarDatos71D() {
 // ELIMINAR REGISTRO
 function _eliminaDatos71D() {
 
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSer71D
-    datos_envio += '|'
-    datos_envio += $colegio71D
-
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, validarElim71D, get_url('/SALUD/APP/SAL71D-02.DLL'));
+    LLAMADO_DLL({
+        dato: [$_NovedSer71D, $colegio71D],
+        callback: function (data) {
+            validarResp_71D(data, $colegio71D)
+        },
+        nombredll: 'SAL71D-02',
+        carpeta: 'SALUD'
+    })
 }
-
-function validarElim71D(data) {
-    loader('hide');
-    var rdll = data.split('|');
-
-    if (rdll[0].trim() == '00') {
-        jAlert({ titulo: 'Notificacion', mensaje: "Eliminado correctamente" },
-            function () { _toggleNav(); });
-    } else {
-        console.log(rdll)
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
-}
-
 
 /// NOVEDAD 7 ///
 function descrp71D() {
@@ -198,7 +189,9 @@ function descrp71D() {
             orden: '1'
         },
         function () { _validarColeg71D(); },
-        function () { validarNucleo71D() }
+        function () {
+            setTimeout(validarNucleo71D, 300)
+        }
     )
 }
 
@@ -209,7 +202,9 @@ function validarNucleo71D() {
             orden: '1'
         },
         function () { descrp71D(); },
-        function () { validarCiud71D(); }
+        function () {
+            setTimeout(validarCiud71D, 300)
+        }
     )
 }
 
@@ -226,32 +221,31 @@ function validarCiud71D() {
     )
 }
 
-
 function validarZonad71D() {
-    var datoszona = '[{"codigo": "1","descripcion": "Urbana"},{"codigo": "2", "descripcion": "Rural"}]';
-    var datozona = JSON.parse(datoszona);
+
+    var datoZona = [
+        { "COD": "1", "DESCRIP": "Urbana" },
+        { "COD": "2", "DESCRIP": "Rural" }
+    ]
+
     POPUP({
-        array: datozona,
-        titulo: 'ZONA'
-    },
-        _evaluardatozona
-    );
+        array: datoZona,
+        titulo: 'Zona',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: validarCiud71D
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+            case '2':
+                $('#zona71D').val(data.COD.trim() + '. ' + data.DESCRIP.trim())
+                $_ZONA = data.COD.trim()
+                validarDirecc71D();
+                break;
+        }
+    })
 }
-
-function _evaluardatozona(data) {
-    $_ZONA = data.id
-    switch (parseInt(data.id)) {
-        case 1:
-        case 2:
-            validarDirecc71D();
-            break;
-        default:
-            validarCiud71D();
-            break;
-    }
-    $('#zona71D').val(data.id + '-' + data.descripcion);
-}
-
 
 function validarDirecc71D() {
     validarInputs(
@@ -271,172 +265,114 @@ function validarTelf71D() {
             orden: '1'
         },
         function () { validarDirecc71D(); },
-        function () { 
-            $TELFONO =  $('#telefono71D').val();
-            envioDatos71D(); }
+        function () {
+            $TELFONO = $('#telefono71D').val();
+            setTimeout(envioDatos71D, 300);
+        }
     )
 }
 
 
 function envioDatos71D() {
-    
+
     var decrpcolg = espaciosDer($('#descrip71D').val(), 50);
     var nucleoclg = cerosIzq($('#nucleo71D').val(), 10);
     var codciud = cerosIzq($('#codciud_71D').val(), 5);
-    var direcclg = espaciosDer($('#direcc71D').val(), 30);
-    var telfclg = cerosIzq($TELFONO, 10);
+    var direcclg = espaciosDer($('#direcc71D').val(), 30); 
 
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSer71D
-    datos_envio += '|'
-    datos_envio += $colegio71D
-    datos_envio += '|'
-    datos_envio += decrpcolg
-    datos_envio += '|'
-    datos_envio += nucleoclg
-    datos_envio += '|'
-    datos_envio += codciud
-    datos_envio += '|'
-    datos_envio += $_ZONA
-    datos_envio += '|'
-    datos_envio += direcclg
-    datos_envio += '|'
-    datos_envio += telfclg
-
-    console.debug(datos_envio + '  DATOS ENVIADOS' );
-    SolicitarDll({ datosh: datos_envio }, _guardarDatos71D, get_url('/APP/SALUD/SAL71D-02.DLL'));
-
+    LLAMADO_DLL({
+        dato: [$_NovedSer71D, $colegio71D, decrpcolg, nucleoclg, codciud, $_ZONA, direcclg, $TELFONO],
+        callback: function (data) {
+            validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D)
+        },
+        nombredll: 'SAL71D-02',
+        carpeta: 'SALUD'
+    })
 }
 
-
-function _guardarDatos71D(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
+function validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D) {
+    loader('hide');
+    var rdll = data.split('|');
+    console.log(rdll[0])
+    if (rdll[0].trim() == '00') {
         switch (parseInt($_NovedSer71D)) {
             case 7:
-                mensaje = "Creado Correctamente"
+                _consultaSql({
+                    sql: `INSERT INTO sc_coleg VALUES ('${$colegio71D}', '${decrpcolg}', '${$CIUDCOLG71D}');`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCampos71D();
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
+                                    function () {
+                                        limpiarCampos71D();
+                                    });
+                            }
+                        }
+                    }
+                })
                 break;
             case 8:
-                mensaje = "Modificado correctamente"
+                _consultaSql({
+                    sql: `UPDATE sc_coleg SET ciudad='${$CIUDCOLG71D}' colegio='${decrpcolg}' WHERE codigo = '${$colegio71D}' `,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCampos71D()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
+                                    function () {
+                                        limpiarCampos71D();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 9:
+                _consultaSql({
+                    sql: `DELETE FROM sc_coleg WHERE codigo = '${$colegio71D}'`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
+                                    function () {
+                                        limpiarCampos71D()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
+                                    function () {
+                                        limpiarCampos71D()
+                                    });
+                            }
+                        }
+                    }
+                })
                 break;
         }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
     } else {
-        CON852(temp[0], temp[1], temp[2]);
+        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
 
+function limpiarCampos71D() {
+    _toggleNav();
+    _inputControl('reset');
+    _inputControl('disabled');
 
-// function envioDatos71D() {
-//     var tipocol = cerosIzq($('#tipo_71D').val(), 1);
-//     var ciudcol = cerosIzq($('#ciudad_71D').val(), 5);
-//     var codgcol = cerosIzq($('#codigo_71D').val(), 6);
-
-//     var colegio = tipocol + ciudcol + codgcol;
-
-//     var decrpcolg = espaciosDer($('#descrip71D').val(), 50);
-//     var nucleoclg = cerosIzq($('#nucleo71D').val(), 10);
-//     var codciud = cerosIzq($('#codciud_71D').val(), 5);
-//     var zonaclg = $_ZONA.substring(0, 1);
-//     var direcclg = espaciosDer($('#direcc71D').val(), 30);
-//     var telfclg = cerosIzq($('#telefono71D').val(), 10);  
-
-
-//     LLAMADO_DLL({
-//         dato: [$_NovedSer71D, colegio, decrpcolg, nucleoclg, codciud, zonaclg, direcclg, telfclg],
-//         callback: function (data) {
-//             validarResp_71D(data, colegio, decrpcolg, nucleoclg, codciud, zonaclg, direcclg, telfclg)
-//         },
-//         nombredll: 'SAL71D-02',
-//         carpeta: 'SALUD'
-//     })
-// }
-
-// function validarResp_71D(data, colegio, decrpcolg, nucleoclg, codciud, zonaclg, direcclg, telfclg) {
-//     loader('hide');
-//     var rdll = data.split('|');
-//     console.log(rdll[0])
-//     if (rdll[0].trim() == '00') {
-//         switch (parseInt($_NovedSer71D)) {
-//             case 7:
-//                 _consultaSql({
-//                     sql: `INSERT INTO sc_coleg VALUES ('${colegio}', '${decrpcolg}');`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCampos71D();
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCampos71D();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 8:
-//                 _consultaSql({
-//                     sql: `UPDATE sc_coleg SET descripcion='${decrpcolg}' WHERE codigo = '${colegio}' `,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCampos71D()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCampos71D();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 9:
-//                 _consultaSql({
-//                     sql: `DELETE FROM sc_coleg WHERE codigo = '${colegio}'`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCampos71D()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCampos71D()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//         }
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-// }
-
-// function limpiarCampos71D() {
-//     _toggleNav();
-//     _inputControl('reset');
-//     _inputControl('disabled');
-
-// }
+}
