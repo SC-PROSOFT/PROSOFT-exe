@@ -1139,7 +1139,8 @@ function _dataINV103_14(data) {
     if (date[0].trim() == '00') {
 
         var json = date[1].trim();
-        console.log(urlJson(json))
+        var rutajson = get_url("temp/" + json);
+        console.log(rutajson);
         SolicitarDatos(
             null,
             function (data) {
@@ -1150,7 +1151,7 @@ function _dataINV103_14(data) {
                 arrayEliminar.push(json)
                 _eliminarJson(arrayEliminar, on_eliminarJson_103_01);
             },
-            urlJson(json)
+            rutajson
         );
     } else {
         loader('hide');
@@ -1208,7 +1209,8 @@ function _dataINV103_20(data) {
     if (date[0].trim() == '00') {
 
         var json = date[1].trim();
-        console.log(urlJson(json))
+        var rutajson = get_url("temp/" + json);
+        console.log(rutajson);
         SolicitarDatos(
             null,
             function (data) {
@@ -1219,7 +1221,7 @@ function _dataINV103_20(data) {
                 arrayEliminar.push(json)
                 _eliminarJson(arrayEliminar, on_eliminarJson_103_02);
             },
-            urlJson(json)
+            rutajson
         );
     } else {
         loader('hide');
@@ -3071,26 +3073,27 @@ function _dataINV103_15(data) {
     $_VIDAUTILARTW = date[44].trim();
     $_OBSERVFACTARTW = date[45].trim();
     $_UBICAC2ARTW = date[46].trim();
-    $_IMPOCONSARTW = date[47].trim();
-    $_VLRIMPOCONSARTW = date[48].trim();
-    $_OPERELABARTW = date[49].trim();
-    $_FECHAELABARTW = date[50].trim();
+    // $_IMPOCONSARTW = date[47].trim();
+    // $_VLRIMPOCONSARTW = date[48].trim();
+    $_OPERELABARTW = date[47].trim();
+    $_FECHAELABARTW = date[48].trim();
    
-    $_HORAELABARTW = date[51].trim();
+    $_HORAELABARTW = date[49].trim();
   
-    $_OPERMODARTW = date[52].trim();
+    $_OPERMODARTW = date[50].trim();
   
-    $_FECHAMODARTW = date[53].trim();
+    $_FECHAMODARTW = date[51].trim();
  
-    $_HORAMODARTW = date[54].trim();
+    $_HORAMODARTW = date[52].trim();
   
-    $_DESCRIPUSO = date[56].trim();
+    $_DESCRIPUSO = date[53].trim();
     
-    $_DESCRIPUSO2 = date[57].trim();
+    $_DESCRIPUSO2 = date[54].trim();
    
-    var json = date[58].trim();
+    var json = date[55].trim();
 
-    console.log(urlJson(json))
+    var rutajson = get_url("temp/" + json);
+    console.log(rutajson);
     SolicitarDatos(
         null,
         function (data) {
@@ -3100,7 +3103,7 @@ function _dataINV103_15(data) {
             // arrayEliminar.push(rutaJson)
             // _eliminarJson(arrayEliminar, on_eliminarJson_109);
         },
-        urlJson(json)
+        rutajson
     );
 
 
@@ -3129,7 +3132,8 @@ function _dataINV103_16(data) {
     var date = data.split('|');
     if (date[0].trim() == '00'){
         var json = date[1].trim();
-        console.log(urlJson(json))
+        var rutaJson = get_url("temp/" + json);
+        console.log(rutaJson);
         SolicitarDatos(
             null,
             function (data) {
@@ -3140,7 +3144,7 @@ function _dataINV103_16(data) {
                 arrayEliminar.push(json)
                 _eliminarJson(arrayEliminar, on_eliminarJson_103_02);
             },
-            urlJson(json)
+            rutaJson
         );   
     }
     
@@ -3177,7 +3181,8 @@ function _dataINV103_22(data) {
    
     if (date[0].trim() == '00') {
         var json = date[3].trim();
-        console.log(urlJson(json))
+        var rutajson = get_url("temp/" + json);
+        console.log(rutajson);
         SolicitarDatos(
             null,
             function (data) {
@@ -3187,7 +3192,7 @@ function _dataINV103_22(data) {
                 arrayEliminar.push(json)
                 _eliminarJson(arrayEliminar, on_eliminarJson_103_03);
             },
-            urlJson(json)
+            rutajson
         );
 
     } else {
