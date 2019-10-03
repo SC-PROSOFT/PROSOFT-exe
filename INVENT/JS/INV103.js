@@ -2997,7 +2997,7 @@ function _cambioregistro() {
     $_CODARTW = $_CODARTW.padEnd(18, ' ');
     $_CODBARRASARTW = $_CODBARRASARTW.padEnd(15, ' ');
     LLAMADO_DLL({
-        dato: [$_CODARTW, $_CODBARRASARTW],
+        dato: [$_ADMINW, $_CODARTW, $_CODBARRASARTW],
         callback: _dataINV103_15,
         nombredll: 'INV103_15',
         carpeta: 'INVENT'
@@ -3005,7 +3005,7 @@ function _cambioregistro() {
 }
 
 function _dataINV103_15(data) {
-    // console.debug(data, 'INV_103_15');
+    console.debug(data, 'INV_103_15');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     var codenv = date[1].trim();
@@ -3077,21 +3077,14 @@ function _dataINV103_15(data) {
     // $_VLRIMPOCONSARTW = date[48].trim();
     $_OPERELABARTW = date[47].trim();
     $_FECHAELABARTW = date[48].trim();
-   
     $_HORAELABARTW = date[49].trim();
-  
     $_OPERMODARTW = date[50].trim();
-  
     $_FECHAMODARTW = date[51].trim();
- 
     $_HORAMODARTW = date[52].trim();
-  
-    $_DESCRIPUSO = date[53].trim();
-    
-    $_DESCRIPUSO2 = date[54].trim();
-   
-    var json = date[55].trim();
+    $_DESCRIPUSO = date[54].trim();
+    $_DESCRIPUSO2 = date[55].trim();
 
+    var json = date[56].trim();
     var rutajson = get_url("temp/" + json);
     console.log(rutajson);
     SolicitarDatos(
@@ -3105,7 +3098,6 @@ function _dataINV103_15(data) {
         },
         rutajson
     );
-
 
     if (swinvalid == '00') {
         if ($_LISTAPRECIOUSU == '1') {
@@ -3313,8 +3305,8 @@ function _mostrardatos() {
     $('#ubicart_103').val($_UBICAC2ARTW);
     $('#contable_103').val($_CTAARTW);
     $('#contablep_103').val($_NOMBREMAE);
-    $('#impoconsumo_103').val($_IMPOCONSARTW);
-    $('#vlrimpoconsumo_103').val($_VLRIMPOCONSARTW);
+    // $('#impoconsumo_103').val($_IMPOCONSARTW);
+    // $('#vlrimpoconsumo_103').val($_VLRIMPOCONSARTW);
     $('#elab2_103').val($_OPERELABARTW);
     $('#elabd2_103').val($_FECHAELABARTW);
     $('#mod2_103').val($_OPERMODARTW);
