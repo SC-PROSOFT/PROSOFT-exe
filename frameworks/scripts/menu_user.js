@@ -114,7 +114,7 @@ function CON851P(codigo, funCancel, funAccept, a) {
 }
 
 function CON852(err, code, app, func) {
-    var msj = msjError(cerosIzq(code.trim(), 2));
+    var msj = msjError_con852(cerosIzq(code.trim(), 2));
     jAlert(
         { titulo: 'Error ' + err, mensaje: '<b>Mensaje: </b>' + msj + '<br> <b>App:</b> ' + app },
         func
