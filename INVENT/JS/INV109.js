@@ -77,7 +77,7 @@ function _ventanaCentroCosto_109(e) {
             db: $CONTROL,
             tablaSql: 'sc_archcos',
             callback_esc: function () {
-                $('#suc_109').focus()
+                $('#centroCosto_109').focus()
             },
             callback: function (data) {
                 console.log(data)
@@ -96,7 +96,7 @@ function _ventanaAlmacen_109(e) {
             db: $CONTROL,
             tablaSql: 'sc_almac',
             callback_esc: function () {
-                $('#centroCosto_109').focus()
+                $('#almacen_109').focus()
             },
             callback: function (data) {
                 console.log(data)
@@ -109,17 +109,18 @@ function _ventanaAlmacen_109(e) {
 
 function _ventanaListaEnvio_109(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        console.log('entro a ventan f8')
         _ventanaDatos({
             titulo: 'Ventana de Sucursales',
             tipo: 'mysql',
             db: 'datos_pros',
             tablaSql: 'sc_sucur',
             callback_esc: function () {
-                $('#almacen_109').focus()
+                $('#listaEnvio_109').focus()
             },
             callback: function (data) {
                 console.log(data)
-                $('#listaEnvio_109').val(data.cod_sucur.trim());
+                $('#listaEnvio_109').val(data.codigo.trim());
                 _enterInput('#listaEnvio_109');
             }
         });
@@ -139,7 +140,7 @@ function on_json_Prefijos_inv109(data) {
     var rdll = data.split('|');
     if (rdll[0].trim() == '00') {
         var rutaJson = rdll[1].trim()
-        console.log(urlJson(rutaJson))
+        console.log(get_url("temp/" + rutaJson))
         SolicitarDatos(
             null,
             function (data) {
@@ -150,7 +151,7 @@ function on_json_Prefijos_inv109(data) {
                 arrayEliminar.push(rutaJson)
                 _eliminarJson(arrayEliminar, on_eliminarJson_109);
             },
-            urlJson(rutaJson)
+            get_url("temp/" + rutaJson)
         );
     } else {
         loader('hide');
@@ -163,7 +164,8 @@ function on_eliminarJson_109(data) {
     var rdll = data.split('|');
     if (rdll[0].trim() == '00') {
         mostrarDatos_tabla_109()
-        _validacionTablaPrefijos_109('0');
+        validar_NroPrefijo_109()
+        // _validacionTablaPrefijos_109('0');
     } else {
         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
     }
@@ -181,7 +183,7 @@ function buscarProv_fact(proveedor) {
             $('#descripFactElect_109').val('Novacorp')
             break;
         case '4':
-            $('#descripFactElect_109').val('Dispapeles')
+            $('#descripFactElect_109').val('Ekomercio')
             break;
     }
 }
@@ -291,7 +293,8 @@ function validar_NroPrefijo_109() {
     validarInputs(
         {
             form: "#validar_NRO_prefijo109",
-            orden: '1'
+            orden: '1',
+            event_f3: function() {_validacionTablaPrefijos_109('0')}
         },
         function () { salir_109() },
         function () {
@@ -555,6 +558,7 @@ function validar_Almacen_109() {
 
             if (almacen == "XXXXX") {
                 $('#descrip_global_109').val('       ')
+                console.log('almacen normal')
                 validar_lista_109()
             } else {
                 busquedaAlmacen_109(almacen)
@@ -576,6 +580,7 @@ function busquedaAlmacen_109(almacen) {
                 if (results.length > 0) {
                     $('#almacen_109').val(datos.codigo.trim())
                     $('#descrip_global_109').val(datos.nombre.trim())
+                    console.log('almacen bd')
                     validar_lista_109()
                 } else {
                     CON851('01', '01', null, 'error', 'error');
@@ -587,6 +592,7 @@ function busquedaAlmacen_109(almacen) {
 }
 
 function validar_lista_109() {
+    console.log('entro a lista')
     validarInputs(
         {
             form: "#validarLista_Env_109",
@@ -595,25 +601,30 @@ function validar_lista_109() {
         function () { validar_Almacen_109() },
         function () {
             var lista = cerosIzq($('#listaEnvio_109').val(), 2)
+            console.log('salio de lista')
             busquedaSucursal_109(lista)
         }
     )
 }
 
 function busquedaSucursal_109(sucursal) {
+    console.log('entro a busqueda base datos')
     _consultaSql({
-        sql: `SELECT * FROM sc_sucur WHERE cod_sucur LIKE '${sucursal}%'`,
+        sql: `SELECT * FROM sc_sucur WHERE codigo LIKE '${sucursal}%'`,
         db: 'datos_pros',
         callback: function (error, results, fields) {
             if (error) throw error;
             else {
+                console.log(results)
                 var datos = results[0]
                 if (results.length > 0) {
-                    $('#listaEnvio_109').val(datos.cod_sucur.trim())
-                    $('#descrip_global_109').val(datos.descrip_sucur.trim())
+                    $('#listaEnvio_109').val(datos.codigo.trim())
+                    $('#descrip_global_109').val(datos.nombre.trim())
+                    console.log('entro al normal')
                     agregarFilaTabla()
                 } else {
                     if (sucursal == '01') {
+                        console.log('entro al else')
                         agregarFilaTabla()
                     } else {
                         CON851('01', '01', null, 'error', 'error');
@@ -699,7 +710,7 @@ function agregarFilaTabla() {
             CENTRO_COSTO: centroCosto,
             ALMACEN: almacen,
             LISTA_SUC: lista,
-            POS: pos,   
+            POS: pos,
             ESTADO: '8'
         }
     } else {
@@ -772,7 +783,7 @@ function validar_factElect_109() {
         { "COD": "1", "DESCRIP": "Facse" },
         { "COD": "2", "DESCRIP": "Carvajal" },
         { "COD": "3", "DESCRIP": "Novacorp" },
-        { "COD": "4", "DESCRIP": "Dispapeles" }
+        { "COD": "4", "DESCRIP": "Ekomercio" }
     ]
 
     POPUP({
@@ -788,7 +799,7 @@ function validar_factElect_109() {
         $('#descripFactElect_109').val(data.DESCRIP.trim())
 
         console.log(proveedor)
-        if (proveedor == '1') {
+        if (proveedor == '1' || proveedor == '4') {
             popUp_TokenFactElect_109()
         } else {
             _tablatxt_109()
@@ -799,10 +810,9 @@ function validar_factElect_109() {
 
 function popUp_TokenFactElect_109() {
     var fuente = $('#popUp_TokenFactElect_109').html();
-    var dialogo = bootbox.dialog({
+    var dialogo2 = bootbox.dialog({
         title: "Datos de acceso :",
         message: fuente,
-        size: 'extra-large',
         buttons: {
             main: {
                 label: "Aceptar",
@@ -813,7 +823,10 @@ function popUp_TokenFactElect_109() {
             }
         },
     });
-    dialogo.init(function () {
+    console.log(dialogo2)
+    // dialogo.init(function(){console.log('entro')})
+    dialogo2.on('shown.bs.modal', function (e) {
+        console.log('entro a token')
         $('.modal-content').css({ 'width': '900px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' })
         setTimeout(function () {
             var cliente = $('.cliente_token_109')
@@ -822,7 +835,18 @@ function popUp_TokenFactElect_109() {
             $(acceso[1]).val(arrayPrefijos_109[0].ACCESO_TOKEN.trim())
             validar_Cliente_109()
         }, 400);
-    })
+    });
+
+    // dialogo2.init(function () {
+    // $('.modal-content').css({ 'width': '900px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' })
+    // setTimeout(function () {
+    //     var cliente = $('.cliente_token_109')
+    //     $(cliente[1]).val(arrayPrefijos_109[0].CLIENTE_TOKEN.trim())
+    //     var acceso = $('.acceso_token_109')
+    //     $(acceso[1]).val(arrayPrefijos_109[0].ACCESO_TOKEN.trim())
+    //     validar_Cliente_109()
+    // }, 400);
+    // })
 }
 
 function validar_Cliente_109() {
@@ -832,7 +856,7 @@ function validar_Cliente_109() {
             orden: '1'
         },
         function () {
-            bootbox.hideAll()
+            $('[data-bb-handler="main"]').click();
             validar_factElect_109()
         },
         function () {
@@ -854,7 +878,7 @@ function validar_Acceso_109() {
             var acceso = $('.acceso_token_109')
             $_Token_Acceso_109 = espaciosDer($(acceso[1]).val(), 80)
             console.log($_Token_Acceso_109)
-            bootbox.hideAll()
+            $('[data-bb-handler="main"]').click();
             _tablatxt_109()
         }
     )
@@ -1020,8 +1044,10 @@ function baseDatos_109(sql, estado) {
         sql: sql,
         db: $CONTROL,
         callback: function (error, results, fields) {
-            if (error) throw error;
-            else {
+            if (error) {
+                CON852('BD','BD','INV109',_toggleNav);
+                throw error;
+            } else {
                 console.log(results)
                 if (results.affectedRows > 0) {
                     retornar = true
