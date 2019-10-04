@@ -228,14 +228,14 @@
         },
 
         _seleccion: function (idx) {
+            this._event('off');
+            this._hide();
             if (idx == 'F') {
                 if (this.callback_f) this.callback_f(this.callback_f)
             } else {
                 var array = $.popup.array_datos;
                 this.callback(array[idx]);
             }
-            this._event('off');
-            this._hide();
         },
 
         _overlay: function (estado) {
