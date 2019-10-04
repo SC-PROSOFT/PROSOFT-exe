@@ -1,0 +1,501 @@
+{
+    "Menu": [
+        {
+            "Id": "01",
+            "Descripcion": "Elaborar facturas imagenologia",
+            "Opc-segu": "I41",
+            "Seg-w": [
+                "0",
+                "5"
+            ],
+            "Tipo": "HTML",
+            "Href": "../../SALUD/paginas/SAL41.html"
+        },
+        {
+            "Id": "02",
+            "Descripcion": "Reimprimir facturas",
+            "Opc-segu": "I41",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "INV402",
+                    "dll": "SALUD\\INV402.dll"
+                }
+            ]
+        },
+        {
+            "Id": "03",
+            "Descripcion": "Lista de precios",
+            "Opc-segu": "IS22",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "SER103A",
+                    "dll": "SALUD\\SER103A.dll"
+                }
+            ]
+        },
+        {
+            "Id": "04",
+            "Descripcion": "Resumen diario de facturas",
+            "Opc-segu": "I5",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "SER401",
+                    "dll": "SALUD\\SER401.dll"
+                }
+            ]
+        },
+        {
+            "Id": "05",
+            "Descripcion": "Relacion de fact. X item",
+            "Opc-segu": "I5",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "INV541",
+                    "dll": "SALUD\\INV541.dll"
+                }
+            ]
+        },
+        {
+            "Id": "06",
+            "Descripcion": "Resumen de fact. X paciente",
+            "Opc-segu": "I5",
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "SER120",
+                    "dll": "SALUD\\SER120.dll"
+                }
+            ]
+        },
+        {
+            "Id": "07",
+            "Descripcion": "Resultado examen imagenologico",
+            "Opc-segu": "ISR",
+            "Sub": [
+                {
+                    "Id": "071",
+                    "Descripcion": "Actualizar macros examenes",
+                    "Opc-segu": "ISR1",
+                    "Tipo": "HTML",
+                    "Href": "../../HICLIN/paginas/HC107.html"
+                },
+                {
+                    "Id": "072",
+                    "Descripcion": "Actualizar resultados examen",
+                    "Opc-segu": "ISR2",
+                    "Tipo": "JS",
+                    "JS" : "../../SALUD/scripts/menu-r012.js"
+                },
+                {
+                    "Id": "073",
+                    "Descripcion": "Consultar resultados examen",
+                    "Opc-segu": "ISR3",
+                    "Tipo": "JS",
+                    "JS" : "../../SALUD/scripts/menu-r013.js"
+                },
+                {
+                    "Id": "074",
+                    "Descripcion": "Impresion masiva de estudios",
+                    "Opc-segu": "ISR3",
+                    "Tipo": "HTML",
+                    "Href": "../../SALUD/paginas/RX-424.html"
+                },
+                {
+                    "Id": "075",
+                    "Descripcion": "Impresion masiva por entidad",
+                    "Opc-segu": "ISR4",
+                    "Tipo": "HTML",
+                    "Href": "../../SALUD/paginas/RX-425.html"
+                }
+            ]
+        },
+        {
+            "Id": "08",
+            "Descripcion": "Informes segun facturacion",
+            "Opc-segu": "I5",
+            "Sub": [
+                {
+                    "Id": "081",
+                    "Descripcion": "Relacion de comprobantes",
+                    "Opc-segu": "I5411",
+                    "Sub": [
+                        {
+                            "Id": "0811",
+                            "Descripcion": "Relac. comprob. X tipo",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV541",
+                                    "dll": "SALUD\\INV541.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0812",
+                            "Descripcion": "Relac. comprob. X fecha",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV546",
+                                    "dll": "SALUD\\INV546.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0813",
+                            "Descripcion": "Relac. comprob. X operador",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV549",
+                                    "dll": "SALUD\\INV549.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0814",
+                            "Descripcion": "Relac. comprob. cliente pago",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV542",
+                                    "dll": "SALUD\\INV542.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0815",
+                            "Descripcion": "Relac. comprob. con descto",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV546A",
+                                    "dll": "SALUD\\INV546A.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0816",
+                            "Descripcion": "Relac. comprob. con insumos",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV550",
+                                    "dll": "SALUD\\INV550.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0817",
+                            "Descripcion": "Relac. comprob. X entidad",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "SER542",
+                                    "dll": "SALUD\\SER542.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0818",
+                            "Descripcion": "Detal. comprob. X fecha",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "SER548",
+                                    "dll": "SALUD\\SER548.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0819",
+                            "Descripcion": "Detal. comprob. X fecha lab",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "SER549",
+                                    "dll": "SALUD\\SER549.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "081A",
+                            "Descripcion": "Detal. comprob. X nro envio",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "SER442R",
+                                    "dll": "SALUD\\SER442R.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "081B",
+                            "Descripcion": "Morbilidad X nro envio cons",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "SER751G",
+                                    "dll": "SALUD\\SER751G.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "081C",
+                            "Descripcion": "Relac. cirugias X componente",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV541C",
+                                    "dll": "SALUD\\INV541C.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "081D",
+                            "Descripcion": "Relac. comprob. tercerizado",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV549B",
+                                    "dll": "SALUD\\INV549B.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "081E",
+                            "Descripcion": "Relac. comprob. escaneados",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV5411E",
+                                    "dll": "SALUD\\INV5411E.dll"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "082",
+                    "Descripcion": "Relacion de comprobantes",
+                    "Opc-segu": "I5411",
+                    "Sub": [
+                        {
+                            "Id": "0821",
+                            "Descripcion": "Informe de atencion salud",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV544",
+                                    "dll": "SALUD\\INV544.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0822",
+                            "Descripcion": "Informe de atencion X edad",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV544M",
+                                    "dll": "SALUD\\INV544M.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0823",
+                            "Descripcion": "Informe de atencion X puerta",
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "INV544P",
+                                    "dll": "SALUD\\INV544P.dll"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "0824",
+                            "Descripcion": "Informe secretaria de salud",
+                            "Sub": [
+                                {
+                                    "Id": "08241",
+                                    "Descripcion": "Informe resol 3384 PyP",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER543",
+                                            "dll": "SALUD\\SER543.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08242",
+                                    "Descripcion": "Anexo tecnico PyP",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER541",
+                                            "dll": "SALUD\\SER541.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08243",
+                                    "Descripcion": "Informe resol 4505 PyP",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER540",
+                                            "dll": "SALUD\\SER540.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08244",
+                                    "Descripcion": "Informe resol 247 alto costo",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER54C",
+                                            "dll": "SALUD\\SER54C.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08245",
+                                    "Descripcion": "Informe centinela",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER54D",
+                                            "dll": "SALUD\\SER54D.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08246",
+                                    "Descripcion": "Informe enf en salud publica",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER54P",
+                                            "dll": "SALUD\\SER54P.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08247",
+                                    "Descripcion": "Informe resol 2175 de 2015",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER5407",
+                                            "dll": "SALUD\\SER5407.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08248",
+                                    "Descripcion": "Informe resol 1393 artritis",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER5408",
+                                            "dll": "SALUD\\SER5408.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "08249",
+                                    "Descripcion": "Informe resol 256 de 2016",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER5409",
+                                            "dll": "SALUD\\SER5409.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "0824A",
+                                    "Descripcion": "Informe resol 2463 de 2014",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER5410A",
+                                            "dll": "SALUD\\SER5410A.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "0824B",
+                                    "Descripcion": "Indicadores de alerta tempra",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER5410C",
+                                            "dll": "SALUD\\SER5410C.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "0824C",
+                                    "Descripcion": "Informe resol 4725 de 2011",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER5412S",
+                                            "dll": "SALUD\\SER5412S.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "0824D",
+                                    "Descripcion": "Informe resol 123 de 2015",
+                                    "Tipo": "RM",
+                                    "Params": [
+                                        {
+                                            "formulario": "SER123-15",
+                                            "dll": "SALUD\\SER123-15.dll"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "0824E",
+                                    "Descripcion": "Informe gestion del riesgo",
+                                    "Sub": [
+                                        {
+                                            "Id": "0824E1",
+                                            "Descripcion": "Informe resol 3384 PyP",
+                                            "Tipo": "RM",
+                                            "Params": [
+                                                {
+                                                    "formulario": "SER543",
+                                                    "dll": "SALUD\\SER543.dll"
+                                                }
+                                            ]
+                                        }
+
+
+
+                                    ]
+                                }
+                            ]
+                        }
+
+
+
+
+
+
+                    ]
+                }
+            ]
+        }
+
+    ]
+}
