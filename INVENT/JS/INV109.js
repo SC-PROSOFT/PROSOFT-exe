@@ -63,8 +63,7 @@ $(document).ready(function () {
 
     _toggleF8([
         { input: 'centroCosto', app: '109', funct: _ventanaCentroCosto_109 },
-        { input: 'almacen', app: '109', funct: _ventanaAlmacen_109 },
-        { input: 'listaEnvio', app: '109', funct: _ventanaListaEnvio_109 },
+        { input: 'almacen', app: '109', funct: _ventanaAlmacen_109 }
     ]);
     json_Prefijos_inv109()
 });
@@ -102,26 +101,6 @@ function _ventanaAlmacen_109(e) {
                 console.log(data)
                 $('#almacen_109').val(data.codigo.trim());
                 _enterInput('#almacen_109');
-            }
-        });
-    }
-}
-
-function _ventanaListaEnvio_109(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        console.log('entro a ventan f8')
-        _ventanaDatos({
-            titulo: 'Ventana de Sucursales',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_sucur',
-            callback_esc: function () {
-                $('#listaEnvio_109').focus()
-            },
-            callback: function (data) {
-                console.log(data)
-                $('#listaEnvio_109').val(data.codigo.trim());
-                _enterInput('#listaEnvio_109');
             }
         });
     }
@@ -226,7 +205,7 @@ function salir_109() {
 function on_salir_109() {
     _inputControl('reset');
     _inputControl('disabled');
-    _toggleNav()
+    limpiarTodo_109()
 }
 
 function _validacionTablaPrefijos_109(orden) {
@@ -600,40 +579,16 @@ function validar_lista_109() {
         },
         function () { validar_Almacen_109() },
         function () {
-            var lista = cerosIzq($('#listaEnvio_109').val(), 2)
-            console.log('salio de lista')
-            busquedaSucursal_109(lista)
-        }
-    )
-}
-
-function busquedaSucursal_109(sucursal) {
-    console.log('entro a busqueda base datos')
-    _consultaSql({
-        sql: `SELECT * FROM sc_sucur WHERE codigo LIKE '${sucursal}%'`,
-        db: 'datos_pros',
-        callback: function (error, results, fields) {
-            if (error) throw error;
-            else {
-                console.log(results)
-                var datos = results[0]
-                if (results.length > 0) {
-                    $('#listaEnvio_109').val(datos.codigo.trim())
-                    $('#descrip_global_109').val(datos.nombre.trim())
-                    console.log('entro al normal')
-                    agregarFilaTabla()
-                } else {
-                    if (sucursal == '01') {
-                        console.log('entro al else')
-                        agregarFilaTabla()
-                    } else {
-                        CON851('01', '01', null, 'error', 'error');
-                        validar_Almacen_109()
-                    }
-                }
+            var lista = $('#listaEnvio_109').val()
+            
+            if (lista == '1'){
+                agregarFilaTabla()
+            } else {
+                CON851('03', '03', null, 'error', 'error');
+                validar_lista_109()
             }
         }
-    })
+    )
 }
 
 function _consultarArray_109(nro) {
