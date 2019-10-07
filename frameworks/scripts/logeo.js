@@ -38,7 +38,7 @@ function _faseValidarUsuario(){
 function validarInicioModulo(){
     var modulo = localStorage['Modulo'];
     $('.mid form .content-grid').removeClass('hidden');
-    if (modulo == 'NOM' || modulo == 'PRD' || modulo == 'PRS'  || modulo == 'SEP' || modulo == 'MIG' || modulo == 'BAR'){
+    if (modulo == 'NOM' || modulo == 'PRD' || modulo == 'PRS'  || modulo == 'SEP' || modulo == 'MIG' || modulo == 'RX' || modulo == 'BAR'){
         if (modulo == 'NOM') $('#mesIngreso').attr('hidden', true), $('#select-nomina').removeAttr('hidden');
         if (modulo == 'PRD' || modulo == 'MIG' || modulo == 'BAR') $('.mid form .content-grid').addClass('hidden');
         if (modulo == 'PRS' || modulo == 'SEP') $('#mesIngreso').attr('hidden', true);
@@ -146,7 +146,7 @@ function verificarLogin() {
             alerta('Seleccione una nomina', _faseValidarClave);
         }else{
             if (clave == '') clave = SpacesIzq(clave, 8);
-            datos_envio = admin + '|' + clave + '|'
+            datos_envio = admin + '|' + clave + '|' + localStorage['Modulo'] + "|"
             validarDataLoguin(datos_envio);
         }
     }else{
@@ -193,7 +193,7 @@ function recibirLogin(datos) {
                     alert('Modulo no se encuentra habilitado', _faseValidarClave);
                 }
             } else if(modulo == 'MIG'){
-                console.log('entroa migrador')
+                console.log('entro A MIG O RX')
                 url = path.join(`${__dirname}`, `../frameworks/paginas/menu_user.html`);
                 window.location.href = url;
             }else{
@@ -236,7 +236,7 @@ function get_url(dll) {
 function consultarModulo(item) {
     var retornar = false;
     for (var i in $_MODULO) {
-        if (item == $_MODULO[i].COD) {
+        if (item.trim() == $_MODULO[i].COD.trim()) {
             retornar = {
                 index: i,
                 array: $_MODULO[i]

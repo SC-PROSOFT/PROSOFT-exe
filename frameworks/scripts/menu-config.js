@@ -394,7 +394,7 @@ function _inputControl(set) {
 function consultarModulo(item) {
     var retornar = false;
     for (var i in $_MODULO) {
-        if (item == $_MODULO[i].COD) {
+        if (item.trim() == $_MODULO[i].COD.trim()) {
             retornar = {
                 index: i,
                 array: $_MODULO[i]

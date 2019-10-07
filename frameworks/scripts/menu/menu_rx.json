@@ -5,8 +5,9 @@
             "Descripcion": "Elaborar facturas imagenologia",
             "Opc-segu": "I41",
             "Seg-w": [
-                "0",
-                "5"
+                "5",
+                "6",
+                "7"
             ],
             "Tipo": "HTML",
             "Href": "../../SALUD/paginas/SAL41.html"

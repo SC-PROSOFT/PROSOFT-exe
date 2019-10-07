@@ -33,6 +33,8 @@ function cargarMenu() {
             break;
         case 'BAR': url = "../scripts/menu/menu_bar.json";
             break;
+        case 'RX': url = "../scripts/menu/menu_rx.json";
+            break;
         case 'MIG': url = "../scripts/menu/menu_mig.json";
             break;
     }

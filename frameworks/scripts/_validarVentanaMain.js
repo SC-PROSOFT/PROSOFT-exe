@@ -94,7 +94,7 @@
 
         _validarSegu(params, function (data) {
             if (data) {
-                if (data == '-1') CON851B(segw); else $.ventanaMain._init();
+                if (data == '-1') CON851B($_USUA_GLOBAL[0]['SEG-MOV']); else $.ventanaMain._init();
             } else {
                 jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> Opción restringida` })
             }
