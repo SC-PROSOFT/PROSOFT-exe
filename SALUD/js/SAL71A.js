@@ -513,6 +513,7 @@ function validarEspecialidad_71A(id) {
                         break;
 
                     default:
+                        $('#DescEspec' + id + '_71A').val(descpEsp71A);
                         if (id == '29') {
                             envioDatos_71A(1)
                         } else {

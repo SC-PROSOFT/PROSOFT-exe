@@ -243,9 +243,9 @@ function f8Terceros119() {
             modificar719()
         },
         callback: function (data) {
-            var cedula = cerosIzq(data.cedula, 10)
+            var cedula = cerosIzq(data.codigo, 10)
             $("#identificacion_119").val(cedula)
-            $("#nombre_119").val(data.nombre);
+            $("#nombre_119").val(data.descripcion);
             _enterInput('#identificacion_119');
         }
     });
@@ -261,9 +261,9 @@ function f8Profesionales719() {
             modificar719()
         },
         callback: function (data) {
-            var cedula = cerosIzq(data.cedula, 10)
+            var cedula = cerosIzq(data.codigo, 10)
             $("#identificacion_119").val(cedula)
-            $("#nombre_119").val(data.nombre);
+            $("#nombre_119").val(data.descripcion);
             _enterInput('#identificacion_119');
         }
     });
@@ -318,7 +318,7 @@ function _ventanaSucursal719(e) { // Habilitar F8
             },
             callback: function (data) {
                 $("#sucursal_119").val(data.codigo)
-                $("#descSuc_119").val(data.nombre)
+                $("#descSuc_119").val(data.descripcion)
                 _enterInput('#sucursal_119');
             }
         });
@@ -389,8 +389,8 @@ function _ventanaOperador719(e) {
 function _Especialistas719(e) {
     var atributo = $(this).attr("id");
     var numero = atributo.split('')
-    var idEspec = '#espec' + numero[5] + '_119'
-    var idDescp = '#DescEspec' + numero[5] + '_119'
+    var idEspec71A = '#espec' + numero[5] + '_119'
+    var idDescp71A = '#DescEspec' + numero[5] + '_119'
 
     switch (e.which) {
         case 119:
@@ -400,25 +400,25 @@ function _Especialistas719(e) {
                 db: 'datos_pros',
                 tablaSql: 'sc_archesp',
                 callback_esc: function () {
-                    profesiona71A()
+                    tipoContratacion_119()
                 },
                 callback: function (data) {
-                    $(idEspec).val(data.codigo)
-                    $(idDescp).val(data.nombre)
-                    _enterInput(idEspec)
+                    $(idEspec71A).val(data.codigo)
+                    $(idDescp71A).val(data.nombre)
+                    // _enterInput(idEspec71A)
                 }
             });
             break;
         case 116: //f5
-            $(idEspec).attr('disabled', 'true')
+            $(idEspec71A).attr('disabled', 'true')
             set_Event_validar('#validarEspec' + numero[5], 'off')
             detalle_119()
             break;
         case 114: //f3
-            if (idEspec.trim().length < 0) {
+            if (idEspec71A.trim().length < 0) {
                 _enterInput(idEspec)
             } else {
-                $(idEspec).attr('disabled', 'true')
+                $(idEspec71A).attr('disabled', 'true')
                 set_Event_validar('#validarEspec' + numero[5], 'off')
                 validarOperador_119(1)
             }
@@ -468,98 +468,6 @@ function on_eliminarJsonTerceros719(data) {
     if (res[0].trim() == '00') {
         console.debug('json eliminado')
         // jsonSucur719();
-        jsonEspecialid719()
-    } else {
-        loader('hide');
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
-
-// function jsonSucur719() {
-//     LLAMADO_DLL({
-//         dato: [],
-//         callback: on_jsonSucur719,
-//         nombredll: 'CON823',
-//         carpeta: 'CONTAB'
-//     })
-// }
-
-// function on_jsonSucur719(data) {
-//     console.debug(data + ' sucur');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     var json = date[1].trim();
-//     var rutaJson = get_url("temp/" + json);
-//     if (swinvalid == '00') {
-//         SolicitarDatos(
-//             null,
-//             function (data) {
-//                 arraySucur119 = data.SUCURSAL
-//                 arraySucur119.pop()
-//                 var arrayEliminar = [];
-//                 arrayEliminar.push(json)
-//                 _eliminarJson(arrayEliminar, on_elimJson719);
-//             },
-//             rutaJson
-//         );
-//     }
-//     else {
-//         loader('hide');
-//         CON852(date[0], date[1], date[2], _toggleNav);
-//     }
-// }
-
-// function on_elimJson719(data) {
-//     console.log(data);
-//     var res = data.split('|');
-//     if (res[0].trim() == '00') {
-//         console.debug('json eliminado')
-//         jsonEspecialid719()
-//     } else {
-//         loader('hide');
-//         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-//     }
-// }
-
-function jsonEspecialid719() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonEspecialid719,
-        nombredll: 'SER855',
-        carpeta: 'SALUD'
-    })
-}
-
-function on_jsonEspecialid719(data) {
-    console.debug(data + ' especialid');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arrayEspecial119 = data.ESPECIALIDADES
-                arrayEspecial119.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_elimJsonProfesion719);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function on_elimJsonProfesion719(data) {
-    console.log(data);
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
         jsonMaestros719()
     } else {
         loader('hide');
@@ -606,57 +514,58 @@ function on_elimJsonMstr719(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
         console.debug('json eliminado')
-        crearJsonDivision719()
-    } else {
-        loader('hide');
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
-
-function crearJsonDivision719() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonDivis719,
-        nombredll: 'INV809',
-        carpeta: 'INVENT'
-    })
-}
-
-function on_jsonDivis719(data) {
-    console.debug(data + ' division');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arrayDivis719 = data.DIVISION
-                arrayDivis719.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_elimJsonDivis719);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-function on_elimJsonDivis719(data) {
-    console.log(data);
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
+        // crearJsonDivision719()
         crearJsonOperad719()
     } else {
         loader('hide');
         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
     }
 }
+
+// function crearJsonDivision719() {
+//     LLAMADO_DLL({
+//         dato: [],
+//         callback: on_jsonDivis719,
+//         nombredll: 'INV809',
+//         carpeta: 'INVENT'
+//     })
+// }
+
+// function on_jsonDivis719(data) {
+//     console.debug(data + ' division');
+//     var date = data.split('|');
+//     var swinvalid = date[0].trim();
+//     var json = date[1].trim();
+//     var rutaJson = get_url("temp/" + json);
+//     if (swinvalid == '00') {
+//         SolicitarDatos(
+//             null,
+//             function (data) {
+//                 arrayDivis719 = data.DIVISION
+//                 arrayDivis719.pop()
+//                 var arrayEliminar = [];
+//                 arrayEliminar.push(json)
+//                 _eliminarJson(arrayEliminar, on_elimJsonDivis719);
+//             },
+//             rutaJson
+//         );
+//     }
+//     else {
+//         loader('hide');
+//         CON852(date[0], date[1], date[2], _toggleNav);
+//     }
+// }
+// function on_elimJsonDivis719(data) {
+//     console.log(data);
+//     var res = data.split('|');
+//     if (res[0].trim() == '00') {
+//         console.debug('json eliminado')
+//         crearJsonOperad719()
+//     } else {
+//         loader('hide');
+//         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
+//     }
+// }
 
 function crearJsonOperad719() {
     LLAMADO_DLL({
@@ -1125,81 +1034,101 @@ function divisionCups_119() {
         },
         function () {
             var divCups = $("#division_119").val()
-            var busquedaDivCups = search_Division119(divCups)
-
+            var descrpCups = $("#descDiv_119").val()
             if (divCups.trim().length > 0) {
-                if (!busquedaDivCups) {
-                    CON851('01', '01', null, 'error', 'error');
-                    divisionCups_119()
-                } else {
-                    $("#descDiv_119").val(busquedaDivCups)
-                    sucursal_119()
+                switch (divCups) {
+                    case false:
+                        CON851('01', '01', null, 'error', 'error');
+                        divisionCups_119()
+                        break;
+                    default:
+                        $('#descDiv_119').val(descrpCups);
+                        sucursal_119()
+                        break;
                 }
             } else {
-                sucursal_119();
+                _consultaSql({
+                    sql: `SELECT * FROM sc_divis SET descripcion ='${descrpCups}' WHERE codigo = '${divCups}' `,
+                    // sql: `SELECT * FROM sc_divis WHERE codigo = '${divCups}'`,
+                    db: $CONTROL,
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            var datos = results[0]
+                            console.log(datos)
+                            if (results.length > 0) {
+                                $(divCups).val(data.codigo.trim())
+                                $(descrpCups).val(data.descripcion.trim())
+                                sucursal_119()
+                            } else if (results.length == '') {
+                                sucursal_119()
+                            }
+                        }
+                    }
+                })
             }
         }
     )
 }
 
-function search_Division119(codigo) {
-    var retornar = false;
-    for (var i in arrayDivis719) {
-        if (arrayDivis719[i].CODIGO.trim() == codigo) {
-            retornar = arrayDivis719[i].DESCRIPCION.trim();
-            break;
-        }
-    }
-    return retornar;
-}
+// function search_Division119(codigo) {
+//     var retornar = false;
+//     for (var i in arrayDivis719) {
+//         if (arrayDivis719[i].CODIGO.trim() == codigo) {
+//             retornar = arrayDivis719[i].DESCRIPCION.trim();
+//             break;
+//         }
+//     }
+//     return retornar;
+// }
 
 function sucursal_119() {
-    _ventanaDatos({
-        titulo: "Ventana de Sucursales",
-        tipo: 'mysql',
-        db: 'datos_pros',
-        tablaSql: 'sc_sucur',
-        callback_esc: function () {
-            divisionCups_119()
+    validarInputs(
+        {
+            form: '#validarSucursal119',
+            orden: '1'
         },
-        callback: function (data) {
-            $("#sucursal_119").val(data.codigo)
-            $("#descSuc_119").val(data.descripcion)
-            tipoContratacion_119();
+        function () {
+            divisionCups_119();
+        },
+        function () {
+            var sucur71A = $("#sucursal_119").val()
+            var descrsucur71A = $("#descSuc_119").val()
+
+            if (sucur71A.trim().length > 0) {
+                switch (sucur71A) {
+                    case false:
+                        CON851('01', '01', null, 'error', 'error');
+                        sucursal_119()
+                        break;
+                    default:
+                        $('#descSuc_119').val(descrsucur71A);
+                        tipoContratacion_119()
+                        break;
+                }
+            } else {
+                _consultaSql({
+                    sql: `SELECT * FROM sc_sucur WHERE codigo = '${sucur71A}'`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            var datos = results[0]
+                            console.log(datos)
+                            if (results.length > 0) {
+                                $(sucur71A).val(data.codigo.trim())
+                                $(descrsucur71A).val(data.descripcion.trim())
+                                tipoContratacion_119()
+                            } else if (results.length == '') {
+                                tipoContratacion_119()
+                            }
+                        }
+                    }
+                })
+            }
         }
-    });
+    )
 }
-
-// function sucursal_119() {
-//     validarInputs(
-//         {
-//             form: '#validarSucursal119',
-//             orden: '1'
-//         },
-//         function () {
-//             divisionCups_119();
-//         },
-//         function () {
-//             var sucur = $("#sucursal_119").val()
-//             var busquedaSucursal = search_Sucursal_119(sucur)
-
-//             if (sucur.trim().length > 0) {
-//                 switch (busquedaSucursal) {
-//                     case false:
-//                         CON851('01', '01', null, 'error', 'error');
-//                         sucursal_119()
-//                         break;
-//                     default:
-//                         $("#descSuc_119").val(busquedaSucursal)
-//                         tipoContratacion_119()
-//                         break;
-//                 }
-//             } else {
-//                 tipoContratacion_119();
-//             }
-//         }
-//     )
-// }
 
 
 function tipoContratacion_119() {
@@ -1281,31 +1210,6 @@ function estadoAct_719() {
     })
 }
 
-
-function search_Sucursal_119(codigo) {
-    var retornar = false;
-    for (var i in arraySucur119) {
-        if (arraySucur119[i].CODIGO.trim() == codigo) {
-            retornar = arraySucur119[i].DESCRIPCION.trim();
-            break;
-        }
-    }
-    return retornar;
-}
-
-
-function search_Especialidad_119(codigo) {
-    var retornar = false;
-    for (var i in arrayEspecial119) {
-        if (arrayEspecial119[i].CODIGO.trim() == codigo) {
-            retornar = arrayEspecial119[i].NOMBRE.trim();
-            break;
-        }
-    }
-    return retornar;
-}
-
-
 function validarEspecialidad_119(id) {
     validarInputs(
         {
@@ -1321,10 +1225,10 @@ function validarEspecialidad_119(id) {
         },
         function () {
             var codigoEspec_119 = $('#espec' + id + '_119').val();
-            var desEspec_119 = search_Especialidad_119(codigoEspec_119)
+            var desEspec_119 = $('#DescEspec' + id + '_119').val();
 
             if (codigoEspec_119.trim().length > 0) {
-                switch (desEspec_119) {
+                switch (codigoEspec_119) {
                     case false:
                         CON851('01', '01', null, 'error', 'error');
                         validarEspecialidad_119(id)
@@ -1338,13 +1242,40 @@ function validarEspecialidad_119(id) {
                         }
                 }
             } else {
-                switch (id) {
-                    case 5:
-                        validarOperador_119(1)
-                        break;
-                    default:
-                        validarEspecialidad_119(parseInt(id) + 1)
-                }
+                _consultaSql({
+                    sql: `SELECT * FROM sc_archesp WHERE codigo = '${codigoEspec_119}'`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            // var datos = results[0]
+                            // console.log(datos)
+                            if (results.length > 0) {
+                                switch (id) {
+                                    case 29:
+                                        validarOperador_119(1)
+                                        break;
+                                    default:
+                                        validarEspecialidad_71A(parseInt(id) + 1);
+                                        break;
+                                }
+                                var consecutivo = cerosIzq(datos.codigo.toString().trim(), 3)
+                                $(idDescp71A).val(data.nombre.trim())
+                                $(idDescp71A).val(consecutivo)
+                                validarOperador_119()
+                            } else if (results.length == '') {
+                                validarOperador_119()
+                            }
+                        }
+                    }
+                })
+                // switch (id) {
+                //     case 5:
+                //         validarOperador_119(1)
+                //         break;
+                //     default:
+                //         validarEspecialidad_119(parseInt(id) + 1)
+                // }
             }
         }
     )
@@ -1394,7 +1325,25 @@ function validarOperador_119(id) {
                     if (id == '5') {
                         validarCitas_119()
                     } else {
-                        validarOperador_119(parseInt(id) + 1)
+                        _consultaSql({
+                            sql: `SELECT * FROM sc_sucur WHERE codigo = '${sucur71A}'`,
+                            db: 'datos_pros',
+                            callback: function (error, results, fields) {
+                                if (error) throw error;
+                                else {
+                                    var datos = results[0]
+                                    console.log(datos)
+                                    if (results.length > 0) {
+                                        $(sucur71A).val(data.codigo.trim())
+                                        $(descrsucur71A).val(data.descripcion.trim())
+                                        tipoContratacion_119()
+                                    } else if (results.length == '') {
+                                        tipoContratacion_119()
+                                    }
+                                }
+                            }
+                        })
+                        // validarOperador_119(parseInt(id) + 1)
                     }
             }
         }
