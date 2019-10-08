@@ -24,14 +24,8 @@ function _ventanaTercr(e) {
             tipo: 'mysql',
             db: $CONTROL,
             tablaSql: 'sc_pacie',
-            // indice: ['nombre', 'cedula'],
-            // mascara: [
-            //     {
-            //     }
-            // ],
-            // minLength: 1,
             callback_esc: function () {
-                _validarDatPaci714()
+                validarIdentif714()
             },
             callback: function (data) {
                 $('#cedula_714').val(data.cedula);

@@ -29,6 +29,7 @@ function _ventanaGrupo(e) {
             callback: function (data) {
                 console.debug(data);
                 $('#codigo_711').val(data.codigo.trim())
+                $('#descrip711').val(data.descripcion.trim())
                 _enterInput('#codigo_711');
             }
         });
@@ -49,7 +50,7 @@ function _ventanaContab(e) {
             callback: function (data) {
                 console.debug(data);
                 $('#contab_711').val(data.cuenta.trim() + data.nivel.trim())
-                $('#descripContab_711').val(data.descripcion.trim())
+                $('#descripContab_711').val(data.descripcion)
                 _enterInput('#contab_711');
             }
         });

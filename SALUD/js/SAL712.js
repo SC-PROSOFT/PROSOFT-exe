@@ -28,6 +28,7 @@ function _ventanaGrptar(e) {
             callback: function (data) {
                 console.debug(data);
                 $('#codigo_712').val(data.codigo.trim())
+                $('#descripSer712').val(data.descripcion)
                 _enterInput('#codigo_712');
             }
         });

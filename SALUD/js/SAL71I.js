@@ -28,7 +28,7 @@ function _ventanaResgard (e) {
             callback: function (data) {
                 console.debug(data);
                 $('#codigo_71I').val(data.codigo.trim())
-                $('#descripSer71I').val(data.nombre.trim())
+                $('#descripSer71I').val(data.descripcion)
                 _enterInput('#codigo_71I');
             }
         });

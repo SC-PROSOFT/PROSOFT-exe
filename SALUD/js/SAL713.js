@@ -67,12 +67,6 @@ function _ventanaTablatarif(e) {
             tipo: 'mysql',
             db: $CONTROL,
             tablaSql: 'sc_tabla',
-            // indice: ['codigo', 'descripcion'],
-            // mascara: [
-            //     {
-            //     }
-            // ],
-            // minLength: 1,
             callback_esc: function () {
                 _validarDato()
             },
