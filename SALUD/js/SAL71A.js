@@ -1,6 +1,6 @@
 /* NOMBRE RM --> SER11A // NOMBRE ELECTR --> SAL71A */
 
-var $_NovedSer71A, arraycups, $_fechaact, $arrayprofes;
+var $_NovedSer71A, arraycups, $_fechaact;
 
 $(document).ready(function () {
     $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
@@ -38,7 +38,7 @@ $(document).ready(function () {
         { input: 'grupo', app: '71A', funct: _ventanGrp },
         { input: 'codigo', app: '71A', funct: _ventanCodig }
     ]);
-    crearJsonProfesion_71A();
+    CON850(_evaluarCON850);
 });
 
 // --> F8 CUPS //
@@ -111,7 +111,7 @@ function _datoEspec(e) {
                     profesiona71A()
                 },
                 callback: function (data) {
-                    $(idEspec).val(data.especialidad.trim())
+                    $(idEspec).val(data.codigo.trim())
                     $(idDescp).val(data.nombre.trim())
                     _enterInput(idEspec)
                 }
@@ -128,52 +128,6 @@ function _datoEspec(e) {
             break;
     }
 
-}
-
-function crearJsonProfesion_71A() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonProfesion71A,
-        nombredll: 'SER830',
-        carpeta: 'SALUD'
-    })
-}
-
-function on_jsonProfesion71A(data) {
-    console.debug(data);
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                $arrayprofes = data.PROFESION
-                $arrayprofes.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_eliminarJsonPr71A);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function on_eliminarJsonPr71A(data) {
-    console.log(data);
-    loader('hide');
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
-        CON850(_evaluarCON850);
-    } else {
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
 }
 
 
@@ -516,41 +470,18 @@ function validarSexo71A() {
 }
 
 
-// function validarSexo71A() {
-//     var datosexo = '[{"codigo": "1","descripcion": "FEMENINO"},{"codigo": "2", "descripcion": "MASCULINO"}]';
-//     var datosexo = JSON.parse(datosexo);
-//     POPUP({
-//         array: datosexo,
-//         titulo: 'SEXO?'
-//     },
-//         _evaluardatosexo
-//     );
-// }
-// function _evaluardatosexo(data) {
-//     $_SEX0 = data.descripcion
-//     switch (parseInt(data.id)) {
-//         case 1:
-//         case 2:
-//             profesiona71A();
-//             break;
-//         default:
-//             _datoPYP();
-//             break;
-//     }
-//     $('#sexo71A').val(data.descripcion);
-// }
-
 function profesiona71A() {
     _ventanaDatos({
         titulo: "Personal que atiende",
-        columnas: ["CODIGO", "DESCRIPCION"],
-        data: $arrayprofes,
+        tipo: 'mysql',
+        db: $CONTROL,
+        tablaSql: 'sc_archatiend',
         callback_esc: function () {
             validarSexo71A()
         },
         callback: function (data) {
-            $("#persona71A").val(data.CODIGO.trim())
-            $("#descrPer71A").val(data.DESCRIPCION.trim())
+            $("#persona71A").val(data.codigo)
+            $("#descrPer71A").val(data.nombre)
             validarEspecialidad_71A(1);
         }
     });
@@ -572,6 +503,7 @@ function validarEspecialidad_71A(id) {
         },
         function () {
             var codigoEspec71A = $('#espec' + id + '_71A').val();
+            var descpEsp71A = $('#DescEspec' + id + '_71A').val();
 
             if (codigoEspec71A.trim().length > 0) {
                 switch (codigoEspec71A) {
@@ -590,7 +522,8 @@ function validarEspecialidad_71A(id) {
                 }
             } else {
                 _consultaSql({
-                    sql: `SELECT * FROM sc_archesp WHERE especialidad = '${codigoEspec71A}'`,
+                    sql: `SELECT * FROM sc_archesp WHERE codigo = '${codigoEspec71A}'`,
+                    db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
                         else {
@@ -605,8 +538,9 @@ function validarEspecialidad_71A(id) {
                                         validarEspecialidad_71A(parseInt(id) + 1);
                                         break;
                                 }
-                                var consecutivo = cerosIzq(datos.especialidad.toString().trim(), 3)
-                                $(codigoEspec71A).val(consecutivo)
+                                var consecutivo = cerosIzq(datos.codigo.toString().trim(), 3)
+                                $(idDescp).val(data.nombre.trim())
+                                $(descpEsp71A).val(consecutivo)
                                 envioDatos_71A()
                             } else if (results.length == '') {
                                 envioDatos_71A()
