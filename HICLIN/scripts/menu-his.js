@@ -1,55 +1,48 @@
 $_REG_PROF = [], $_REG_HC = [];
 $_COMP = {
-  suc: "",
-  tipo: "",
-  comprobante: ""
+    suc: "",
+    tipo: "",
+    comprobante: ""
 };
 $(document).ready(function () {
+    $('#busqpaci_his').val('94475639');
+    _inputControl('disabled');
     loader('show');
     _iniciar_menu_his();
-    $('#busqpaci_his').val('94475639');
-    setTimeout("conectSql()", 1000);
-    
+    _toggleF8([{
+        input: 'busqpaci',
+        app: 'his',
+        funct: _ventanaPacientes
+    }]);
 });
-
-function conectSql(){
-    console.log('entra a la consulta')
-    _consultaSql({
-        sql: "Select * from sc_archprof",
-        callback: function (error, results, fields) {
-            if (error) throw error;
-            else {
-                if (JSON.parse(JSON.stringify(results))[0].length == 0) {
-                    console.debug(results);
-                } else {
-                    console.debug(results);
-                    console.log(JSON.parse(JSON.stringify(results)));
-                }
-            }
-        }
-    });
-}
 
 function _iniciar_menu_his() {
     var data = datosEnvio() + localStorage['Usuario'].trim();
-    SolicitarDll({datosh: data}, on_iniciar_menu_his, get_url("APP/HICLIN/HC000.DLL"));
+    SolicitarDll({ datosh: data }, on_iniciar_menu_his, get_url("APP/HICLIN/HC000.DLL"));
 }
 
 function on_iniciar_menu_his(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var especialidades_profesional = res[4].split(';');
-        $_REG_PROF.tabla_esp_prof = new Array();
-        $_REG_PROF.cod_prof = res[1], $_REG_PROF.descripcion = res[2],
-                $_REG_PROF.atiende_prof = res[3], $_REG_PROF.tabla_esp_prof = especialidades_profesional;
-        $_REG_PROF.tabla_esp_prof.pop();
-        validarPaciente();
-        _toggleF8([{
-                input: 'busqpaci',
-                app: 'his',
-                funct: _ventanaPacientes
-            }]);
-        loader('hide');
+        _consultaSql({
+            sql: "Select * from sc_archprof where codigo = " + parseInt(res[1]),
+            bd: localStorage.Contab + "_13",
+            callback: function (error, results, fields) {
+                if (error) throw error;
+                else {
+                    if (!results[0]) {
+                        plantillaError('99', 'Profesional no existe', 'menu_his');
+                    } else {
+                        $_REG_PROF = JSON.parse(JSON.stringify(results))
+                        $_REG_PROF.tabla_especialidad = new Array();
+                        $_REG_PROF.tabla_especialidad = res[2].split(';');
+                        $_REG_PROF.tabla_especialidad.pop();
+                        validarPaciente();
+                        loader('hide');
+                    }
+                }
+            }
+        });
     } else {
         plantillaError(res[0], res[1], res[2]);
     }
@@ -72,32 +65,32 @@ function _ventanaPacientes(e) {
         });
     }
 }
-function ir_hc9004(){
+function ir_hc9004() {
     $("#body_main").load("../../HICLIN/paginas/hc9004.html");
- }
+}
 function validarPaciente() {
     validarInputs({
         form: '#formConsult_his',
         orden: "1"
     },
-            function () {
-                CON850_P(function (e) {
-                    if (e.id == 'S') {
-                        salir_modulo();
-                    } else {
-                        validarPaciente();
-                    }
-                }, {msj: "03"});
-            },
-            function () {
-                if ($('#busqpaci_his').val()) {
-                    var data = datosEnvio() + cerosIzq($('#busqpaci_his').val(), 15) + "|" + localStorage['Usuario'] + "|";
-
-                    SolicitarDll({datosh: data}, cargarDatosPaci, get_url("APP/HICLIN/HC000-1.DLL"));
+        function () {
+            CON850_P(function (e) {
+                if (e.id == 'S') {
+                    salir_modulo();
                 } else {
-                    jAlert({titulo: 'Error ', mensaje: 'Debe ingresar una identificacion'}, validarPaciente);
+                    validarPaciente();
                 }
+            }, { msj: "03" });
+        },
+        function () {
+            if ($('#busqpaci_his').val()) {
+                var data = datosEnvio() + cerosIzq($('#busqpaci_his').val(), 15) + "|" + localStorage['Usuario'] + "|";
+
+                SolicitarDll({ datosh: data }, cargarDatosPaci, get_url("APP/HICLIN/HC000-1.DLL"));
+            } else {
+                jAlert({ titulo: 'Error ', mensaje: 'Debe ingresar una identificacion' }, validarPaciente);
             }
+        }
     );
 }
 
@@ -113,7 +106,7 @@ function cargarDatosPaci(data) {
             } else {
                 // existe historia clinica
                 var data = datosEnvio() + res[1] + "|";
-                SolicitarDll({datosh: data}, function (data) {
+                SolicitarDll({ datosh: data }, function (data) {
                     res = data.split('|');
                     if (res[0].trim() == '00') {
                         montarHc811();
@@ -167,17 +160,17 @@ function montarHc811() {
 function _consultHc(llave) {
     $_REG_HC.llave_hc = llave;
     var data = datosEnvio() + llave + "|";
-    SolicitarDll({datosh: data},
-            function (data) {
-                var res = data.split('|');
-                if (res[0].trim() == '00') {
-                    _mostrarDatosPaci(res);
-                } else {
-                    plantillaError(res[0], res[1], res[2]);
-                }
-            },
-            get_url("APP/HICLIN/HC000-2.DLL")
-            );
+    SolicitarDll({ datosh: data },
+        function (data) {
+            var res = data.split('|');
+            if (res[0].trim() == '00') {
+                _mostrarDatosPaci(res);
+            } else {
+                plantillaError(res[0], res[1], res[2]);
+            }
+        },
+        get_url("APP/HICLIN/HC000-2.DLL")
+    );
 }
 
 function _mostrarDatosPaci(resp) {
@@ -187,15 +180,15 @@ function _mostrarDatosPaci(resp) {
     $_REG_HC.ocup_v8_hc = resp[9];
     $_REG_HC.temporal_hc = resp[11];
     $_REG_HC.estado_hc = resp[12];
-    
+
     var edad = calcular_edad(resp[13]);
     $_REG_HC.edad_hc = edad;
-    
+
     $_REG_HC.finalid_hc = resp[14];
     $_REG_HC.serv_hc = resp[15];
     $_REG_HC.esquema_hc = resp[16].trim();
     $_REG_HC.novedad_hc = resp[17].trim();
-    
+
     $('#doc_paci_his').val($DATOS_PACIE[0].COD);
     $('#cod_ent_his').val(resp[1]);
     $('#descrip_ent_his').val(resp[2]);

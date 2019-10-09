@@ -15,21 +15,45 @@
         _keyEvent: function (form, estado) {
             switch (estado) {
                 case 'on':
-                    $(document).on('keyup', form + ' input.form-control', $.validar._validacionKey)
+                    $(document).on('keyup', form + ' input.form-control, ' + form + ' textarea.form-control', $.validar._validacionKey)
                     break;
                 case 'off':
-                    $(document).off('keyup', form + ' input.form-control', $.validar._validacionKey)
+                    $(document).off('keyup', form + ' input.form-control, ' + form + ' textarea.form-control', $.validar._validacionKey)
                     break;
             }
         },
 
         _validacionKey: function (e) {
-            var sig_orden = parseInt($(this).data().orden) + 1
-            var ant_orden = parseInt($(this).data().orden) - 1
-            var max_longitud = parseInt($(this).attr('maxlength'));
-            var requerido = $(this).attr('required') ? $(this).attr('required') : false;
-            var act_longitud = $(this).val().length;
-            
+            var tipoElemento = e.currentTarget.localName;
+            switch (tipoElemento) {
+                case 'input':
+                    $.validar._validarInput(e, this);
+                    break;
+                case 'textarea':
+                    $.validar._validarTextarea(e, this);
+                    break;
+            }
+        },
+        _validarTextarea: function (e, el) {
+            var ant_orden = parseInt($(el).data().orden) - 1;
+            var sig_orden = parseInt($(el).data().orden) + 1;
+
+            switch (e.which) {
+                case 27:
+                    $.validar._anterior(ant_orden);
+                    break;
+                case 13:
+                    $.validar._siguiente(sig_orden);
+                    break;
+            }
+        },
+        _validarInput: function (e,el) {
+            var sig_orden = parseInt($(el).data().orden) + 1
+            var ant_orden = parseInt($(el).data().orden) - 1
+            var max_longitud = parseInt($(el).attr('maxlength'));
+            var requerido = $(el).attr('required') ? $(el).attr('required') : false;
+            var act_longitud = $(el).val().length;
+
 
             if (
                 e.which != 35 &&
@@ -46,7 +70,7 @@
                     case 13:
                         if (requerido) {
                             if (act_longitud > 0) $.validar._siguiente(sig_orden)
-                            else plantillaToast('', 'Campo obligatorio', null, 'error','Error');
+                            else plantillaToast('', 'Campo obligatorio', null, 'error', 'Error');
                         } else {
                             $.validar._siguiente(sig_orden)
                         }
@@ -55,13 +79,11 @@
                         $.validar._anterior(ant_orden);
                         break;
                     case 114:
-                        if ($.validar.event_f3) {
-                            $.validar._eventf3();
-                        }
+                        if ($.validar.event_f3) $.validar._eventf3();
                         break;
                     default:
                         // if (requerido) {
-                            if (act_longitud > 0) if (max_longitud == act_longitud) $.validar._siguiente(sig_orden);
+                        if (act_longitud > 0) if (max_longitud == act_longitud) $.validar._siguiente(sig_orden);
                         // } else {
                         //     if (max_longitud == act_longitud) $.validar._siguiente(sig_orden);
                         // }
@@ -69,8 +91,8 @@
                 }
             }
         },
-        
-        _eventf3: function (){
+
+        _eventf3: function () {
             _fin_validar_form();
             $.validar.event_f3($.validar.event_f3);
         },
@@ -104,7 +126,7 @@
                     .next('button.f8-Btn')
                     .removeAttr('disabled');
                 siguienteItm.removeAttr('disabled').focus().select();
-            }else $.validar._fin();
+            } else $.validar._fin();
         },
 
 
@@ -144,15 +166,15 @@
     set_Event_validar = function (form, estado) {
         $.validar._keyEvent(form, estado);
     },
-    
-    _fin_validar_form = function (){
-        var form = $.validar.form;
-        var posicion = $.validar.orden;
-        var item = $(form + ' [data-orden="' + posicion + '"');
 
-        item.attr('disabled', 'true');
+        _fin_validar_form = function () {
+            var form = $.validar.form;
+            var posicion = $.validar.orden;
+            var item = $(form + ' [data-orden="' + posicion + '"');
 
-        $.validar._keyEvent($.validar.form, 'off');
-    }
+            item.attr('disabled', 'true');
+
+            $.validar._keyEvent($.validar.form, 'off');
+        }
 
 })(jQuery);
