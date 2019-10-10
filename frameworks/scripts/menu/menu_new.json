@@ -6212,6 +6212,138 @@
                   "Descripcion": "Submenu solicitud autorizacion"
                 }
               ]
+            },
+			{
+              "Id": "0975",
+              "Descripcion": "Menu Cartera"
+            },
+			{
+              "Id": "0976",
+              "Descripcion": "Menu administracion salud"
+            },
+			{
+              "Id": "0977",
+              "Descripcion": "Menu pacientes y estadistica"
+            },
+			{
+              "Id": "0978",
+              "Descripcion": "Menu de utilitarios"
+            },
+			{
+              "Id": "0979",
+              "Descripcion": "Control de contratación"
+            },
+			{
+              "Id": "097A",
+              "Descripcion": "Menu manejo de glosas"
+            },
+			{
+              "Id": "097B",
+              "Descripcion": "Menu P.Q.R."
+            },
+			{
+              "Id": "097C",
+              "Descripcion": "Menu citas (Agendamiento)",
+			  "Opc-segu": "",
+			  "Tipo": "POWER",
+              "Sub": [
+				{
+				  "Id": "097C1",
+                  "Descripcion": "Menu de citas",
+				  "Opc-segu": "ISC1",
+				  "Tipo": "POWER",
+                  "Sub": [
+                    {
+                      "Id": "097C11",
+                      "Descripcion": "Actualiza citas",
+					  "Opc-segu": "ISC11",
+					  "Tipo": "HTML",
+                      "Href": "../../SALUD/PAGINAS/SAL97C11.html"
+                    },
+					{
+					  "Id": "097C1,",
+				      "Descripcion": "Reimprime citas"
+					},
+					{
+					  "Id": "097C13",
+				      "Descripcion": "Cancelacion de citas"
+					},
+					{
+					  "Id": "097C14",
+				      "Descripcion": "Ventana de estado citas"
+					},
+					{
+					  "Id": "097C15",
+				      "Descripcion": "Relacion citas x paciente"
+					},
+					{
+					  "Id": "097C16",
+				      "Descripcion": "Planilla de agendamiento"
+					},
+					{
+					  "Id": "097C17",
+				      "Descripcion": "Menu mensajes de texto"
+					}	
+				  ]
+                },
+				{
+                  "Id": "097C2",
+                  "Descripcion": "Submenu demanda insatisfecha"
+                },
+				{
+                  "Id": "097C3",
+                  "Descripcion": "Relacion de citas inasistid"
+                },
+				{
+                  "Id": "097C4",
+                  "Descripcion": "Relacion de citas canceladas"
+                },
+				{
+                  "Id": "097C5",
+                  "Descripcion": "Imprimir horario atencion"
+                },
+				{
+                  "Id": "097C6",
+                  "Descripcion": "Submenu informes de citas"
+                },
+				{
+                  "Id": "097C7",
+                  "Descripcion": "Relación personal que atiende"
+                },
+				{
+                  "Id": "097C8",
+                  "Descripcion": "Traslado citas de un medico"
+                },
+				{
+                  "Id": "097C9",
+                  "Descripcion": "Exportar citas a otro pc"
+                },
+				{
+                  "Id": "097CA",
+                  "Descripcion": "Importar citas de otro pc"
+                },
+				{
+				  "Id": "097CB",
+                  "Descripcion": "Recalculo comprob en citas"
+                },
+				{
+				  "Id": "097CC",
+                  "Descripcion": "Limitar horario profesional"
+                },
+				{
+				  "Id": "097CD",
+                  "Descripcion": "Reporte atencion x unidades"
+                }
+				
+				]
+            },
+			{
+              "Id": "097D",
+              "Descripcion": "Menu cartera red externa"
+            },
+			{
+              "Id": "097E",
+              "Descripcion": "Menu pamec"
             }
           ]
         },
