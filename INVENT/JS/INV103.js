@@ -6,7 +6,7 @@ var $_TARW, $_CODLINK, $_BARRASLNK, $_SWCLAVE, $_TIPO_803_LNK, $_COD_GRUPO_803_L
 
 var $_VLRULTCOMPRAARTW = '', $_CANTCOMPARTW = '', $_FECHAULTCOMPRAARTW = '', $_FECHALISTACOMP = '',
     $_VIDAUTILARTW = '', $_OTROSARTW = '', $_UBICAC2ARTW = '', $_INGACTARTW = '', $_ACOMPARTW = '',
-    $_VISUALWEBARTW = '', $_OBSERVFACTARTW = '', $_CLASEARTW = '';
+    $_VISUALWEBARTW = '', $_OBSERVFACTARTW = '', $_CLASEARTW = '', $_TIPOARTW = '';
 
 var dcto_103Mask = new IMask(document.getElementById('dcto_103'), { mask: Number, min: 0, max: 100, radix: '.', scale: 1, padFractionalZeros: true });
 
@@ -586,11 +586,11 @@ function _validaraceptarclave() {
 }
 
 function _evaluarNovedad(novedad) {
-    console.log('evaluar novedad '); 
-    $("#dcto_103").val("0");
+    console.log('evaluar novedad ', $_TIPOARTW);
+    // $("#dcto_103").val("0");
     // loader('hide');   
-    _inputControl('reset');
-    _inputControl('disabled');
+    // _inputControl('reset');
+    // _inputControl('disabled');
     $_NOVEDAD = novedad.id;
     switch (parseInt(novedad.id)) {
 
@@ -741,7 +741,9 @@ function _datotipo() {
 
 function _datotipo2() {
     if ($_NOVEDAD == '7') {
-        _mostrartipo();
+        setTimeout(_mostrartipo, 300)
+        // _habilitartipo();
+        // _mostrartipo();
     }
     else {
         // $_TIPO_803_LNK  IMPRIMIR DATOS EN TIPOE-L
@@ -752,24 +754,27 @@ function _datotipo2() {
         $_COD_GRUPO_803_LNK == undefined ? ' ' : $_COD_GRUPO_803_LNK;
         $_NUMERO_803_LNK == undefined ? ' ' : $_NUMERO_803_LNK;
         $_CLASE_803_LNK == undefined ? ' ' : $_CLASE_803_LNK
-        _mostrartipo();
+       
+        setTimeout(_mostrartipo, 300)
+        // _habilitartipo();
+        // _mostrartipo();
     }
 
 }
 
 function _mostrartipo() {
-    console.debug('mostrartipo')
+    console.log('mostrartipo')
     $('#tipo_103').select2().on('select2:select', _validartipo);
     setTimeout(function () { $('#tipo_103').select2('open') }, 500)
-    // $('#tipo_103').select2().on("select2:close", function (e) { log("select2:close", e); });  
+    // $('#tipo_103').select2().on("select2:close", function (e) { log("select2:close", e); });
 }
 function _validartipo(e) {
+    console.log('validar tipo')
     var seleccionado = e.params.data.id;
     if (seleccionado == "F" || seleccionado == "f") {
-        // $(this).attr('disabled', 'true');
-        // _toggleNav();
-        setTimeout('CON850(_evaluarNovedad)', 100)
-        // CON850(_evaluarNovedad); 
+        
+        setTimeout(function() {CON850(_evaluarNovedad)}, 300)
+        
     } else {
         $_TIPOARTW = seleccionado;
         _evaluargrupo();
@@ -778,12 +783,14 @@ function _validartipo(e) {
 }
 
 function _habilitartipo() {
-    // _inputControl('reset');
+    console.log('habilitar tipo')
+    _inputControl('reset');
     $('#tipo_103').val(null).removeAttr('disabled').trigger('change');
     $('#tipo_103').select2('open');
 }
 
 function _evaluargrupo() {
+    console.log('evaluar grupo')
     validarInputs({
         form: '#GRUPO_103',
         orden: "1"
@@ -1170,6 +1177,7 @@ function on_eliminarJson_103_01(data) {
 }
 
 function _agregardatostablanuevo() {
+    console.log('agregar nuevos datos'); 
     var cont = 0;
     for (var i = 0; i < $_PREFIJOS_103.length; i++) {
         cont++;
