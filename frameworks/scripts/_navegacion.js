@@ -8,8 +8,7 @@ var $_MENU,
 function cargarMenu() {
     var modulo = localStorage['Modulo'], url = '';
     switch (modulo) {
-        case 'NEW': url = "../scripts/menu/menu_new.json";
-            break;
+        case 'NEW': 
         case 'SAL': url = "../scripts/menu/menu_new.json";
             break;
         case 'HIC':

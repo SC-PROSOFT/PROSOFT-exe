@@ -1,0 +1,375 @@
+<style>
+    input {
+        text-align: center
+    }
+    
+    #tablaHistorias_rx421w th {
+        text-align: center;
+    }
+</style>
+
+<div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
+    <div class="portlet light box-center box-title" style="margin: 0 auto;">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject bold">7,2 - Actualizar resultados examen</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="portlet light no-padding">
+        <div class="portlet-body no-padding">
+
+            <form class="form-horizontal">
+
+                <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+
+
+                        <div class="col-md-2 col-sm-6 col-xs-12" id="validarSucursal_rx421">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Sucursal:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="sucursal_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="3" data-orden="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-4 col-xs-12" id="validarServicio_rx421">
+                            <div class="inline-inputs">
+                                <label class="col-md-8 col-sm-8 col-xs-8">Tipo servicio:</label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                    <input id="servicio_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-5 col-xs-5">
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descripServicio_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Comprob:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="comprob_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Fecha:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="fecha_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label></label>
+                            <div class="inline-inputs">
+                                <label class="col-md-5 col-sm-5 col-xs-5">Paciente:</label>
+                                <div class="input-group col-md-7 col-sm-7 col-xs-7">
+                                    <input id="paciente_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label></label>
+                            <div class="inline-inputs">
+                                <label class="col-md-3 col-sm-3 col-xs-3">Cups:</label>
+                                <div class="input-group col-md-2 col-sm-2 col-xs-2">
+                                    <input id="cups1_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="input-group col-md-7 col-sm-7 col-xs-7">
+                                    <input id="cups2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="salto-linea"></div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label></label>
+                            <div class="inline-inputs">
+                                <label class="col-md-3 col-sm-3 col-xs-3">Nombre Paciente</label>
+                                <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                    <input id="descripPaciente_rx421"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-right: 0;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <label>Radiologo:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="radiologo_rx421" required="true"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <label></label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descrip1Radiologo_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label></label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descrip2Radiologo_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="salto-linea"></div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Tecnologo:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="tecnologo_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <label></label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descripTecnologo_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+
+
+                        <div class="col-md-2 col-sm-6 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-8 col-sm-8 col-xs-8">Pagina estudio:</label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                    <input id="estudio_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-5 col-xs-5">
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descripEstudio_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Cuenta:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="cuenta_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-4">Nit:</label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="nit_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Sala:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="sala_rx421" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-7 col-sm-12 col-xs-12 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12 head-box" style="text-align: left !important">
+                            <label>Condicion paciente :</label>
+                        </div>
+                        <textarea id="textarea_rx421" class="form-control" disabled="disabled" rows="18" maxlength="28500" data-orden="1"
+                            style="resize: none;"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-md-5 col-sm-12 col-xs-12" style="padding-right: 0">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" style="margin-bottom: 21px !important">
+
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label>Tipo diagnostico:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="tipoDiag_rx421" type="text"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <label></label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descripTipoDiag_rx421" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="salto-linea"></div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label>Diagnostico Principal:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="diagPrincipal_rx421" type="text"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <label></label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="descripDiagPrincipal_rx421"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="salto-linea"></div>
+
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <label>Birads:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="birads_rx421" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <label>Complejidad:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="complej_rx421" type="text"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+
+                        <div class="col-md-7 col-sm-7 col-xs-12">
+                            <label>Normalidad:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="normal_rx421" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" style="text-align: left">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label>Email:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="email_rx421" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+
+                        </div>
+
+                        <div class="salto-linea"></div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label>Enviado:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="enviado_rx421" type="text"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="popUp_paciente_rx421w" class="hidden">
+    <div class="col-md-12">
+        <div class="portlet light no-padding">
+            <div class="portlet-body no-padding">
+
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin: 0 auto;">
+
+
+                        <div class="col-md-12 col-sm-12 col-xs-12" id="validar_idhistoria_rx421w" style="display: flex;justify-content: center">
+                            <div class="col-md-6">
+                                <label>Id historia:</label>
+                                <div class="input-group col-md-10 col-sm-10 col-xs-10">
+                                    <input type="text"
+                                        class="id_historia_rx421w form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="15" data-orden="1" required="true" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="salto-linea"></div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <table id="tablaHistorias_rx421w" class="table table-light table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Comprobante</th>
+                                        <th>Item</th>
+                                        <th>Cups</th>
+                                        <th>Estudio</th>
+                                        <th>Nit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+               
+            </div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+<script src="../../SALUD/JS/RX-421W.js" type="text/javascript"></script>

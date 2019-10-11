@@ -768,6 +768,7 @@ function popUp_TokenFactElect_109() {
     var dialogo2 = bootbox.dialog({
         title: "Datos de acceso :",
         message: fuente,
+        closeButton: false,
         buttons: {
             main: {
                 label: "Aceptar",
