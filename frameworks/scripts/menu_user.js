@@ -248,15 +248,14 @@ function _toggleNav() {
 }
 
 function _inputControl(set) {
-
     switch (set) {
         case 'disabled':
-            $('input.form-control, button.f8-Btn').each(function () {
+            $('input.form-control, textarea.form-control, button.f8-Btn').each(function () {
                 $(this).attr('disabled', 'true');
             })
             break;
         case 'reset':
-            $('input.form-control').each(function () {
+            $('input.form-control, textarea.form-control').each(function () {
                 $(this).val('');
             })
             break;
