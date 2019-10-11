@@ -6223,7 +6223,107 @@
             },
 			{
               "Id": "0977",
-              "Descripcion": "Menu pacientes y estadistica"
+              "Descripcion": "Menu pacientes y estadistica",
+			  "Opc-segu": "",
+			  "Tipo": "POWER",
+			  "Sub": [
+				{
+                  "Id": "09771",
+                  "Descripcion": "Actualizar Tablas"
+                },
+				{
+                  "Id": "09772",
+                  "Descripcion": "Actualizar Rips"
+                },
+				{
+                  "Id": "09773",
+                  "Descripcion": "Validacion de Rips"
+                },
+				{
+                  "Id": "09774",
+                  "Descripcion": "Generar archivos planos"
+                },
+				{
+                  "Id": "09775",
+                  "Descripcion": "Listados de estadistica"
+                },
+				{
+                  "Id": "09776",
+                  "Descripcion": "Mantenimiento de pacientes",
+                  "Opc-segu": "IS76",
+                  "Sub": [
+					{
+						"Id": "097761",
+						"Descripcion": "Listado de pacientes"
+					},
+					{
+						"Id": "097762",
+						"Descripcion": "Traslados de documento"
+					},
+					{
+						"Id": "097763",
+						"Descripcion": "Mantenimiento Base de datos"
+					},
+					{
+						"Id": "097764",
+						"Descripcion": "Activar prog. cuidado vital"
+					},
+					{
+						"Id": "097765",
+						"Descripcion": "Tabla etnias de pacientes"
+					},
+					{
+						"Id": "097766",
+						"Descripcion": "Control documentacion pacie"
+					},
+                    {
+						"Id": "097767",
+						"Descripcion": "Actualizar pacientes",
+						"Opc-segu": "IS767",
+						"Tipo": "HTML",
+						"Href": "../../SALUD/paginas/SAL7767.html"
+                    },
+					{
+						"Id": "097768",
+						"Descripcion": "Actualizar pacientes restr"
+					},
+					{
+						"Id": "097769",
+						"Descripcion": "Caratula de paciente"
+					},
+					{
+						"Id": "09776A",
+						"Descripcion": "Clasificación de paciente"
+					},
+					{
+						"Id": "09776B",
+						"Descripcion": "Clasificación paises rips"
+					},
+					{
+						"Id": "09776C",
+						"Descripcion": "Parametrizar ingreso pacien"
+					},
+					{
+						"Id": "09776D",
+						"Descripcion": "Menu censo albergues"
+					}
+                  ]
+                },
+                {
+                  "Id": "09777",
+                  "Descripcion": "Seleccionar busqueda hist"
+                },
+				{
+                  "Id": "09778",
+                  "Descripcion": "Consulta de resultados lab"
+                },{
+                  "Id": "09779",
+                  "Descripcion": "Consulta de resultados rx"
+                },{
+                  "Id": "0977A",
+                  "Descripcion": "Imprimir laboratorios x paci"
+                }
+			  ]
             },
 			{
               "Id": "0978",
