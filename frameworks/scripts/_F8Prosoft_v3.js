@@ -81,6 +81,8 @@
 
                             $.ventanaDatos.data = results;
 
+                            console.log(results)
+                            
                             if ($.ventanaDatos._addColumnas_head(columnas_table)) {
                                 $.ventanaDatos.data_table = $('#' + $.ventanaDatos.tabla_id).DataTable({
                                     data: results,
@@ -100,8 +102,8 @@
 
                                         // Evento click en fila
                                         api.$('td').click(function () {
-                                            var indx = $(this).hasClass('sorting_1');
-                                            if (!indx) {
+                                            var indx = $(this).attr('tabindex');
+                                            if (typeof indx === typeof undefined) {
                                                 var parent = $(this).closest('tr');
                                                 var item = $(parent).data().index;
                                                 $.ventanaDatos._sendData(item);
@@ -154,8 +156,8 @@
 
                     // Evento click en fila
                     api.$('td').click(function () {
-                        var indx = $(this).hasClass('sorting_1');
-                        if (!indx) {
+                        var indx = $(this).attr('tabindex');
+                        if (typeof indx === typeof undefined) {
                             var parent = $(this).closest('tr');
                             var item = $(parent).data().index;
                             $.ventanaDatos._sendData(item);
