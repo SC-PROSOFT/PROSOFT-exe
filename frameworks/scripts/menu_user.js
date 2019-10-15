@@ -96,16 +96,13 @@ function CON851P(codigo, funCancel, funAccept, a) {
         message: msj,
         callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
             if (a == undefined) {
-                console.log(result)
                 result == true ? setTimeout(funAccept, 10) : setTimeout(funCancel, 10);
             }
             else {
                 if (result == true) {
-                    console.log("aceptar");
                     funAccept();
                 }
                 else {
-                    console.log("cancelar");
                     funCancel(a)
                 }
             }

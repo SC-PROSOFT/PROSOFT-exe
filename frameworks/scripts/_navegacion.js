@@ -8,7 +8,7 @@ var $_MENU,
 function cargarMenu() {
     var modulo = localStorage['Modulo'], url = '';
     switch (modulo) {
-        case 'NEW': 
+        case 'NEW':
         case 'SAL': url = "../scripts/menu/menu_new.json";
             break;
         case 'HIC':
@@ -36,6 +36,9 @@ function cargarMenu() {
             break;
         case 'MIG': url = "../scripts/menu/menu_mig.json";
             break;
+        case 'TAX': url = "../scripts/menu/menu_tax.json";
+            break;
+        default: console.error('Menu de modulo no deifido -->' + modulo)
     }
 
     $.ajax({
@@ -140,7 +143,6 @@ function _eventoBotones() {
 }
 
 function _validarSegu(datos, callback) {
-    console.log(datos)
     var segw = $_USUA_GLOBAL[0]['SEG-MOV'];
     validarSegw = datos["Seg-w"] ? datos["Seg-w"].find(element => element == segw) : false;
 
@@ -155,14 +157,17 @@ function _validarSegu(datos, callback) {
 
         SolicitarDll({ datosh: datosEnvio },
             function (data) {
-                if (data.split('|')[0] == '00') callback('0');;
+                callback('0');
+                // verificar valores de retorno  
+                // console.log(data)
+                // if (data.split('|')[0] == '00') callback('0');
             },
             get_url("app/CON904.DLL")
         );
     }
 }
 
-function _validarScript_bat(data){
+function _validarScript_bat(data) {
     var lote = data.lote;
     if (data.tipo == 'F01') {
         if (data.params[0]['dll-suc'][lote.lote2]) {
@@ -197,7 +202,7 @@ function _validarScript_bat(data){
         + "-\\" + contab
         + "-" + tr_pre005
         + "-";
-    
+
     var titulo = contab + "\\"
         + mes
         + "     "

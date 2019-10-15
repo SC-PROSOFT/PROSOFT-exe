@@ -37,13 +37,30 @@
         _validarTextarea: function (e, el) {
             var ant_orden = parseInt($(el).data().orden) - 1;
             var sig_orden = parseInt($(el).data().orden) + 1;
-
+            var max_longitud = parseInt($(el).attr('maxlength'));
+            var requerido = $(el).attr('required') || false;
+            var act_longitud = $(el).val().length;
             switch (e.which) {
                 case 27:
+                console.log('ir atras')
                     $.validar._anterior(ant_orden);
                     break;
                 case 13:
-                    $.validar._siguiente(sig_orden);
+                    if (requerido) {
+                        if (act_longitud > 10) {
+                            $.validar._siguiente(sig_orden)
+                        } else {
+                            alert('Ingrese minimo 10 caracteres');
+                        }
+                    } else {
+                        $.validar._siguiente(sig_orden)
+                    }
+
+                    break;
+                default:
+
+                    if (act_longitud > 0)
+                        if (max_longitud == act_longitud) $.validar._siguiente(sig_orden);
                     break;
             }
         },

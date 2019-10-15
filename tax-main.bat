@@ -1,0 +1,4 @@
+ECHO OFF
+D:
+CD WEB\MAIN-ELECT\
+npm start "192.168.0.100|tax"

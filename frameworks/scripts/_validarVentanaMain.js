@@ -40,7 +40,6 @@
         },
         _ventana_power: function () {
             let script_bat = _validarScript_bat($.ventanaMain);
-            console.log(script_bat)
             if (script_bat) {
                 fs.writeFile(script_bat.nombre_bat, script_bat.batch, function (err) {
                     if (err) console.error('Error escribiendo bat: \n\n' + err);
@@ -80,7 +79,6 @@
     }
 
     _validarVentanaMain = function (params, callback) {
-        console.log(params);
         $.ventanaMain.id = params.Id;
         $.ventanaMain.descripcion = params.Descripcion;
         $.ventanaMain.href = params.Href;
