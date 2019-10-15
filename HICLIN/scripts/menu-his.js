@@ -60,7 +60,7 @@ function _ventanaPacientes(e) {
 		_ventanaDatos_lite({
 			titulo: "VENTANA DE PACIENTES",
 			tablaSql: "sc_pacie",
-			indice: ["cedula", "nombre"],
+			indice: ["codigo", "descripcion"],
 			mascara: [],
 			minLength: 3,
 			callback_esc: function() {

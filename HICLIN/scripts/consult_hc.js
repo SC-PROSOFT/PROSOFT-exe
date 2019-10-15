@@ -453,12 +453,12 @@ function datos_finalidad(nit, sexo, edad) {
             if ((edad.unid_edad == 'D' || edad.unid_edad == 'M') || (edad.unid_edad == 'A' && edad.vlr_edad < 6)) {
                 datos_finalidad.push({
                     'codigo': '04',
-                    'descripcion': "Primera infanacia"
+                    'descripcion': "PRIMERA INFANCIA"
                 });
             } else {
                 datos_finalidad.push({
                     'codigo': '04',
-                    'descripcion': "Infancia"
+                    'descripcion': "INFANCIA"
                 });
             }
         }
@@ -467,12 +467,12 @@ function datos_finalidad(nit, sexo, edad) {
             if (edad.vlr_edad > 11 && edad.vlr_edad < 18){
                 datos_finalidad.push({
                     'codigo': '05',
-                    'descripcion': "Adolecencia"
+                    'descripcion': "ADOLECENCIA"
                 });
             }else{
                 datos_finalidad.push({
                     'codigo': '05',
-                    'descripcion': "Juventu"
+                    'descripcion': "JUVENTU"
                 });
             }
         }
@@ -488,14 +488,14 @@ function datos_finalidad(nit, sexo, edad) {
             if (edad.vlr_edad > 28 && edad.vlr_edad < 60){
                 datos_finalidad.push({
                     'codigo': '07',
-                    'descripcion': "Adultez"
+                    'descripcion': "ADULTEZ"
                 });
             }
             
             if (edad.vlr_edad > 59) {
                 datos_finalidad.push({
                     'codigo': '07',
-                    'descripcion': "Vejez"
+                    'descripcion': "VEJEZ"
                 });
             }
         }

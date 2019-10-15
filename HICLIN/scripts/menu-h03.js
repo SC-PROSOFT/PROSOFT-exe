@@ -2,10 +2,10 @@
 	loader("hide");
 	_cargarEventos("off");
 	_toggleNav();
-	_confirmar_medico_hc0003();
+	_confirmar_medico_h03();
 });
 
-function _confirmar_medico_hc0003() {
+function _confirmar_medico_h03() {
 	var admin = localStorage["Usuario"];
 	if (admin != "GEBC" || admin != "0101") {
 		var atiende = $_REG_PROF[0].atiende;
@@ -27,8 +27,6 @@ function _confirmar_medico_hc0003() {
 				_salir_menu_h03();
 			}
 		}
-	} else {
-		confirmarNovedad_menu_h03();
 	}
 }
 
@@ -41,26 +39,26 @@ function confirmarNovedad_menu_h03() {
 				localStorage["Usuario"] == "ADMI") ||
 			($_USUA_GLOBAL[0].NIT == 892000401 && localStorage["Usuario"] == "ADMI")
 		) {
-			datoUnidad();
+			datoUnidad_h03();
 		} else {
 			_salir_menu_h03();
 		}
 	} else {
 		$_REG_HC.fecha_hc = moment().format("YYYYMMDD");
 		$_REG_HC.hora_hc = moment().format("hhmm");
-		datoUnidad();
+		datoUnidad_h03();
 	}
 }
 
-function datoUnidad() {
-	if ($_REG_PROF.atiende_prof == "3" || $_REG_PROF.atiende_prof == "6") {
-		finValidarUnidad("08");
+function datoUnidad_h03() {
+	if ($_REG_PROF[0].atiende == "3" || $_REG_PROF[0].atiende == "6") {
+		finValidarUnidad_h03("08");
 	} else {
-		on_datoUnidad();
+		on_datoUnidad_h03();
 	}
 }
 
-function on_datoUnidad() {
+function on_datoUnidad_h03() {
 	_consultaSql({
 		sql: "Select codigo, descripcion from sc_unser where activar='S'",
 		bd: localStorage.Contab + "_13",
@@ -90,7 +88,7 @@ function on_datoUnidad() {
 								);
 							}
 						},
-						validarDatoUnidad
+						validardatoUnidad_h03
 					);
 				}
 			}
@@ -98,8 +96,12 @@ function on_datoUnidad() {
 	});
 }
 
-function validarDatoUnidad(unidad) {
+function validardatoUnidad_h03(unidad) {
+	unidad.codigo = cerosIzq(unidad.codigo.toString(), 2);
+	unidad = unidad.codigo;
 	var sw = 0;
+	// var admin=localStorage["Usuario"];
+	var admin = "ADMI";
 	if (
 		$_USUA_GLOBAL[0].NIT == 832002436 ||
 		$_USUA_GLOBAL[0].NIT == 845000038 ||
@@ -110,46 +112,37 @@ function validarDatoUnidad(unidad) {
 		$_USUA_GLOBAL[0].NIT == 822001570
 	) {
 		if ($_COMP.tipo == "5") {
-			if (unidad.codigo != "02") {
-				if (
-					localStorage["Usuario"] != "GEBC" ||
-					localStorage["Usuario"] != "ADMI"
-				) {
+			if (unidad !== "02") {
+				if (admin !== "GEBC" || admin !== "ADMI") {
 					sw = 1;
 					plantillaToast("", "B1", null, "error", "error");
 				}
 			}
 		}
-
 		if ($_COMP.tipo == "7") {
-			if (unidad.codigo != "08") {
-				if (
-					localStorage["Usuario"] != "GEBC" ||
-					localStorage["Usuario"] != "ADMI"
-				) {
+			if (unidad !== "08") {
+				if (admin !== "GEBC" || admin !== "ADMI") {
+					sw = 1;
+					plantillaToast("", "B1", null, "error", "error");
+				}
+			}else if (unidad !== "88") {
+				if (unidad !== "08") {
 					sw = 1;
 					plantillaToast("", "B1", null, "error", "error");
 				}
 			}
 		}
 	}
-
-	if (sw == 0) {
-		finValidarUnidad(unidad);
-	} else {
-		datoUnidad();
-	}
+		if (sw == 0) {
+			finValidarUnidad_h03(unidad);
+		} else {
+			datoUnidad_h03();
+		}
 }
 
-function finValidarUnidad(unidad) {
-	var sw = 0;
-	if ($_COMP.tipo == "7") {
-		if (unidad != "08") {
-			sw = 1;
-			plantillaToast("", "B1", null, "error", "error");
-		}
-	}
-
+	function finValidarUnidad_h03(unidad) {
+		var sw = 0;
+	//Condiccion Hospital Fuente de Oro
 	if (
 		$_USUA_GLOBAL[0].NIT == 822001570 &&
 		$_COMP.tipo == "5" &&
@@ -160,18 +153,17 @@ function finValidarUnidad(unidad) {
 	}
 
 	if (sw == 1) {
-		datoUnidad();
+		datoUnidad_h03();
 	} else {
 		$_REG_HC.serv_hc = unidad;
-		datoFindalidad();
+		setTimeout(datoFinalidad_h03, 300);
 	}
 }
 
-function datoFindalidad() {
-	console.log($_REG_HC.serv_hc);
-	if ($_REG_HC.serv_hc != "08") {
+function datoFinalidad_h03() {
+	if ($_REG_HC.serv_hc == "08") {
 		$_REG_HC.finalid_hc = "10";
-		selecionarPrograma();
+		seleccionarPrograma_h03();
 	} else {
 		POPUP(
 			{
@@ -188,10 +180,7 @@ function datoFindalidad() {
 					}
 				],
 				callback_f: function() {
-					if (
-						$_REG_PROF.atiende_prof == "3" ||
-						$_REG_PROF.atiende_prof == "6"
-					) {
+					if ($_REG_PROF[0].atiende == "3" || $_REG_PROF[0].atiende == "6") {
 						CON850_P(
 							function(e) {
 								if (e.id == "S") {
@@ -203,7 +192,7 @@ function datoFindalidad() {
 										"error"
 									);
 								} else {
-									selecionarPrograma();
+									seleccionarPrograma_h03();
 								}
 							},
 							{
@@ -230,26 +219,25 @@ function validarFinalidad(data) {
 	if (
 		($_USUA_GLOBAL[0].NIT == 900005594 || $_USUA_GLOBAL[0].NIT == 800037979) &&
 		(data.codigo == "10" || data.codigo == "11") &&
-		$_REG_PROF.atiende_prof == "3"
+		$_REG_PROF[0].atiende == "3"
 	) {
 		plantillaToast("", "15", null, "error", "error");
-		datoFindalidad();
+		datoFinalidad_h03();
 	} else {
 		$_REG_HC.finalid_hc = data.codigo;
-		selecionarPrograma();
+		seleccionarPrograma_h03();
 	}
 }
 
-function selecionarPrograma() {
+function seleccionarPrograma_h03() {
 	var edad = $_REG_HC.edad_hc,
-		atiende_prof = $_REG_PROF.atiende_prof,
+		atiende_prof = $_REG_PROF[0].atiende,
 		esp_prof = $_REG_PROF.tabla_especialidad,
 		serv = $_REG_HC.serv_hc,
 		finalidad = $_REG_HC.finalid_hc,
 		nit = $_USUA_GLOBAL[0].NIT,
-        esquema = $_REG_HC.esquema_hc;
-        console.log("esp_prof");
-        console.log(esp_prof);
+		admin=localStorage['Usuar'];
+		esquema = $_REG_HC.esquema_hc;
 
 	if ($_REG_HC.novedad_hc == "7") {
 		// validacion aiepi de 0 a 2 meses
@@ -266,11 +254,11 @@ function selecionarPrograma() {
 				(serv == "11" || serv == "12" || serv == "13" || serv == "01") ||
 				(nit == 900005594 && serv == "01")
 			) {
-				buscar_programa("HC-01");
+				buscar_programa_h03("HC-01");
 			} else {
-				buscar_programa("AIEPI002");
+				buscar_programa_h03("AIEPI002");
 			}
-			// validacion de 2m a 5aÃ±os
+			// validacion de 2 Meses a 5 Años
 		} else if (
 			(edad.unid_edad == "M" && edad.vlr_edad > 1) ||
 			(edad.unid_edad == "A" &&
@@ -285,9 +273,9 @@ function selecionarPrograma() {
 				(serv == "11" || serv == "12" || serv == "13" || serv == "01") ||
 				(nit == 900005594 && serv == "01")
 			) {
-				buscar_programa("HC-01");
+				buscar_programa_h03("HC-01");
 			} else {
-				buscar_programa("AIEPI001");
+				buscar_programa_h03("AIEPI001");
 			}
 			// otorrinolaringologia
 		} else if (
@@ -295,29 +283,31 @@ function selecionarPrograma() {
 			esp_prof[0] == "522" ||
 			(esp_prof[1] == "521" || esp_prof[1] == "522")
 		) {
-			buscar_programa("HC-12");
+			buscar_programa_h03("HC-12");
 			// oftalmologia y optometria
 		} else if (
-			(esp_prof[0] == "480" || esp_prof[0] == "481" || esp_prof[0] == "500")||(
-				esp_prof[1] == "480" || esp_prof[1] == "481" || esp_prof[1] == "500"
-			)
+			esp_prof[0] == "480" ||
+			esp_prof[0] == "481" ||
+			esp_prof[0] == "500" ||
+			(esp_prof[1] == "480" || esp_prof[1] == "481" || esp_prof[1] == "500")
 		) {
-			buscar_programa("HC-13");
+			buscar_programa_h03("HC-13");
 			// oncologia oncooriente
 		} else if (
-			(esp_prof[0] == "490" || esp_prof[0] == "491" || esp_prof[0] == "492")||(
-				esp_prof[1] == "490" || esp_prof[1] == "491" || esp_prof[1] == "492"
-			) &&
-			nit == 900264583 &&
-			(localStorage.Usuario == "GEBC" || localStorage.Usuario == "ADMI")
+			esp_prof[0] == "490" ||
+			esp_prof[0] == "491" ||
+			esp_prof[0] == "492" ||
+			((esp_prof[1] == "490" || esp_prof[1] == "491" || esp_prof[1] == "492") &&
+				nit == 900264583 &&
+				(admin == "GEBC" || admin == "ADMI"))
 		) {
-			buscar_programa("HC9004");
+			buscar_programa_h03("HC9004");
 			// historia mamografia
 		} else if (nit == 830092718 && esp_prof[0] == "602") {
-			buscar_programa("HC-14");
+			buscar_programa_h03("HC-14");
 			// historia resumida para albergue de sucurame
 		} else if (nit == 900565371) {
-			buscar_programa("HC-02");
+			buscar_programa_h03("HC-02");
 		} else if (serv == "08") {
 			if (
 				finalidad == "03" ||
@@ -327,34 +317,15 @@ function selecionarPrograma() {
 				finalidad == "07"
 			) {
 				//finalidades que tengan formatos o apliquen para algun formato especial pyp
-				var array_finalidad = selecionPyp(finalidad, $_REG_HC.sexo_hc);
+				var array_finalidad = seleccionPyp_h03(finalidad, $_REG_HC.sexo_hc);
 				console.debug(array_finalidad);
-
-				if (esquema.trim() != "") {
-					switch (esquema) {
-						case "8001":
-							programa = "HC-8001";
-							break;
-						case "8002":
-							programa = "HC-8002";
-							break;
-						case "8031":
-							programa = "HC-8031";
-							break;
-						case "8051":
-							programa = "HC-8051";
-							break;
-						default:
-							programa = "HC-01";
-							break;
-					}
-				}
+				mostrar_historiaPYP(array_finalidad);
 			} else {
 				programa = "HC-01";
 			}
 		}
 	} else {
-		if (validar_servicio_finalidad_hc0003()) {
+		if (validar_servicio_finalidad_h03()) {
 			switch (esquema) {
 				case "AI02":
 					programa = "AIEPI002";
@@ -413,7 +384,7 @@ function mostrar_historiaPYP(array) {
 	);
 }
 
-function selecionPyp(finalidad, sexo) {
+function seleccionPyp_h03(finalidad, sexo) {
 	var array_pyp = new Array();
 	if (sexo == "F") {
 		if (["03", "05", "06", "07", "10"].filter(arr => arr == finalidad)) {
@@ -456,31 +427,31 @@ function selecionPyp(finalidad, sexo) {
 }
 
 function _data_hcPYP_hc0003(data) {
-	$ESQUEMA = data.esquema;
-	if ($ESQUEMA.length == 0) {
+	var esquema = data.esquema;
+	if (esquema.length == 0) {
 		setTimeout(_unidadesdeservicio_hc0003, 500);
 	} else {
-		switch ($ESQUEMA) {
+		switch (esquema) {
 			case "8001":
-				buscar_programa("HC-8001");
+				buscar_programa_h03("HC-8001");
 				break;
 			case "8002":
-				buscar_programa("HC-8002");
+				buscar_programa_h03("HC-8002");
 				break;
 			case "8031":
-				buscar_programa("HC-8031");
+				buscar_programa_h03("HC-8031");
 				break;
 			case "8051":
-				buscar_programa("HC-8051");
+				buscar_programa_h03("HC-8051");
 				break;
 			default:
-				buscar_programa("HC-01");
+				buscar_programa_h03("HC-01");
 				break;
 		}
 	}
 }
 
-function validar_servicio_finalidad_hc0003() {
+function validar_servicio_finalidad_h03() {
 	var esquema = $_REG_HC.esquema_hc,
 		retorno = false,
 		serv = $_REG_HC.serv_hc,
@@ -510,9 +481,9 @@ function validar_servicio_finalidad_hc0003() {
 	return retorno;
 }
 
-function buscar_programa(programa) {
+function buscar_programa_h03(programa) {
 	if (programa) {
-		console.debug(programa);
+		console.log(programa);
 	} else {
 		jAlert({ titulo: "Error ", mensaje: "Programa ha abrir no definido" });
 	}
