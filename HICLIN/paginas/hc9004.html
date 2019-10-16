@@ -9,6 +9,9 @@ PO - Pablo Olguin 25/09/2019 -- Re-diseño
   .actions {
     padding: 6px 0 0 !important;
   }
+  textarea {
+  resize: none;
+}
 </style>
 
 <div class="col-md-12">
@@ -28,31 +31,31 @@ PO - Pablo Olguin 25/09/2019 -- Re-diseño
           <div class="col-md-2 col-sm-4 col-xs-4">
             <label>Año:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="ano_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input disabled="disabled" id="ano_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-1 col-sm-2 col-xs-2">
             <label>Mes:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="mes_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input disabled="disabled" id="mes_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-1 col-sm-2 col-xs-2">
             <label>Dia:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="dia_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input disabled="disabled" id="dia_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-1 col-sm-2 col-xs-2">
             <label>Hora:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="hora_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input disabled="disabled" id="hora_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-1 col-sm-2 col-xs-2">
             <label>Minutos:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="min_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input disabled="disabled" id="min_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-4 col-sm-8 col-xs-8">
@@ -60,27 +63,27 @@ PO - Pablo Olguin 25/09/2019 -- Re-diseño
             <div class="inline-inputs">
               <label class="col-md-4 col-sm-4 col-xs-12">Médico:</label>
               <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                <input id="med_hc_9004" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                <input id="med_hc_9004" disabled="disabled" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
               </div>
             </div>
           </div>
           <div class="col-md-1 col-sm-2 col-xs-2">
             <label>Novedad:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="act_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input id="act_hc_9004" type="number" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-1 col-sm-2 col-xs-2">
             <label>Unid.servicio:</label>
             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-              <input id="unser_hc_9004" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+              <input id="unser_hc_9004" type="number" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
             </div>
           </div>
           <div class="col-md-4 col-sm-12 col-xs-12" style="margin: 15px 0;">
             <div class="inline-inputs">
               <label class="col-md-4 col-sm-2 col-xs-12">Procedencia:</label>
               <div class="input-group col-md-10 col-sm-10 col-xs-12">
-                <input id="proced_hc_9004" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                <input id="proced_hc_9004" type="text" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
               </div>
             </div>
           </div>
@@ -88,7 +91,7 @@ PO - Pablo Olguin 25/09/2019 -- Re-diseño
             <div class="inline-inputs">
               <label class="col-md-4 col-sm-2 col-xs-12">Historia No:</label>
               <div class="input-group col-md-10 col-sm-10 col-xs-12">
-                <input id="llave_hc_9004" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                <input id="llave_hc_9004" type="text" class="form-control  disabled="disabled" col-md-12 col-sm-12 col-xs-12" data-orden="1">
               </div>
             </div>
           </div>
@@ -96,7 +99,7 @@ PO - Pablo Olguin 25/09/2019 -- Re-diseño
             <div class="inline-inputs">
               <label class="col-md-6 col-sm-2 col-xs-12">Folio No:</label>
               <div class="input-group col-md-10 col-sm-10 col-xs-12">
-                <input id="folio_hc_9004" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                <input id="folio_hc_9004" type="text" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
               </div>
             </div>
           </div>
