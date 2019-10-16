@@ -54,7 +54,8 @@ function _onCargarUsuario(data) {
                     host: localStorage.IP_DATOS,
                     user: $_USUARIOSQL,
                     password: $_CLAVESQL,
-                    database: database
+                    database: database,
+                    dateStrings: true
                 };
 
                 var arrayEliminar = [];

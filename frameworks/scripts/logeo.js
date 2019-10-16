@@ -1,4 +1,6 @@
-const path = require('path');
+const path = require('path'),
+    fs = require('fs');
+
 const { ipcRenderer } = require('electron');
 var $_IP_DATOS = false, $_CONTAB = false, $_NOMINA = false, $_MODULO = false;
 
@@ -9,24 +11,24 @@ ipcRenderer.on('ping', (e, m) => {
     inicio();
 });
 
-function inicio(){   
-    $_IP_DATOS = localStorage.IP_DATOS; 
+function inicio() {
+    $_IP_DATOS = localStorage.IP_DATOS;
     _cargarDatos();
     _faseValidarUsuario();
-    $('#validarForm').click(function (){
+    $('#validarForm').click(function () {
         $.validar._fin();
     });
 }
 
-function _faseValidarUsuario(){
+function _faseValidarUsuario() {
     $('.mid form .content-grid').addClass('hidden');
     validarInputs({
         form: "#fase_usuario",
         orden: "1"
     },
         _faseValidarUsuario,
-        function (){
-            if ($('#usuario').val().length < 1) alerta('Ingrese un usuario', _faseValidarUsuario) 
+        function () {
+            if ($('#usuario').val().length < 1) alerta('Ingrese un usuario', _faseValidarUsuario)
             else {
                 _faseValidarClave();
                 if ($('#usuario').val() != '99') validarInicioModulo();
@@ -35,31 +37,31 @@ function _faseValidarUsuario(){
     );
 }
 
-function validarInicioModulo(){
+function validarInicioModulo() {
     var modulo = localStorage['Modulo'];
     $('.mid form .content-grid').removeClass('hidden');
-    if (modulo == 'NOM' || modulo == 'PRD' || modulo == 'PRS'  || modulo == 'SEP' || modulo == 'MIG' || modulo == 'RX' || modulo == 'BAR'){
+    if (modulo == 'NOM' || modulo == 'PRD' || modulo == 'PRS' || modulo == 'SEP' || modulo == 'MIG' || modulo == 'RX' || modulo == 'BAR') {
         if (modulo == 'NOM') $('#mesIngreso').attr('hidden', true), $('#select-nomina').removeAttr('hidden');
         if (modulo == 'PRD' || modulo == 'MIG' || modulo == 'BAR') $('.mid form .content-grid').addClass('hidden');
         if (modulo == 'PRS' || modulo == 'SEP') $('#mesIngreso').attr('hidden', true);
     }
     var mes = moment().format('MM');
-    if (modulo == 'HIC'){
-        $('#mesIngreso').val('13');    
-    }else{
+    if (modulo == 'HIC') {
+        $('#mesIngreso').val('13');
+    } else {
         $('#mesIngreso').val(mes);
     }
 }
 
-function _faseValidarClave(){
+function _faseValidarClave() {
     validarInputs({
         form: "#fase_clave",
         orden: "1"
     },
-        function (){
+        function () {
             _faseValidarUsuario();
         },
-        function (){
+        function () {
             verificarLogin();
         }
     );
@@ -85,25 +87,30 @@ function _cargarDatos() {
     $.getJSON(url, function (data) {
         $_CONTAB = data.Usunet[0].CONTAB;
         $_CONTAB.pop();
-        
+
         $_NOMINA = data.Usunet[0].NOMINA;
         $_NOMINA.pop();
-        
+
         $_MODULO = data.MODULOS;
         $_MODULO.pop();
-        
+
         _cargarContabilidad();
         _cargarNomina();
-        
-        var nit = data.Usunet[0].NITUSU;
-        let url = path.join('P:\\\PROG\\\LOGOS\\\00004059.bmp');
-        $('#logo').attr('style', `background: url(${url}) no-repeat center center`);
+
+        var nit = data.Usunet[0].NITUSU.slice(2),
+            url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);
+        fs.readFile(url, function (err, data) {
+            if (err) throw err;
+            var dataImg = Buffer.from(data).toString('base64');
+            $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg}`).appendTo('#logo')
+        });
+
     }).fail(function (jqxhr, textStatus, error) {
         jAlert({ titulo: "Error: 99", mensaje: "Ha ocurrido un error cargando los datos USUNET: " + error });
     });
 }
 
-function _cargarContabilidad(){
+function _cargarContabilidad() {
     $('#select-contabilidad').html('');
     for (var i in $_CONTAB) {
         let objContab = $('<option/>',
@@ -116,7 +123,7 @@ function _cargarContabilidad(){
     }
 }
 
-function _cargarNomina(){
+function _cargarNomina() {
     for (var i in $_NOMINA) {
         let objNomina = $('<option/>',
             {
@@ -135,32 +142,32 @@ function verificarLogin() {
         nomina = $('#select-nomina').val(),
         datos_envio = '';
 
-    if (!admin){
-        alerta('Ingrese un usuario',_faseValidarUsuario);
-    }else if (admin != '99'){
+    if (!admin) {
+        alerta('Ingrese un usuario', _faseValidarUsuario);
+    } else if (admin != '99') {
         if ($('#select-contabilidad').is(':visible') && !$('#select-contabilidad').val()) {
             alerta('Seleccione una contabilidad', _faseValidarClave);
         } else if ($('#inpt-contabilidad').is(':visible') && !$('#inpt-contabilidad').val()) {
             alerta('Ingrese una contabilidad', _faseValidarClave);
-        }else if ($('#select-nomina').is(':visible') && !$('#select-nomina').val()){
+        } else if ($('#select-nomina').is(':visible') && !$('#select-nomina').val()) {
             alerta('Seleccione una nomina', _faseValidarClave);
-        }else{
+        } else {
             if (clave == '') clave = SpacesIzq(clave, 8);
             datos_envio = admin + '|' + clave + '|' + localStorage['Modulo'] + "|"
             validarDataLoguin(datos_envio);
         }
-    }else{
-        if (clave.length < 1) 
+    } else {
+        if (clave.length < 1)
             alert('Debe ingresar un clave', _faseValidarClave)
-        else 
+        else
             admin = CerosIzq(admin, 4)
-            datos_envio = admin + '|' + clave + '|'
-            validarDataLoguin(datos_envio);
+        datos_envio = admin + '|' + clave + '|'
+        validarDataLoguin(datos_envio);
         ;
     }
 }
 
-function validarDataLoguin(datos){
+function validarDataLoguin(datos) {
     console.debug(datos)
     var url = get_url("app/INDEX.dll");
     SolicitarDll({ datosh: datos }, recibirLogin, url);
@@ -176,9 +183,9 @@ function recibirLogin(datos) {
                 contab = $('#select-contabilidad').is(':visible') ? $('#select-contabilidad').val() : ($('#inpt-contabilidad').is(':visible') ? $('#inpt-contabilidad').val().trim().toUpperCase() : false),
                 nomina = $('#select-nomina').val() || '',
                 consulta = consultarModulo(modulo);
-        
-            if (consulta){
-                if (consulta.array.ACT == 'S'){
+
+            if (consulta) {
+                if (consulta.array.ACT == 'S') {
                     localStorage.Clave = clave;
                     localStorage.Usuario = res[2];
                     localStorage.Nombre = res[3];
@@ -186,17 +193,17 @@ function recibirLogin(datos) {
                     localStorage.Contab = contab;
                     localStorage.Nomina = nomina;
                     localStorage.Mes = mes;
-                    
+
                     url = path.join(`${__dirname}`, `../frameworks/paginas/menu_user.html`);
                     window.location.href = url;
-                }else{
+                } else {
                     alert('Modulo no se encuentra habilitado', _faseValidarClave);
                 }
-            } else if(modulo == 'MIG'){
+            } else if (modulo == 'MIG') {
                 console.log('entro A MIG O RX')
                 url = path.join(`${__dirname}`, `../frameworks/paginas/menu_user.html`);
                 window.location.href = url;
-            }else{
+            } else {
                 alert('No se encontro modulo', _faseValidarClave);
             }
         } else {
