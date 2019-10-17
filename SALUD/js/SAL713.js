@@ -30,8 +30,8 @@ function _ventanaNomtarif(e) {
                 _validarDato()
             },
             callback: function (data) {
-                $('#codtar_713').val(data.codigo);
-                $('#descptar_713').val(data.descripcion);
+                $('#codtar_713').val(data.codigo_nomtr);
+                $('#descptar_713').val(data.descrip_nomtr);
                 _enterInput('#codtar_713');
             }
         });
@@ -50,8 +50,8 @@ function _ventanaGruposer(e) {
                 _validarDato()
             },
             callback: function (data) {
-                $('#grupo_713').val(data.codigo);
-                $('#descrgrp_103').val(data.descripcion);
+                $('#grupo_713').val(data.codigo_grser);
+                $('#descrgrp_103').val(data.descrip_grser);
                 _enterInput('#grupo_713');
             }
         });
@@ -71,9 +71,9 @@ function _ventanaTablatarif(e) {
                 _validarDato()
             },
             callback: function (data) {
-                var codcup = data.llave.trim();
+                var codcup = data.llave_tab.trim();
                 $('#cups_713').val(codcup.substring(5, 15));
-                $('#descrpcups_103').val(data.descripcion);
+                $('#descrpcups_103').val(data.descrip_tab);
                 _enterInput('#cups_713');
             }
         });
@@ -91,8 +91,8 @@ function _ventanaDivis(e) {
                 _validarDato()
             },
             callback: function (data) {
-                $('#divis_713').val(data.codigo);
-                $('#descrpdiv_713').val(data.descripcion);
+                $('#divis_713').val(data.llave_div);
+                $('#descrpdiv_713').val(data.descrip_div);
                 _enterInput('#divis_713');
             }
         });
@@ -117,8 +117,8 @@ function _ventanaContab(e) {
                 _validarDato()
             },
             callback: function (data) {
-                $('#contab_713').val(data.cuenta.trim())
-                $('#descontab_713').val(data.descripcion.trim())
+                $('#contab_713').val(data.llave_mae.trim())
+                $('#descontab_713').val(data.nombre_mae.trim())
                 _enterInput('#contab_713');
             }
         });

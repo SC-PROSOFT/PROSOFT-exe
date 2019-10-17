@@ -27,8 +27,8 @@ function _ventanaGrptar(e) {
             },
             callback: function (data) {
                 console.debug(data);
-                $('#codigo_712').val(data.codigo.trim())
-                $('#descripSer712').val(data.descripcion)
+                $('#codigo_712').val(data.codigo_nomtr.trim())
+                $('#descripSer712').val(data.descrip_nomtr)
                 _enterInput('#codigo_712');
             }
         });
@@ -230,7 +230,7 @@ function validarResp_712(data, $_COD712, desc712) {
                 break;
             case 8:
                 _consultaSql({
-                    sql: `UPDATE sc_grupotar SET descripcion='${desc712}' WHERE codigo = '${$_COD712}' `,
+                    sql: `UPDATE sc_grupotar SET descrip_nomtr ='${desc712}' WHERE codigo_nomtr = '${$_COD712}' `,
                     db: $CONTROL,
                     callback: function (error, results, fields) {
                         if (error) throw error;
@@ -253,7 +253,7 @@ function validarResp_712(data, $_COD712, desc712) {
                 break;
             case 9:
                 _consultaSql({
-                    sql: `DELETE FROM sc_grupotar WHERE codigo = '${$_COD712}'`,
+                    sql: `DELETE FROM sc_grupotar WHERE codigo_nomtr = '${$_COD712}'`,
                     db: $CONTROL,
                     callback: function (error, results, fields) {
                         if (error) throw error;

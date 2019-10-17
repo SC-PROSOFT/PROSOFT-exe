@@ -28,8 +28,8 @@ function _ventanaGrupo(e) {
             },
             callback: function (data) {
                 console.debug(data);
-                $('#codigo_711').val(data.codigo.trim())
-                $('#descrip711').val(data.descripcion.trim())
+                $('#codigo_711').val(data.codigo_grser.trim())
+                $('#descrip711').val(data.descrip_grser.trim())
                 _enterInput('#codigo_711');
             }
         });
@@ -49,8 +49,8 @@ function _ventanaContab(e) {
             },
             callback: function (data) {
                 console.debug(data);
-                $('#contab_711').val(data.cuenta.trim() + data.nivel.trim())
-                $('#descripContab_711').val(data.descripcion)
+                $('#contab_711').val(data.llave_mae.trim() + data.nivel_mae.trim())
+                $('#descripContab_711').val(data.nombre_mae)
                 _enterInput('#contab_711');
             }
         });
@@ -364,7 +364,7 @@ function validarBdSql(data, codg711, descp711, ingre711, terce711, contab_711) {
                 })
                 break;
             case 8:
-                var BDSQL = `UPDATE sc_gruposer SET descripcion='${descp711}', porc_clinica='${ingre711}', porc_terceros='${terce711}', cta_mayor='${contab_711}' WHERE codigo = '${codg711}' `;
+                var BDSQL = `UPDATE sc_gruposer SET descrip_grser ='${descp711}', porc_cl_grser='${ingre711}', porc_otr_grser='${terce711}', otr_cta_grser='${contab_711}' WHERE codigo_grser = '${codg711}' `;
                 _consultaSql({
                     sql: BDSQL,
                     db: $CONTROL,
@@ -389,7 +389,7 @@ function validarBdSql(data, codg711, descp711, ingre711, terce711, contab_711) {
                 break;
             case 9:
                 _consultaSql({
-                    sql: `DELETE FROM sc_gruposer WHERE codigo = '${codg711}'`,
+                    sql: `DELETE FROM sc_gruposer WHERE codigo_grser = '${codg711}'`,
                     db: $CONTROL,
                     callback: function (error, results, fields) {
                         if (error) throw error;
