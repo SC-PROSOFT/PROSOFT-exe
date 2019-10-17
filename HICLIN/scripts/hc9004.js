@@ -32,7 +32,7 @@ function iniciar_apertura_h9004() {
 }
 
 function validarMedico_h9004() {
-	var atiende_prof = $_REG_PROF[0].atiende,
+	var atiende_prof = $_REG_PROF[0].atiende_prof,
 		esp_prof = $_REG_PROF.tabla_especialidad;
 	if ((atiende_prof == 'A') && (["250", "140", "460", "461", "464", "462"].filter(arr => arr == esp_prof[0]))) {
 		atiende_prof = "1";
@@ -96,22 +96,27 @@ function validar_historia_h9004(data) {
 
 function buscar_comprobantes_h9004() {
 	if ($_REG_HC.serv_hc == "02" || $_REG_HC.serv_hc == "08") {
-		buscar_consulta_externa();
+		// buscar_consulta_externa();
+		console.log('Yendo a consulta externa');
+		
 	}
+	consultar_hc_ant_h9004();
 }
 
-function datos_hc_ant_h9004(){
+function consultar_hc_ant_h9004(){
 	var data = datosEnvio() + llave +
 		"|" + '**' +"|";
 	//Medidas antropometricas
 
 	//Antecedentes HC
-	SolicitarDll({
-		datosh: data
-	},
-	validar_historia_h9004,
-	get_url("APP/HICLIN/HCDETAL-ANT.DLL")
-);
+// 	SolicitarDll({
+// 		datosh: data
+// 	},
+// 	function(data){
+// 		console.log(data)
+// 	},
+// 	get_url("APP/HICLIN/HCDETAL-ANT.DLL")
+// );
 	//Antecedentes cod: 9004
 }
 

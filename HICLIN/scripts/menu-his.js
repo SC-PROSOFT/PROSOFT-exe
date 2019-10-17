@@ -1,27 +1,26 @@
-($_REG_PROF = []), ($_REG_HC = []),($_REG_PACI = []);
+($_REG_PROF = []), ($_REG_HC = []), ($_REG_PACI = []);
 $_COMP = {
 	suc: "",
 	tipo: "",
 	comprobante: ""
 };
-$(document).ready(function() {
+$(document).ready(function () {
 	$("#busqpaci_his").val("94475639");
 	_inputControl("disabled");
 	loader("show");
 	_iniciar_menu_his();
-	_toggleF8([
-		{
-			input: "busqpaci",
-			app: "his",
-			funct: _ventanaPacientes
-		}
-	]);
+	_toggleF8([{
+		input: "busqpaci",
+		app: "his",
+		funct: _ventanaPacientes
+	}]);
 });
 
 function _iniciar_menu_his() {
 	var data = datosEnvio() + localStorage["Usuario"].trim();
-	SolicitarDll(
-		{ datosh: data },
+	SolicitarDll({
+			datosh: data
+		},
 		on_iniciar_menu_his,
 		get_url("APP/HICLIN/ARCHIVOS-HC.DLL")
 	);
@@ -32,9 +31,9 @@ function on_iniciar_menu_his(data) {
 
 	if (res[0].trim() == "00") {
 		_consultaSql({
-			sql: "Select * from sc_archprof where codigo = " + parseInt(res[1]),
+			sql: "Select * from sc_archprof where cod_prof = " + parseInt(res[1]),
 			bd: localStorage.Contab + "_13",
-			callback: function(error, results, fields) {
+			callback: function (error, results, fields) {
 				if (error) throw error;
 				else {
 					if (!results[0]) {
@@ -42,8 +41,8 @@ function on_iniciar_menu_his(data) {
 					} else {
 						$_REG_PROF = JSON.parse(JSON.stringify(results));
 						$_REG_PROF.tabla_especialidad = new Array();
-						$_REG_PROF.tabla_especialidad = res[2].split(";");
-						$_REG_PROF.tabla_especialidad.pop();
+						// $_REG_PROF.tabla_especialidad = res[2].split(";");
+						// $_REG_PROF.tabla_especialidad.pop();
 						validarPaciente();
 						loader("hide");
 					}
@@ -63,10 +62,10 @@ function _ventanaPacientes(e) {
 			indice: ["codigo", "descripcion"],
 			mascara: [],
 			minLength: 3,
-			callback_esc: function() {
+			callback_esc: function () {
 				$("#busqpaci_his").focus();
 			},
-			callback: function(data) {
+			callback: function (data) {
 				$("#busqpaci_his")
 					.val(data.cedula)
 					.focus();
@@ -74,28 +73,30 @@ function _ventanaPacientes(e) {
 		});
 	}
 }
+
 function ir_hc9004() {
 	$("#body_main").load("../../HICLIN/paginas/hc9004.html");
 }
+
 function validarPaciente() {
-	validarInputs(
-		{
+	validarInputs({
 			form: "#formConsult_his",
 			orden: "1"
 		},
-		function() {
+		function () {
 			CON850_P(
-				function(e) {
+				function (e) {
 					if (e.id == "S") {
 						salir_modulo();
 					} else {
 						validarPaciente();
 					}
-				},
-				{ msj: "03" }
+				}, {
+					msj: "03"
+				}
 			);
 		},
-		function() {
+		function () {
 			if ($("#busqpaci_his").val()) {
 				var data =
 					datosEnvio() +
@@ -104,14 +105,17 @@ function validarPaciente() {
 					localStorage["Usuario"] +
 					"|";
 
-				SolicitarDll(
-					{ datosh: data },
+				SolicitarDll({
+						datosh: data
+					},
 					cargarDatosPaci,
 					get_url("APP/HICLIN/HC000-1.DLL")
 				)
 			} else {
-				jAlert(
-					{ titulo: "Error ", mensaje: "Debe ingresar una identificacion" },
+				jAlert({
+						titulo: "Error ",
+						mensaje: "Debe ingresar una identificacion"
+					},
 					validarPaciente
 				);
 			}
@@ -125,16 +129,17 @@ function cargarDatosPaci(data) {
 		if (res[2].trim() == 1) {
 			//Existe historia clinica
 			var data = datosEnvio() + res[1] + "|";
-			SolicitarDll(
-				{ datosh: data },
-				function(data) {
+			SolicitarDll({
+					datosh: data
+				},
+				function (data) {
 					res = data.split("|");
 					if (res[0].trim() == "00") {
 						console.log(res)
 						_consultaSql({
-							sql: "Select * from sc_pacie where codigo =" +parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
+							sql: "Select * from sc_pacie where codigo =" + parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
 							bd: localStorage.Contab + "_13",
-							callback: function(error, results, fields) {
+							callback: function (error, results, fields) {
 								if (error) throw error;
 								else {
 									if (!results[0]) {
@@ -145,7 +150,7 @@ function cargarDatosPaci(data) {
 									}
 								}
 							}
-						}),montarHc811();
+						}), montarHc811();
 					} else {
 						plantillaError(res[0], res[1], res[2]);
 					}
@@ -165,9 +170,8 @@ function montarHc811() {
 	var url = get_url(
 		"TEMP/SC-HC811-" + localStorage["Sesion"].trim() + ".json"
 	);
-	SolicitarDatos(
-		{},
-		function(data) {
+	SolicitarDatos({},
+		function (data) {
 			var hc = data.HC,
 				sw_open = 0;
 			hc.pop();
@@ -183,6 +187,8 @@ function montarHc811() {
 			}
 			hc.reverse();
 
+			console.log(hc)
+
 			_ventanaDatos({
 				titulo: $_REG_PACI[0].descripcion,
 				columnas: [
@@ -191,14 +197,14 @@ function montarHc811() {
 					"FECHA-HC",
 					"HORA-HC",
 					"MOTIV-HC",
-					"ESTADO"
+					"ESTADO-HC"
 				],
 				data: hc,
 				orden: false,
-				callback_esc: function() {
+				callback_esc: function () {
 					$("#busqpaci_his").focus();
 				},
-				callback: function(data) {
+				callback: function (data) {
 					var llave =
 						cerosIzq($_REG_PACI[0].codigo, 15) +
 						data["FOLIO-HC"].split("-")[0] +
@@ -214,12 +220,13 @@ function montarHc811() {
 function _consultHc(llave) {
 	$_REG_HC.llave_hc = llave;
 	var data = datosEnvio() + llave + "|";
-	SolicitarDll(
-		{ datosh: data },
-		function(data) {
+	SolicitarDll({
+			datosh: data
+		},
+		function (data) {
 			var res = data.split("|");
 			if (res[0].trim() == "00") {
-			
+
 				_mostrarDatosPaci(res);
 			} else {
 				plantillaError(res[0], res[1], res[2]);
@@ -290,12 +297,11 @@ function historiaNueva(hc) {
 		DETALLE: "1                   ",
 		"DIAG-MUER-HC": "    ",
 		"EGRESO-HC": "",
-		ESPECIALIDAD:
-			"                                                                      ",
-		ESTADO: "01",
+		"ESPECIALIDAD": "                                                                      ",
+		"ESTADO": "0",
+		"ESTADO-HC": "NO HAY H.C. ",
 		"FACT-HC": " ",
-		"FECHA-HC":
-			date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
+		"FECHA-HC": date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
 		"FECHA-ORD-SALIDA-HC": "00/00/0000",
 		"FOLIO-HC": hc[hc.length - 1]["FOLIO-HC"].split("-")[0] + "-" + folio,
 		"HAB-HC": "    ",

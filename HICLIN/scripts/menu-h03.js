@@ -1,14 +1,28 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
 	loader("hide");
 	_cargarEventos("off");
 	_toggleNav();
+	if ($_REG_HC.estado_hc == '2') {
+		jAlert({
+			titulo: "ATENCION! ",
+			mensaje: "La historia a la que intenta ingresar se encuentra cerrada"
+		}, function () {
+			_cargarEventos("of");
+			// _toggleNav();
+			$("#body_main").load("../../HICLIN/paginas/menu_his.html");
+		})
+	}
 	_confirmar_medico_h03();
 });
 
 function _confirmar_medico_h03() {
 	var admin = localStorage["Usuario"];
+	//------Pruebas----------
+	$_REG_PROF.tabla_especialidad[0] = "490";
+	$_REG_PROF.tabla_especialidad[1] = "491";
+	//-------------------------
 	if (admin != "GEBC" || admin != "0101") {
-		var atiende = $_REG_PROF[0].atiende;
+		var atiende = $_REG_PROF[0].atiende_prof;
 		if (
 			atiende == "1" ||
 			atiende == "2" ||
@@ -51,7 +65,7 @@ function confirmarNovedad_menu_h03() {
 }
 
 function datoUnidad_h03() {
-	if ($_REG_PROF[0].atiende == "3" || $_REG_PROF[0].atiende == "6") {
+	if ($_REG_PROF[0].atiende_prof == "3" || $_REG_PROF[0].atiende_prof == "6") {
 		finValidarUnidad_h03("08");
 	} else {
 		on_datoUnidad_h03();
@@ -62,23 +76,20 @@ function on_datoUnidad_h03() {
 	_consultaSql({
 		sql: "Select codigo, descripcion from sc_unser where activar='S'",
 		bd: localStorage.Contab + "_13",
-		callback: function(error, results, fields) {
+		callback: function (error, results, fields) {
 			if (error) throw error;
 			else {
 				if (!results[0]) {
 					plantillaError("99", "Unidad de servicio inexistente", "menu_h03");
 				} else {
-					POPUP(
-						{
+					POPUP({
 							array: JSON.parse(JSON.stringify(results)),
 							titulo: "UNIDADES DE SERVICIO",
-							indices: [
-								{
-									id: "codigo",
-									label: "descripcion"
-								}
-							],
-							callback_f: function() {
+							indices: [{
+								id: "codigo",
+								label: "descripcion"
+							}],
+							callback_f: function () {
 								plantillaToast(
 									"",
 									"No se pudo ingresar. Menu-h03",
@@ -100,8 +111,7 @@ function validardatoUnidad_h03(unidad) {
 	unidad.codigo = cerosIzq(unidad.codigo.toString(), 2);
 	unidad = unidad.codigo;
 	var sw = 0;
-	// var admin=localStorage["Usuario"];
-	var admin = "ADMI";
+	var admin = localStorage["Usuario"];
 	if (
 		$_USUA_GLOBAL[0].NIT == 832002436 ||
 		$_USUA_GLOBAL[0].NIT == 845000038 ||
@@ -125,7 +135,7 @@ function validardatoUnidad_h03(unidad) {
 					sw = 1;
 					plantillaToast("", "B1", null, "error", "error");
 				}
-			}else if (unidad !== "88") {
+			} else if (unidad !== "88") {
 				if (unidad !== "08") {
 					sw = 1;
 					plantillaToast("", "B1", null, "error", "error");
@@ -133,15 +143,15 @@ function validardatoUnidad_h03(unidad) {
 			}
 		}
 	}
-		if (sw == 0) {
-			finValidarUnidad_h03(unidad);
-		} else {
-			datoUnidad_h03();
-		}
+	if (sw == 0) {
+		finValidarUnidad_h03(unidad);
+	} else {
+		datoUnidad_h03();
+	}
 }
 
-	function finValidarUnidad_h03(unidad) {
-		var sw = 0;
+function finValidarUnidad_h03(unidad) {
+	var sw = 0;
 	//Condiccion Hospital Fuente de Oro
 	if (
 		$_USUA_GLOBAL[0].NIT == 822001570 &&
@@ -165,24 +175,21 @@ function datoFinalidad_h03() {
 		$_REG_HC.finalid_hc = "10";
 		seleccionarPrograma_h03();
 	} else {
-		POPUP(
-			{
+		POPUP({
 				array: datos_finalidad(
 					$_USUA_GLOBAL[0].NIT,
 					$_REG_HC.sexo_hc,
 					$_REG_HC.edad_hc
 				),
 				titulo: "FINALIDAD",
-				indices: [
-					{
-						id: "codigo",
-						label: "descripcion"
-					}
-				],
-				callback_f: function() {
-					if ($_REG_PROF[0].atiende == "3" || $_REG_PROF[0].atiende == "6") {
+				indices: [{
+					id: "codigo",
+					label: "descripcion"
+				}],
+				callback_f: function () {
+					if ($_REG_PROF[0].atiende_prof == "3" || $_REG_PROF[0].atiende_prof == "6") {
 						CON850_P(
-							function(e) {
+							function (e) {
 								if (e.id == "S") {
 									plantillaToast(
 										"",
@@ -194,8 +201,7 @@ function datoFinalidad_h03() {
 								} else {
 									seleccionarPrograma_h03();
 								}
-							},
-							{
+							}, {
 								msj: "Modificar item?"
 							}
 						);
@@ -219,7 +225,7 @@ function validarFinalidad(data) {
 	if (
 		($_USUA_GLOBAL[0].NIT == 900005594 || $_USUA_GLOBAL[0].NIT == 800037979) &&
 		(data.codigo == "10" || data.codigo == "11") &&
-		$_REG_PROF[0].atiende == "3"
+		$_REG_PROF[0].atiende_prof == "3"
 	) {
 		plantillaToast("", "15", null, "error", "error");
 		datoFinalidad_h03();
@@ -231,12 +237,12 @@ function validarFinalidad(data) {
 
 function seleccionarPrograma_h03() {
 	var edad = $_REG_HC.edad_hc,
-		atiende_prof = $_REG_PROF[0].atiende,
+		atiende_prof = $_REG_PROF[0].atiende_prof,
 		esp_prof = $_REG_PROF.tabla_especialidad,
 		serv = $_REG_HC.serv_hc,
 		finalidad = $_REG_HC.finalid_hc,
 		nit = $_USUA_GLOBAL[0].NIT,
-		admin=localStorage['Usuar'];
+		admin = localStorage["Usuar"],
 		esquema = $_REG_HC.esquema_hc;
 
 	if ($_REG_HC.novedad_hc == "7") {
@@ -298,10 +304,10 @@ function seleccionarPrograma_h03() {
 			esp_prof[0] == "491" ||
 			esp_prof[0] == "492" ||
 			((esp_prof[1] == "490" || esp_prof[1] == "491" || esp_prof[1] == "492") &&
-				nit == 900264583 &&
-				(admin == "GEBC" || admin == "ADMI"))
+				(nit == 900264583))
+			// &&(admin == "GEBC" || admin == "ADMI")
 		) {
-			buscar_programa_h03("HC9004");
+			buscar_programa_h03("HC-9004");
 			// historia mamografia
 		} else if (nit == 830092718 && esp_prof[0] == "602") {
 			buscar_programa_h03("HC-14");
@@ -369,16 +375,13 @@ function seleccionarPrograma_h03() {
 }
 
 function mostrar_historiaPYP(array) {
-	POPUP(
-		{
+	POPUP({
 			array: array,
 			titulo: "SELECCION HISTORIA PYP",
-			indices: [
-				{
-					id: "esquema",
-					label: "descripcion"
-				}
-			]
+			indices: [{
+				id: "esquema",
+				label: "descripcion"
+			}]
 		},
 		_data_hcPYP_hc0003
 	);
@@ -388,16 +391,13 @@ function seleccionPyp_h03(finalidad, sexo) {
 	var array_pyp = new Array();
 	if (sexo == "F") {
 		if (["03", "05", "06", "07", "10"].filter(arr => arr == finalidad)) {
-			array_pyp.push(
-				{
-					esquema: "8001",
-					descripcion: "HISTORIA CLINICA DE CITOLOGIA TOMA Y CONTROL"
-				},
-				{
-					esquema: "8002",
-					descripcion: "HISTORIA CLINICA DE CITOLOGIA BETHESDA       "
-				}
-			);
+			array_pyp.push({
+				esquema: "8001",
+				descripcion: "HISTORIA CLINICA DE CITOLOGIA TOMA Y CONTROL"
+			}, {
+				esquema: "8002",
+				descripcion: "HISTORIA CLINICA DE CITOLOGIA BETHESDA       "
+			});
 		}
 	}
 
@@ -484,8 +484,19 @@ function validar_servicio_finalidad_h03() {
 function buscar_programa_h03(programa) {
 	if (programa) {
 		console.log(programa);
+		switch (programa) {
+			case 'HC-9004':
+				$("#body_main").load("../../HICLIN/paginas/hc9004.html");
+				break;
+			default:
+				break;
+		}
+
 	} else {
-		jAlert({ titulo: "Error ", mensaje: "Programa ha abrir no definido" });
+		jAlert({
+			titulo: "Error ",
+			mensaje: "Programa ha abrir no definido"
+		});
 	}
 }
 
