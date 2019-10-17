@@ -28,8 +28,8 @@ function _ventanaTercr(e) {
                 validarIdentif714()
             },
             callback: function (data) {
-                $('#cedula_714').val(data.cedula);
-                $('#nombreSer714').val(data.nombre);
+                $('#cedula_714').val(data.codigo);
+                $('#nombreSer714').val(data.descripcion);
                 _enterInput('#cedula_714');
             }
         });
