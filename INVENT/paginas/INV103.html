@@ -1,8 +1,12 @@
 <style>
-        #tablaalmacen_103 th {
+    #tablaalmacen_103 th {
             text-align: center;
-        }
-    </style>
+    }
+    #tablamacros_103  th {
+            text-align: center;
+    }  
+</style>
+     
 <div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
     <div class="portlet light box-center box-title" style="margin: 0 auto;">
         <div class="portlet-title">
@@ -32,7 +36,7 @@
                     <li>
                         <a href="#tab_15_5" id="tab5" data-toggle="tab" style="color: #FFFFFF"> PRODUCCION </a>
                     </li>
-                    
+
                 </ul>
                 <div class="tab-content no-padding">
                     <div class="tab-pane active" id="tab_15_1">
@@ -60,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    
+
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-4">Tipo: </label>
@@ -72,12 +76,12 @@
                                                     <option value="1">1 -Bienes de consumo</option>
                                                     <option value="2">2 -Bienes devolutivas</option>
                                                     <option value="3">3 -Bienes inmuebles</option>
-                                                    <option value="4">4 -Menor cuantia</option>                                                    
+                                                    <option value="4">4 -Menor cuantia</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                         <div class="inline-inputs">
                                             <label class="col-md-5 col-sm-5 col-xs-12">Grupo</label>
@@ -145,13 +149,15 @@
                                         <div class="inline-inputs">
                                             <label class="col-md-4 col-sm-4 col-xs-4">Uso</label>
                                             <div class="input-group col-md-3 col-sm-3 col-xs-3" id="USO_103">
-                                                <input id="uso_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="2" data-orden="1" disabled="disabled">
+                                                <input id="uso_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="2" data-orden="1" disabled="disabled">
                                             </div>
                                             <button type="button" id="usoBtn_103" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                                 <i class="icon-magnifier"></i>
                                             </button>
                                             <div class="input-group col-md-7 col-sm-7 col-xs-8">
-                                                <input id="usod_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" disabled="disabled">
+                                                <input id="usod_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    disabled="disabled">
                                             </div>
                                         </div>
                                     </div>
@@ -177,13 +183,15 @@
                                         <div class="inline-inputs">
                                             <label class="col-md-5 col-sm-5 col-xs-5">Ing.Activo</label>
                                             <div class="input-group col-md-3 col-sm-3 col-xs-3" id="ACTIVO_103">
-                                                <input id="ingactivo_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="2" data-orden="1" disabled="disabled">
+                                                <input id="ingactivo_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="2" data-orden="1" disabled="disabled">
                                             </div>
                                             <button type="button" id="ingactivoBtn_103" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                                 <i class="icon-magnifier"></i>
                                             </button>
                                             <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                                <input id="ingactivod_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" disabled="disabled">
+                                                <input id="ingactivod_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    data-orden="1" disabled="disabled">
                                             </div>
 
                                         </div>
@@ -471,7 +479,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <div class="col-md-2 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-6">Cant.Compra</label>
                                             <div class="input-group col-md-6 col-sm-6 col-xs-6" id="CANTCOMP_103">
@@ -480,25 +488,43 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <div class="col-md-2 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
-                                            <label class="col-md-6 col-sm-6 col-xs-6">Fecha</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-6" id="FECHA_103">
+                                            <label class="col-md-5 col-sm-6 col-xs-6">Fecha</label>
+                                            <div class="input-group col-md-7 col-sm-6 col-xs-6" id="FECHA_103">
                                                 <input id="fecha_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                    maxlength="10" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
-                                            <label class="col-md-6 col-sm-6 col-xs-6">Color</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-6" id="COLOR_103">
+                                            <label class="col-md-6 col-sm-6 col-xs-6">Compra + Alta</label>
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-6" id="COMPRAALTA_103">
+                                                <input id="compraalta_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="15" data-orden="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-3 col-xs-3">
+                                        <div class="inline-inputs">
+                                            <label class="col-md-5 col-sm-6 col-xs-6">Fecha</label>
+                                            <div class="input-group col-md-7 col-sm-6 col-xs-6" id="FECHACOMPRAALTA_103">
+                                                <input id="fechacompra_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="10" data-orden="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="salto-linea"></div>
+                                    <div class="col-md-2 col-sm-3 col-xs-3">
+                                        <div class="inline-inputs">
+                                            <label class="col-md-4 col-sm-6 col-xs-6">Color</label>
+                                            <div class="input-group col-md-8 col-sm-6 col-xs-6" id="COLOR_103">
                                                 <input id="color_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="20" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="salto-linea"></div>
                                     <div class="col-md-3 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
                                             <label class="col-md-10 col-sm-10 col-xs-10">Lista Precios</label>
@@ -508,7 +534,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <div class="col-md-2 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-6">Talla</label>
                                             <div class="input-group col-md-12 col-sm-12 col-xs-12" id="TALLA_103">
@@ -517,16 +543,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <div class="col-md-2 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
-                                            <label class="col-md-10 col-sm-10 col-xs-10">Ult. Actualiz</label>
+                                            <label class="col-md-9 col-sm-10 col-xs-10">Ult.Actualiz</label>
                                             <div class="input-group col-md-8 col-sm-4 col-xs-12" id="ULTACTUAL_103">
                                                 <input id="ultactu_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     data-orden="1">
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-3 col-sm-3 col-xs-3">
                                         <div class="inline-inputs">
                                             <label class="col-md-10 col-sm-10 col-xs-10">Vlr Lista Compra</label>
@@ -904,39 +929,39 @@
                                     <div class="col-md-5 col-sm-5 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Presentacion</label>
-                                                <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "PRESENTACION_103">
-                                                    <input id="presentacion_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="PRESENTACION_103">
+                                                <input id="presentacion_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="3" data-orden="1">
-                                                </div>
-                                                <button type="button" id="codhomologoBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
-                                                    <i class="icon-magnifier"></i>
-                                                </button>
-                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                                    <input id="presentaciond_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                        data-orden="1">
-                                                </div>
+                                            </div>
+                                            <button type="button" id="codpresentacionBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                                <i class="icon-magnifier"></i>
+                                            </button>
+                                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                <input id="presentaciond_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    data-orden="1">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Unidad Medida</label>
-                                                <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "UNIDADMED_103">
-                                                    <input id="unidadme_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="UNIDADMED_103">
+                                                <input id="unidadme_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="2" data-orden="1">
-                                                </div>
-                                                <button type="button" id="codhomologoBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
-                                                    <i class="icon-magnifier"></i>
-                                                </button>
-                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                                    <input id="unidadmed_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                        data-orden="1">
-                                                </div>
+                                            </div>
+                                            <button type="button" id="codunidadmedBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                                <i class="icon-magnifier"></i>
+                                            </button>
+                                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                <input id="unidadmed_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    data-orden="1">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Concentrado</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "CONCENTRADO_103">
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="CONCENTRADO_103">
                                                 <input id="concentrado_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     data-orden="1">
                                             </div>
@@ -945,82 +970,82 @@
 
                                     <div class="salto-linea"></div>
 
-                                    
+
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Excluir del sismed?</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12 " id= "EXCLUIR_103">
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12 " id="EXCLUIR_103">
                                                 <input id="excluir_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                maxlength="1" data-orden="1">
+                                                    maxlength="1" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-8 col-sm-8 col-xs-12">Medicamento regulado</label>
-                                            <div class="input-group col-md-4 col-sm-4 col-xs-12" id= "REGULADO_103">
+                                            <div class="input-group col-md-4 col-sm-4 col-xs-12" id="REGULADO_103">
                                                 <input id="regulado_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                maxlength="1" data-orden="1">
+                                                    maxlength="1" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Sisdis</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "SISDIS_103">
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="SISDIS_103">
                                                 <input id="sisdis_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                maxlength="1" data-orden="1">
+                                                    maxlength="1" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Clase de riesgo?</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "CLASERIESGO_103">
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="CLASERIESGO_103">
                                                 <input id="riesgo_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                maxlength="1" data-orden="1">
+                                                    maxlength="1" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
-                            
-                                    
+
+
                                     <div class="salto-linea"></div>
-                                    
+
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Homologo? </label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "HOMOLOGO_103">
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="HOMOLOGO_103">
                                                 <input id="homologo_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                maxlength="1" data-orden="1">
+                                                    maxlength="1" data-orden="1">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Codido homologo?</label>
-                                                <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "CODHOMOLOGO_103">
-                                                    <input id="codhomologo_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="CODHOMOLOGO_103">
+                                                <input id="codhomologo_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="18" data-orden="1">
-                                                </div>
-                                                <button type="button" id="codhomologoBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
-                                                    <i class="icon-magnifier"></i>
-                                                </button>
-                                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                                    <input id="codhomologod_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                        data-orden="1">
-                                                </div>
+                                            </div>
+                                            <button type="button" id="codhomologoBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                                <i class="icon-magnifier"></i>
+                                            </button>
+                                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                                <input id="codhomologod_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    data-orden="1">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Cant convers</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id= "CONVERS_103">
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="CONVERS_103">
                                                 <input id="convers_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     data-orden="1">
                                             </div>
                                         </div>
                                     </div>
-                                                                        
+
                                     <div class="salto-linea" style="margin:12px 0"></div>
                                 </div>
                             </div>
@@ -1066,68 +1091,100 @@
                     </div>
 
                     <div class="tab-pane" id="tab_15_5">
-                        <form class="form-horizontal">  
-                                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <form class="form-horizontal">
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                                <label>
+                                    <h4>CONSUMIBLES UTILIZADOS EN PROCESO DE PRODUCCION</h4>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+
+                                <div class="salto-linea"></div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="display: flex">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 inline-inputs">
 
 
-                                        <div class="salto-linea"></div>
-                    
-                                        <div class="col-md-12 col-sm-12 col-xs-12" style="display: flex">
-                                            <div class="col-md-12 col-sm-12 col-xs-12 inline-inputs">
-                                       
-                    
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="validarAlmacen_103">
-                                                    <div class="inline-inputs">
-                                                        <label class="col-md-5 col-sm-5 col-xs-5">Almacen</label>
-                                                        <div class="input-group col-md-5 col-sm-5 col-xs-5">
-                                                            <input id="almacen_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                            maxlength="5" data-orden="1" required="true" disabled="disabled">
-                                                        </div>
-                                                        <button type="button" id="almacenBtn_103" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
-                                                            <i class="icon-magnifier"></i>
-                                                        </button>
-                                                    </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4" id="validarAlmacen_103">
+                                            <div class="inline-inputs">
+                                                <label class="col-md-5 col-sm-5 col-xs-5">Almacen</label>
+                                                <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                                    <input id="almacen_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                        maxlength="5" data-orden="1" required="true" disabled="disabled">
                                                 </div>
-                    
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="validarcodigo_103">
-                                                    <div class="inline-inputs">
-                                                        <label class="col-md-6 col-sm-6 col-xs-6">Codigoart</label>
-                                                        <div class="input-group col-md-4 col-sm-4 col-xs-4">
-                                                            <input id="codigoart_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                            maxlength="18" data-orden="1" required="true" disabled="disabled">
-                                                        </div>
-                                                        <button type="button" id="codigoartBtn_103" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
-                                                            <i class="icon-magnifier"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="validarcant_103">
-                                                    <div class="inline-inputs">
-                                                        <label class="col-md-6 col-sm-6 col-xs-6">Cantidad</label>
-                                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                                            <input id="cantidad_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" 
-                                                                maxlength="7" data-orden="1" disabled="disabled">
-                                                        </div>
-                                                    </div>
-                                                </div>                    
+                                                <button type="button" id="almacenBtn_103" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                                    <i class="icon-magnifier"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div style="clear:both;"></div>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-4" id="validarcodigo_103">
+                                            <div class="inline-inputs">
+                                                <label class="col-md-6 col-sm-6 col-xs-6">Codigoart</label>
+                                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                                    <input id="codigoart_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                        maxlength="18" data-orden="1" required="true" disabled="disabled">
+                                                </div>
+                                                <button type="button" id="codigoartBtn_103" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                                    <i class="icon-magnifier"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4" id="validarcant_103">
+                                            <div class="inline-inputs">
+                                                <label class="col-md-6 col-sm-6 col-xs-6">Cantidad</label>
+                                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                                    <input id="cantidad_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                        maxlength="7" data-orden="1" disabled="disabled">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                                        <table id="tablaalmacen_103" class="table table-light table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Almacen</th>
-                                                    <th>Codigo</th>
-                                                    <th>Cantidad</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                            
+                                </div>
+                                <div style="clear:both;"></div>
+                            </div>
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                                <table id="tablaalmacen_103" class="table table-light table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Almacen</th>
+                                            <th>Codigo</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                                <!-- <div class="salto-linea"></div> -->
+
+                                <!-- <form class="form-horizontal"> -->
+                                <!-- <div class="col-md-12 col-sm-12 col-xs-12 no-padding"> -->
+                                <label>
+                                    <h4>MACRO DE PRODUCCION ASOCIADO</h4>
+                                </label>
+                                <!-- </div> -->
+                                <!-- </form> -->
+                            </div>
+
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                                <table id="tablamacros_103" class="table table-light table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Codigo</th>
+                                            <th>Descripcion</th>
+                                            <th>Almacen</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                                     <div class="col-md-4 col-sm-4 col-xs-4">
@@ -1167,7 +1224,7 @@
                                 </div>
                             </div>
                         </form>
-                    </div>                   
+                    </div>
                 </div>
             </div>
         </div>

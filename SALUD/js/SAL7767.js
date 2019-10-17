@@ -2551,11 +2551,11 @@ function consultarcotizante_7767() {
     _consultaSql({
         db: 'san2019_13',
         sql: 'SELECT * FROM san2019_13.sc_pacie WHERE codigo LIKE "%' + $_IDCOTIPACIW + '%"',
-        callback: _consultacodigo_SAL97C11
+        callback: _consultacodigo_SAL7767
     });
 }
 
-function _consultacodigo_SAL97C11(error, results, fileds) {
+function _consultacodigo_SAL7767(error, results, fileds) {
     console.debug(results);
     if (error) throw error;
     else {
@@ -2851,7 +2851,7 @@ function _datopatolcronic_7767() {
             _consultaSql({
                 db: 'datos_pros',
                 sql: 'SELECT * FROM datos_pros.sc_croni WHERE codigo LIKE "%' + $_PATOLCRONICPACIW + '%"',
-                callback: _consultapatologias_SAL97C11
+                callback: _consultapatologias_SAL7767
             });
         }
 
@@ -2862,7 +2862,7 @@ function _datopatolcronic_7767() {
     }
 }
 
-function _consultapatologias_SAL97C11(error, results, fileds) {
+function _consultapatologias_SAL7767(error, results, fileds) {
     console.debug(results);
     if (error) throw error;
     else {
@@ -2969,14 +2969,14 @@ function _datoclasificacion_7767() {
                 _consultaSql({
                     db: 'san2019_13',
                     sql: 'SELECT * FROM san2019_13.sc_clasipaci WHERE cod_clasp LIKE "%' + $_CLASIFPACIW + '%"',
-                    callback: _consultaclasificacion_SAL97C11
+                    callback: _consultaclasificacion_SAL7767
                 });
             }
             break;
     }
 }
 
-function _consultaclasificacion_SAL97C11(error, results, fileds) {
+function _consultaclasificacion_SAL7767(error, results, fileds) {
     console.debug(results);
     if (error) throw error;
     else {
@@ -3804,7 +3804,7 @@ function _consultaentidad_SAL7767_02(error, results, fileds) {
     else {
         console.debug(results, results.length);
         for (var i in results) {
-            if (results[i].cod_ter.trim() == $_ENTIFACTPACIW) {
+            if (results[i].cod_ter == $_ENTIFACTPACIW) {
                 console.log('encuentra entidades');
                 $_DESCRIPENTIPACIW = results[i].descrip_ter;
                 $("#entidadd_110c").val($_DESCRIPENTIPACIW);
@@ -3925,7 +3925,7 @@ function  _consultaprofesionales_SAL7767(error, results, fileds){
     else {
         console.debug(results, results.length);
         for (var i in results) {
-            if (results[i].codigo.trim() == $_MEDFAMIPACIW) {
+            if (results[i].codigo == $_MEDFAMIPACIW) {
                 console.log('encuentra profesionales'); 
                 $_DESCRIPMEDPACIW = results[i].descripcion; 
                 $("#medicofamd_110c").val($_DESCRIPMEDPACIW);
@@ -4071,7 +4071,7 @@ function _dataSAL7767_03(data) {
 
     $_NOMBRE1PACW = $_DECRIPPACIW.substring(29, 41);
 
-    $_NOMBRE2PACW = $_DECRIPPACIW.substring(41, 53);
+    $_NOMBRE2PACW = $_DECRIPPACIW.substring(41, 54);
 
 
     $_NACIMPACIW = date[5].trim();
@@ -4246,7 +4246,7 @@ function _mostrardatos_7767() {
     $_ANOVENCEPACIW = $_FECHAVENCEPACIW.substring(0, 4);
     $_MESVENCEPACIW = $_FECHAVENCEPACIW.substring(4, 6);
     $_DIAVENCEPACIW = $_FECHAVENCEPACIW.substring(6, 8);
-    $('#fechavence_110c').val($_ANOVENCEPACIW + '/' + $_MESVENCEPACIW);
+    $('#fechavence_110c').val($_ANOVENCEPACIW + '/' + $_MESVENCEPACIW + '/' + $_DIAVENCEPACIW);
     $_ANODEMPACIW = $_FECHADEMPACIW.substring(0, 4);
     $_MESDEMPACIW = $_FECHADEMPACIW.substring(4, 6);
     $_DIADEMPACIW = $_FECHADEMPACIW.substring(6, 8);
