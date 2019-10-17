@@ -12,6 +12,7 @@
         minLength: 1,
         mascara: false,
         data_callback: false,
+        db: null,
 
         _init: function () {
             if (this._open()) this._initSql()
@@ -19,7 +20,10 @@
 
         _initSql: function () {
             console.log($CONEXION_BD)
-            var connection = mysql.createConnection($CONEXION_BD);
+            // var connection = mysql.createConnection($CONEXION_BD);
+            var db_tmp = $.parseJSON((JSON.stringify($CONEXION_BD)));
+            db_tmp.database = $.ventanaDatos_lite.db || db_tmp.database;
+            var connection = mysql.createConnection(db_tmp);
 
             connection.connect(function (err) {
                 if (err) {
@@ -30,6 +34,7 @@
                     connection.query(
                         `SELECT * FROM ${$.ventanaDatos_lite.tablaSql}`,
                         function (error, results, fields) {
+
                             if (error) {
                                 errorSql(error.stack.substring(0, 100))
                             } else {
@@ -50,7 +55,7 @@
                                     results.forEach(data => {
                                         idx = '';
                                         indices.forEach(ind => {
-                                            idx += ` ${data[ind].trim().replace(/\s\s+/g, ' ')} -`;
+                                            idx += ` ${data[ind].toString().trim().replace(/\s\s+/g, ' ')} -`;
                                         })
 
                                         data.label = idx.slice(0, -1);
@@ -319,6 +324,7 @@
             $.ventanaDatos_lite.minLength = params.minLength || $.ventanaDatos_lite.minLength;
             $.ventanaDatos_lite.mascara = params.mascara || false;
             $.ventanaDatos_lite.data_callback = false;
+            $.ventanaDatos_lite.db = params.db;
             $.ventanaDatos_lite._init();
         }
     }
