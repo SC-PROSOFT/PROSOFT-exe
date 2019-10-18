@@ -590,7 +590,7 @@ function _mostrarclase() {
     }
 }
 
-function _consultaclaseuso_INV103_01(error, results, fileds) {
+function  _perform2_INV103(error, results, fileds) {
     console.debug(results);
     if (error) throw error;
     else {
