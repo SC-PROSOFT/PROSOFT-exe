@@ -88,8 +88,8 @@
                     "Id": "072",
                     "Descripcion": "Actualizar resultados examen",
                     "Opc-segu": "ISR2",
-                    "Tipo": "JS",
-                    "JS" : "../../SALUD/scripts/menu-r012.js"
+                    "Tipo": "HTML",
+                    "Href": "../../SALUD/paginas/RX-421W.html"
                 },
                 {
                     "Id": "073",
