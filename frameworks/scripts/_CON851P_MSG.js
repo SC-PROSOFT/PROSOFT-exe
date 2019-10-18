@@ -15,7 +15,7 @@ function CON851P_MSG(code) {
             break;
         case "06": msj = " Abrir excel?";
             break;
-        case "07": msj = " Reprocesar?";
+        case "07": msj = " Documento ya existe, desea reprocesar?";
             break;
         case "08": msj = " Codigo NO existe, desea crear?";
             break;
