@@ -27,11 +27,11 @@ function _ventanColeg(e) {
             },
             callback: function (data) {
                 console.debug(data);
-                var coleg71D = data.codigo.trim();     
-                $('#tipo_71D').val(coleg71D.substring(0, 1));
-                $('#ciudad_71D').val(coleg71D.substring(1, 6));
-                $('#codigo_71D').val(coleg71D.substring(6, 12));
-                $('#ciudcoleg_71D').val(data.ciudad);
+                $colegC71D = data.cod_coleg;
+                $('#tipo_71D').val(data.tipo_coleg);
+                $('#ciudad_71D').val($colegC71D.substring(0, 5));
+                $('#codigo_71D').val($colegC71D.substring(5, 11));
+                $('#ciudcoleg_71D').val(data.ciudad_coleg);
                 _enterInput('#tipo_71D');
             }
         });
@@ -49,7 +49,7 @@ function _ventanCiudad(e) {
                 _validarColeg71D
             },
             callback: function (data) {
-                console.debug(data);                           
+                console.debug(data);
                 $CIUDCOLG71D = data.nombre.trim()
                 $('#codciud_71D').val(data.cuenta);
                 $('#ciudad71D').val($CIUDCOLG71D);
@@ -90,11 +90,13 @@ function _validarColeg71D() {
         function () { CON850(_evaluarCON850); },
         function () {
 
-            var tipo71D = $('#tipo_71D').val();
-            var ciud71D = $('#ciudad_71D').val();
-            var codg71D = $('#codigo_71D').val();
+            $tipo71D = $('#tipo_71D').val();
+            $ciud71D = $('#ciudad_71D').val();
+            $codg71D = $('#codigo_71D').val();
 
-            $colegio71D = tipo71D + ciud71D + codg71D;
+            $colegio71D = $tipo71D + $ciud71D + $codg71D;
+
+
 
             let datos_envio = datosEnvio()
             datos_envio += '|'
@@ -111,12 +113,11 @@ function on_datosColeg71D(data) {
     $_CODCOLEG71D = date[2].trim();
     $_NOMBCOLEG71D = date[3].trim();
     $_NUCLEOCOLEG71D = date[4].trim();
-    $_CODCIUDCOLEG71D = date[5].trim();
-    $_ZONACOLEG71D = date[6].trim();
-    $_DIRECCOLEG71D = date[7].trim();
-    $_TELFNCOLEG71D = date[8].trim();
-    $_CODCIUDAD71D = date[9].trim();
-    $_CIUDAD71D = date[10].trim();
+    $_ZONACOLEG71D = date[5].trim();
+    $_DIRECCOLEG71D = date[6].trim();
+    $_CODCIUDAD71D = date[7].trim();
+    $_CIUDAD71D = date[8].trim();
+    $_TELFNCOLEG71D = date[9].trim();
 
     if (date[0].trim() == '00') {
         if ($_NovedSer71D == '7') {
@@ -145,11 +146,11 @@ function on_datosColeg71D(data) {
 
 function _llenarDatos71D() {
     var colg71D = $_CODCOLEG71D
-    console.debug($_TELFNCOLEG71D);
+    console.debug($_TELFNCOLEG71D + 'TELEFONO DLL');
     $('#tipo_71D').val(colg71D.substring(0, 1));
     $('#ciudad_71D').val(colg71D.substring(1, 6));
     $('#codigo_71D').val(colg71D.substring(6, 12));
-    $('#ciudcoleg_71D').val($_CIUDAD71D);
+    $('#ciudcoleg_71D').val($_CODCIUDAD71D);
     $('#descrip71D').val($_NOMBCOLEG71D)
     $('#nucleo71D').val($_NUCLEOCOLEG71D)
     $('#codciud_71D').val($_CODCIUDAD71D);
@@ -278,19 +279,22 @@ function envioDatos71D() {
     var decrpcolg = espaciosDer($('#descrip71D').val(), 50);
     var nucleoclg = cerosIzq($('#nucleo71D').val(), 10);
     var codciud = cerosIzq($('#codciud_71D').val(), 5);
-    var direcclg = espaciosDer($('#direcc71D').val(), 30); 
+    var direcclg = espaciosDer($('#direcc71D').val(), 30);
+    var telfclg = cerosIzq($TELFONO, 10);
+
+    $codCiud71D = + $ciud71D + $codg71D;
 
     LLAMADO_DLL({
-        dato: [$_NovedSer71D, $colegio71D, decrpcolg, nucleoclg, codciud, $_ZONA, direcclg, $TELFONO],
+        dato: [$_NovedSer71D, $colegio71D, decrpcolg, nucleoclg, codciud, $_ZONA, direcclg, telfclg],
         callback: function (data) {
-            validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D)
+            validarResp_71D(data, $tipo71D,  $codCiud71D, decrpcolg, $ciud71D)
         },
         nombredll: 'SAL71D-02',
         carpeta: 'SALUD'
     })
 }
 
-function validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D) {
+function validarResp_71D(data, $tipo71D,  $codCiud71D, decrpcolg, $ciud71D) {
     loader('hide');
     var rdll = data.split('|');
     console.log(rdll[0])
@@ -298,7 +302,7 @@ function validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D) {
         switch (parseInt($_NovedSer71D)) {
             case 7:
                 _consultaSql({
-                    sql: `INSERT INTO sc_coleg VALUES ('${$colegio71D}', '${decrpcolg}', '${$CIUDCOLG71D}');`,
+                    sql: `INSERT INTO sc_coleg VALUES ('${$tipo71D}', '${$codCiud71D}', '${decrpcolg}', '${$ciud71D}');`,
                     db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
@@ -319,8 +323,9 @@ function validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D) {
                 })
                 break;
             case 8:
+                var TABSQL = `UPDATE sc_coleg SET ciudad_coleg ='${$codg71D}' descrip_coleg ='${decrpcolg}' WHERE tipo_coleg= '${$tipo71D}' cod_coleg = '${$codCiud71D}' `
                 _consultaSql({
-                    sql: `UPDATE sc_coleg SET ciudad='${$CIUDCOLG71D}' colegio='${decrpcolg}' WHERE codigo = '${$colegio71D}' `,
+                    sql: TABSQL,
                     db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;
@@ -343,7 +348,7 @@ function validarResp_71D(data, $colegio71D, decrpcolg, $CIUDCOLG71D) {
                 break;
             case 9:
                 _consultaSql({
-                    sql: `DELETE FROM sc_coleg WHERE codigo = '${$colegio71D}'`,
+                    sql: `DELETE FROM sc_coleg WHERE tipo_coleg= '${$tipo71D}' SET cod_coleg = '${$codCiud71D}' `,
                     db: 'datos_pros',
                     callback: function (error, results, fields) {
                         if (error) throw error;

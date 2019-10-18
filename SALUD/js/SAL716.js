@@ -11,7 +11,7 @@ function _validarOrigen716() {
             form: "#origen716",
             orden: '1'
         },
-        function () { _toggleNav },
+        function () { _toggleNav() },
         function () {
             $codigo715 = $('#codgOrig716').val();
 
