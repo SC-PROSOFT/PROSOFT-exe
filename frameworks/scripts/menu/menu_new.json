@@ -6064,11 +6064,17 @@
                 },
                 {
                   "Id": "09715",
-                  "Descripcion": "Incrementar tarifas"
+                  "Descripcion": "Incrementar tarifas",
+                  "Opc-segu": "IS15",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL715.html"
                 },
                 {
                   "Id": "09716",
-                  "Descripcion": "Duplicar tarifas"
+                  "Descripcion": "Duplicar tarifas",
+                  "Opc-segu": "IS16",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL716.html"
                 },
                 {
                   "Id": "09717",
@@ -6167,7 +6173,7 @@
                       "Descripcion": "Apertura de facturas",
                       "Opc-segu": "S41",
                       "Tipo": "HTML",
-                      "Href": "../../SALUD/PAGINAS/SER108.html"
+                      "Href": "../../SALUD/PAGINAS/SAL7411.html"
                     }
                   ]
                 },
