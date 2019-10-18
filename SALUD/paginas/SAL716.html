@@ -1,114 +1,50 @@
-<script src="../js/SER803.js"></script>
-<script src="../js/ser103D.js" type="text/javascript"></script>
-<script>
-  $('#box').load('SER803.html')
-</script>
-
-
-<div class="portlet-title">
-  <div class="caption">
-    <a id="opcSalir" onclick="cambioForm('FORM-INICIO.html')">
-      <i class="fa fa-mail-reply"></i>
-      <span class="caption-subject font-dark sbold">DUPLICA TARIFAS</span>
-    </a>
-
-  </div>
-</div>
-
-<div>
-  <a id="showtoast"></a>
-</div>
-
-<div id="cuerpo-prosoft" class="portlet-body">
-  <div class="portlet-box">
-    <div class="form-body ">
-      <div class="caption panel-heading panel-heading-prosoft" style="background-color: #035096">
-        <span class="caption-subject bold uppercase " style="color: floralwhite">Duplicar Tarifas De Servicios</span>
-      </div>
-      <div class="panel-body panel">
-        <div class="form-group form-md-line-input">
-          <div class="col-md-offset-1 col-sm-offset-1">
-            <div class="col-lg-5 col-md-5 col-sm-5">
-              <div class="input-group" style="margin-bottom: 5px">
-                <span class="input-group-addon input-circle-left cajas">
-                  <label class=" control-label bold font-xsmall" for="cod_apert" style="color:#035096">Tarifa De
-                    Origen:</label>
-                  F
-                </span>
-                <input id="tarOrigenSer103D" type="text" class="form-control focus-blue cajas">
-                <span id="ventanaAyudaF8" class="input-group-btn input-circle-right">
-                  <a class="btn btn-outline blue input-circle-right" data-boton="ser803Tarifas" data-inputs="tarOrigenSer103D,descOrigenSer103D,tarDestinoSer103D,descDestinoSer103D"
-                    data-placement="top" data-toggle="tooltip" title="Ventana de busqueda">
-                    <i class="icon-magnifier"></i>
-                  </a>
-
-                </span>
-              </div>
-
+<div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
+    <div class="portlet light box-center box-title" style="margin: 0 auto;">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject bold">Duplica una tarifa de servicios</span>
             </div>
-          </div>
-
-          <div class="col-lg-5 col-md-5 col-sm-5">
-            <div class="input-group">
-              <span class="input-group-addon input-circle-left cajas">
-                <label class=" control-label bold font-xsmall" for="cod_apert" style="color: floralwhite">
-                  <font color="#035096">Descripcion:</font>
-                </label>
-              </span>
-              <input id="descOrigenSer103D" class="form-control input-circle-right focus-blue" disabled>
-              <!--relative-->
-            </div>
-          </div>
         </div>
-
-        <div class="form-group form-md-line-input">
-          <div class="col-md-offset-1 col-sm-offset-1">
-            <div class="col-lg-5 col-md-5 col-sm-5">
-              <div class="input-group" style="margin-bottom: 5px">
-                <span class="input-group-addon input-circle-left cajas">
-                  <label class=" control-label bold font-xsmall" for="cod_apert" style="color: floralwhite">
-                    <font color="#035096">Tarifa de Destino:</font>
-                  </label>
-                </span>
-                <input id="tarDestinoSer103D" type="text" class="form-control input-circle-right focus-blue cajas">
-
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-5 col-md-5 col-sm-5">
-            <div class="input-group">
-              <span class="input-group-addon input-circle-left cajas">
-                <label class=" control-label bold font-xsmall" for="cod_apert" style="color: floralwhite">
-                  <font color="#035096">Descripcion:</font>
-                </label>
-              </span>
-              <input id="descDestinoSer103D" class="form-control input-circle-right focus-blue cajas" disabled></label>
-            </div>
-          </div>
-          <!-- Llamado del gif  al momento del click-->
-          <center>
-            <div class="col-lg-5 col-md-5 col-sm-3" id="GIF"></div><br>
-          </center>
-        </div>
-        <div class="form-group form-md-line-input">
-          <div class="col-lg-offset-5 col-md-offset-5 col-sm-offset-5">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-              <button id="btn_grabar_103D" onclick="showGIF()" type="button" class="btn sbold input-circle boton-grabar-blanco">
-                <i id="save" class="fa fa-save"></i>
-                <font>Grabar</font>
-              </button>
-              <button id="btn_grabar_103D-2" onclick="showGIF()" type="button" class="btn sbold input-circle boton-azul">
-                <i id="save" class="fa fa-save"></i>
-                <font>Grabar</font>
-              </button>
-            </div>
-          </div>
-        </div>
-        <label SIZE=15 style="text-align:center; margin-top: 10px" class="bold">Primero debe crear el nombre de la
-          nueva tarifa (opcion 9,7,1,2) y asignarle un convenio</label>
-
-      </div>
     </div>
-  </div>
 </div>
+<div class="col-md-12">
+    <div class="portlet light no-padding">
+        <div class="portlet-body no-padding">
+            <form class="form-horizontal">
+                <div class="form-group col-md-6 col-sm-6 col-xs-6 box-center">
+                    <div class="col-md-12 col-sm-12 col-xs-12 head-box">
+                        <label>Primero debe crear el nombre de la nueva tarifa Opcion 9 7 1 2 y asignar un convenio
+                        </label>
+                    </div>
+                    <br><br>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs" id="origen716">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Tarifa de origen:</label>
+                            <div class="input-group col-md-2 col-sm-2 col-xs-2">
+                                <input id="codgOrig716" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div> 
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                <input id="decripOrg716" type="text" maxlength="2"  class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>                           
+                        </div>                        
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-6 box-center">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="inline-inputs" id="destino716">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Tarifa de destino:</label>
+                            <div class="input-group col-md-2 col-sm-2 col-xs-2">
+                                <input id="codgDest716" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div> 
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                <input id="decripDest716" type="text" maxlength="2"  class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>                           
+                        </div>                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script src="../../SALUD/JS/SAL716.js" type="text/javascript"></script>

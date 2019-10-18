@@ -330,7 +330,7 @@ function validarResp_71C(data, $_COD71C, desc71C) {
                 })
                 break;
             case 8:
-                var TABLASQ = `UPDATE sc_gruposer SET descripcion='${desc71C}' WHERE codigo = '${$_COD71C}' `;
+                var TABLASQ = `UPDATE sc_grupocap SET nombre='${desc71C}' WHERE codigo = '${$_COD71C}' `;
                 _consultaSql({
                     sql: TABLASQ,
                     db: $CONTROL,
