@@ -28,8 +28,8 @@ function _ventanaTercr(e) {
                 validarIdentif714()
             },
             callback: function (data) {
-                $('#cedula_714').val(data.codigo);
-                $('#nombreSer714').val(data.descripcion);
+                $('#cedula_714').val(data.cod_paci);
+                $('#nombreSer714').val(data.descrip_paci);
                 _enterInput('#cedula_714');
             }
         });
@@ -190,6 +190,7 @@ function _datosPaci714() {
     $_MESPACI = edadpaci.substring(4, 6);
     $_DIAPACI = edadpaci.substring(6, 8);
     var edadpaciente = moment($_ANOPACI + $_MESPACI + $_DIAPACI, "YYYYMMDD").fromNow();
+    console.log(edadpaciente); 
     $_EDADPACIE = edadpaciente.substring(5, 7);
     if ($_EDADPACIE == 2019 - $_ANOPACI && $_EDADPACIE > 28) {
         $('#edadSer714').val($_EDADPACIE + ' Años');

@@ -1,452 +1,340 @@
-<div class="col-md-9 col-sm-12" style="float: none; margin: 0 auto;">
+<style>
+    [id^="valTabla"] input[type="text"] {
+            text-align: center
+        }
+</style>
+
+<div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
     <div class="portlet light box-center box-title" style="margin: 0 auto;">
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject bold">Actualizar Maestro De C.U.P.S</span>
+                <span class="caption-subject bold">Actualizacion Maestro De C.U.P.S</span>
             </div>
         </div>
     </div>
 </div>
 
 <div class="col-md-12">
-    <div class="portlet light">
-        <div class="portlet-body">
+    <div class="portlet light no-padding">
+        <div class="portlet-body no-padding">
             <form class="form-horizontal">
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center" id="fase1">
-                    <div class="col-md-3 col-sm-2 col-xs-6">
+                <div class="col-md-3 col-sm-3 col-xs-3 no-padding" id="tipoServicio718">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-8 col-xs-12">Novedad:</label>
-                            <div class="input-group col-md-5 col-sm-4 col-xs-12">
-                                <input id="novedad_102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-9 col-sm-8 col-xs-12">Grupo:</label>
-                            <div class="input-group col-md-3 col-sm-4 col-xs-12">
-                                <input id="grpSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="2" data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12" id="detalle">
-                        <div class="inline-inputs">
-                            <label class="col-md-4 col-sm-6 col-xs-12">Descripcion:</label>
-                            <div class="input-group col-md-6 col-sm-6 col-xs-12">
-                                <input id="descGrpSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center">
-                    <div class="col-md-3 col-sm-4 col-xs-12" id="fase2">
-                        <div class="inline-inputs">
-                            <label class="col-md-9 col-sm-8 col-xs-12">Codigo:</label>
-                            <div class="input-group col-md-3 col-sm-4 col-xs-12">
-                                <input id="codSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="4" data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9 col-sm-12 col-xs-12">
-                        <div class="col-md-11 col-sm-10 col-xs-12">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-8 col-xs-12">Descripcion:</label>
-                                <div class="input-group col-md-7 col-sm-9 col-xs-12" id="fase3">
-                                    <input id="descCodSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        data-orden="1">
-                                </div>
-                                <div class="col-md-9 col-sm-12 col-xs-12" id="fase4">
-                                    <div class="inline-inputs">
-                                        <label class="col-md-8">Tipo Servicio: </label>
-                                        <div class="col-md-10">
-                                            <select id="tipoSer102c" class="form-control select2 col-md-12">
-                                                <option value="0" selected disabled>Seleccione</option>
-                                                <option value="1" class="bold"> 1. Cirugias</option>
-                                                <option value="2" class="bold"> 2. Laboratorio </option>
-                                                <option value="3" class="bold"> 3. RX Imagenologia</option>
-                                                <option value="4" class="bold"> 4. Estancia y Otros</option>
-                                                <option value="5" class="bold"> 5. Consultas y Terapias </option>
-                                                <option value="6" class="bold"> 6. Patologia y Citologia </option>
-                                                <option value="7" class="bold"> 7. Promocion y Prevencion </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div id="fase5">
-                    <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <div class="inline-inputs">
-                                <label class="col-md-8 col-sm-8 col-xs-12">Cod Abrev Proced :</label>
-                                <div class="input-group col-md-4 col-sm-4 col-xs-12">
-                                    <input id="codAbrSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="3" data-orden="1">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <div class="inline-inputs">
-                                <label class="col-md-8 col-sm-8 col-xs-12">Duracion:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input id="duracSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="3" data-orden="2">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <div class="inline-inputs">
-                                <label class="col-md-8 col-sm-8 col-xs-12">Nivel Complejidad:</label>
-                                <div class="input-group col-md-4 col-sm-4 col-xs-12">
-                                    <input id="nivelSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="1" data-orden="3">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-4 col-sm-4 col-xs-12" id="fasepago">
-                            <div class="inline-inputs">
-                                <label class="col-md-8">Pago paciente: </label>
-                                <div class="col-md-10">
-                                    <select id="pagoSer102c" class="form-control select2 col-md-12">
-                                        <option value="0" selected disabled>Seleccione</option>
-                                        <option value="1"> CO-PAGO </option>
-                                        <option value="2"> CUOTA MODERADA </option>
-                                        <option value="3"> NO APLICA </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12" id="faseprocedimiento">
-                            <div class="inline-inputs">
-                                <label class="col-md-8">Procedimiento NO POS?: </label>
-                                <div class="col-md-10">
-                                    <select id="procdSer102c" class="form-control select2 col-md-12">
-                                        <option value="0" selected disabled>Seleccione</option>
-                                        <option value="S"> Si </option>
-                                        <option value="N"> NO </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12" id="fasecis">
-                            <div class="inline-inputs">
-                                <label class="col-md-8">c.i.s?: </label>
-                                <div class="col-md-10">
-                                    <select id="cisSer102c" class="form-control select2 col-md-12">
-                                        <option value="0" selected disabled>Seleccione</option>
-                                        <option value="S"> Si </option>
-                                        <option value="N"> NO </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center" id="fase6">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-8 col-xs-12">Centro Costo:</label>
-                            <div class="input-group col-md-5 col-sm-4 col-xs-12">
-                                <input id="centroSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-4 col-sm-6 col-xs-12">Descripcion:</label>
-                            <div class="input-group col-md-6 col-sm-6 col-xs-12">
-                                <input id="descCostSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center" id="fase7">
-                    <div class="col-md-3 col-sm-2 col-xs-6">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-8 col-xs-12">Edad Min:</label>
-                            <div class="input-group col-md-3 col-sm-4 col-xs-12">
-                                <input id="edadMnSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-8 col-xs-12">Edad Max:</label>
-                            <div class="input-group col-md-3 col-sm-4 col-xs-12">
-                                <input id="edadMxSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    data-orden="2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-5 col-sm-5 col-xs-12">Und Medida Edad:</label>
-                            <div class="input-group col-md-3 col-sm-4 col-xs-12">
-                                <input id="undMedSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    data-orden="3">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-sm-4 col-xs-12" id="faseSexo">
-                        <div class="inline-inputs">
-                            <label class="col-md-5 col-sm-5 col-xs-12">Sexo:</label>
-                            <div class="col-md-10">
-                                <select id="sexoPacSer102c" class="form-control select2 col-md-12">
-                                    <option value="0" selected disabled>Seleccione</option>
-                                    <option value="F"> F </option>
-                                    <option value="M"> M </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center">
-                    <div class="col-md-4 col-sm-4 col-xs-12" id="faseRips">
-                        <div class="inline-inputs">
-                            <label class="col-md-10 col-sm-10 col-xs-12">Requiere Diagnostico en RIPS?:</label>
-                            <div class="col-md-10">
-                                <select id="ripsSer102c" class="form-control select2 col-md-12">
-                                    <option value="0" selected disabled>Seleccione</option>
-                                    <option value="S"> S </option>
-                                    <option value="N"> N </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-sm-5 col-xs-12" id="faseRips">
-                        <div class="inline-inputs">
-                            <label class="col-md-10 col-sm-10 col-xs-12">Distribucion ingreso 100% para el medico ?:</label>
-                            <div class="col-md-10">
-                                <select id="distIngSer102c" class="form-control select2 col-md-12">
-                                    <option value="0" selected disabled>Seleccione</option>
-                                    <option value="S"> S </option>
-                                    <option value="N"> N </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12" id="faseIngCli">
-                        <div class="inline-inputs">
-                            <label class="col-md-6 col-sm-6 col-xs-12">% Ingreso Clinica:</label>
-                            <div class="input-group col-md-5 col-sm-4 col-xs-12">
-                                <input id="ingrClnSer102c" type="text" class="form-control col-md-4 col-sm-4 col-xs-12"
-                                    data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center">
-                    <div class="col-md-3 col-sm-3 col-xs-6" id="faseIngTerec">
-                        <div class="inline-inputs">
-                            <label class="col-md-6 col-sm-6 col-xs-12">% Ingr. para terceros:</label>
-                            <div class="input-group col-md-5 col-sm-4 col-xs-12">
-                                <input id="ingTercSer102c" type="text" class="form-control col-md-4 col-sm-4 col-xs-12"
-                                    data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-12" id="faseCuentaTerc">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-7 col-xs-12">Cuenta ingreso terceros:</label>
-                            <div class="input-group col-md-6 col-sm-4 col-xs-12">
-                                <input id="cntIngSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="11" data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-4 col-sm-6 col-xs-12">Descripcion:</label>
-                            <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                <input id="descntIngSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center" id="fase8">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-8 col-xs-12">Nit tercero:</label>
-                            <div class="input-group col-md-5 col-sm-4 col-xs-12">
-                                <input id="nitTerSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="inline-inputs">
-                            <label class="col-md-4 col-sm-6 col-xs-12">Descripcion:</label>
+                            <label class="col-md-12 col-sm-12 col-xs-12">Novedad:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="descNitSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="novedSal718" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-md-9 col-sm-12 col-xs-12 box-center">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 ">
-                        <div class="col-md-12 col-sm-12 col-xs-12 head-box">
-                            <label>Codigo Contable De Ingresos</label>
+                <div class="col-md-9 col-sm-9 col-xs-9" style="padding-right: 0;" style="display:flex;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 inline-inputs" id="validarGrupo718">
+                            <label class="col-md-5 col-sm-5 col-xs-5">Grupo:</label>
+                            <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                <input id="grupoSal_718" type="text" maxlength="2" data-orden="1" required="true" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                            <button type="button" id="grupoSalBtn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                <input id="descrpGrupo718" type="text" maxlength="30" required="true" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
                         </div>
-
-                        <div class="salto-linea"></div>
-
+                        <div class=" col-md-6 inline-inputs" id="validarCUPS718">
+                            <label class="col-md-5 col-sm-5 col-xs-5">Codigo CUPS:</label>
+                            <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                <input id="codCup_718" type="text" maxlength="4" data-orden="1" required="true" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                            <button type="button" id="codCupBtn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                <input id="descrpCups718" type="text" maxlength="30" data-orden="2" required="true"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4 no-padding" id="tipoServicio718">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="inline-inputs">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Tipo de Servicio:</label>
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                <input id="tipoServ718" type="text" maxlength="28" data-orden="1" required="true" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-8" style="padding-right: 0;" id="validarRegistro119" style="display:flex;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-4 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Codigo Abreviado:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="codAbrev718" type="text" maxlength="5" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-4 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Duracion:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="duracion718" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-4 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Nivel Complejidad:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="nivelComple718" type="text" maxlength="1" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-8 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-4 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Pago paciente:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="pagoPacient718" type="text" maxlength="5" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-4 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Proced NO POS?</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="procedNO718" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-4 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">C.I.S?</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="cis718" type="text" maxlength="1" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 0;" id="validarCtaRetenfuente119" style="display:flex;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-12 col-sm-12 col-xs-12">Centro de costo:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6" id="validarCtaRetenfuente119">
+                                    <input id="centrCost_718" type="text" maxlength="11" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="f8centrCosto718" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="descCosto718" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="edadMedida718" style="display:flex;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-3 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Edad minima:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="edadMin718" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-3 inline-inputs">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Edad maxima</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="edadMax718" type="text" maxlength="3" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-3 inline-inputs" id="sexo718">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Unidad medida edad:</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="undEdad718" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-3 inline-inputs">
+                            <label class="col-md-7 col-sm-7 col-xs-7 text-label">Sexo:</label>
+                            <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                <input id="sexo718" type="text" maxlength="1" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="RIPS718">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-9 col-sm-9 col-xs-9">Requiere diagnostico en RIPS?</label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="diagnt718" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-8" style="padding-right: 0;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="ingresos718">
+                        <div class="col-md-7 col-sm-7 col-xs-7">
+                            <div class="inline-inputs" id="validarSucursal119">
+                                <label class="col-md-9 col-sm-9 col-xs-9">Distribucion del ingreso 100% para el
+                                    medico?</label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="distrib718" type="text" maxlength="1" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div class="inline-inputs" id="validarSucursal119">
+                                <label class="col-md-9 col-sm-9 col-xs-9">% Ingreso clinica:</label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="ingrClin718" type="text" maxlength="1" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs">
+                                <label class="col-md-9 col-sm-9 col-xs-7">% Ingreso para terceros:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="ingreTerc718" type="text" maxlength="10" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7">Cuenta ingreso terceros:</label>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                    <input id="cuentaTerc_718" type="text" maxlength="3" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="descrCta718" type="text" maxlength="30" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-4 col-sm-4 col-xs-4">
-                            <div class="inline-inputs" id="fase9">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Nit terceros:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                    <input id="nitTerc_718" type="text" maxlength="3" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="input-group col-md-7 col-sm-7 col-xs-7">
+                                    <input id="nombreTer718" type="text" maxlength="3" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
                                 <label class="col-md-4 col-sm-4 col-xs-4">Codigo PUC:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec1">
-                                    <input id="codPucSer102c" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="codPuc_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
-                                <button type="button" id="f8CodCoop_102c" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
+                                <button type="button" id="codPucBtn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
                         </div>
-                        
-                        <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                            <div class="inline-inputs">
-                                <input id="descPucSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-4 col-sm-4 col-xs-4">
-                            <div class="inline-inputs" id="fase10">
-                                <label class="col-md-4 col-sm-4 col-xs-4">Codigo COOP:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec1">
-                                    <input id="codCoopSer102c" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" >
-                                </div>
-                                <button type="button" id="f8CodCoop_102c" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                            <div class="inline-inputs">
-                                <input id="descCoopSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-4 col-sm-4 col-xs-4">
-                            <div class="inline-inputs" id="fase11">
-                                <label class="col-md-4 col-sm-4 col-xs-4">Codigo OFICIAL:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec2">
-                                    <input id="codOfcSer102c" type="text"  data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
-                                </div>
-                                <button type="button" id="f8CodOfi_102c" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                            <div class="inline-inputs">
-                                <input id="descOfcSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-12 col-sm-12 col-xs-12 head-box">
-                            <label>Divisiones </label>
-                        </div>
-
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-4 col-sm-4 col-xs-4">
-                            <div class="inline-inputs" id="fase12">
-                                <label class="col-md-4 col-sm-4 col-xs-4">Division 1:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec4">
-                                    <input id="divi1Ser102c" type="text" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
-                                </div>
-                                <button type="button" id="f8Espec4_119" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                            <div class="inline-inputs">
-                                <input id="descdivUSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-4 col-sm-4 col-xs-4">
-                            <div class="inline-inputs" id="fase13">
-                                <label class="col-md-4 col-sm-4 col-xs-4">Division 2:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec5">
-                                    <input id="divi2Ser102c" type="text"  data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec5_119" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                            <div class="inline-inputs">
-                                <input id="descdivDSer102c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-                
-
-
-
+                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 0;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-4">Codigo COOP:</label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="codCoop_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="codCoopBtn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 0;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-4">Codigo oficial:</label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="codOfic_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="codOficBtn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-9 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-4">Division 1:</label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                    <input id="divSal1_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="divSal1Btn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="descpCups1_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-4">Division 2:</label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                    <input id="divSal2_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="divSal2Btn_718" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
+                                    <input id="descpCups2_718" type="text" maxlength="1" data-orden="1" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3" style="padding-right: 0;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="operador718" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="fecha718" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
-        <!-- Llamado del gif  al momento del click-->
- <center>
-    <div class="col-lg-5 col-md-5 col-sm-3" id="GIF"></div><br>
-</center>
-</div>
-<!--BOTON-->
-<div class="row  box-center" id="cuerpo_btn" >
-<div id="cuerpo-prosoft" class="portlet-body form">
-    <div class="form-group form-md-line-input">
-        <div class="col-md-offset-5  col-lg-4 col-md-4 col-sm-4">
-            <button id="guardar_btn1"  class="btn blue btn-outline sbold">
-                <i id="save" class="fa fa-save"></i>
-                <span>Guardar</span>
-                <button id="guardar_btn2"  class="btn blue btn-outline sbold">
-                    <i id="save" class="fa fa-trash"></i>
-                    <span>Eliminar</span>
-                    <button id="guardar_btn3"  class="btn blue btn-outline sbold">
-                        <i id="save" class="fa fa-save"></i>
-                        <span>Modificar</span>
-        </div>
     </div>
 </div>
-</div>
 
-    </div>
-    
-</div>
- 
-
-<script src="../../SALUD/JS/ser102c.js" type="text/javascript"></script>
+<script src="../../SALUD/JS/SAL718.js" type="text/javascript"></script>
 <script src="../../SALUD/JS/crearjsonglobal.js" type="text/javascript"></script>

@@ -123,9 +123,6 @@ function validador716(data) {
             console.debug('repetido 5F')
             CON851('5F', '5F', null, 'error', 'Error');
             CON851P('07', _validarOrigen716, envioDatos716)
-        // } else {
-        //     console.debug('diferente 5F')
-        //     consoel();
         }
     }
     else if (date[0].trim() == '01') {
@@ -135,13 +132,7 @@ function validador716(data) {
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
-
-
 }
-
-// function consoel() {
-//     console.debug('llego fin')
-// }
 
 function envioDatos716() {
     LLAMADO_DLL({
@@ -156,12 +147,12 @@ function registroDatos716(data) {
     console.debug('registro')
     _inputControl('reset');
     _toggleNav();
-    // CON851('39', '39', null, 'error', 'Error');
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        jAlert({ titulo: 'Mensaje 39', mensaje: "El proceso termino satisfactoriamente!" })
-    } else {
-        CON852(temp[0], temp[1], temp[2]);
-    }
+    CON851('39', '39', null, 'error', 'Error');
+    // var temp = data.split('|')
+    // console.log(temp)
+    // if (temp[0].trim() == '00') {
+    //     jAlert({ titulo: 'Mensaje 39', mensaje: "El proceso termino satisfactoriamente!" })
+    // } else {
+    //     CON852(temp[0], temp[1], temp[2]);
+    // }
 }
