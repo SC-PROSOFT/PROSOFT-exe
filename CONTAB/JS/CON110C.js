@@ -18,33 +18,6 @@ var porcentreten_110cMask = new IMask(document.getElementById('porcentreten_110c
     { mask: Number, min: 0, max: 999, scale: 1, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
 );
 
-$(document).ready(function () {
-    _inputControl("reset");
-    _inputControl("disabled");
-    loader('hide');
-    $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;
-    $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
-
-    $_NOMUSU = $_USUA_GLOBAL[0].NOMBRE;
-    $_NITUSU = $_USUA_GLOBAL[0].NIT;
-    $_PREFIJOUSU = $_USUA_GLOBAL[0].PREFIJ;
-    $_CONTADOUSU = $_USUA_GLOBAL[0].CONTADO;
-    $_PUCUSU = $_USUA_GLOBAL[0].PUC;
-    $_LOTEFARMUSU = $_USUA_GLOBAL[0].LOTE_FAMR;
-    $_SALMINUSU = $_USUA_GLOBAL[0].SAL_MIN;
-    $_BARRAS_USU = $_USUA_GLOBAL[0].BARRAS;
-    $_IVA_USU = $_USUA_GLOBAL[0].IVA1;
-    $_IVA_2_USU = $_USUA_GLOBAL[0].IVA2;
-    $_IVA_3_USU = $_USUA_GLOBAL[0].IVA3;
-    $_CLAVEINVUSU = $_USUA_GLOBAL[0].CLAVE_INV;
-    $_BARRASUSULNK = ' ';
-    $_LISTAPRECIOUSU = $_USUA_GLOBAL[0].LISTA_PRECIO;
-    $_CARTERAUSU = $_USUA_GLOBAL[0].CARTERA;
-    $_PLACAUSU = $_USUA_GLOBAL[0].PLACA;
-    $_CUOTASUSU = $_USUA_GLOBAL[0].CUOTAS;
-
-    _comenzaropccon110c();
-})
 
 var $_FECHAACTUAL = moment().format('YYYYMMDD');
 $_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
@@ -99,6 +72,213 @@ var momentMask = IMask($("#cumple_con110")[0], {
     }
 });
 
+
+$(document).ready(function () {
+    _inputControl("reset");
+    _inputControl("disabled");
+    loader('hide');
+    $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;
+    $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
+
+    $_NOMUSU = $_USUA_GLOBAL[0].NOMBRE;
+    $_NITUSU = $_USUA_GLOBAL[0].NIT;
+    $_PREFIJOUSU = $_USUA_GLOBAL[0].PREFIJ;
+    $_CONTADOUSU = $_USUA_GLOBAL[0].CONTADO;
+    $_PUCUSU = $_USUA_GLOBAL[0].PUC;
+    $_LOTEFARMUSU = $_USUA_GLOBAL[0].LOTE_FAMR;
+    $_SALMINUSU = $_USUA_GLOBAL[0].SAL_MIN;
+    $_BARRAS_USU = $_USUA_GLOBAL[0].BARRAS;
+    $_IVA_USU = $_USUA_GLOBAL[0].IVA1;
+    $_IVA_2_USU = $_USUA_GLOBAL[0].IVA2;
+    $_IVA_3_USU = $_USUA_GLOBAL[0].IVA3;
+    $_CLAVEINVUSU = $_USUA_GLOBAL[0].CLAVE_INV;
+    $_BARRASUSULNK = ' ';
+    $_LISTAPRECIOUSU = $_USUA_GLOBAL[0].LISTA_PRECIO;
+    $_CARTERAUSU = $_USUA_GLOBAL[0].CARTERA;
+    $_PLACAUSU = $_USUA_GLOBAL[0].PLACA;
+    $_CUOTASUSU = $_USUA_GLOBAL[0].CUOTAS;
+
+    _toggleF8([
+        { input: 'codclien', app: 'con110c', funct: _ventanatercerosCON110C },
+        { input: 'ciudad', app: 'con110c', funct: _ventanaciudadesCON110C },
+        { input: 'actividad', app: 'con110c', funct: _ventanaactividadCON110C },
+        { input: 'entidad', app: 'con110c', funct: _ventanaentidadCON110C },
+        { input: 'zona', app: '110c', funct: _ventanazonasCON110C },
+        { input: 'ruta', app: '110c', funct: _ventanarutaCON110C },
+        { input: 'grdnegocio', app: '110c', funct: _ventanagrdnegocioCON110C },
+        { input: 'clasifclien', app: '110c', funct: _ventanaclasclienteCON110C }
+  
+    ]);
+
+    _comenzaropccon110c();
+})
+
+////////////////////////////////////F8////////////////////////////////
+
+function _ventanatercerosCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos_lite({
+            titulo: 'BUSQUEDA DE TERCEROS',
+            db: $CONTROL,
+            tablaSql: 'sc_archter',
+            indice: ['cod_ter','descrip_ter', 'act_ter', 'entidad_ter'],
+            mascara: [
+                {
+                    
+                }
+            ],
+            minLength: 1,
+            callback_esc: function () {
+                $('#codclien_con110c').focus();
+            },
+            callback: function (data) {
+                
+                $('#codclien_con110c').val(data.cod_ter);
+
+                _enterInput('#codclien_con110c');
+            }
+        });
+    }
+}
+
+function _ventanaciudadesCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE CIUDADES',
+            tipo: 'mysql',
+            db: 'datos_pros',
+            tablaSql: 'sc_archciud',
+            callback_esc: function () {
+                $("#ciudad_con110c").focus();
+            },
+            callback: function (data) {
+                $('#ciudad_con110c').val(data.cuenta.trim());
+                $('#ciudadd_con110c').val(data.nombre.trim());
+                _enterInput('#ciudad_con110c');
+            }
+        });
+    }
+}
+
+function _ventanaactividadCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE ACTIVIDADES',
+            tipo: 'mysql',
+            db: 'datos_pros',
+            tablaSql: 'sc_archact',
+            callback_esc: function () {
+                $("#actividad_con110c").focus();
+            },
+            callback: function (data) {
+                $('#actividad_con110c').val(data.cod_act.trim());
+                $('#actividadd_con110c').val(data.nombre_act.trim());
+                _enterInput('#actividad_con110c');
+            }
+        });
+    }
+}
+
+
+function _ventanaentidadCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE ENTIDADES',
+            tipo: 'mysql',
+            db: 'datos_pros',
+            tablaSql: 'sc_archent',
+            callback_esc: function () {
+                $("#entidad_con110c").focus();
+            },
+            callback: function (data) {
+                $('#entidad_con110c').val(data.cod_ent.trim());
+                $('#entidadd_con110c').val(data.nombre_ent.trim());
+                _enterInput('#entidad_con110c');
+            }
+        });
+    }
+}
+
+function _ventanazonasCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE ZONAS',
+            tipo: 'mysql',
+            db: $CONTROL,
+            // tablaSql: 'sc_archuso',
+            consultaSql: "SELECT * FROM `sc_archzona` WHERE `tipo_zona` LIKE '1%'",
+            callback_esc: function () {
+                $("#zona_110c").focus();
+            },
+            callback: function (data) {
+                $_CODZONAW = data.cod_zona.trim();
+
+                $('#zona_110c').val($_CODZONAW);
+                $("#zonad_110c").val(data.descrip_zona.trim());
+                _enterInput('#zona_110c');
+            }
+        });
+    }
+}
+
+function _ventanarutaCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE RUTAS',
+            tipo: 'mysql',
+            db: $CONTROL,
+            consultaSql: "SELECT * FROM `sc_archzona` WHERE `tipo_zona` LIKE '2%'",
+            callback_esc: function () {
+                $("#ruta_110c").focus();
+            },
+            callback: function (data) {
+                $_CODZONAW = data.cod_zona.trim();
+
+                $('#ruta_110c').val($_CODZONAW);
+                $("#rutad_110c").val(data.descrip_zona.trim());
+                _enterInput('#ruta_110c');
+            }
+        });
+    }
+}
+
+function _ventanagrdnegocioCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE GRADO DE NEGOCIOS',
+            tipo: 'mysql',
+            db: 'datos_pros',
+            tablaSql: 'sc_grneg',
+            callback_esc: function () {
+                $("#grdnegocio_110c").focus();
+            },
+            callback: function (data) {
+                $('#grdnegocio_110c').val(data.llave_grad.trim());
+                $('#grdnegociod_110c').val(data.descrip_grad.trim());
+                _enterInput('#grdnegocio_110c');
+            }
+        });
+    }
+}
+
+function _ventanaclasclienteCON110C(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE CLASIFICACION CLIENTES',
+            tipo: 'mysql',
+            db: 'datos_pros',
+            tablaSql: 'sc_clasc',
+            callback_esc: function () {
+                $("#clasifclien_110c").focus();
+            },
+            callback: function (data) {
+                $('#clasifclien_110c').val(data.llave_clasc);
+                $('#clasifcliend_110c').val(data.descrip_clasc.trim());
+                _enterInput('#clasifclien_110c');
+            }
+        });
+    }
+}
 
 /////////////////////////////// OPCION CON110C- MAESTRO DE TERCEROS //////////////////////////////////
 
@@ -169,25 +349,6 @@ function _evaluardatonovedad_con110c() {
     }
 }
 
-// function _dataCON110C_01_110C(data) {
-//     console.debug(data, 'CON110C_01');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     if (swinvalid == '00') {
-
-
-//     }
-//     else if (swinvalid == '01') {
-//         console.debug('01');
-//         $_NOVEDADCON110C = 7;
-//         $_SWCREAR = '';
-//         // CON850(_datonovedad_con110c);
-//     }
-//     else {
-//         CON852(date[0], date[1], date[2], _toggleNav);
-//     }
-// }
-
 function revisarpermisos_con110c() {
     $_OPSEGU = 'C12' + $_NOVEDADCON110C;
     console.log($_OPSEGU, "_revisarpermisosCON90402");
@@ -197,10 +358,7 @@ function revisarpermisos_con110c() {
         nombredll: 'CON904',
         carpeta: 'CONTAB'
     });
-    // let datos_envio = datosEnvio();
-    // datos_envio += '|'
-    // datos_envio += $_OPSEGU;
-    // SolicitarDll({ datosh: datos_envio }, _dataCON904_01_110C, get_url("/APP/CONTAB/CON904.DLL"));
+
 }
 
 function _dataCON904_01_110C(data) {
@@ -565,7 +723,7 @@ function _evaluarciudad_con110c() {
 
 function _datociudad_con110c() {
     console.log('DATO ciudad');
-    $_CODCIUTERCEW = $('#ciudad_con110').val();
+    $_CODCIUTERCEW = $('#ciudad_con110c').val();
     if ($_CODCIUTERCEW.trim() == '') {
         CON851('01', '01', null, 'error', 'error');
         _evaluarciudad_con110c();
@@ -720,7 +878,7 @@ function _evaluaractividades_con110c() {
     )
 }
 function _datoactividad_con110c() {
-    $_ACTTERCEW = $("#activi_con110c").val();
+    $_ACTTERCEW = $("#actividad_con110c").val();
     if ($_ACTTERCEW == '00') {
         CON851('02', '02', null, 'error', 'error');
         _evaluaractividades_con110c()
@@ -1570,7 +1728,7 @@ function _evaluarcalificacion_con110c() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        callback_f: _evaluarIVA_con110c
+        callback_f: _evaluargrado_con110c
     },
         _validarcalificacion_con110c);
 }
@@ -1585,7 +1743,7 @@ function _validarcalificacion_con110c(calificacion) {
             _evaluarbaseret_con110c();
             break;
         default:
-            _evaluarIVA_con110c();
+            _evaluargrado_con110c();
             break;
     }
     $("#calif_110c").val(calificacion.COD + " - " + calificacion.DESCRIP);
@@ -2386,7 +2544,7 @@ function _dataCON110C_02(data) {
 }
 
 function _dataCON110C_03(data) {
-    console.log(data, "CON110C_02");
+    console.log(data, "CON110C_03");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_NROVEHTERCEW = date[1].trim();
@@ -2489,7 +2647,7 @@ function _mostrardatos_con110c() {
     $('#2doapellido_con110c').val($_APEL2TER2W);
     $('#nombres_con110c').val($_NOMB1TER2W);
     $('#direcc_con110c').val($_DIRECCTERCEW);
-    $('#ciudad_con110').val($_CODCIUTERCEW);
+    $('#ciudad_con110c').val($_CODCIUTERCEW);
     $('#ciudadd_con110c').val($_DESCRIPCIUTERW);
     $('#ind_con110c').val($_INDICTERCEW);
     $('#tel_con110c').val($_TELTERCEW);
@@ -2497,7 +2655,7 @@ function _mostrardatos_con110c() {
     $('#tipoident_con110c').val($_TIPOIDTERCEW);
     $('#entidad_con110c').val($_ENTIDADTERCEW);
     $('#entidadd_con110c').val($_DESCRIPENTTERW);
-    $('#activi_con110c').val($_ACTTERCEW);
+    $('#actividad_con110c').val($_ACTTERCEW);
     $('#actividadd_con110c').val($_DESCRIPACTTERW);
     $('#convenio_con110c').val($_CONVENIOTERCEW);
     // $('#conveniod_con110c').val();
@@ -2524,7 +2682,7 @@ function _mostrardatos_con110c() {
     $('#factventas_con110c').val($_PORCICATER2W);
     $('#factventasd_con110c').val($_PORCRETTER2W);
     $('#smvm_con110c').val($_CUPOTERCEW);
-    // $('#smvmd_con110c').val();
+
     $('#vendedor_con110').val($_VENDTERCEW);
     // $('#descripvendedor_con110c').val();
     $('#formapago_110c').val($_PAGOTERCEW);

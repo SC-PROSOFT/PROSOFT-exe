@@ -2972,7 +2972,7 @@ function validarbasesdatos_103(data, $_CODARTW, $_DESCRIPARTW, $_USOARTW, $_VISU
     if (rdll[0].trim() == '00') {
         switch (parseInt($_NOVEDAD)) {
             case 7:
-                var SQL = `INSERT INTO sc_maesart(codigo,descripcion,unidad,referencia) VALUES ('${$_CODARTW}', '${$_DESCRIPARTW}', '${$_UNIDADARTW}', '${$_REFARTW}');`;
+                var SQL = `INSERT INTO sc_maesart(codigo,descrip_art,unidad_art,ref_art) VALUES ('${$_CODARTW}', '${$_DESCRIPARTW}', '${$_UNIDADARTW}', '${$_REFARTW}');`;
                 console.log(SQL)
                 _consultaSql({
                     sql: SQL,
@@ -2996,7 +2996,7 @@ function validarbasesdatos_103(data, $_CODARTW, $_DESCRIPARTW, $_USOARTW, $_VISU
                 })
                 break;
             case 8:
-                var SQL = `UPDATE sc_maesart SET descripcion='${$_DESCRIPARTW}', unidad='${$_UNIDADARTW}', referencia='${$_REFARTW}' WHERE codigo = '${$_CODARTW}'`;
+                var SQL = `UPDATE sc_maesart SET descrip_art='${$_DESCRIPARTW}', unidad_art='${$_UNIDADARTW}', ref_art='${$_REFARTW}' WHERE CONCAT(tipo_preme, cod_preme) = '${$_CODARTW}'`;
                 console.log(SQL)
                 _consultaSql({
                     sql: SQL,
@@ -3022,7 +3022,7 @@ function validarbasesdatos_103(data, $_CODARTW, $_DESCRIPARTW, $_USOARTW, $_VISU
                 })
                 break;
             case 9:
-                var SQL = `DELETE FROM sc_maesart WHERE codigo = '${$_CODARTW}'`;
+                var SQL = `DELETE FROM sc_maesart WHERE CONCAT(tipo_preme, cod_preme) = '${$_CODARTW}'`;
                 console.log(SQL)
 
                 _consultaSql({
