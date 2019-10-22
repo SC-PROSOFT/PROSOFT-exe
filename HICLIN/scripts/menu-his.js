@@ -137,7 +137,7 @@ function cargarDatosPaci(data) {
 					if (res[0].trim() == "00") {
 						console.log(res)
 						_consultaSql({
-							sql: "Select * from sc_pacie where codigo =" + parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
+							sql: "Select * from sc_pacie where cod_paci =" + parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
 							bd: localStorage.Contab + "_13",
 							callback: function (error, results, fields) {
 								if (error) throw error;
@@ -190,7 +190,7 @@ function montarHc811() {
 			console.log(hc)
 
 			_ventanaDatos({
-				titulo: $_REG_PACI[0].descripcion,
+				titulo: $_REG_PACI[0].descrip_paci,
 				columnas: [
 					"FOLIO-HC",
 					"NOM-SERV",
@@ -206,7 +206,7 @@ function montarHc811() {
 				},
 				callback: function (data) {
 					var llave =
-						cerosIzq($_REG_PACI[0].codigo, 15) +
+						cerosIzq($_REG_PACI[0].cod_paci, 15) +
 						data["FOLIO-HC"].split("-")[0] +
 						data["FOLIO-HC"].split("-")[1];
 					_consultHc(llave);
@@ -252,7 +252,7 @@ function _mostrarDatosPaci(resp) {
 	$_REG_HC.esquema_hc = resp[16].trim();
 	$_REG_HC.novedad_hc = resp[17].trim();
 
-	$("#doc_paci_his").val($_REG_PACI[0].codigo);
+	$("#doc_paci_his").val($_REG_PACI[0].cod_paci);
 	$("#cod_ent_his").val(resp[1]);
 	$("#descrip_ent_his").val(resp[2]);
 	$("#cod_ent_his").val(resp[3]);
@@ -294,7 +294,7 @@ function historiaNueva(hc) {
 		folio = parseInt(hc[hc.length - 1]["FOLIO-HC"].split("-")[1]);
 	folio = cerosIzq(folio + 1, 6);
 	var nueva = {
-		DETALLE: "1                   ",
+		"DETALLE": "1                   ",
 		"DIAG-MUER-HC": "    ",
 		"EGRESO-HC": "",
 		"ESPECIALIDAD": "                                                                      ",

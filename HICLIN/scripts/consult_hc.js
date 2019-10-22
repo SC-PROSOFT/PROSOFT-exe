@@ -332,8 +332,9 @@ function estad_salida(codigo) {
 }
 
 function calcular_edad(fecha) {
+    //SC-EDAD
     var fechaNacimiento = moment(fecha, "YYYY-MM-DD"),
-            dias = moment().diff(fechaNacimiento, 'days');
+        dias = moment().diff(fechaNacimiento, 'days');
     var retornar = {
         vlr_edad: '',
         unid_edad: ''
@@ -355,6 +356,7 @@ function calcular_edad(fecha) {
 }
 
 function datos_finalidad(nit, sexo, edad) {
+    // SER834-A
     var datos_finalidad = new Array();
     if (nit == 844003225) {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.unid_edad < 51)) {
@@ -462,36 +464,36 @@ function datos_finalidad(nit, sexo, edad) {
                 });
             }
         }
-        
+
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 11 && edad.vlr_edad < 29)) {
-            if (edad.vlr_edad > 11 && edad.vlr_edad < 18){
+            if (edad.vlr_edad > 11 && edad.vlr_edad < 18) {
                 datos_finalidad.push({
                     'codigo': '05',
                     'descripcion': "ADOLECENCIA"
                 });
-            }else{
+            } else {
                 datos_finalidad.push({
                     'codigo': '05',
                     'descripcion': "JUVENTU"
                 });
             }
         }
-        
+
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '06',
                 'descripcion': consult_finalidad('6')
             });
         }
-        
+
         if (edad.unid_edad == 'A') {
-            if (edad.vlr_edad > 28 && edad.vlr_edad < 60){
+            if (edad.vlr_edad > 28 && edad.vlr_edad < 60) {
                 datos_finalidad.push({
                     'codigo': '07',
                     'descripcion': "ADULTEZ"
                 });
             }
-            
+
             if (edad.vlr_edad > 59) {
                 datos_finalidad.push({
                     'codigo': '07',
@@ -499,7 +501,7 @@ function datos_finalidad(nit, sexo, edad) {
                 });
             }
         }
-        
+
         datos_finalidad.push({
             'codigo': '08',
             'descripcion': consult_finalidad('8')
@@ -523,4 +525,121 @@ function datos_finalidad(nit, sexo, edad) {
         });
     }
     return datos_finalidad;
+}
+
+function buscar_consulta_externa() {
+    //  HC811B    
+    var retorno = 1;
+
+    var fecha_hc = new Array();
+    fecha_hc['ano'] = $_REG_HC['fecha_hc'].substring(0, 4);
+    fecha_hc['mes'] = $_REG_HC['fecha_hc'].substring(4, 6);
+    fecha_hc['dia'] = $_REG_HC['fecha_hc'].substring(6, 8);
+
+    var fecha_lim_consul = new Array();
+    fecha_lim_consul['ano'] = fecha_hc.ano;
+    fecha_lim_consul['mes'] = fecha_hc.mes;
+    fecha_lim_consul['dia'] = '';
+
+    if (fecha_hc.dia < 04) {
+        fecha_lim_consul['mes']--;
+        switch (fecha_lim_consul.mes) {
+            case '01':
+                fecha_lim_consul['ano']--;
+                fecha_lim_consul['mes'] = 12;
+                fecha_lim_consul['dia'] = 31;
+                break;
+            case '02':
+                fecha_lim_consul['dia'] = 31;
+                break;
+            case '03':
+                if (['00', '04', '08', '12', '16', '20'].filter(data => data == fecha_lim_consul['ano'])) fecha_lim_consul['dia'] = 29;
+                else fecha_lim_consul['dia'] = 28;
+                break;
+            case '04', '06', '08', '11':
+                fecha_lim_consul['dia'] = 31;
+                break;
+            case '05', '07', '09', '10', '12':
+                fecha_lim_consul['dia'] = 30;
+                break;
+            default:
+                break;
+        }
+        if (
+            fecha_lim_consul['dia'] == 1 || fecha_lim_consul['dia'] == 2
+        )
+            fecha_lim_consul['dia'] -= fecha_hc.dia;
+    } else {
+        fecha_lim_consul['dia'] -= 3;
+    }
+    var datos_en = $_REG_PACI[0].cod_paci + '|' + fecha_lim_consul + '|' + $_COMP.comprobante + $_COMP.suc + $_COMP.tipo + '|';
+    SolicitarDll({
+            datosh: datos_env
+        },
+        function (data) {
+            var res = data.split("|");
+            var url = get_url("TEMP/" + res[3]);
+
+            if (res[0].trim() == "00") {
+                SolicitarDatos({}, function (data) {
+                    var detalles_ant = data['DETHC'];
+                    retorno = detalles_ant;
+                }, url);
+            } else {
+                plantillaError(res[0], res[1], res[2]);
+            }
+        },
+        get_url("APP/HICLIN/HCDETAL-ANT.DLL")
+    );
+    return retorno;
+
+}
+
+function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callback) {
+    //HC-01 Consultar detalles historia
+    /* if cods_dethc==** => trae todos los detalles
+       if cods_dethc==[array] => selecciona solo esos detalles
+       if folio.lenght==0 || llave_dethc==llave_hc => selecciona folio anterior a la nueva historia
+       if folio.lenght!==0 => selecciona folio especifico
+       callback: funcion que se ejecuta luego de consultar el json
+    */
+
+    var llave_dethc_env = '',
+        sw_detalle = '  ',
+        llave = $_REG_HC.llave_hc;
+    if (llave_dethc.length == 0) llave_dethc = $_REG_HC.llave_hc;
+
+    if (folio_dethc !== '**') {
+        llave_dethc_env = $_REG_PACI[0].cod_paci + folio_dethc;
+
+    } else {
+        var folio = llave.substring(15, 17) + cerosIzq(parseInt(llave.substring(17, 23) - 1), 6)
+        llave_dethc_env = $_REG_PACI[0].cod_paci + folio;
+    }
+    if (cods_dethc !== '**') {
+        if (Array.isArray(cods_dethc)) {
+            cods_dethc = cods_dethc.toString();
+
+        } else {
+            sw_detalle = '**';
+        }
+    }
+    datos_env = (
+        datosEnvio() +
+        llave_dethc_env + '|' +
+        localStorage['Usuario'] + '|' +
+        sw_detalle + '|' +
+        folio_dethc + '|' +
+        cods_dethc + '|');
+
+    SolicitarDll({
+        datosh: datos_env
+    }, function (data) {
+        var res = data.split('|')
+        if (res[0] == '00') {
+            SolicitarDatos({}, callback, get_url("TEMP/" + res[3]))
+        } else {
+            plantillaError(res[0], res[1], res[2]);
+        }
+    }, get_url("APP/HICLIN/HCDETAL-ANT.DLL"));
 }

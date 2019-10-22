@@ -21,7 +21,7 @@ function iniciar_apertura_h9004() {
 		"|" + novedad_hc +
 		"|" + finalid_hc + "|";
 
-	console.log(data)
+
 
 	SolicitarDll({
 			datosh: data
@@ -95,28 +95,29 @@ function validar_historia_h9004(data) {
 }
 
 function buscar_comprobantes_h9004() {
-	if ($_REG_HC.serv_hc == "02" || $_REG_HC.serv_hc == "08") {
-		// buscar_consulta_externa();
-		console.log('Yendo a consulta externa');
-		
-	}
-	consultar_hc_ant_h9004();
+	// if ($_REG_HC.serv_hc == "02" || $_REG_HC.serv_hc == "08") {
+	// 	// buscar_consulta_externa();
+	// 	console.log('Yendo a consulta externa');
+
+	// }
+
+	// detalles_hc = consultar_detalles_historia('**', ['9009','9004'], $_REG_HC.llave_hc);
+	consultar_detalles_historia('11000007', '', $_REG_HC.llave_hc, _get_detalles_hc_9004);
 }
 
-function consultar_hc_ant_h9004(){
-	var data = datosEnvio() + llave +
-		"|" + '**' +"|";
-	//Medidas antropometricas
+function _get_detalles_hc_9004(data) {
+	REG_HC_9004.detales_hc = data['DETHC'];
+	_on_formulario_h9004();
 
-	//Antecedentes HC
-// 	SolicitarDll({
-// 		datosh: data
-// 	},
-// 	function(data){
-// 		console.log(data)
-// 	},
-// 	get_url("APP/HICLIN/HCDETAL-ANT.DLL")
-// );
+}
+
+function _on_formulario_h9004() {
+	// Antecedentes HC
+	console.log(REG_HC_9004.detales_hc)
+	//Medidas antropometricas
+	// REG_HC_9004.peso=
+
+
 	//Antecedentes cod: 9004
 }
 
