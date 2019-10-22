@@ -1,0 +1,142 @@
+{
+    "Menu": [
+        {
+            "Id": "01",
+            "Descripcion": "Actualizar surtidores",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom101.html"
+        },
+        {
+            "Id": "02",
+            "Descripcion": "Actualizar sobretasas",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom103.html"
+        },
+        {
+            "Id": "03",
+            "Descripcion": "Comprobante combustibles",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom104.html"
+        },
+        {
+            "Id": "04",
+            "Descripcion": "Re-imprimir comprobante",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom105.html"
+        },
+        {
+            "Id": "05",
+            "Descripcion": "Anular comprobante",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom106.html"
+        },
+        {
+            "Id": "06",
+            "Descripcion": "Re-consolidar comprobante",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom107.html"
+        },
+        {
+            "Id": "07",
+            "Descripcion": "Listado de galones",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom108.html"
+        },
+        {
+            "Id": "08",
+            "Descripcion": "Correcion de comprobantes",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom104e.html"
+        },
+        {
+            "Id": "09",
+            "Descripcion": "Re-imprimir varios comprobantes",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom109.html"
+        },
+        {
+            "Id": "0A",
+            "Descripcion": "Resumen diario por turno",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bom110.html"
+        },
+        {
+            "Id": "0B",
+            "Descripcion": "Medicion de tanques",
+            "Sub": [
+                {
+                    "Id": "0B1",
+                    "Descripcion": "Config. clases de tanque",
+                    "Opc-segu": "",
+                    "Tipo": "HTML",
+                    "Href": "../../BOMBAS/paginas/bomb01.html"
+                },
+                {
+                    "Id": "0B2",
+                    "Descripcion": "Actualizar tanques",
+                    "Opc-segu": "",
+                    "Tipo": "HTML",
+                    "Href": "../../BOMBAS/paginas/bomb02.html"
+                },
+                {
+                    "Id": "0B3",
+                    "Descripcion": "Meidición de tanques",
+                    "Opc-segu": "",
+                    "Tipo": "HTML",
+                    "Href": "../../BOMBAS/paginas/bomb03.html"
+                }
+            ]
+        },
+        {
+            "Id": "0C",
+            "Descripcion": "Generar fact. de combustible",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bomb11.html"
+        },
+        {
+            "Id": "0D",
+            "Descripcion": "Informe de vales por cliente",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bomb13.html"
+        },
+        {
+            "Id": "0E",
+            "Descripcion": "Informe de galonaje por vendedor",
+            "Opc-segu": "",
+            "Tipo": "HTML",
+            "Href": "../../BOMBAS/paginas/bomb14.html"
+        },
+        {
+            "Id": "0G",
+            "Descripcion": "Facturas",
+            "Sub": [
+                {
+                    "Id": "0G1",
+                    "Descripcion": "Elaborar facturas",
+                    "Opc-segu": "",
+                    "Tipo": "HTML",
+                    "Href": "../../BOMBAS/paginas/INV421.html"
+                },
+                {
+                    "Id": "0G2",
+                    "Descripcion": "Re-imprimir facturas",
+                    "Opc-segu": "",
+                    "Tipo": "HTML",
+                    "Href": "../../BOMBAS/paginas/INV402.html"
+                }
+            ]
+        }
+    ]
+}
