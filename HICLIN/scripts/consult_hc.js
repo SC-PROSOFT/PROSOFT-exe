@@ -529,7 +529,7 @@ function datos_finalidad(nit, sexo, edad) {
 
 function buscar_consulta_externa() {
     //  HC811B    
-    var retorno = 1;
+    var retorno ='';
 
     var fecha_hc = new Array();
     fecha_hc['ano'] = $_REG_HC['fecha_hc'].substring(0, 4);
@@ -553,7 +553,7 @@ function buscar_consulta_externa() {
                 fecha_lim_consul['dia'] = 31;
                 break;
             case '03':
-                if (['00', '04', '08', '12', '16', '20'].filter(data => data == fecha_lim_consul['ano'])) fecha_lim_consul['dia'] = 29;
+                if (['00', '04', '08', '12', '16', '20'].filter(data => data == fecha_lim_consul['ano']).length > 0) fecha_lim_consul['dia'] = 29;
                 else fecha_lim_consul['dia'] = 28;
                 break;
             case '04', '06', '08', '11':
@@ -568,31 +568,72 @@ function buscar_consulta_externa() {
         if (
             fecha_lim_consul['dia'] == 1 || fecha_lim_consul['dia'] == 2
         )
-            fecha_lim_consul['dia'] -= fecha_hc.dia;
+            fecha_lim_consul['dia'] - fecha_hc.dia;
     } else {
-        fecha_lim_consul['dia'] -= 3;
+        fecha_lim_consul['dia'] - 3;
     }
-    var datos_en = $_REG_PACI[0].cod_paci + '|' + fecha_lim_consul + '|' + $_COMP.comprobante + $_COMP.suc + $_COMP.tipo + '|';
+    var datos_env = datosEnvio() + cerosIzq($_REG_PACI[0].cod_paci, 15) + '|' + fecha_lim_consul['ano'] + fecha_lim_consul['mes'] + fecha_lim_consul['dia'] + '|';
     SolicitarDll({
             datosh: datos_env
         },
         function (data) {
-            var res = data.split("|");
-            var url = get_url("TEMP/" + res[3]);
+
+            var res = data.split("|"),
+                admin = localStorage['Usuario'],
+                nit = $_USUA_GLOBAL[0].NIT,
+                serv = $_REG_HC.serv_hc,
+                prefijo = $_USUA_GLOBAL[0].PREFIJ;
 
             if (res[0].trim() == "00") {
-                SolicitarDatos({}, function (data) {
-                    var detalles_ant = data['DETHC'];
-                    retorno = detalles_ant;
-                }, url);
+                var fecha_ult_consul = res[3];
+                //Sin comprobante retorno=2, con comprobante retorno=1
+                if (fecha_ult_consul < fecha_lim_consul) {
+                    CON851("9A", "9A", null, "error", "error");
+                    if (["ADMI", "GEBC", "YPBA"].filter(adm => adm == admin).length > 0) {
+                        retorno = 1;
+                    } else {
+                        retorno = 2;
+                        // * CLINICA META, SERVIMEDICOS PYP, ESE YOPAL, DR MEDINA,
+                        // * CLINICA EMPERATRIZ, DR CASTRO, DR REYES, DRA FABIOLA
+                        // * DOCTOR MENENDEZ=72200727
+                        // * MOVISALUD
+                        // * 900161116 sociedad cardiologica colombiana
+                        // * 892000458 HOSPITAL SAN MARTIN
+                        // * SI DEJAN EVOLUCIONAR SIN FACTURAR
+                        // * 74858598 ALBER URIEL GALLEGO
+                        // * 900988374 UNIMAFER(DOCTOR NAVARRO) ALBERT
+                        // * 900565371 MAVESALUD
+                        // * 900264583 ONCOORIENTE
+                        // * 845000038 hospital de mitu
+                        // * 900475095 ips san fernando
+
+                        if (([
+                                "892000401", "822007038", "900475095", "800175901", "19381427", "17306492",
+                                "31841010", "79152952", "72200727", "900030814", "900161116", "900424844",
+                                "74858598", "900988374", "19233740", "900264583", "900475095", "901146885",
+                                "900450008"
+                            ].filter(empresa => empresa == nit).length > 0) ||
+                            (nit == "800162035" && prefijo == "08") ||
+                            (nit == "892000458" && serv == "08") ||
+                            (nit == "900565371" && serv == "09") ||
+                            (nit == "844003225" && ["EM", "CH", "TL", "CS"].filter(pref => pref == prefijo).length > 0)
+                        ) {
+                            retorno = 1;
+                        } else if (nit == "844003225" && fecha_ult_consul < 20190401) {
+                            retorno = 1;
+                        }
+                    }
+                }
             } else {
                 plantillaError(res[0], res[1], res[2]);
             }
         },
-        get_url("APP/HICLIN/HCDETAL-ANT.DLL")
+        get_url("APP/HICLIN/HC836A.DLL")
     );
-    return retorno;
-
+    if (retorno==2){
+        _cargarEventos("on");
+        _toggleNav();
+	}
 }
 
 function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callback) {

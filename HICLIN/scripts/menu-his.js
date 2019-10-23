@@ -41,8 +41,8 @@ function on_iniciar_menu_his(data) {
 					} else {
 						$_REG_PROF = JSON.parse(JSON.stringify(results));
 						$_REG_PROF.tabla_especialidad = new Array();
-						// $_REG_PROF.tabla_especialidad = res[2].split(";");
-						// $_REG_PROF.tabla_especialidad.pop();
+						$_REG_PROF.tabla_especialidad = res[2].split(";");
+						$_REG_PROF.tabla_especialidad.pop();
 						validarPaciente();
 						loader("hide");
 					}
@@ -126,43 +126,49 @@ function validarPaciente() {
 function cargarDatosPaci(data) {
 	var res = data.split("|");
 	if (res[0].trim() == "00") {
-		if (res[2].trim() == 1) {
-			//Existe historia clinica
-			var data = datosEnvio() + res[1] + "|";
-			SolicitarDll({
-					datosh: data
-				},
-				function (data) {
-					res = data.split("|");
-					if (res[0].trim() == "00") {
-						console.log(res)
-						_consultaSql({
-							sql: "Select * from sc_pacie where cod_paci =" + parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
-							bd: localStorage.Contab + "_13",
-							callback: function (error, results, fields) {
-								if (error) throw error;
-								else {
-									if (!results[0]) {
-										plantillaError("99", "Paciente no existe", "menu_his");
-									} else {
-										$_REG_PACI = JSON.parse(JSON.stringify(results));
-										loader("hide");
-									}
-								}
-							}
-						}), montarHc811();
+		_consultaSql({
+			sql: "Select * from sc_pacie where cod_paci =" + parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
+			bd: localStorage.Contab + "_13",
+			callback: function (error, results, fields) {
+				if (error) throw error;
+				else {
+					if (!results[0]) {
+						plantillaError("99", "Paciente no existe", "menu_his", validarPaciente);
 					} else {
-						plantillaError(res[0], res[1], res[2]);
+						$_REG_PACI = JSON.parse(JSON.stringify(results));
+						validarOpcPacienteHc(res)
 					}
-				},
-				get_url("APP/HICLIN/HC811.DLL")
-			);
-		} else {
-			//No existe historia
-			_consultHc(res[1]);
-		}
+				}
+			}
+		})
 	} else {
 		plantillaError(res[0], res[1], res[2]);
+	}
+}
+
+function validarOpcPacienteHc(res) {
+	if (res[2].trim() == 1) {
+		//Existe historia clinica
+		var data = datosEnvio() + res[1] + "|";
+		SolicitarDll({
+				datosh: data
+			},
+			function (data) {
+				res = data.split("|");
+				if (res[0].trim() == "00") {
+					loader("hide");
+					$_REG_HC.primera_hc=2;
+					montarHc811();
+				} else {
+					plantillaError(res[0], res[1], res[2], validarPaciente);
+				}
+			},
+			get_url("APP/HICLIN/HC811.DLL")
+		);
+	} else {
+		//No existe historia
+		$_REG_HC.primera_hc=1;
+		_consultHc(res[1]);
 	}
 }
 
@@ -186,8 +192,6 @@ function montarHc811() {
 				hc.push(nuevahc);
 			}
 			hc.reverse();
-
-			console.log(hc)
 
 			_ventanaDatos({
 				titulo: $_REG_PACI[0].descrip_paci,
