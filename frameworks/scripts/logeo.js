@@ -5,10 +5,15 @@ const { ipcRenderer } = require('electron');
 var $_IP_DATOS = false, $_CONTAB = false, $_NOMINA = false, $_MODULO = false;
 
 ipcRenderer.on('ping', (e, m) => {
-    localStorage.clear();
-    var parametros = m.param.split('|');
-    localStorage['IP_DATOS'] = parametros[0], localStorage['Modulo'] = parametros[1].toUpperCase();
-    inicio();
+    if (!m.param) {
+        jAlert({ titulo: 'Alerta', mensaje: 'No se ha ingresado una IP y un módulo', footer: false });
+    } else {
+        localStorage.clear();
+        var parametros = m.param.split('|');
+        localStorage['IP_DATOS'] = parametros[0];
+        localStorage['Modulo'] = parametros[1].toUpperCase();
+        inicio();
+    }
 });
 
 function inicio() {
@@ -189,7 +194,7 @@ function recibirLogin(datos) {
                     localStorage.Clave = clave;
                     localStorage.Usuario = res[2];
                     localStorage.Nombre = res[3];
-                    localStorage.Sesion = res[4];
+                    localStorage.Sesion = res[4].trim();
                     localStorage.Contab = contab;
                     localStorage.Nomina = nomina;
                     localStorage.Mes = mes;
