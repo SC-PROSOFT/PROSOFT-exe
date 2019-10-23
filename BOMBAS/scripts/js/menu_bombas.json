@@ -1,0 +1,113 @@
+{
+    "Menu": [
+        {
+            "Id": "01",
+            "Descripcion": "Actualizar surtidores",
+            "Href": "bom101.html"
+        },
+        {
+            "Id": "02",
+            "Descripcion": "Actualizar sobretasas",
+            "Href": "bom103.html"
+        },
+        {
+            "Id": "03",
+            "Descripcion": "Comprobante combustibles",
+            "Href": "bom104.html"
+        },
+        {
+            "Id": "04",
+            "Descripcion": "Re-imprimir comprobante",
+            "Href": "bom105.html"
+        },
+        {
+            "Id": "05",
+            "Descripcion": "Anular comprobante",
+            "Href": "bom106.html"
+        },
+        {
+            "Id": "06",
+            "Descripcion": "Re-consolidar comprobante",
+            "Href": "bom107.html",
+            "Tipo": "POWER",
+            "Sesion": "999999",
+            "Dll": "CON850",
+            "Params": [
+                "SESION",
+                "CLAVE"
+            ]
+        },
+        {
+            "Id": "07",
+            "Descripcion": "Listado de galones",
+            "Href": "bom108.html"
+        },
+        {
+            "Id": "08",
+            "Descripcion": "Correcion de comprobantes",
+            "Href": "bom104e.html"
+        },
+        {
+            "Id": "09",
+            "Descripcion": "Re-imprimir varios comprobantes",
+            "Href": "bom109.html"
+        },
+        {
+            "Id": "0A",
+            "Descripcion": "Resumen diario por turno",
+            "Href": "bom110.html"
+        },
+        {
+            "Id": "0B",
+            "Descripcion": "Medicion de tanques",
+            "Sub": [
+                {
+                    "Id": "0B1",
+                    "Descripcion": "Config. clases de tanque",
+                    "Href": "bomb01.html"
+                },
+                {
+                    "Id": "0B2",
+                    "Descripcion": "Actualizar tanques",
+                    "Href": "bomb02.html"
+                },
+                {
+                    "Id": "0B3",
+                    "Descripcion": "Meidición de tanques",
+                    "Href": "bomb03.html"
+                }
+            ]
+        },
+        {
+            "Id": "0C",
+            "Descripcion": "Generar fact. de combustible",
+            "Href": "bomb11.html"
+        },
+        {
+            "Id": "0D",
+            "Descripcion": "Informe de vales por cliente",
+            "Href": "bomb13.html"
+        },
+        {
+            "Id": "0E",
+            "Descripcion": "Informe de galonaje por vendedor",
+            "Href": "bomb14.html"
+        },
+        {
+            "Id": "0G",
+            "Descripcion": "Facturas",
+            "Sub": [
+                {
+                    "Id": "0G1",
+                    "Descripcion": "Elaborar facturas",
+                    "Href": "INV421.html"
+                },
+                {
+                    "Id": "0G2",
+                    "Descripcion": "Re-imprimir facturas",
+                    "Href": "INV402.html"
+                }
+            ]
+        }
+    ]
+}

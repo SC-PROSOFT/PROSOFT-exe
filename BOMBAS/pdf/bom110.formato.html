@@ -1,0 +1,396 @@
+<script>
+    const { ipcRenderer } = require('electron')
+    const fs = require('fs')
+    const exec = require('child_process').exec;
+    window.$ = window.jQuery = require('jquery');
+    const remote = require('electron').remote;
+</script>
+<style id="estiloImpresion">
+    @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+
+    html,
+    body,
+    #documento,
+    #impresion {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
+    }
+
+    #encabezado {
+        width: 100%;
+        height: 100px;
+        border: 1px solid #000;
+        border-bottom: none;
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        position: fixed;
+        top: 0;
+    }
+
+    .enc-logo,
+    .enc-izq,
+    .enc-der {
+        display: flex;
+        align-items: center;
+    }
+
+    .enc-izq div a {
+        text-transform: uppercase;
+    }
+
+    .enc-logo #logo {
+        width: 70%;
+        height: 60%;
+        margin: 0 auto;
+    }
+
+    .enc-logo #logo img {
+        width: 100%;
+        height: 100%;
+    }
+
+    #contenido {
+        padding: 0 1px 0 0;
+        /* margin-top: 10%; */
+    }
+
+    #contenido table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #contenido #tabla-secundaria {
+        width: 70%;
+    }
+
+    table thead tr {
+        border: 1px solid #000;
+    }
+
+    table thead tr th {
+        padding: 10px 0;
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+
+    table tbody tr td {
+        padding: 2px 0;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    table#tabla-principal tbody tr td {
+        text-align: center;
+    }
+
+    table#tabla-principal tbody tr td:nth-child(5),
+    table#tabla-principal tbody tr td:nth-child(7),
+    table#tabla-principal tbody tr td:nth-child(8),
+    table#tabla-principal tbody tr td:nth-child(9),
+    table#tabla-principal tbody tr td:nth-child(6) {
+        text-align: right;
+    }
+
+    table#tabla-principal tbody tr td:nth-child(11) {
+        text-align: left;
+    }
+
+    table#tabla-principal thead:before {
+        margin-top: 100px;
+        content: " ";
+        display: block;
+    }
+
+    table#tabla-secundaria thead:before {
+        content: " ";
+        display: block;
+        margin-top: 50px;
+    }
+
+    table#tabla-secundaria tbody tr td:nth-child(2) {
+        text-align: left;
+    }
+
+    table#tabla-secundaria tbody tr td:nth-child(3),
+    table#tabla-secundaria tbody tr td:nth-child(5),
+    table#tabla-secundaria tbody tr td:nth-child(4) {
+        text-align: right;
+    }
+
+    table thead:after {
+        content: " ";
+        display: block;
+        margin-bottom: 5px;
+    }
+</style>
+<div id="impresion">
+    <div id="encabezado">
+        <div class="enc-logo">
+            <div id="logo">
+                <img id="logo_url" />
+            </div>
+        </div>
+        <div class="enc-izq">
+            <div>
+                <a id="nombreEmpresa" style="font-weight: 600;font-size: 24px;"></a>
+                <br>
+                <a style="font-size: 12px;font-weight: 600;">Resumen venta combustibles</a>
+                <br>
+                <a>
+                    <a id="turno-pdf" style="font-size: 12px;font-weight: 600;"></a> -
+                    <a id="fecha-pdf" style="font-size: 12px;font-weight: 600;"></a>
+                </a>
+            </div>
+        </div>
+        <div class="enc-der">
+            <div style="margin: 0 auto;">
+                <a style="font-weight: 500;font-size: 12px;">Opc. 9.7.A</a>
+            </div>
+        </div>
+    </div>
+    <div id="contenido">
+        <table id="tabla-principal">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Surt.</th>
+                    <th>Comp.</th>
+                    <th>Articulo</th>
+                    <th>Lectura ant.</th>
+                    <th>Lectura act.</th>
+                    <th>Cant. venta</th>
+                    <th>Valor venta</th>
+                    <th>Sobretasa</th>
+                    <th>Impto. Global</th>
+                    <th>Total</th>
+                    <th>Oper</th>
+                    <th>Fecha rest.</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <table id="tabla-secundaria">
+            <thead>
+                <tr>
+                    <th>Articulo</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Saldo a <a id="saldoA"></a></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    var $_LISTADO_110, $_LST_ART_110, $_TOTALES, $_TIPO, $_URL;
+    ipcRenderer.on('ping', (e, data) => {
+        console.log(data);
+        $_TOTALES = data.extra.totales;
+        $_TIPO = data.tipo;
+        $_URL = data.url;
+        $('#logo_url').attr('src', $_TOTALES[17]);
+        _getDatos(data.datos);
+    })
+
+    var _getDatos = function (url) {
+        $.getJSON(url, function (data) {
+
+            $_LISTADO_110 = data.LISTADO
+            $_LISTADO_110.pop();
+
+            $_LST_ART_110 = data['LINEA-ART'];
+            $_LST_ART_110.pop();
+            montarImpresion_110();
+        });
+    }
+
+    function montarImpresion_110() {
+        var totales = $_TOTALES;
+
+        $('#nombreEmpresa').html(totales[13].trim())
+        $('#turno-pdf').html(totales[14]);
+        $('#fecha-pdf').html(totales[15]);
+
+        var listado = $_LISTADO_110;
+
+        for (var i in listado) {
+            $('#contenido table#tabla-principal tbody').append(''
+                + '<tr>'
+                + ' <td>' + listado[i].FECHA.trim() + '</td>'
+                + ' <td>' + listado[i].SURTI.trim() + '</td>'
+                + ' <td>' + listado[i].NRO.trim() + '</td>'
+                + ' <td>' + listado[i].ARTIC.trim() + '</td>'
+                + ' <td>' + listado[i]['NUM-ANT'].trim() + '</td>'
+                + ' <td>' + listado[i]['NUM-ACT'].trim() + '</td>'
+                + ' <td>' + listado[i]['CANTID'].trim() + '</td>'
+                + ' <td>' + listado[i].VALOR.trim() + '</td>'
+                + ' <td>' + listado[i].SOBRET.trim() + '</td>'
+                + ' <td>' + listado[i].GLOBAL.trim() + '</td>'
+                + ' <td>' + listado[i].TOTAL.trim() + '</td>'
+                + ' <td>' + listado[i].OPER.trim() + '</td>'
+                + ' <td>' + listado[i]['FECHA-REST'].trim() + '</td>'
+                + '</tr>'
+            );
+        }
+
+        // Espacio
+        $('#contenido table#tabla-principal tbody').append(''
+            + '<tr style="height: 30px;border-top: 1px solid #000">'
+            + ' <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>'
+            + '</tr>'
+        );
+
+        var subCant = totales[1].trim();
+        var subValor = totales[2].trim();
+        var subSobretasa = totales[3].trim();
+        var subGlobal = totales[4].trim();
+        var subTotal = totales[5].trim();
+        var valesTotal = totales[6].trim();
+        var financiacion = totales[7].trim() || 0;
+        var chequesTotal = totales[8].trim();
+        var recaudoTotal = totales[9].trim();
+
+        // Sub-total
+        $('#contenido table#tabla-principal tbody').append(''
+            + '<tr>'
+            + ' <td></td><td></td><td></td><td></td>'
+            + ' <td><b>SUB-TOTAL</b></td>'
+            + ' <td></td>'
+            + ' <td>' + subCant + '</td>'
+            + ' <td>' + subValor + '</td>'
+            + ' <td>' + subSobretasa + '</td>'
+            + ' <td>' + subGlobal + '</td>'
+            + ' <td>' + subTotal + '</td>'
+            + ' <td></td>'
+            + ' <td></td>'
+            + '</tr>'
+        );
+
+        // // Total-vales
+        $('#contenido table#tabla-principal tbody').append(''
+            + '<tr>'
+            + ' <td></td><td></td><td></td><td></td>'
+            + ' <td><b>TOTAL VALES</b></td>'
+            + ' <td></td><td></td><td></td><td></td><td></td>'
+            + ' <td>' + valesTotal + '</td>'
+            + ' <td></td>'
+            + ' <td></td>'
+            + '</tr>'
+        );
+
+        if (financiacion.length != 0) {
+            // // Total-financiacion
+            $('#contenido table#tabla-principal tbody').append(''
+                + '<tr>'
+                + ' <td></td><td></td><td></td><td></td>'
+                + ' <td><b>TOTAL FINANCIACION</b></td>'
+                + ' <td></td><td></td><td></td><td></td><td></td>'
+                + ' <td>' + financiacion + '</td>'
+                + ' <td></td>'
+                + ' <td></td>'
+                + '</tr>'
+            );
+        }
+
+        // // Cheques
+        $('#contenido table#tabla-principal tbody').append(''
+            + '<tr>'
+            + ' <td></td><td></td><td></td><td></td>'
+            + ' <td><b>RECIBIDO EN CHEQUES</b></td>'
+            + ' <td></td><td></td><td></td><td></td><td></td>'
+            + ' <td>' + chequesTotal + '</td>'
+            + ' <td></td>'
+            + ' <td></td>'
+            + '</tr>'
+        );
+
+        // // Neto recaudado
+        $('#contenido table#tabla-principal tbody').append(''
+            + '<tr>'
+            + ' <td></td><td></td><td></td><td></td>'
+            + ' <td><b>NETO RECAUDADO</b></td>'
+            + ' <td></td><td></td><td></td><td></td><td></td>'
+            + ' <td>' + recaudoTotal + '</td>'
+            + ' <td></td>'
+            + ' <td></td>'
+            + '</tr>'
+        );
+
+        _llenarSegundaTabla();
+    }
+
+    function _llenarSegundaTabla() {
+        $('#saldoA').html($_TOTALES[16]);
+
+        for (var i in $_LST_ART_110) {
+            $('#contenido table#tabla-secundaria tbody').append(''
+                + '<tr>'
+                + ' <td>' + $_LST_ART_110[i].ART.trim() + '</td>'
+                + ' <td>' + $_LST_ART_110[i].DESCRIP.trim() + '</td>'
+                + ' <td>' + $_LST_ART_110[i].CANT.trim() + '</td>'
+                + ' <td>' + $_LST_ART_110[i].VLR.trim() + '</td>'
+                + ' <td>' + $_LST_ART_110[i].TOTAL.trim() + '</td>'
+                + '</tr>'
+            );
+        }
+
+        // Espacio
+        $('#contenido table#tabla-secundaria tbody').append(''
+            + '<tr style="height: 10px;">'
+            + ' <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>'
+            + '</tr>'
+        );
+
+        // Totales
+        $('#contenido table#tabla-secundaria tbody').append(''
+            + '<tr>'
+            + ' <td></td>'
+            + ' <td><b>TOTAL</b></td>'
+            + ' <td>' + $_TOTALES[10].trim() + '</td>'
+            + ' <td>' + $_TOTALES[11].trim() + '</td>'
+            + ' <td>' + $_TOTALES[12].trim() + '</td>'
+            + '</tr>'
+        );
+
+        if ($_TIPO == 'csv') imprimirCsv();
+    }
+
+    function imprimirCsv() {
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText.replace(/,/g, ''));
+            csv.push(row.join(","));
+        }
+        _formatoCsv(csv.join("\n"));
+    }
+
+    function _formatoCsv(csv) {
+        var urlCsv = $_URL + '.csv';
+        try {
+            fs.writeFile(urlCsv, csv, 'utf-8', function (e) {
+                var window = remote.getCurrentWindow();
+                window.close();
+            });
+        } catch (e) {
+            alert('Ha ocurrido un error escribiendo el archivo: ' + urlCsv);
+        }
+    }
+
+    function cerosIzq(obj, tam) {
+        while (obj.toString().length < tam)
+            obj = '0' + obj;
+        return obj;
+    }
+
+</script>

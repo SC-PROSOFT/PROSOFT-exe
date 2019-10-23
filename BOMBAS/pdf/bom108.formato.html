@@ -1,0 +1,250 @@
+<script>
+    const { ipcRenderer } = require('electron')
+    const fs = require('fs')
+    const exec = require('child_process').exec;
+    window.$ = window.jQuery = require('jquery');
+    const remote = require('electron').remote;
+</script>
+<style id="estiloImpresion">
+    @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+
+    html,
+    body,
+    #documento,
+    #impresion {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
+    }
+
+    /* #impresion,
+    #documento {
+        display: none;
+    } */
+
+    #encabezado {
+        width: 100%;
+        height: 100px;
+        border: 1px solid #000;
+        border-bottom: none;
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        position: fixed;
+        top: 0;
+    }
+
+    .enc-logo,
+    .enc-izq,
+    .enc-der {
+        display: flex;
+        align-items: center;
+    }
+
+    .enc-izq div a {
+        text-transform: uppercase;
+    }
+
+    .enc-logo #logo {
+        width: 70%;
+        height: 60%;
+        margin: 0 auto;
+    }
+
+    .enc-logo #logo img {
+        width: 100%;
+        height: 100%;
+    }
+
+    #contenido {
+        padding: 0 1px 0 0;
+        /* margin-top: 10%; */
+    }
+
+    #contenido table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table thead tr {
+        border: 1px solid #000;
+    }
+
+    table thead tr th {
+        padding: 10px 0;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+    table tbody tr td {
+        padding: 2px 0;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    table thead:before {
+        content: " ";
+        display: block;
+        margin-top: 100px;
+    }
+
+    table thead:after {
+        content: " ";
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    @media print {
+        #impresion {
+            display: block;
+        }
+    }
+</style>
+
+<div id="impresion">
+    <div id="encabezado">
+        <div class="enc-logo">
+            <div id="logo">
+                <img id="logo_url" />
+            </div>
+        </div>
+        <div class="enc-izq">
+            <div style="margin: 0 auto;">
+                <a id="nombreEmpresa" style="font-weight: 600;font-size: 24px;"></a>
+                <br>
+                <a style="font-size: 12px;font-weight: 600;">Listado de galonajes - <a id="hastaFormato" style="font-size: 12px;font-weight: 600;"></a></a>
+            </div>
+        </div>
+        <div class="enc-der">
+            <div style="margin: 0 auto;">
+                <a style="font-weight: 500;font-size: 12px;">Opc. 9.7.7</a>
+            </div>
+        </div>
+    </div>
+    <div id="contenido">
+        <table>
+            <thead>
+                <tr>
+                    <th>Comprobante</th>
+                    <th>Surtidor</th>
+                    <th>Turno</th>
+                    <th>Fecha</th>
+                    <th>Galonaje</th>
+                    <th>Valor</th>
+                    <th>Vendedor</th>
+                </tr>
+            </thead>
+            <tbody id="bodyTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    var $_LISTADO, $_TOTALES, $_TIPO, $_URL;
+    ipcRenderer.on('ping', (e, data) => {
+        console.log(data);
+        $_TOTALES = data.extra.totales;
+        $_TIPO = data.tipo;
+        $_URL = data.url;
+        $('#logo_url').attr('src', $_TOTALES[5]);
+        _getDatos(data.datos);
+    })
+
+    var _getDatos = function (url) {
+        $.getJSON(url, function (data) {
+            $_LISTADO = data.LISTADO
+            $_LISTADO.pop();
+            montarImpresion_108();
+        });
+    }
+
+    function montarImpresion_108() {
+        $('#nombreEmpresa').html($_TOTALES[3])
+        $('#hastaFormato').html($_TOTALES[4])
+
+        var table = document.getElementById("bodyTable")
+
+        for (var i in $_LISTADO) {
+            var tr = document.createElement('TR');
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].COMP));
+            tr.appendChild(td)
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].SURTI));
+            tr.appendChild(td)
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].TURNO));
+            tr.appendChild(td)
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].FECHA));
+            tr.appendChild(td)
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].GALONAJE));
+            tr.appendChild(td)
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].VALOR));
+            tr.appendChild(td)
+
+            var td = document.createElement('TD')
+            td.appendChild(document.createTextNode($_LISTADO[i].VEN));
+            tr.appendChild(td)
+
+            table.appendChild(tr);
+        }
+
+        $('#bodyTable').append('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+
+        $('#bodyTable').append(''
+            + '<tr style="border-top: 1px solid #000">'
+            + ' <td>TOTAL: </td>'
+            + ' <td></td>'
+            + ' <td></td>'
+            + ' <td></td>'
+            + ' <td>' + $_TOTALES[1].trim() + '</td>'
+            + ' <td>' + $_TOTALES[2].trim() + '</td>'
+            + ' <td></td>'
+            + '</tr>'
+        );
+
+        if ($_TIPO == 'csv') imprimirCsv();
+    }
+
+    function imprimirCsv() {
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText.replace(/,/g, '.'));
+            csv.push(row.join(","));
+        }
+        _formatoCsv(csv.join("\n"));
+    }
+
+    function _formatoCsv(csv) {
+        var urlCsv = $_URL + '.csv';
+        try {
+            fs.writeFile(urlCsv, csv, 'utf-8', function (e) {
+                var window = remote.getCurrentWindow();
+                window.close();
+            });
+        } catch (e) {
+            alert('Ha ocurrido un error escribiendo el archivo: ' + urlCsv);
+        }
+    }
+
+    function cerosIzq(obj, tam) {
+        while (obj.toString().length < tam)
+            obj = '0' + obj;
+        return obj;
+    }
+</script>
