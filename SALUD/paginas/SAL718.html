@@ -67,28 +67,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 col-sm-8 col-xs-8" style="padding-right: 0;" id="validarCodAbrev718" style="display:flex;">
+                <div class="col-md-5 col-sm-5 col-xs-5" style="padding-right: 0;" id="validarCodAbrev718" style="display:flex;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-4 inline-inputs">
+                        <div class="col-md-6 inline-inputs">
                             <label class="col-md-8 col-sm-8 col-xs-8 text-label">Codigo Abreviado:</label>
                             <div class="input-group col-md-4 col-sm-4 col-xs-4">
                                 <input id="codAbrev718" type="text" maxlength="5" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                        <div class="col-md-4 inline-inputs">
+                        <div class="col-md-6 inline-inputs">
                             <label class="col-md-8 col-sm-8 col-xs-8 text-label">Duracion:</label>
                             <div class="input-group col-md-4 col-sm-4 col-xs-4">
                                 <input id="duracion718" type="text" maxlength="3" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                        <div class="col-md-4 inline-inputs">
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-3" style="padding-right: 0;" id="validarNivel718" style="display:flex;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 inline-inputs">
                             <label class="col-md-8 col-sm-8 col-xs-8 text-label">Nivel Complejidad:</label>
                             <div class="input-group col-md-4 col-sm-4 col-xs-4">
-                                <input id="nivelComple718" type="text" maxlength="1" data-orden="3" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="nivelComple718" type="text" maxlength="1" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-8 col-sm-8 col-xs-8 no-padding" >
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-4 inline-inputs">
@@ -103,10 +109,16 @@
                                 <input id="procedNO718" type="text" maxlength="1"  class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                        <div class="col-md-4 inline-inputs">
+                        <div class="col-md-4 inline-inputs" id="cis_718">
                             <label class="col-md-8 col-sm-8 col-xs-8 text-label">C.I.S?</label>
                             <div class="input-group col-md-4 col-sm-4 col-xs-4">
                                 <input id="cis718" type="text" maxlength="1"  class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-4 inline-inputs" id="HL_718">
+                            <label class="col-md-8 col-sm-8 col-xs-8 text-label">Activar HL7?</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-4">
+                                <input id="actHl718" type="text" maxlength="1"  class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
@@ -222,9 +234,9 @@
 
                 <div class="col-md-9 col-sm-9 col-xs-9 " style="padding-right: 0;" >
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="cuentaIngreso718">                        
-                        <div class="col-md-7 col-sm-7 col-xs-7">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="inline-inputs">
-                                <label class="col-md-7 col-sm-7 col-xs-7">Cuenta ingreso terceros:</label>
+                                <label class="col-md-6 col-sm-6 col-xs-6">Cuenta ingreso terceros:</label>
                                 <div class="input-group col-md-5 col-sm-5 col-xs-5">
                                     <input id="cuentaTerc_718" type="text" maxlength="3" data-orden="1" required="true"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
@@ -234,7 +246,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-5 col-sm-5 col-xs-5">
+                        <div class="col-md-6 col-sm-6 col-xs-6" id="nitTerce718">
                             <div class="inline-inputs">
                                 <label class="col-md-6 col-sm-6 col-xs-6">Nit terceros:</label>
                                 <div class="input-group col-md-6 col-sm-6 col-xs-6">
@@ -246,6 +258,23 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-6" id="codgHeon718">
+                            <div class="inline-inputs">
+                                <label class="col-md-3 col-sm-3 col-xs-3">Cod. Heon:</label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="codHeon_718" type="text" maxlength="10" data-orden="2" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <label class="col-md-3 col-sm-3 col-xs-3">Cups Principal:</label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
+                                    <input id="cupPrinc_718" type="text" maxlength="12" data-orden="3" required="true"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 
@@ -357,4 +386,3 @@
 </div>
 
 <script src="../../SALUD/JS/SAL718.js" type="text/javascript"></script>
-<script src="../../SALUD/JS/crearjsonglobal.js" type="text/javascript"></script>

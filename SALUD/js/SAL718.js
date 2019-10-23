@@ -8,15 +8,14 @@ $(document).ready(function () {
         { input: 'grupoSal', app: '718', funct: _ventanaGrupo718 },
         { input: 'codCup', app: '718', funct: _ventanaCups718 },
         { input: 'centrCost', app: '718', funct: _ventanaCentrCosto718 },
-        { input: 'cuentaTerc', app: '718', funct: _ventanaContab718 },        
-        { input: 'nitTerc', app: '718', funct: ventanaTerceros718 },        
+        { input: 'cuentaTerc', app: '718', funct: _ventanaContab718 },
+        { input: 'nitTerc', app: '718', funct: ventanaTerceros718 },
         { input: 'codPuc', app: '718', funct: _ventanaPUC718 }
-        
+
     ]);
 
-    CON850(_evaluarCON850);
+    ocultCajas718();
 });
-
 
 // F8 GRUPO-SERVICIO //
 function _ventanaGrupo718(e) {
@@ -45,15 +44,16 @@ function _ventanaCups718(e) {
         _ventanaDatos({
             titulo: "VENTANA DE CODIGOS CUPS",
             tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_cups',
+            db: 'datos_pros',
+            tablaSql: 'sc_archcups',
             callback_esc: function () {
                 _validarCUPS718()
             },
             callback: function (data) {
                 console.debug(data);
-                $('#codCup_718').val(data.nro_cup.trim())
-                $('#descrpCups718').val(data.descrip_cup.trim())
+                var cup = data.codigo;
+                $('#codCup_718').val(cup.substring(2, 11))
+                $('#descrpCups718').val(data.descripcion.trim())
                 _enterInput('#codCup_718');
             }
         });
@@ -138,20 +138,41 @@ function _ventanaPUC718(e) {
             },
             callback: function (data) {
                 console.debug(data);
-                $('#codPuc_718').val(data.llave_mae + ' - ' + data.nombre_mae_mae)
+                $('#codPuc_718').val(data.llave_mae + ' - ' + data.nombre_mae)
                 _enterInput('#codPuc_718');
             }
         });
     }
 }
 
+function ocultCajas718() {
+    if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
+        document.getElementById('cis_718').style.display = 'none';
+        document.getElementById('HL_718').style.display = '';
 
+        document.getElementById('nitTerce718').style.display = 'none';
+        document.getElementById('codgHeon718').style.display = '';
+        CON850(_evaluarCON850);
+
+    } else {
+        document.getElementById('cis_718').style.display = '';
+        document.getElementById('HL_718').style.display = 'none';
+
+        document.getElementById('nitTerce718').style.display = '';
+        document.getElementById('codgHeon718').style.display = 'none';
+        CON850(_evaluarCON850);
+    }
+}
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
     _inputControl('reset');
     _inputControl('disabled');
     console.debug(novedad)
+
+
+
+
     $_NovSal718 = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
@@ -221,7 +242,7 @@ function _validarCUPS718() {
             $grupoCups718 = $('#codCup_718').val();
 
 
-            LLAVECUP = $grupo718 + $grupoCups718;
+            $LLAVECUP = $grupo718 + $grupoCups718;
 
             if ($grupoCups718.trim().length > 0) {
                 switch ($grupoCups718) {
@@ -231,8 +252,9 @@ function _validarCUPS718() {
                         break;
                     default:
                         _consultaSql({
-                            sql: 'SELECT * FROM sc_cups WHERE CONCAT(grupo_cup, nro_cup) LIKE "' + LLAVECUP + '"',
-                            db: $CONTROL,
+                            sql: `SELECT * FROM sc_archcups  WHERE codigo = '${$LLAVECUP}'`,
+                            // sql: 'SELECT * FROM sc_archcups WHERE CONCAT(grupo_cup, nro_cup) LIKE "' + $LLAVECUP + '"',
+                            db: 'datos_pros',
                             callback: function (error, results, fields) {
                                 if (error) throw error;
                                 else {
@@ -250,9 +272,10 @@ function _validarCUPS718() {
                                             CON851('01', '01', null, 'error', 'Error');
                                             _validarCUPS718()
                                         } else {
-                                            $('#codCup_718').val(datos.nro_cup.trim())
-                                            $('#descrpCups718').val(datos.descrip_cup.trim())
-                                            tipoSer718();
+                                            // $('#codCup_718').val(datos.nro_cup.trim())
+                                            // $('#descrpCups718').val(datos.descrip_cup.trim())
+                                            // tipoSer718();
+                                            consultDatos718()
                                         }
                                     }
 
@@ -266,6 +289,114 @@ function _validarCUPS718() {
     )
 }
 
+
+function consultDatos718() {
+
+    console.debug('envio DLL  ' + $LLAVECUP)
+    let datos_envio = datosEnvio()
+    datos_envio += '|'
+    datos_envio += $LLAVECUP
+    SolicitarDll({ datosh: datos_envio }, mostrarDatos718, get_url('/APP/SALUD/SAL718C.DLL'));
+
+}
+
+function mostrarDatos718(data) {
+    console.debug(data);
+    var date = data.split('|');
+
+    $TIPOSERV718 = date[2].trim();
+    $CODABREV718 = date[3].trim();
+    $DURACION718 = date[4].trim();
+    $NIVE718 = date[5].trim();
+    $COPAGO718 = date[6].trim();
+    $NOPOS718 = date[7].trim();
+    $CIS718 = date[8].trim();
+    $EDADMIN718 = date[9].trim();
+    $EDADMAX718 = date[10].trim();
+    $UNIDMED718 = date[11].trim();
+    $SEXO718 = date[12].trim();
+    $DIAGN718 = date[13].trim();
+    $COSTO718 = date[14].trim();
+    $NOMCOSTO718 = date[15].trim();
+    $MEDICO718 = date[16].trim();
+    $PORC_CLIN718 = date[17].trim();
+    $PORC_OTR718 = date[18].trim();
+    $CTA_OTR718 = date[19].trim();
+    $NIT_OTR718 = date[20].trim();
+    $CTA_1CONT718 = date[21].trim();
+    $CTA_2CONT718 = date[22].trim();
+    $CTA_3CONT718 = date[23].trim();
+    $DIVIS718 = date[24].trim();
+    $DIVIS2718 = date[25].trim();
+    $DESCRP718 = date[26].trim();
+    $OPERAD718 = date[27].trim();
+    $FECHA718 = date[28].trim();
+
+
+    if (date[0].trim() == '00') {
+        if ($_NovSal718 == '7') {
+            CON851('00', '00', null, 'error', 'Error');
+            _validarCUPS718();
+        }
+        else {
+            datosCompl718()
+        }
+    }
+    else if (date[0].trim() == '01') {
+        if ($_NovSal718 == '7') {
+            registroNuevo718();
+        }
+        else {
+            CON851('01', '01', null, 'error', 'Error');
+            _validarCUPS718();
+        }
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+
+}
+
+
+function datosCompl718() {
+
+    $('#descrpCups718').val($DESCRP718);
+    $('#tipoServ718').val($TIPOSERV718);
+    $('#codAbrev718').val($CODABREV718);
+    $('#duracion718').val($DURACION718);
+    $('#nivelComple718').val($NIVE718);
+    $('#pagoPacient718').val($COPAGO718);
+    $('#procedNO718').val($NOPOS718);
+    $('#cis718').val($CIS718);
+    $('#centrCost_718').val($COSTO718);
+    $('#descCosto718').val($NOMCOSTO718);
+    $('#edadMin718').val($EDADMIN718);
+    $('#edadMax718').val($EDADMAX718);
+    $('#undEdad718').val($UNIDMED718);
+    $('#sexo718').val($SEXO718);
+    $('#diagnt718').val($DIAGN718);
+    $('#distrib718').val($MEDICO718);
+    $('#ingrClin718').val($PORC_CLIN718);
+    $('#ingreTerc718').val($PORC_OTR718);
+    $('#cuentaTerc_718').val($CTA_OTR718);
+    $('#nitTerc_718').val($NIT_OTR718);
+    $('#codPuc_718').val($CTA_1CONT718);
+    $('#codCoop_718').val($CTA_3CONT718);
+    $('#codOfic_718').val($CTA_2CONT718);
+    $('#divSal1_718').val($DIVIS718);
+    $('#divSal2_718').val($DIVIS2718);
+    $('#operador718').val($OPERAD718);
+
+
+    var fechac718 = $FECHA718
+    $('#fecha718').val(fechac718.substring(2, 8))
+
+
+    psre()
+}
+
+
+
 function registroNuevo718() {
     $grpCps718 = $('#codCup_718').val()
     $dcpCps718 = $('#descrpCups718').val()
@@ -273,39 +404,76 @@ function registroNuevo718() {
     tipoSer718();
 }
 
-function tipoSer718() {
-    var datoTipoServ718 = [
-        { "COD": "1", "DESCRIP": "Cirugias" },
-        { "COD": "2", "DESCRIP": "Laboratorio y Otros diag." },
-        { "COD": "3", "DESCRIP": "RX Imagenologia" },
-        { "COD": "4", "DESCRIP": "Estancia y Otros" },
-        { "COD": "5", "DESCRIP": "Consulta y Terapias" },
-        { "COD": "6", "DESCRIP": "Patologia y Citologia" },
-        { "COD": "7", "DESCRIP": "Promocion y Prevencion" }
-    ]
 
-    POPUP({
-        array: datoTipoServ718,
-        titulo: 'Tipo de Servicio?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: _validarCUPS718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-                $('#tipoServ718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
-                $_SERV718 = data.COD.trim()
-                _validarAbrev718()
-                break;
-        }
-    })
+function tipoSer718() {
+
+    if ($_USUA_GLOBAL[0].NIT == 800156469) {
+        var datoTipoEcoNit718 = [
+            { "COD": "1", "DESCRIP": "Cirugias" },
+            { "COD": "2", "DESCRIP": "Ecografias" },
+            { "COD": "3", "DESCRIP": "Doppler" },
+            { "COD": "4", "DESCRIP": "T.A.C" },
+            { "COD": "5", "DESCRIP": "Resonancia Nuclear" },
+            { "COD": "6", "DESCRIP": "Patologia y Citologia" },
+            { "COD": "7", "DESCRIP": "Promocion y Prevencion" }
+        ]
+
+        POPUP({
+            array: datoTipoEcoNit718,
+            titulo: 'Tipo de Servicio?',
+            indices: [
+                { id: 'COD', label: 'DESCRIP' }
+            ],
+            callback_f: _validarCUPS718
+        }, function (data) {
+            switch (data.COD.trim()) {
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                    $('#tipoServ718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
+                    $_SERV718 = data.COD.trim()
+                    _validarAbrev718()
+                    break;
+            }
+        })
+    } else {
+        var datoTipoServ718 = [
+            { "COD": "1", "DESCRIP": "Cirugias" },
+            { "COD": "2", "DESCRIP": "Laboratorio y Otros diag." },
+            { "COD": "3", "DESCRIP": "RX Imagenologia" },
+            { "COD": "4", "DESCRIP": "Estancia y Otros" },
+            { "COD": "5", "DESCRIP": "Consulta y Terapias" },
+            { "COD": "6", "DESCRIP": "Patologia y Citologia" },
+            { "COD": "7", "DESCRIP": "Promocion y Prevencion" }
+        ]
+
+        POPUP({
+            array: datoTipoServ718,
+            titulo: 'Tipo de Servicio?',
+            indices: [
+                { id: 'COD', label: 'DESCRIP' }
+            ],
+            callback_f: _validarCUPS718
+        }, function (data) {
+            switch (data.COD.trim()) {
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                    $('#tipoServ718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
+                    $_SERV718 = data.COD.trim()
+                    _validarAbrev718()
+                    break;
+            }
+        })
+    }
 }
 
 function _validarAbrev718() {
@@ -315,9 +483,32 @@ function _validarAbrev718() {
             orden: '1'
         },
         function () { tipoSer718(); },
-        function () { pagoPacient718(); }
+        function () { _nivelAcompl718(); }
     )
 }
+
+
+function _nivelAcompl718() {
+    validarInputs(
+        {
+            form: "#validarNivel718",
+            orden: '1'
+        },
+        function () { tipoSer718(); },
+        function () {
+            $NIVELAC = $('#nivelComple718').val()
+
+            if ($NIVELAC == 1 || $NIVELAC == 2 || $NIVELAC == 3 || $NIVELAC == 4 || $NIVELAC == 5) {
+                pagoPacient718();
+            } else {
+                CON851('03', '03', null, 'error', 'error');
+                _nivelAcompl718()
+            }
+
+        }
+    )
+}
+
 
 function pagoPacient718() {
     var datoPago718 = [
@@ -365,12 +556,39 @@ function procedNOPOS718() {
             case '2':
                 $('#procedNO718').val(data.DESCRIP.trim())
                 $_NOPOS718 = data.DESCRIP.trim()
-                setTimeout(datoCIS718, 300);
+                if ($_USUA_GLOBAL[0].NIT == 830092718) {
+                    setTimeout(activarHL_718, 300);
+                } else {
+                    setTimeout(datoCIS718, 300);
+                }
                 break;
         }
     })
 }
 
+function activarHL_718() {
+    var datoHL718 = [
+        { "COD": "1", "DESCRIP": "Si" },
+        { "COD": "2", "DESCRIP": "No" }
+    ]
+    POPUP({
+        array: datoHL718,
+        titulo: 'Activar HL7?',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        callback_f: procedNOPOS718
+    }, function (data) {
+        switch (data.COD.trim()) {
+            case '1':
+            case '2':
+                $('#actHl718').val(data.DESCRIP.trim())
+                $ACTHL = data.DESCRIP.trim()
+                setTimeout(_validaCentroCost718, 300);
+                break;
+        }
+    })
+}
 
 function datoCIS718() {
     var datoCIS718 = [
@@ -456,7 +674,8 @@ function unidadMedida718() {
     var unidadMed718 = [
         { "COD": "1", "DESCRIP": "Años" },
         { "COD": "2", "DESCRIP": "Meses" },
-        { "COD": "3", "DESCRIP": "Dias" }
+        { "COD": "3", "DESCRIP": "Dias" },
+        { "COD": "4", "DESCRIP": "No aplica" }
     ]
     POPUP({
         array: unidadMed718,
@@ -470,6 +689,7 @@ function unidadMedida718() {
             case '1':
             case '2':
             case '3':
+            case '4':
                 $('#undEdad718').val(data.DESCRIP.trim())
                 $UNIDMED718 = data.DESCRIP.trim()
                 setTimeout(sexoPaciente718, 300);
@@ -579,12 +799,15 @@ function validarIngTercer718() {
         function () {
             $ingrTerc718 = $('#ingreTerc718').val();
             console.debug($ingrTerc718);
-            if (parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '' ) {
-                console.debug('si')
-                validarPUC718();
-            } else {
+            if ($_USUA_GLOBAL[0].NIT == 830092718 && parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
+                codigoHeon718()
+                // } else if (parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
+                //     console.debug('si')
+                //     validarPUC718();
+            } else if ($_USUA_GLOBAL[0].NIT == 830092718) {
                 cuentTercero718();
             }
+
         }
     )
 }
@@ -669,6 +892,19 @@ function terceroNit718() {
     }
 }
 
+
+function codigoHeon718() {
+    validarInputs(
+        {
+            form: "#codgHeon718",
+            orden: '2'
+        },
+        function () { validarIngTercer718(); },
+        function () { validarPUC718() }
+    )
+}
+
+
 function validarPUC718() {
     validarInputs(
         {
@@ -679,11 +915,6 @@ function validarPUC718() {
         function () { psre(); }
     )
 }
-
-
-
-
-
 
 
 
