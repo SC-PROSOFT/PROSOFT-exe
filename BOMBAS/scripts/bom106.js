@@ -29,7 +29,7 @@ function validarComprobante() {
 
             var datos_envio = datosEnvio()+ cerosIzq(comprobante, 6)+ "|";
 
-            SolicitarDll({ datosh: datos_envio }, on_validarComprobante, get_url("app/BOM105.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_validarComprobante, get_url("app/bombas/BOM105.DLL"));
         }
     )
 }
@@ -37,7 +37,7 @@ function validarComprobante() {
 function on_validarComprobante(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -47,7 +47,7 @@ function on_validarComprobante(data) {
                 $_INFO_COMP_106 = res;
 
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion)
+                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion + ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson_106);
             },
             rutaJson
@@ -153,7 +153,7 @@ function _validacionFinal_106() {
             datos_envio += cerosIzq(comprobante, 6);
             datos_envio += '|' + "1";
             datos_envio += '|' + "      ";
-            SolicitarDll({ datosh: datos_envio }, on_anularComprobante, get_url("app/BOM106.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_anularComprobante, get_url("app/bombas/BOM106.DLL"));
         } else {
             _init_106();
         }

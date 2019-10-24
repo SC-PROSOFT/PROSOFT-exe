@@ -37,6 +37,8 @@ function _onCargarUsuario(data) {
                 $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
                 $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
 
+                $_USUA_GLOBAL[0].RUTA_LOGO = path.join('file://', __dirname, '../imagenes/logo/' + $_USUA_GLOBAL[0].NIT + '.BMP');
+
                 let mes = evaluarMes_min(localStorage.Mes);
                 $('title').html(`
                 \\${localStorage.Contab}\\${mes}
@@ -459,7 +461,7 @@ function validarChecked(nombreCaja, dato) {
 }
 
 function datosEnvio() {
-    var data = localStorage.getItem('Sesion').trim() + "|" + localStorage.getItem('Contab').trim() + "|" + localStorage.getItem('Mes').trim() + "|";
+    var data = localStorage.getItem('Sesion').trim() + "|" + localStorage.getItem('Contab').trim() + "|" + carpetaTrabajo(localStorage.getItem('Mes').trim()) + "|";
     return data;
 }
 
@@ -503,7 +505,12 @@ function LLAMADO_DLL(params) {
 
 _consultaSql = function (params) {
     var connect = $.parseJSON((JSON.stringify($CONEXION_BD)));
-    connect.database = params.db || $CONEXION_BD.database;
+    if ($CONEXION_BD.database.indexOf("/") != -1){
+        connect.database = params.db.replace("/","_") || $CONEXION_BD.database.replace("/","_");
+    } else {
+        connect.database = params.db || $CONEXION_BD.database;
+    }
+    
 
     var connection = mysql.createConnection(connect);
     connection.connect();

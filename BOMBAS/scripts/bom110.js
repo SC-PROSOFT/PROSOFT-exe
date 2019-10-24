@@ -8,7 +8,7 @@ $(document).ready(function () {
     //$('#formatoImpresion').selectric().change(validarFormato_110);
     $('#formatoImpresion').select2().on('select2:select', validarFormato_110);
     setTimeout(function () { $('#formatoImpresion').select2('open') }, 500)
-    $('#logo_url').attr('src', $_RUTA_LOGO);
+    $('#logo_url').attr('src', $_USUA_GLOBAL[0].RUTA_LOGO);
 });
 
 function habilitarFormato_110() {
@@ -61,7 +61,7 @@ function _validarFecha_envio() {
     var fechaEnvio = añoInicial + mesInicial + diaInicial;
 
     var datos_envio = datosEnvio() + fechaEnvio + '|';
-    SolicitarDll({ datosh: datos_envio }, on_validarFecha_envio_110, get_url("app/BOM110.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_validarFecha_envio_110, get_url("app/bombas/BOM110.DLL"));
 }
 
 function on_validarFecha_envio_110(data) {
@@ -128,7 +128,7 @@ function _enviarDatos_110() {
     datos_envio += '|';
 
     loader('show');
-    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_110, get_url("app/BOM110_1.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_110, get_url("app/bombas/BOM110_1.DLL"));
 }
 
 function on_enviarDatos_110(data) {
@@ -145,7 +145,7 @@ function on_enviarDatos_110(data) {
         var diaFinal = cerosIzq($('#diaFinal').val(), 2)
         var fechaFinal = añoFinal + mesFinal + diaFinal;
 
-        let nombreEmpresa = $datosUsuar[1].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
         let turno = 'Turno: ' + $('#turno').val();
         let fecha = 'Fecha: ' + fechaInicial;
 
@@ -153,10 +153,10 @@ function on_enviarDatos_110(data) {
         res.push(turno)
         res.push(fecha)
         res.push(fechaFinal)
-        res.push($_RUTA_LOGO)
+        res.push($_USUA_GLOBAL[0].RUTA_LOGO)
 
         var opcionesImpresiones = {
-            datos: get_url('progdatos/json/SC-LISTCOMB-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('temp/SC-LISTCOMB-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
             formato: 'bom110.formato.html',

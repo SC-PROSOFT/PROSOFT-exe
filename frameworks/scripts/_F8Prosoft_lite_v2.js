@@ -1,5 +1,5 @@
 (function ($) {
-    $.ventanaDatos_lite = {
+    $.ventanaDatos_lite_v2 = {
         overlay_id: 'overlay-f8_lite',
         content_id: 'content-f8_lite',
         css_id: 'css_ventanaDatos_lite',
@@ -20,9 +20,9 @@
         _initSql: function () {
             $('.loader-box').hide();
 
-            $(`#${$.ventanaDatos_lite.id_input}`).removeAttr('disabled').focus();
+            $(`#${$.ventanaDatos_lite_v2.id_input}`).removeAttr('disabled').focus();
 
-            var indices = $.ventanaDatos_lite.indice;
+            var indices = $.ventanaDatos_lite_v2.indice;
 
             this.data.map(data => {
                 idx = '';
@@ -35,22 +35,22 @@
                 return data;
             })
 
-            $(`#${$.ventanaDatos_lite.id_input}`).autocomplete({
+            $(`#${$.ventanaDatos_lite_v2.id_input}`).autocomplete({
                 source: function (request, response) {
-                    var res = $.ui.autocomplete.filter($.ventanaDatos_lite.data, request.term);
+                    var res = $.ui.autocomplete.filter($.ventanaDatos_lite_v2.data, request.term);
                     response(res.slice(0, 100));
                 },
-                minLength: $.ventanaDatos_lite.minLength,
+                minLength: $.ventanaDatos_lite_v2.minLength,
                 select: function (event, ui) {
-                    $.ventanaDatos_lite.data_callback = ui.item;
-                    $(`#${$.ventanaDatos_lite.content_id}_table tbody`).html('');
-                    var mask = $.ventanaDatos_lite.mascara;
+                    $.ventanaDatos_lite_v2.data_callback = ui.item;
+                    $(`#${$.ventanaDatos_lite_v2.content_id}_table tbody`).html('');
+                    var mask = $.ventanaDatos_lite_v2.mascara;
                     Object.getOwnPropertyNames(ui.item).forEach(function (val, idx, array) {
                         var objMask = mask.find(o => o[val]),
                             hide = (objMask ? ((objMask[val] == 'hide') ? false : true) : true);
 
                         if (val != 'label' && val != 'value' && hide) {
-                            $(`#${$.ventanaDatos_lite.content_id}_table tbody`).append(`
+                            $(`#${$.ventanaDatos_lite_v2.content_id}_table tbody`).append(`
                                                         <tr>
                                                             <td><b>${ objMask ? objMask[val] : val}</b></td>
                                                             <td>${ui.item[val]}</td>
@@ -58,7 +58,7 @@
                                                     `)
                         }
 
-                        $(`#${$.ventanaDatos_lite.content_id}_table`).show();
+                        $(`#${$.ventanaDatos_lite_v2.content_id}_table`).show();
                     });
 
                     var objBtnLimpiar = $('<div />')
@@ -66,9 +66,9 @@
                             'text-align': 'center',
                             'padding-top': '15px'
                         })
-                        .html('<button type="button" class="btn green btn-outline" onclick="$.ventanaDatos_lite._limpiar(this)">Limpiar</button>');
+                        .html('<button type="button" class="btn green btn-outline" onclick="$.ventanaDatos_lite_v2._limpiar(this)">Limpiar</button>');
 
-                    $(`#${$.ventanaDatos_lite.content_id}_contentTable`)
+                    $(`#${$.ventanaDatos_lite_v2.content_id}_contentTable`)
                         .append(objBtnLimpiar);
 
                     return false;
@@ -81,29 +81,29 @@
                 .closest('div')
                 .remove();
 
-            $(`#${$.ventanaDatos_lite.id_input}`)
+            $(`#${$.ventanaDatos_lite_v2.id_input}`)
                 .val('')
                 .focus()
 
-            $(`#${$.ventanaDatos_lite.content_id}_table tbody`)
+            $(`#${$.ventanaDatos_lite_v2.content_id}_table tbody`)
                 .html('')
         },
 
         _sendData: function () {
-            var data = $.ventanaDatos_lite.data_callback;
+            var data = $.ventanaDatos_lite_v2.data_callback;
             if (data) {
-                $.ventanaDatos_lite.callback(data);
-                $.ventanaDatos_lite._close();
+                $.ventanaDatos_lite_v2.callback(data);
+                $.ventanaDatos_lite_v2._close();
             } else console.error('Ningun dato seleccionado');
         },
 
         _close: function () {
-            $(`#${$.ventanaDatos_lite.id_input}`).autocomplete("destroy");
-            $('#' + $.ventanaDatos_lite.overlay_id).fadeOut('fast', function () {
+            $(`#${$.ventanaDatos_lite_v2.id_input}`).autocomplete("destroy");
+            $('#' + $.ventanaDatos_lite_v2.overlay_id).fadeOut('fast', function () {
                 $(this).remove();
-                if ($.ventanaDatos_lite.callback_esc) {
+                if ($.ventanaDatos_lite_v2.callback_esc) {
                     setTimeout(function () {
-                        $.ventanaDatos_lite.callback_esc($.ventanaDatos_lite.callback_esc);
+                        $.ventanaDatos_lite_v2.callback_esc($.ventanaDatos_lite_v2.callback_esc);
                     }, 200)
                 }
             });
@@ -156,7 +156,7 @@
                     'box-sizing': 'border-box',
                     'font-weight': '500'
                 })
-                .html($.ventanaDatos_lite.titulo)
+                .html($.ventanaDatos_lite_v2.titulo)
                 .appendTo('#' + this.content_id);
 
 
@@ -184,10 +184,10 @@
                 })
 
             var objBtnCerrar = $('<div />')
-                .html('<button type="button" class="btn red btn-outline" style="width: 100%" onclick="$.ventanaDatos_lite._close()">Cerrar</button>');
+                .html('<button type="button" class="btn red btn-outline" style="width: 100%" onclick="$.ventanaDatos_lite_v2._close()">Cerrar</button>');
 
             var objBtnSeleccionar = $('<div />')
-                .html('<button type="button" class="btn blue" style="width: 100%" onclick="$.ventanaDatos_lite._sendData()">Seleccionar</button>');
+                .html('<button type="button" class="btn blue" style="width: 100%" onclick="$.ventanaDatos_lite_v2._sendData()">Seleccionar</button>');
 
             $('<div/>', {
                 id: this.content_id + '_foot'
@@ -215,10 +215,10 @@
 
             $(window).resize(function () {
                 if ($(window).width() < 426) {
-                    $('#' + $.ventanaDatos_lite.content_id)
+                    $('#' + $.ventanaDatos_lite_v2.content_id)
                         .css({ width: '95%' });
                 } else {
-                    $('#' + $.ventanaDatos_lite.content_id)
+                    $('#' + $.ventanaDatos_lite_v2.content_id)
                         .css({ width: '800px' });
                 }
             });
@@ -263,8 +263,8 @@
         }
     }
 
-    _ventanaDatos_lite = function (params) {
-        $.ventanaDatos_lite.titulo = params.titulo || $.ventanaDatos_lite.titulo;
+    _ventanaDatos_lite_v2 = function (params) {
+        $.ventanaDatos_lite_v2.titulo = params.titulo || $.ventanaDatos_lite_v2.titulo;
         if (!params.callback) {
             alert('Callback sin definir');
             console.error('Falta definir una función para retornar los datos');
@@ -272,14 +272,14 @@
             alert('Falta definir el indice para la consulta');
             console.error('Falta definir el indice para la consulta');
         } else {
-            $.ventanaDatos_lite.callback = params.callback;
-            $.ventanaDatos_lite.data = params.data;
-            $.ventanaDatos_lite.indice = params.indice;
-            $.ventanaDatos_lite.callback_esc = params.callback_esc || false;
-            $.ventanaDatos_lite.minLength = params.minLength || $.ventanaDatos_lite.minLength;
-            $.ventanaDatos_lite.mascara = params.mascara || false;
-            $.ventanaDatos_lite.data_callback = false;
-            $.ventanaDatos_lite._init();
+            $.ventanaDatos_lite_v2.callback = params.callback;
+            $.ventanaDatos_lite_v2.data = params.data;
+            $.ventanaDatos_lite_v2.indice = params.indice;
+            $.ventanaDatos_lite_v2.callback_esc = params.callback_esc || false;
+            $.ventanaDatos_lite_v2.minLength = params.minLength || $.ventanaDatos_lite_v2.minLength;
+            $.ventanaDatos_lite_v2.mascara = params.mascara || false;
+            $.ventanaDatos_lite_v2.data_callback = false;
+            $.ventanaDatos_lite_v2._init();
         }
     }
 })(jQuery);

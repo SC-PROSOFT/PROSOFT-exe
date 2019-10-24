@@ -139,13 +139,13 @@ $(document).on('keydown', '#nitTerceroInpt', function (e) {
 
 
 function _crearJsonVendedores_104e() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonVendedores_104e, get_url("app/CON805.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonVendedores_104e, get_url("app/bombas/CON805.DLL"));
 }
 
 function on_crearJsonVendedores_104e(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHVEN-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHVEN-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -162,13 +162,13 @@ function on_crearJsonVendedores_104e(data) {
 }
 
 function _crearJsonCuentas_104e() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonCuentas_104e, get_url("app/CON801.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonCuentas_104e, get_url("app/bombas/CON801.DLL"));
 }
 
 function on_crearJsonCuentas_104e(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHMAE-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHMAE-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -185,14 +185,14 @@ function on_crearJsonCuentas_104e(data) {
 }
 
 function _crearJsonArticulos_104e() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_104e, get_url("app/INV803.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_104e, get_url("app/bombas/INV803.DLL"));
 }
 
 function on_crearJsonArticulos_104e(data) {
     console.log(data)
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-MAESART-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-MAESART-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -210,23 +210,23 @@ function on_crearJsonArticulos_104e(data) {
 
 
 function _crearJsonTerceros_104e() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros_014e, get_url("app/CON802.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros_014e, get_url("app/bombas/CON802.DLL"));
 }
 
 function on_crearJsonTerceros_014e(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_TERCEROS_104E = data.TERCEROS;
                 $_TERCEROS_104E.pop();
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-ARCHVEN-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHMAE-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion)
-                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion)
+                arrayEliminar.push('SC-ARCHVEN-' + localStorage.Sesion + ".json")
+                arrayEliminar.push('SC-ARCHMAE-' + localStorage.Sesion + ".json")
+                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion + ".json")
+                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion + ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson_1041e);
             },
             rutaJson
@@ -249,7 +249,7 @@ function on_eliminarJson_1041e(data) {
 
 function _solicitarAcceso_104e() {
     loader('hide');
-    var psw = $datosUsuar[5].trim();
+    var psw = $_USUA_GLOBAL[0].CLAVE_2.trim();
     var fuente = ''
         + '<div style="width: 100%; height: 100%;text-align: center;">'
         + ' <input id="pwdAcceso" type="password" style="outline: none;padding: 5px 12px;box-sizing: border-box;" autofocus/>'
@@ -346,7 +346,7 @@ function _validarComprobante_104e() {
             var datos_envio = datosEnvio();
             datos_envio += cerosIzq(comprobante, 6);
 
-            SolicitarDll({ datosh: datos_envio }, on_validarComprobante_104e, get_url("app/BOM105.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_validarComprobante_104e, get_url("app/bombas/BOM105.DLL"));
         }
     )
 }
@@ -354,7 +354,7 @@ function _validarComprobante_104e() {
 function on_validarComprobante_104e(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -363,7 +363,7 @@ function on_validarComprobante_104e(data) {
                 $_VALES_104E = data['TBLA-DEUD'];
                 $_INFO_COMP_104E = res;
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion)
+                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion + ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson_104e);
             },
             rutaJson
@@ -561,8 +561,8 @@ function _validarSucursal_104e() {
         function () {
             var sucursal = $('#sucursal').val().trim();
             if (sucursal == '1' || sucursal == '2') {
-                if (sucursal == '1') $('#sucursalNom').val($datosUsuar[1].trim());
-                else $('#sucursalNom').val($datosUsuar[10].trim());
+                if (sucursal == '1') $('#sucursalNom').val($_USUA_GLOBAL[0].NOMBRE.trim());
+                else $('#sucursalNom').val($_USUA_GLOBAL[0].NOMBRE_ALT.trim());
                 _validacionTabla_104e('0');
             } else {
                 _validarSucursal_104e();
@@ -635,7 +635,7 @@ function consultaInfoSurtidor_104e(surtidor, valorAnterior) {
     SolicitarDll(
         { datosh: datos_envio },
         function (data) { on_consultaInfoSurtidor_104e(data, valorAnterior) },
-        get_url("app/BOM104_2.DLL")
+        get_url("app/bombas/BOM104_2.DLL")
     );
 }
 
@@ -970,7 +970,7 @@ function _validarDocumento_104e() {
                 + '|' + nitTercero
                 + '|' + cerosDer(documento, 6);
 
-            SolicitarDll({ datosh: datos_envio }, on_validarDocumento_104e, get_url("app/CON807B.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_validarDocumento_104e, get_url("app/bombas/CON807B.DLL"));
         }
     )
 }
@@ -1271,7 +1271,7 @@ function _escribirTemp_104e() {
         data: datosEnvio,
         type: 'POST',
         async: false,
-        url: get_url('paginas/inc/_datos_104.php')
+        url: get_url('bombas/paginas/inc/_datos_104.php')
     }).done(function (data) {
         console.log(data);
         var res = data.split('|');
@@ -1323,7 +1323,7 @@ function _bajarDatos_104e() {
         + valorCheques + '|';
 
     console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_104e, get_url("app/BOM104_3E.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_104e, get_url("app/bombas/BOM104_3E.DLL"));
 }
 
 function on_enviarDatos_104e(data) {
@@ -1345,7 +1345,7 @@ function on_enviarDatos_104e(data) {
             + '|';
 
         console.log(datos_envio)
-        SolicitarDll({ datosh: datos_envio }, on_segundaConsulta_104e, get_url("app/BOM106.DLL"));
+        SolicitarDll({ datosh: datos_envio }, on_segundaConsulta_104e, get_url("app/bombas/BOM106.DLL"));
     } else {
         plantillaError(res[0], res[1], res[2]);
     }
@@ -1363,7 +1363,7 @@ function on_segundaConsulta_104e(data) {
             + 'S' + '|';
 
         console.log(datos_envio)
-        SolicitarDll({ datosh: datos_envio }, on_terceraConsulta_104e, get_url("app/BOM020.DLL"));
+        SolicitarDll({ datosh: datos_envio }, on_terceraConsulta_104e, get_url("app/bombas/BOM020.DLL"));
     } else {
         plantillaError(res[0], res[1], res[2]);
     }
@@ -1373,14 +1373,14 @@ function on_terceraConsulta_104e(data) {
     console.log(data)
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        if ($datosUsuar[9].trim() == 'S') {
+        if ($_USUA_GLOBAL[0].INVENT.trim() == 'S') {
             let comprobante = $('#numComprobante').val();
 
             var datos_envio = datosEnvio()
                 + cerosIzq(comprobante, 6) + '|';
 
             console.log(datos_envio)
-            SolicitarDll({ datosh: datos_envio }, on_final_104e, get_url("app/BOM030.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_final_104e, get_url("app/bombas/BOM030.DLL"));
         } else {
             _fin_104e();
         }
@@ -1431,7 +1431,7 @@ function _validarPregunta_104e() {
 
             var datos_envio = datosEnvio() + comprobante + '|' + comprobante + '|' + detallado + "|";
             loader('show');
-            SolicitarDll({ datosh: datos_envio }, on_enviarImpresion_104e, get_url("app/BOM111.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_enviarImpresion_104e, get_url("app/bombas/BOM111.DLL"));
         }
     )
 }
@@ -1440,17 +1440,17 @@ function on_enviarImpresion_104e(data) {
     console.debug(data);
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        let nombreEmpresa = $datosUsuar[1].trim();
-        let nitEmpresa = $datosUsuar[2].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
+        let nitEmpresa = $_USUA_GLOBAL[0].NIT;
         let comprobanteInicial = $('#numComprobante').val();
 
         res.push(nombreEmpresa);
         res.push(nitEmpresa);
         res.push(comprobanteInicial);
-        res.push($_RUTA_LOGO);
+        res.push($_USUA_GLOBAL[0].RUTA_LOGO);
 
         var opcionesImpresiones = {
-            datos: get_url('progdatos/json/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('temp/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
             formato: 'bom109.formato.html',

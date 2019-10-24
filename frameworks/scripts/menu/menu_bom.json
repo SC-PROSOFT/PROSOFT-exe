@@ -73,6 +73,7 @@
         {
             "Id": "0B",
             "Descripcion": "Medicion de tanques",
+            "Opc-segu": "",
             "Sub": [
                 {
                     "Id": "0B1",

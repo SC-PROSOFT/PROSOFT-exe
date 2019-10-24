@@ -17,27 +17,6 @@ var galonajeMask = new IMask(
 
 $(document).ready(function () {
     loader('hide');
-    // _ventanaDatos_lite({
-    //     titulo: 'Busqueda pacientes',
-    //     // tablaSql: 'sc_archcups',
-    //     // indice: ['codigo', 'descripcion'],
-    //     tablaSql: 'sc_pacie',
-    //     indice: ['cedula', 'nombre'],
-    //     mascara: [
-    //         {
-    //             ing_act: 'hide',
-	// 			cod_barras: 'Codigo de barras'
-    //         }
-    //     ],
-    //     minLength: 1,
-    //     callback_esc: function () {
-    //         $('#producto_101').focus();
-    //     },
-    //     callback: function (data) {
-    //         console.log(data)
-    //     }
-    // });
-
     _crearJsonArticulos_101()
 
     _toggleF8([
@@ -100,13 +79,13 @@ function _ventanaCentroCostos(e) {
 }
 
 function _crearJsonArticulos_101() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_101, get_url("app/INV803.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_101, get_url("app/bombas/INV803.DLL"));
 }
 
 function on_crearJsonArticulos_101(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('PROGDATOS/JSON/SC-MAESART-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-MAESART-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -122,13 +101,13 @@ function on_crearJsonArticulos_101(data) {
 }
 
 function _crearJsonAlmacenes_101() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonAlmacenes_101, get_url("app/INV801.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonAlmacenes_101, get_url("app/bombas/INV801.DLL"));
 }
 
 function on_crearJsonAlmacenes_101(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHLOC-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHLOC-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -144,21 +123,21 @@ function on_crearJsonAlmacenes_101(data) {
 }
 
 function _crearJsonCentroCostos_101() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonCentroCostos_101, get_url("app/CON803.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonCentroCostos_101, get_url("app/bombas/CON803.DLL"));
 }
 
 function on_crearJsonCentroCostos_101(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHCOS-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHCOS-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_COSTOS = data.COSTO
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHLOC-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHCOS-' + localStorage.Sesion)
+                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion + '.json')
+                arrayEliminar.push('SC-ARCHLOC-' + localStorage.Sesion + '.json')
+                arrayEliminar.push('SC-ARCHCOS-' + localStorage.Sesion + '.json')
                 _eliminarJson(arrayEliminar, on_eliminarJson);
             },
             rutaJson
@@ -181,7 +160,7 @@ function on_eliminarJson(data) {
 
 function _solicitarAcceso() {
     loader('hide');
-    var psw = $datosUsuar[5].trim();
+    var psw = $_USUA_GLOBAL[0].CLAVE_2.trim();
     var fuente = ''
         + '<div style="width: 100%; height: 100%;text-align: center;">'
         + ' <input id="pwdAcceso" type="password" style="outline: none;padding: 5px 12px;box-sizing: border-box;" autofocus/>'
@@ -246,12 +225,11 @@ function _infoSurtidores_101() {
         + isla + '|'
         + registradora + '|';
 
-    var url = get_url("app/BOM101.DLL");
+    var url = get_url("app/bombas/BOM101.DLL");
     SolicitarDll({ datosh: datos_envio }, _onInfoSurtidores_101, url);
 }
 
 function _onInfoSurtidores_101(data) {
-    console.debug(data);
     var res = data.split('|');
     if (res[0] == '00') {
         if ($_NOVEDAD == '8') {
@@ -289,8 +267,7 @@ function _eliminar() {
             datos_envio += "|";
             datos_envio += $('#nroRegistradora_101').val();
             datos_envio += "|";
-
-            SolicitarDll({ datosh: datos_envio }, on_guardarEliminar, get_url("app/BOM101_R.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_guardarEliminar, get_url("app/bombas/BOM101_R.DLL"));
 
         } else {
             modificar_101('1');
@@ -314,7 +291,6 @@ function _llenarDatos_101() {
     if (producto != false) {
         var almacen = buscarAlmacen($_DATOS_101[6].trim())
         if (almacen != false) {
-            console.log($_DATOS_101[7].trim())
             var costo = buscarCostos($_DATOS_101[7].trim())
             if (costo != false) {
                 $('#detalle_101').val($_DATOS_101[1].trim())
@@ -449,10 +425,9 @@ function validacionFinal_101() {
 }
 
 function guardarModificar() {
-    var sesion = localStorage.Sesion;
     var novedad = $_NOVEDAD;
     var datosForm = bajarDatos();
-    var operador = localStorage.User;
+    var operador = localStorage.Usuario;
     var fecRest = '      ';
 
     var datos_envio = datosEnvio();
@@ -465,12 +440,10 @@ function guardarModificar() {
     datos_envio += fecRest;
     datos_envio += '|';
 
-    console.debug(datos_envio)
-    SolicitarDll({ datosh: datos_envio }, on_guardarModificar, get_url("app/BOM101_R.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_guardarModificar, get_url("app/bombas/BOM101_R.DLL"));
 }
 
 function on_guardarModificar(data) {
-    console.debug(data);
     var temp = data.split('|')
     if (data.trim() === '00') {
         if ($_NOVEDAD === '7') {
@@ -520,7 +493,7 @@ function bajarDatos() {
     datos += '|'
     datos += cerosIzq(descuento, 15);
     datos += '|'
-    datos += cerosIzq(centroCostos, 4);
+    datos += centroCostos
     datos += '|'
     datos += almacen;
 

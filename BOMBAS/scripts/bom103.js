@@ -77,13 +77,13 @@ function _ventanaSobreTasasGlobal(e) {
 
 function _crearJsonArticulos_103() {
     console.log(get_url("app/INV803.DLL"))
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_103, get_url("app/INV803.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_103, get_url("app/bombas/INV803.DLL"));
 }
 
 function on_crearJsonArticulos_103(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-MAESART-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-MAESART-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -98,20 +98,20 @@ function on_crearJsonArticulos_103(data) {
 }
 
 function _crearJsonCuentas_103() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonCuentas_103, get_url("app/CON801.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonCuentas_103, get_url("app/bombas/CON801.DLL"));
 }
 
 function on_crearJsonCuentas_103(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHMAE-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHMAE-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_CUENTAS_103 = data.CUENTAS
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHMAE-' + localStorage.Sesion)
+                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion + ".json")
+                arrayEliminar.push('SC-ARCHMAE-' + localStorage.Sesion + ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson);
             },
             rutaJson
@@ -195,7 +195,7 @@ function _validarSobretasa_103() {
         + espaciosIzq(grupoProducto, 2) + '|'
         + espaciosDer(producto, 15) + '|';
 
-    SolicitarDll({ datosh: datos_envio }, on_validarSobretasa_103, get_url("app/BOMSOB.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_validarSobretasa_103, get_url("app/bombas/BOMSOB.DLL"));
 }
 
 function on_validarSobretasa_103(data) {
@@ -249,7 +249,7 @@ function _eliminar_103() {
             datos_envio += "|";
             datos_envio += espaciosDer(producto, 15);
             datos_envio += "|";
-            SolicitarDll({ datosh: datos_envio }, on_eliminar_103, get_url("app/BOM103.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_eliminar_103, get_url("app/bombas/BOM103.DLL"));
 
         } else {
             modificar_103('1');
@@ -408,7 +408,7 @@ function guardarModificar_103() {
     datos_envio += '|';
     datos_envio += operador;
     datos_envio += '|';
-    SolicitarDll({ datosh: datos_envio }, on_guardarModificar_103, get_url("app/BOM103.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_guardarModificar_103, get_url("app/bombas/BOM103.DLL"));
 }
 
 function on_guardarModificar_103(data) {

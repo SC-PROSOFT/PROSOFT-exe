@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     $('#formatoImpresion').select2().on('select2:select', validarFormato);
     setTimeout(function () { $('#formatoImpresion').select2('open') }, 500)
-    $('#logo_url').attr('src', $_RUTA_LOGO);
+    $('#logo_url').attr('src', $_USUA_GLOBAL[0].RUTA_LOGO);
 });
 
 function habilitarFormato() {
@@ -62,7 +62,7 @@ function _validarFecha_envio() {
     var fechaEnvio = añoInicial + mesInicial + diaInicial;
 
     var datos_envio = datosEnvio() + fechaEnvio + '|';
-    SolicitarDll({ datosh: datos_envio }, on_validarFecha_envio, get_url("app/BOM108_1.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_validarFecha_envio, get_url("app/bombas/BOM108_1.DLL"));
 }
 
 function on_validarFecha_envio(data) {
@@ -119,13 +119,13 @@ function _enviarDatos_108() {
     console.debug(datos_envio);
 
     loader('show');
-    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_108, get_url("app/BOM108.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_108, get_url("app/bombas/BOM108.DLL"));
 }
 
 function on_enviarDatos_108(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        let nombreEmpresa = $datosUsuar[1].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
 
         var añoFinal = cerosIzq($('#añoFinal').val(), 2);
         var mesFinal = cerosIzq($('#mesFinal').val(), 2)
@@ -134,10 +134,10 @@ function on_enviarDatos_108(data) {
 
         res.push(nombreEmpresa)
         res.push(mesFinal + ' ' + diaFinal + '/' + añoFinal)
-        res.push($_RUTA_LOGO);
+        res.push($_USUA_GLOBAL[0].RUTA_LOGO);
 
         var opcionesImpresiones = {
-            datos: get_url('progdatos/json/SC-LISTGAL-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('temp/SC-LISTGAL-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
             formato: 'bom108.formato.html',
@@ -161,7 +161,7 @@ function on_enviarDatos_108(data) {
 
 function finImpresion_108() {
     var arrayEliminar = [];
-    arrayEliminar.push('SC-LISTGAL-' + localStorage.Sesion);
+    arrayEliminar.push('SC-LISTGAL-' + localStorage.Sesion + ".json");
     _eliminarJson(arrayEliminar, function (data) {
         loader('hide');
         var res = data.split('|');

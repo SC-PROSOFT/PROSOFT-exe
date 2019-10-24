@@ -24,20 +24,20 @@ function _ventanatTerceros(e){
 }
 
 function _crearJsonTerceros() {
-    SolicitarDll({datosh: datosEnvio() }, on_crearJsonTerceros, get_url("app/CON802.DLL"));
+    SolicitarDll({datosh: datosEnvio() }, on_crearJsonTerceros, get_url("app/bombas/CON802.DLL"));
 }
 
 function on_crearJsonTerceros(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
                 null,
                 function (data) {
                     $_TERCEROS_11 = data.TERCEROS;
                     $_TERCEROS_11.pop();
                     var arrayEliminar = [];
-                    arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion)
+                    arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion + ".json")
                     _eliminarJson(arrayEliminar, on_eliminarJsonTerce);
                 },
                 rutaJson
@@ -50,7 +50,7 @@ function on_crearJsonTerceros(data) {
 function on_eliminarJsonTerce(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        SolicitarDll({datosh: datosEnvio() }, on_validarFecha_envio_bomb11, get_url('/app/BOMB11.DLL'));
+        SolicitarDll({datosh: datosEnvio() }, on_validarFecha_envio_bomb11, get_url('app/bombas/BOMB11.DLL'));
     } else {
         plantillaError('Error ', 'Ha ocurrido un error eliminando archivos <b>.JSON</b>', '');
     }
@@ -175,7 +175,7 @@ function _validarTercero_11() {
                 datos_envio += "|";
                 datos_envio += $_DATOS_BOMB11[4];
                 datos_envio += "|";
-                SolicitarDatos({datosh: datos_envio}, resptDllBoomb11, get_url("app/BOMB11_1.DLL"));
+                SolicitarDatos({datosh: datos_envio}, resptDllBoomb11, get_url("app/bombas/BOMB11_1.DLL"));
             } else {
                 nitProcesar();
             }
