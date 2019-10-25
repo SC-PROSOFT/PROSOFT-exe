@@ -325,6 +325,7 @@ function set_titulo(val) {
 }
 
 function mostrar_menu(list, idOpcion) {
+    var modulo = localStorage['Modulo'];
     if (list.length != 0) {
         $('#navegacion').html('');
         jQuery.each(list, function (idx) {
@@ -341,7 +342,7 @@ function mostrar_menu(list, idOpcion) {
 
             let id = this.Id.substring(1, this.Id.length);
             let temp = this.Id.substr(this.Id.length - 1, this.Id.length);
-            if (this.Id != '0B')
+            if (this.Id != '0B' || modulo == 'BOM')
                 $('#navegacion').append(''
                     + '<li class="opcion-menu nav-item" id="' + index + '" data-id="' + this.Id + '">'
                     + ' <a class="nav-link nav-toggle">'
