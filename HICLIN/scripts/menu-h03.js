@@ -74,7 +74,7 @@ function datoUnidad_h03() {
 
 function on_datoUnidad_h03() {
 	_consultaSql({
-		sql: "Select codigo, descripcion from sc_unser where activar='S'",
+		sql: "Select codigo_unid_serv, descrip_unid_serv from sc_unser where activar_serv='S'",
 		bd: localStorage.Contab + "_13",
 		callback: function (error, results, fields) {
 			if (error) throw error;
@@ -86,8 +86,8 @@ function on_datoUnidad_h03() {
 							array: JSON.parse(JSON.stringify(results)),
 							titulo: "UNIDADES DE SERVICIO",
 							indices: [{
-								id: "codigo",
-								label: "descripcion"
+								id: "codigo_unid_serv",
+								label: "descrip_unid_serv"
 							}],
 							callback_f: function () {
 								plantillaToast(
@@ -108,8 +108,8 @@ function on_datoUnidad_h03() {
 }
 
 function validardatoUnidad_h03(unidad) {
-	unidad.codigo = cerosIzq(unidad.codigo.toString(), 2);
-	unidad = unidad.codigo;
+	unidad.codigo_unid_serv = cerosIzq(unidad.codigo_unid_serv.toString(), 2);
+	unidad = unidad.codigo_unid_serv;
 	var sw = 0;
 	var admin = localStorage["Usuario"];
 	if (
@@ -390,7 +390,7 @@ function mostrar_historiaPYP(array) {
 function seleccionPyp_h03(finalidad, sexo) {
 	var array_pyp = new Array();
 	if (sexo == "F") {
-		if (["03", "05", "06", "07", "10"].filter(arr => arr == finalidad)) {
+		if (["03", "05", "06", "07", "10"].filter(arr => arr == finalidad).length>0) {
 			array_pyp.push({
 				esquema: "8001",
 				descripcion: "HISTORIA CLINICA DE CITOLOGIA TOMA Y CONTROL"
@@ -459,21 +459,21 @@ function validar_servicio_finalidad_h03() {
 
 	if (esquema == "AI01" || esquema == "AI02") {
 		if (
-			["01", "02", "06", "07", "08"].filter(arr => arr == serv) &&
+			["01", "02", "06", "07", "08"].filter(arr => arr == serv).length>0 &&
 			!finalidad == 08
 		) {
 			retorno = true;
 		}
 	}
 
-	if (["8001", "8002", "8031", "8051"].filter(arr => arr == esquema)) {
-		if (serv == 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad)) {
+	if (["8001", "8002", "8031", "8051"].filter(arr => arr == esquema).length>0) {
+		if (serv == 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad).length>0) {
 			retorno = true;
 		}
 	}
 
 	if (["HC12", "HC13", "HC14"].filter(arr => arr == esquema)) {
-		if (serv !== 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad)) {
+		if (serv !== 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad).length>0) {
 			retorno = true;
 		}
 	}

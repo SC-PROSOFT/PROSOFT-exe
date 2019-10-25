@@ -1,4 +1,4 @@
-($_REG_PROF = []), ($_REG_HC = []), ($_REG_PACI = []);
+$_REG_PROF = [], $_REG_HC = [], $_REG_PACI = [];
 $_COMP = {
 	suc: "",
 	tipo: "",
@@ -6,6 +6,7 @@ $_COMP = {
 };
 $(document).ready(function () {
 	$("#busqpaci_his").val("94475639");
+	// $("#busqpaci_his").val("000001120504800");
 	_inputControl("disabled");
 	loader("show");
 	_iniciar_menu_his();
@@ -157,7 +158,7 @@ function validarOpcPacienteHc(res) {
 				res = data.split("|");
 				if (res[0].trim() == "00") {
 					loader("hide");
-					$_REG_HC.primera_hc=2;
+					$_REG_HC.primera_hc = 2;
 					montarHc811();
 				} else {
 					plantillaError(res[0], res[1], res[2], validarPaciente);
@@ -167,8 +168,8 @@ function validarOpcPacienteHc(res) {
 		);
 	} else {
 		//No existe historia
-		$_REG_HC.primera_hc=1;
-		_consultHc(res[1]);
+		$_REG_HC.primera_hc = 1;
+		_consultHc(res[3]);
 	}
 }
 
@@ -213,6 +214,11 @@ function montarHc811() {
 						cerosIzq($_REG_PACI[0].cod_paci, 15) +
 						data["FOLIO-HC"].split("-")[0] +
 						data["FOLIO-HC"].split("-")[1];
+					$_REG_HC.peso=data['PESO']
+					$_REG_HC.talla=data['TALLA']
+					$_REG_HC.per_cef=data['PER_CEF']
+					$_REG_HC.per_tora=data['PER_TORA']
+					$_REG_HC.per_abdo=data['PER_ABDO']
 					_consultHc(llave);
 				}
 			});
@@ -247,7 +253,9 @@ function _mostrarDatosPaci(resp) {
 	$_REG_HC.ocup_v8_hc = resp[9];
 	$_REG_HC.temporal_hc = resp[11];
 	$_REG_HC.estado_hc = resp[12];
-
+	$_REG_HC.suc_folio_hc = resp[5];
+	if (resp[6].trim().length > 0) $_REG_HC.nro_folio_hc = resp[6];
+	else $_REG_HC.nro_folio_hc = '000001';
 	var edad = calcular_edad(resp[13]);
 	$_REG_HC.edad_hc = edad;
 
@@ -262,7 +270,7 @@ function _mostrarDatosPaci(resp) {
 	$("#cod_ent_his").val(resp[3]);
 	$("#descrip_ent_his").val(resp[4]);
 	$("#suc_paci_his").val(resp[5]);
-	$("#fol_paci_his").val(resp[6]);
+	$("#fol_paci_his").val($_REG_HC.nro_folio_hc);
 	$("#nom_paci_his").val(resp[7]);
 	$("#sex_paci_his").val(resp[8]);
 	$("#cod_ocu_his").val(resp[9]);
@@ -311,15 +319,21 @@ function historiaNueva(hc) {
 		"HAB-HC": "    ",
 		"HORA-HC": date.getHours() + ":" + date.getMinutes(),
 		"HORA-ORD-SALIDA-HC": "00:00",
-		"ID-HC": hc["COD"],
-		"MED-HC": $_REG_PROF.cod_prof,
+		"ID-HC": $_REG_PACI[0].cod_paci.trim(),
+		"MED-HC": $_REG_PROF[0].cod_prof,
 		"MOTIV-HC": "**ABRIR NUEVA HISTORIA**                            ",
 		"NIT-FACT-HC": "0000000000",
 		"NOM-SERV": "**NUEVA**",
 		"OPER-CIE-HC": "",
 		"OPER-ORD-SALIDA-HC": "    ",
-		"SERV-HC": "",
-		"UNSERV-HC": ""
+		"SERV-HC": "00",
+		"PESO": hc[hc.length - 1]["PESO"].trim(),
+		"UND-PESO": hc[hc.length - 1]["UND-PESO"].trim(),
+		"TALLA": hc[hc.length - 1]["TALLA"].trim(),
+		"PER_CEF": hc[hc.length - 1]["PER_CEF"].trim(),
+		"PER_TORA": hc[hc.length - 1]["PER_TORA"].trim(),
+		"PER_ABDO": hc[hc.length - 1]["PER_ABDO"].trim(),
+		"UNSERV-HC": "00"
 	};
 	return nueva;
 }
