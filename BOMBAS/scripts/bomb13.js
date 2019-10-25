@@ -4,7 +4,7 @@ $(document).ready(function () {
     _inputControl('reset');
     _inputControl('disabled');
 
-    $('#logo_url').attr('src', $_RUTA_LOGO);
+    // $('#logo_url').attr('src', $_RUTA_LOGO);
     $('#formatoImpresion').select2().on('select2:select', validarFormato);
     _crearJsonTerceros_013();
 
@@ -44,7 +44,7 @@ function validarFormato(e) {
 
 function _ventanaTerceros_13(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos_lite({
+        _ventanaDatos_lite_v2({
             titulo: 'Busqueda terceros',
             data: $_TERCEROS_013,
             indice: ['COD', 'NOMBRE'],
@@ -70,19 +70,19 @@ function _ventanaTerceros_13(e) {
 }
 
 function _crearJsonTerceros_013() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros_013, get_url("app/CON802.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros_013, get_url("app/BOMBAS/CON802.DLL"));
 }
 
 function on_crearJsonTerceros_013(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('TEMP/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_TERCEROS_013 = data.TERCEROS;
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion)
+                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion + '.json')
                 _eliminarJson(arrayEliminar, on_eliminarJson_013);
             },
             rutaJson
@@ -150,24 +150,24 @@ function _enviarDatos_013() {
 
     console.debug(datos_envio);
     loader('show');
-    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_013, get_url("app/BOMB13.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_013, get_url("app/BOMBAS/BOMB13.DLL"));
 }
 
 function on_enviarDatos_013(data) {
     console.debug(data)
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var nombreEmpresa = $datosUsuar[1].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
         var nitTercero = $('#tercero_013').val();
 
         res.push(nombreEmpresa)
         res.push(nitTercero)
 
         imprimir({
-            datos: get_url('progdatos/json/SC-LISTVAL-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('TEMP/SC-LISTVAL-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: 'csv',
-            formato: 'bomb13.formato.html',
+            formato: 'bombas/bomb13.formato.html',
             nombre: 'LISTADO-VALESxCLIENTE-' + localStorage.Sesion
         }, finImpresion_013)
     } else {

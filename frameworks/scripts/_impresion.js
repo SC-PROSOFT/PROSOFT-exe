@@ -73,7 +73,8 @@
 
             winPdf.on('closed', () => {
                 if ($.print.tipo == 'csv') {
-                    exec('"C:\\Program Files\\LibreOffice\\program\\scalc.exe" "' + urlTmp + '.csv"', (error, stdout, stderr) => { });
+                    // exec('"C:\\Program Files\\LibreOffice\\program\\scalc.exe" "' + urlTmp + '.csv"', (error, stdout, stderr) => { });
+                    exec('start "' + urlTmp + '.csv"', (error, stdout, stderr) => { });
                     $.print._printEnd();
                 } else if ($.print.tipo == 'pdf') {
                     winPdf = null;

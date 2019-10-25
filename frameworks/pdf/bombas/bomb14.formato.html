@@ -1,9 +1,10 @@
 <script>
-    const { ipcRenderer } = require('electron')
-    const fs = require('fs')
-    const exec = require('child_process').exec;
+    const { ipcRenderer } = require('electron'),
+        fs = require('fs'),
+        exec = require('child_process').exec,
+        path = require('path'),
+        remote = require('electron').remote;
     window.$ = window.jQuery = require('jquery');
-    const remote = require('electron').remote;
 </script>
 <style id="estiloImpresion">
     @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
@@ -107,7 +108,6 @@
     <div id="encabezado">
         <div class="enc-logo">
             <div id="logo">
-                <img id="logo_url" />
             </div>
         </div>
         <div class="enc-izq">
@@ -149,7 +149,14 @@
         $_TOTALES = data.extra.totales;
         $_TIPO = data.tipo;
         $_URL = data.url;
-        $('#logo_url').attr('src', $_TOTALES[6]);
+        var nit = $_TOTALES[6].slice(2),
+            url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);
+
+        fs.readFile(url, function (err, data) {
+            if (err) throw err;
+            var dataImg = Buffer.from(data).toString('base64');
+            $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg}`).appendTo('#logo')
+        });
         _getDatos(data.datos);
     })
 

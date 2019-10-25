@@ -84,7 +84,7 @@ function validarFase1_110(orden) {
                 form: '#fase1',
                 orden: orden
             },
-            function () { validarFechas_110('3'); },
+            function () { validarFechas_110('2'); },
             validarFase2_110
         );
     }, 100);
@@ -153,13 +153,13 @@ function on_enviarDatos_110(data) {
         res.push(turno)
         res.push(fecha)
         res.push(fechaFinal)
-        res.push($_USUA_GLOBAL[0].RUTA_LOGO)
+        res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"))
 
         var opcionesImpresiones = {
             datos: get_url('temp/SC-LISTCOMB-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
-            formato: 'bom110.formato.html',
+            formato: 'bombas/bom110.formato.html',
             nombre: 'LISTADO-GALONAJE-' + localStorage.Sesion
         };
 

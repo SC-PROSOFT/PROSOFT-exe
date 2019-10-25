@@ -40,7 +40,6 @@ function validarRangoComprobante(orden) {
                 var comp2 = $('.numCompr2');
                 $_COMPRO_INI = $(comp1[1]).val();
                 $_COMPRO_FIN = $(comp2[1]).val();
-                console.debug($_COMPRO_FIN);
                 if ($_COMPRO_INI <= $_COMPRO_FIN) {
                     $('#numComprobante').val($_COMPRO_INI);
                     solicitarComp();
@@ -57,6 +56,7 @@ function solicitarComp() {
     if ($_CONT_COMPRO <= $_COMPRO_FIN) {
         loader('show');
         var datos_envio = datosEnvio() + cerosIzq($_CONT_COMPRO, 6) + "|";
+        console.log(datos_envio)
         SolicitarDll({datosh: datos_envio}, on_validarComprobante, get_url("app/bombas/BOM105.DLL"));
     } else {
         _inputControl('reset');
@@ -70,11 +70,9 @@ function on_validarComprobante(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
         var rutaJson = get_url('temp/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
-        console.log(rutaJson)
         SolicitarDatos(
             null,
             function (data) {
-                console.log(data)
                 $_SURTIDORES_107 = data.SURTIDORES;
                 $_SURTIDORES_107.pop();
                 $_DATOS_TABLA_107 = data['TBLA-DEUD'];
@@ -87,8 +85,9 @@ function on_validarComprobante(data) {
             rutaJson
         );
     } else {
+        console.log('entra')
         loader('hide');
-        plantillaError(res[0], res[1], res[2], solicitarComp);
+        plantillaError(res[0], res[1], res[2], on_finalizar);
     }
 }
 
@@ -141,7 +140,7 @@ function _llenarDatos_107() {
     $('#totalEfectivo').val(totalEfectivo);
 
     if (detalle != 'ANULADO') _llenarTablaSurtidores_107();
-    else on_finalizar();
+    else plantillaError('', "Comrobante anulado!", "SC", on_finalizar);
 
 }
 
@@ -189,7 +188,6 @@ function _validacionFinal_107() {
                     loader('show');
                     var datos_envio = datosEnvio()
                         + cerosIzq($_CONT_COMPRO, 6)+ '|' + d.id + '|' ;
-                    console.log(datos_envio)
                     SolicitarDll({ datosh: datos_envio }, on_segundaConsulta, get_url("app/bombas/BOM020.DLL"));
                 },{
                     msj: 'Permitir refacturar?',

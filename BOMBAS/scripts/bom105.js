@@ -215,8 +215,8 @@ function on_enviarDatos_105(data) {
     console.debug(data);
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        let nombreEmpresa = $datosUsuar[1].trim();
-        let nitEmpresa = $datosUsuar[2].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
+        let nitEmpresa = $_USUA_GLOBAL[0].NIT.toString().trim();
         let comprobanteInicial = $('#numComprobante').val();
 
         res.push(nombreEmpresa);
@@ -229,7 +229,7 @@ function on_enviarDatos_105(data) {
             datos: get_url('TEMP/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
-            formato: 'bom109.formato.html',
+            formato: 'bombas/bom109.formato.html',
             nombre: 'LISTADO-VENT-COMBUST-' + localStorage.Sesion
         };
 

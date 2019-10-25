@@ -6,10 +6,10 @@ $(document).ready(function () {
     _crearJsonTerceros();
 });
 
-$(document).on('click','#nitBtnBomb11',_ventanatTerceros);
-$(document).on('keydown', '#nitBomb11',_ventanatTerceros); 
+$(document).on('click', '#nitBtnBomb11', _ventanatTerceros);
+$(document).on('keydown', '#nitBomb11', _ventanatTerceros);
 
-function _ventanatTerceros(e){
+function _ventanatTerceros(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'Busqueda terceros',
@@ -24,7 +24,7 @@ function _ventanatTerceros(e){
 }
 
 function _crearJsonTerceros() {
-    SolicitarDll({datosh: datosEnvio() }, on_crearJsonTerceros, get_url("app/bombas/CON802.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros, get_url("app/bombas/CON802.DLL"));
 }
 
 function on_crearJsonTerceros(data) {
@@ -32,16 +32,16 @@ function on_crearJsonTerceros(data) {
     if (res[0].trim() == '00') {
         var rutaJson = get_url('temp/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
-                null,
-                function (data) {
-                    $_TERCEROS_11 = data.TERCEROS;
-                    $_TERCEROS_11.pop();
-                    var arrayEliminar = [];
-                    arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion + ".json")
-                    _eliminarJson(arrayEliminar, on_eliminarJsonTerce);
-                },
-                rutaJson
-                );
+            null,
+            function (data) {
+                $_TERCEROS_11 = data.TERCEROS;
+                $_TERCEROS_11.pop();
+                var arrayEliminar = [];
+                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion + ".json")
+                _eliminarJson(arrayEliminar, on_eliminarJsonTerce);
+            },
+            rutaJson
+        );
     } else {
         plantillaError(res[0], res[1], res[2]);
     }
@@ -50,7 +50,7 @@ function on_crearJsonTerceros(data) {
 function on_eliminarJsonTerce(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        SolicitarDll({datosh: datosEnvio() }, on_validarFecha_envio_bomb11, get_url('app/bombas/BOMB11.DLL'));
+        SolicitarDll({ datosh: datosEnvio() }, on_validarFecha_envio_bomb11, get_url('app/bombas/BOMB11.DLL'));
     } else {
         plantillaError('Error ', 'Ha ocurrido un error eliminando archivos <b>.JSON</b>', '');
     }
@@ -75,13 +75,13 @@ function fechaInicial() {
     $('#mesInicial').val($_FECHA_INI.toString().substr(2, 2));
     $('#diaInicial').val($_FECHA_INI.toString().substr(4, 2));
     validarInputs(
-            {
-                form: '#validarFechas',
-                orden: '1'
-            },
-            _toggleNav,
-            validarFechaInicial
-            );
+        {
+            form: '#validarFechas',
+            orden: '1'
+        },
+        _toggleNav,
+        validarFechaInicial
+    );
 }
 
 function validarFechaInicial() {
@@ -94,7 +94,7 @@ function validarFechaInicial() {
         $_FECHA_INI = ano + mes + dia;
 
         if ($_FECHA_NUM.toString().substr(0, 2) == $_FECHA_ACT.split('-')[0]
-                && $_FECHA_NUM.toString().substr(2, 2) == $_FECHA_ACT.split('-')[1]) {
+            && $_FECHA_NUM.toString().substr(2, 2) == $_FECHA_ACT.split('-')[1]) {
             dia = $_FECHA_ACT.split('-')[2];
         } else {
             dia = $_FECHA_NUM.toString().substr(4, 2);
@@ -110,13 +110,13 @@ function fechaFinal() {
     $('#mesFinal').val($_FECHA_FIN.toString().substr(2, 2));
     $('#diaFinal').val(dia);
     validarInputs(
-            {
-                form: '#fase1',
-                orden: '1'
-            },
-            _toggleNav,
-            validarFechaFinal
-            );
+        {
+            form: '#fase1',
+            orden: '1'
+        },
+        _toggleNav,
+        validarFechaFinal
+    );
 }
 
 function validarFechaFinal() {
@@ -132,7 +132,6 @@ function validarFechaFinal() {
                 fechaFinal();
             } else {
                 nitProcesar();
-
             }
         } else {
             fechaFinal();
@@ -142,13 +141,13 @@ function validarFechaFinal() {
 
 function nitProcesar() {
     validarInputs(
-            {
-                form: '#fase2',
-                orden: '1'
-            },
-            _toggleNav,
-            _validarTercero_11
-            );
+        {
+            form: '#fase2',
+            orden: '1'
+        },
+        _toggleNav,
+        _validarTercero_11
+    );
 }
 
 function _validarTercero_11() {
@@ -175,11 +174,11 @@ function _validarTercero_11() {
                 datos_envio += "|";
                 datos_envio += $_DATOS_BOMB11[4];
                 datos_envio += "|";
-                SolicitarDatos({datosh: datos_envio}, resptDllBoomb11, get_url("app/bombas/BOMB11_1.DLL"));
+                SolicitarDatos({ datosh: datos_envio }, resptDllBoomb11, get_url("app/bombas/BOMB11_1.DLL"));
             } else {
                 nitProcesar();
             }
-        }, {msj: '04'});
+        }, { msj: '04' });
     } else {
         nitProcesar();
     }

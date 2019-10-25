@@ -134,8 +134,14 @@
                     "Id": "0G2",
                     "Descripcion": "Re-imprimir facturas",
                     "Opc-segu": "",
-                    "Tipo": "HTML",
-                    "Href": "../../BOMBAS/paginas/INV402.html"
+                    "Tipo": "POWER",
+                    "Params": [
+                        {
+                            "formulario": "INV402",
+                            "dll": "INVENT\\INV402.dll",
+                            "sucursal": "1"
+                        }
+                    ]                    
                 }
             ]
         }

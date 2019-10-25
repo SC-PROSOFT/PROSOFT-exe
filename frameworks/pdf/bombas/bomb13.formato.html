@@ -157,8 +157,8 @@
         totales = $_TOTALES;
 
         for (var i in $_LISTADO_013) {
-            var valor = $_LISTADO_013[i]['VLR-DEUDA'].replace(/,/g, '');
-            valor = parseFloat(valor).toFixed(2)
+            var valor = $_LISTADO_013[i]['VLR-DEUDA'] || "0";
+            valor = parseFloat(valor.replace(/,/g, '')).toFixed(2)
 
             $('#contenido table#tabla-principal tbody').append(''
                 + '<tr>'

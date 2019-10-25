@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     $('#formatoImpresion_109').select2().on('select2:select', validarFormato);
     setTimeout(function () { $('#formatoImpresion_109').select2('open') }, 500)
-    $('#logo_url').attr('src', $_RUTA_LOGO);
+    // $('#logo_url').attr('src', $_RUTA_LOGO);
 });
 
 function habilitarFormato() {
@@ -33,7 +33,7 @@ function validarFormato(e) {
 }
 
 function movimientoDiario() {
-    SolicitarDll({ datosh: datosEnvio() }, on_movimientoDiario, get_url("app/BOM109.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_movimientoDiario, get_url("app/bombas/BOM109.DLL"));
 }
 
 function on_movimientoDiario(data) {
@@ -65,26 +65,26 @@ function _enviarDatos_109() {
 
     var datos_envio = datosEnvio() + comprobanteInicial + '|' + comprobanteFinal + '|' + detallado + '|';
     loader('show');
-    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_109, get_url("app/BOM111.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_109, get_url("app/BOMBAS/BOM111.DLL"));
 }
 
 function on_enviarDatos_109(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        let nombreEmpresa = $datosUsuar[1].trim();
-        let nitEmpresa = $datosUsuar[2].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
+        let nitEmpresa = $_USUA_GLOBAL[0].NIT.toString().trim();
         let comprobanteInicial = $('#comprobanteInicial').val();
 
         res.push(nombreEmpresa);
         res.push(nitEmpresa);
         res.push(comprobanteInicial);
-        res.push($_RUTA_LOGO);
+        res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"));
 
         var opcionesImpresiones = {
-            datos: get_url('progdatos/json/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('TEMP/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
-            formato: 'bom109.formato.html',
+            formato: 'bombas/bom109.formato.html',
             nombre: 'LISTADO-VENT-COMBUST-' + localStorage.Sesion
         };
 

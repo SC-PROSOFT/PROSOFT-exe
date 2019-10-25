@@ -70,7 +70,7 @@ function _enviarDatos_014() {
 
     loader('show');
     console.debug(datos_envio)
-    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_014, get_url("app/BOMB14.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_enviarDatos_014, get_url("app/bombas/BOMB14.DLL"));
 }
 
 function on_enviarDatos_014(data) {
@@ -90,18 +90,18 @@ function on_enviarDatos_014(data) {
         var diaFinal = cerosIzq($('#diaFinal').val(), 2)
         let fechaHasta = 'Hasta: ' + mesFinal + ' ' + diaFinal + '/' + añoFinal;
 
-        let nombreEmpresa = $datosUsuar[1].trim();
+        let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
 
         res.push(nombreEmpresa)
         res.push(fechaDesde)
         res.push(fechaHasta)
-        res.push($_RUTA_LOGO)
+        res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"))
 
         var opcionesImpresiones = {
-            datos: get_url('progdatos/json/SC-LISTGAL-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('temp/SC-LISTGAL-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
-            formato: 'bomb14.formato.html',
+            formato: 'bombas/bomb14.formato.html',
             nombre: 'LISTADO-GALONAJExVEND-' + localStorage.Sesion
         };
 

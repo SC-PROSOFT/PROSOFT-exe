@@ -38,6 +38,8 @@ function cargarMenu() {
             break;
         case 'TAX': url = "../scripts/menu/menu_tax.json";
             break;
+        case 'COR': url = "../scripts/menu/menu_cor.json";
+            break;
         default: console.error('Menu de modulo no deifido -->' + modulo)
     }
 
@@ -177,6 +179,11 @@ function _validarScript_bat(data) {
             data.params[0]['Tipo-comp'] = lote.lote1 + lote.lote2;
         }
     }
+    console.log(data)
+    console.log(espaciosDer(localStorage.Usuario, 4))
+    console.log(espaciosDer(localStorage.Clave, 4))
+
+
     var modulo = localStorage.Modulo
     var contab = localStorage.Contab,
         mes = evaluarMes_min(localStorage.Mes),
