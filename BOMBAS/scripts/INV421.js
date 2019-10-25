@@ -19,9 +19,9 @@ var $_TERCEROS_421,
         VALOR_IVA3: 0,
     },
     $_IVA_USU = {
-        IVA_USU_1: parseFloat($datosUsuar[12]) || 0,
-        IVA_USU_2: parseFloat($datosUsuar[13]) || 0,
-        IVA_USU_3: parseFloat($datosUsuar[14]) || 0
+        IVA_USU_1: parseFloat($_USUA_GLOBAL[0].IVA1) || 0,
+        IVA_USU_2: parseFloat($_USUA_GLOBAL[0].IVA2) || 0,
+        IVA_USU_3: parseFloat($_USUA_GLOBAL[0].IVA3) || 0
     },
     $_MODO_GRABAR = '';
 
@@ -238,13 +238,13 @@ function _ventanaTerceros(e) {
 }
 
 function _crearJsonTerceros_421() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros_421, get_url("app/CON802.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonTerceros_421, get_url("app/bombas/CON802.DLL"));
 }
 
 function on_crearJsonTerceros_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHTER-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -261,13 +261,13 @@ function on_crearJsonTerceros_421(data) {
 }
 
 function _crearJsonVendedores_421() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonVendedores_421, get_url("app/CON805.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonVendedores_421, get_url("app/bombas/CON805.DLL"));
 }
 
 function on_crearJsonVendedores_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHVEN-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHVEN-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -284,13 +284,13 @@ function on_crearJsonVendedores_421(data) {
 }
 
 function _crearJsonArticulos_421() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_421, get_url("app/INV803.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonArticulos_421, get_url("app/bombas/INV803.DLL"));
 }
 
 function on_crearJsonArticulos_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-MAESART-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-MAESART-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -307,13 +307,13 @@ function on_crearJsonArticulos_421(data) {
 }
 
 function _crearJsonAlmacenes_421() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonAlmacenes_421, get_url("app/INV801.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonAlmacenes_421, get_url("app/bombas/INV801.DLL"));
 }
 
 function on_crearJsonAlmacenes_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHLOC-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHLOC-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
@@ -330,24 +330,24 @@ function on_crearJsonAlmacenes_421(data) {
 }
 
 function crearJsonPlacas_421() {
-    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonPlacas_421, get_url("app/PLA805.DLL"));
+    SolicitarDll({ datosh: datosEnvio() }, on_crearJsonPlacas_421, get_url("app/bombas/PLA805.DLL"));
 }
 
 function on_crearJsonPlacas_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHPLA-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHPLA-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_PLACAS_421 = data.PLACAS;
                 $_PLACAS_421.pop();
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHPLA-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHVEN-' + localStorage.Sesion)
-                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHLOC-' + localStorage.Sesion)
+                arrayEliminar.push('SC-ARCHTER-' + localStorage.Sesion + ".json")
+                arrayEliminar.push('SC-ARCHPLA-' + localStorage.Sesion+ ".json")
+                arrayEliminar.push('SC-ARCHVEN-' + localStorage.Sesion+ ".json")
+                arrayEliminar.push('SC-MAESART-' + localStorage.Sesion+ ".json")
+                arrayEliminar.push('SC-ARCHLOC-' + localStorage.Sesion+ ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson_421);
             },
             rutaJson
@@ -385,7 +385,7 @@ function validarPlacas_421(orden) {
     validarInputs(
         {
             form: '#formPlaca',
-            orden: orden
+            orden: "1"
         },
         function () {
             _toggleNav()
@@ -397,7 +397,7 @@ function validarPlacas_421(orden) {
 function on_validarPlacas_421() {
     loader('show');
     var placa = $('#placa_421').val().toUpperCase();
-    SolicitarDll({ datosh: datosEnvio() + placa }, on_datosTabla_421, get_url("app/INV421.DLL"));
+    SolicitarDll({ datosh: datosEnvio() + placa }, on_datosTabla_421, get_url("app/bombas/INV421.DLL"));
 
     // var busqueda = buscarPlaca_421(placa);
 
@@ -493,7 +493,7 @@ function on_datosTabla_421(totales) {
         }
 
         if (res[9] == '0') {
-            var rutaJson = get_url('progdatos/json/SC-TABLIVA-' + localStorage.Sesion + '.JSON');
+            var rutaJson = get_url('temp/SC-TABLIVA-' + localStorage.Sesion + '.JSON');
             SolicitarDatos(
                 null,
                 function (data) {
@@ -518,20 +518,20 @@ function on_datosTabla_421(totales) {
 
 function _crearJsonGrupos_421() {
     var placa = $('#placa_421').val()
-    SolicitarDll({ datosh: datosEnvio() + placa }, on_crearJsonGrupos_421, get_url("app/inv804.DLL"));
+    SolicitarDll({ datosh: datosEnvio() + placa }, on_crearJsonGrupos_421, get_url("app/bombas/inv804.DLL"));
 }
 
 function on_crearJsonGrupos_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-ARCHGRP-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-ARCHGRP-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_GRUPOS_421 = data.GRUPOS;
                 var arrayEliminar = [];
-                // arrayEliminar.push('SC-TABLIVA-' + localStorage.Sesion)
-                arrayEliminar.push('SC-ARCHGRP-' + localStorage.Sesion)
+                // arrayEliminar.push('SC-TABLIVA-' + localStorage.Sesion +".json")
+                arrayEliminar.push('SC-ARCHGRP-' + localStorage.Sesion + ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson_421_2);
             },
             rutaJson
@@ -547,6 +547,7 @@ function on_crearJsonGrupos_421(data) {
 function on_eliminarJson_421_2(data) {
     loader('hide');
     var res = data.split('|');
+    console.log(res)
     if (res[0].trim() == '00') {
         if (llenarTabla_421()) {
             var nitTercero = $('#nitCliente_421').val().trim(),
@@ -687,19 +688,19 @@ function crearJsonSaldos_421() {
         codArticulo = $('#articulo_421').val(),
         articulo = grupo + codArticulo;
 
-    SolicitarDll({ datosh: datosEnvio() + almacen + articulo }, on_crearJsonSaldos_421, get_url("app/INV808.DLL"));
+    SolicitarDll({ datosh: datosEnvio() + almacen + articulo }, on_crearJsonSaldos_421, get_url("app/bombas/INV808.DLL"));
 }
 
 function on_crearJsonSaldos_421(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-SDOACT-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-SDOACT-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
             null,
             function (data) {
                 $_SALDOS_421 = data.SALDOS;
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-SDOACT-' + localStorage.Sesion)
+                arrayEliminar.push('SC-SDOACT-' + localStorage.Sesion+ ".json")
                 _eliminarJson(arrayEliminar, on_eliminarJson_421_3);
             },
             rutaJson
@@ -991,7 +992,7 @@ function _escribirTemp_421() {
         data: datosEnvio,
         type: 'POST',
         async: false,
-        url: get_url('paginas/inc/_datos_421.php')
+        url: get_url('bombas/paginas/inc/_datos_421.php')
     }).done(function (data) {
         var res = data.split('|');
         if (res[0].trim() == '00') {
@@ -1009,7 +1010,7 @@ function _bajarDatos_421() {
         dia = cerosIzq($('#diaInicial').val(), 2),
         placa = $('#placa_421').val(),
         tercero = cerosIzq($('#nitCliente_421').val(), 10),
-        vendedor = cerosIzq($('#vendedor_421').val(), 5),
+        vendedor = $('#vendedor_421').val(),
         valorDescuento = parseFloat(descuentosMask.unmaskedValue) || 0,
         valorIva = parseFloat(ivatotalMask.unmaskedValue) || 0,
         valorRetencion = parseFloat(valorRetefuenteMask.unmaskedValue) || 0,
@@ -1035,7 +1036,7 @@ function _bajarDatos_421() {
     else tipo_guardado = 'N';
 
     var datos_envio = datosEnvio()
-        + localStorage.User
+        + localStorage.Usuario
         + '|' + año + mes + dia
         + '|' + placa
         + '|' + tercero
@@ -1056,7 +1057,7 @@ function _bajarDatos_421() {
         + '|';
 
     console.log(datos_envio)
-    SolicitarDll({ datosh: datos_envio }, on_bajarDatos_421, get_url("app/INV421_R.DLL"));
+    SolicitarDll({ datosh: datos_envio }, on_bajarDatos_421, get_url("app/bombas/INV421_R.DLL"));
 }
 
 function on_bajarDatos_421(data) {
@@ -1066,7 +1067,7 @@ function on_bajarDatos_421(data) {
         jAlert({ titulo: 'Correcto ', mensaje: `Factura <b>${res[1]}</b> creada correctamente` }, function () {
             initDatos_421()
             setTimeout(function () {
-                $('#placa_421').focus();
+                _crearJsonTerceros_421()
             }, 500)
         });
     } else {
@@ -1090,7 +1091,7 @@ function llenarTabla_421() {
     if ($_DATOS_TABLA_421) {
         $_DATOS_TABLA_421.map((el, idx) => {
             var datosArticulo = buscarArticulo_421(el.COD.substring(1)),
-                ASUME_IVA_USU = $datosUsuar[15].trim();
+                ASUME_IVA_USU = $_USUA_GLOBAL[0].ASUME_IVA.trim();
 
             if (datosArticulo) {
                 var iva = parseFloat(datosArticulo["VLR-IVA"]) || 0,
@@ -1160,7 +1161,7 @@ function llenarTabla_421() {
 }
 
 function ventana_INV808(saldos) {
-    var NIT_USU = parseFloat($datosUsuar[2].trim()),
+    var NIT_USU = parseFloat($_USUA_GLOBAL[0].NIT),
         tabla_parent = $('<table />', { class: "table table-light table-atriped" }).css({ margin: '0' }),
         SALDO_TOTAL = 0,
         grupoArticulo = $('#grupoArticulo_421').val(),
@@ -1175,7 +1176,7 @@ function ventana_INV808(saldos) {
             ACUM_SAL_CANT = parseFloat(datos["ACUM-SAL-CANT"]) || 0,
             SDO_ACT_CANT = parseFloat(datos["SDO-ACT-CANT"]) || 0,
             VLR_UNIT = parseFloat(datos["VLR-UNIT"]) || 0,
-            ASUME_IVA_USU = $datosUsuar[15].trim(),
+            ASUME_IVA_USU = $_USUA_GLOBAL[0].ASUME_IVA.trim(),
             VLR_REF_ART = parseFloat(datos["VLR-REF-ART"]) || 0,
             COD_LOTE_SAL = datos["COD-LOTE-SAL"] || "",
             COD_ALM_SAL = datos["COD-ALM-SAL"] || "";
@@ -1195,7 +1196,7 @@ function ventana_INV808(saldos) {
 
         if (
             (NIT_USU == 822002983 || NIT_USU == 809012776 || NIT_USU == 19845216 || NIT_USU == 800202522)
-            || ((ASUME_IVA_USU == "S" || $datosUsuar[21] == '3') && NIT_USU != 40391944)
+            || ((ASUME_IVA_USU == "S" || $_USUA_GLOBAL[0].CUOTAS == '3') && NIT_USU != 40391944)
         ) {
             row_obj.append($('<td />', { text: `Vr. REF: ${VLR_REF_ART}` }))
         } else {
@@ -1310,6 +1311,8 @@ function buscarAlmacenes_421(almacen) {
 }
 
 function initDatos_421() {
+    _inputControl('reset');
+    _inputControl('disabled');
     $('#tablaFacturas tbody').html('')
     $('#itemTabla_421,#vendedor_421,#nombreVendedor,#formapago_421,#diasPago_421,#fechaVencimiento,#detalle_421').val('')
     limpiarItem()
@@ -1319,7 +1322,10 @@ function initDatos_421() {
     descuentosMask.unmaskedValue = "";
     retefuenteMask.unmaskedValue = "";
     valorRetefuenteMask.unmaskedValue = "";
-    $_DATOS_TABLA_421;
+    $_DATOS_TABLA_421 = [];
+    $_TOTALES_421;
+    $_SALDOS_421;
+    $_BASE_ICA_421
     $_VALOR_BASE_IVA = {
         VALOR_BASE_IVA1: 0,
         VALOR_BASE_IVA2: 0,
@@ -1337,7 +1343,7 @@ function abrirTerceroPower() {
     var nombre_bat = "C:\\PROSOFT\\TEMP\\MENU-" + localStorage.Sesion.trim() + ".BAT",
         contab = sessionStorage.Contab,
         mes = evaluarMes_min(sessionStorage.CarpetaTrabajo),
-        usuario = espaciosDer(localStorage.User, 4),
+        usuario = espaciosDer(localStorage.Usuario, 4),
         clave = espaciosDer(localStorage.Clave, 8),
         formulario = "CON110C",
         dll = "CONTAB\\CON110C.dll",

@@ -134,13 +134,13 @@ function on_enviarDatos_108(data) {
 
         res.push(nombreEmpresa)
         res.push(mesFinal + ' ' + diaFinal + '/' + añoFinal)
-        res.push($_USUA_GLOBAL[0].RUTA_LOGO);
+        res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"));
 
         var opcionesImpresiones = {
             datos: get_url('temp/SC-LISTGAL-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
-            formato: 'bom108.formato.html',
+            formato: 'bombas/bom108.formato.html',
             nombre: 'LISTADO-GALONAJE-' + localStorage.Sesion
         };
 

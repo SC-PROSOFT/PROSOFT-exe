@@ -8,7 +8,7 @@ $(document).ready(function () {
     loader('hide');
     _init_105();
     $('#formatoImpresion').select2().on('select2:select', validarFormato_105);
-    $('#logo_url').attr('src', $_RUTA_LOGO);
+    // $('#logo_url').attr('src', $_RUTA_LOGO);
 });
 
 function habilitarFormato_105() {
@@ -40,7 +40,7 @@ function validarComprobante() {
 
             var datos_envio = datosEnvio() + cerosIzq(comprobante, 6) + "|";
 
-            SolicitarDll({ datosh: datos_envio }, on_validarComprobante, get_url("app/BOM105.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_validarComprobante, get_url("app/BOMBAS/BOM105.DLL"));
         }
     )
 }
@@ -48,7 +48,8 @@ function validarComprobante() {
 function on_validarComprobante(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('progdatos/json/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('TEMP/SC-LISTCOMB-' + localStorage.Sesion + '.JSON');
+        console.log(rutaJson)
         SolicitarDatos(
             null,
             function (data) {
@@ -58,7 +59,7 @@ function on_validarComprobante(data) {
                 $_INFO_COMP_105 = res;
 
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion)
+                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion + '.JSON') 
                 _eliminarJson(arrayEliminar, on_eliminarJson_105);
             },
             rutaJson
@@ -205,7 +206,7 @@ function _validarPregunta_105() {
 
             var datos_envio = datosEnvio() + comprobante + '|' + comprobante + '|' + detallado + "|";
             loader('show');
-            SolicitarDll({ datosh: datos_envio }, on_enviarDatos_105, get_url("app/BOM111.DLL"));
+            SolicitarDll({ datosh: datos_envio }, on_enviarDatos_105, get_url("app/BOMBAS/BOM111.DLL"));
         }
     )
 }
@@ -221,10 +222,11 @@ function on_enviarDatos_105(data) {
         res.push(nombreEmpresa);
         res.push(nitEmpresa);
         res.push(comprobanteInicial);
-        res.push($_RUTA_LOGO);
+        // res.push($_RUTA_LOGO);
+        res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"));
 
         var opcionesImpresiones = {
-            datos: get_url('progdatos/json/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
+            datos: get_url('TEMP/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
             formato: 'bom109.formato.html',

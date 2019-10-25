@@ -399,7 +399,7 @@ function guardarModificar_103() {
     var sesion = localStorage.Sesion;
     var novedad = $_NOVEDAD_103;
     var datosForm = bajarDatos_103();
-    var operador = localStorage.User;
+    var operador = localStorage.Usuario;
 
     var datos_envio = datosEnvio();
     datos_envio += novedad;

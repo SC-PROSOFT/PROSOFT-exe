@@ -13,7 +13,7 @@ $(document).on('keydown', '#med_01', function (e) { // f3 guardar
 function _solicitarAcceso() {
     _inputControl('reset');
     _inputControl('disabled');
-    var psw = $datosUsuar[5].trim();
+    var psw = $_USUA_GLOBAL[0].CLAVE_2.trim();
     var fuente = ''
         + '<div style="width: 100%; height: 100%;text-align: center;">'
         + ' <input id="pwdAcceso" type="password" style="outline: none;padding: 5px 12px;box-sizing: border-box;" autofocus/>'
@@ -72,7 +72,7 @@ function _infoClTanque(){
 
     var datos_envio = datosEnvio() + cerosIzq(clTanque,2) + '|';
 
-    var url = get_url("app/BOMB01.DLL");
+    var url = get_url("app/bombas/BOMB01.DLL");
     SolicitarDll({ datosh: datos_envio }, _onInfoClTanque_01, url);
 }
 
@@ -180,7 +180,7 @@ function _crearPlano(){
         data: datosEnvio,
         type: 'POST',
         async: false,
-        url: get_url('paginas/inc/_datos_bomb01.php')
+        url: get_url('bombas/paginas/inc/_datos_bomb01.php')
     }).done(function (data) {
         var res = data.split('|');
         if (res[0].trim() == '00') {
@@ -211,7 +211,7 @@ function _onDllBomb01_1(){
         datos_envio += "|";
         datos_envio += $('#Descrip_cl_01').val();
         datos_envio += "|";
-    SolicitarDll({ datosh: datos_envio }, _respDllBomb01_1, get_url("app/BOMB01_1.DLL"));
+    SolicitarDll({ datosh: datos_envio }, _respDllBomb01_1, get_url("app/bombas/BOMB01_1.DLL"));
 }
 
 function _respDllBomb01_1(data){
@@ -224,15 +224,15 @@ function _respDllBomb01_1(data){
 }
 
 function _eliminarJson_01(){
-    var rutaJson = get_url('PROGDATOS/JSON/SC-CLTANQS-' + localStorage.Sesion + '.JSON');
+    var rutaJson = get_url('temp/SC-CLTANQS-' + localStorage.Sesion + '.JSON');
     SolicitarDatos(
         null,
         function (data) {
             $_TABLA_CLTANQUES = data.LISTADO;
             var arrayEliminar = [];
-            arrayEliminar.push('SC-CLTANQS-' + localStorage.Sesion)
-            on_eliminarJson('00')
-            //_eliminarJson(arrayEliminar, on_eliminarJson);
+            arrayEliminar.push('SC-CLTANQS-' + localStorage.Sesion + ".json")
+            // on_eliminarJson('00')
+            _eliminarJson(arrayEliminar, on_eliminarJson);
         },
         rutaJson
     );

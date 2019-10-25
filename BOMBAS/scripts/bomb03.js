@@ -14,20 +14,20 @@ function _cargarTanques() {
     _inputControl('reset');
     _inputControl('disabled');
     var datos_envio = datosEnvio()+ "00" + "|";
-    SolicitarDll({datosh: datos_envio}, on_crearJsonTanques, get_url("app/BOMB03.DLL"));
+    SolicitarDll({datosh: datos_envio}, on_crearJsonTanques, get_url("app/bombas/BOMB03.DLL"));
 }
 
 function on_crearJsonTanques(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        var rutaJson = get_url('PROGDATOS/JSON/SC-TANQUES-' + localStorage.Sesion + '.JSON');
+        var rutaJson = get_url('temp/SC-TANQUES-' + localStorage.Sesion + '.JSON');
         SolicitarDatos(
                 null,
                 function (data) {
                     $_TANQUES = data.LISTADO
                     $_TANQUES.pop();
                     var arrayEliminar = [];
-                    arrayEliminar.push('SC-TANQUES-' + localStorage.Sesion)
+                    arrayEliminar.push('SC-TANQUES-' + localStorage.Sesion +".json")
                     _eliminarJson(arrayEliminar, on_eliminarJson_03);
                 },
                 rutaJson
@@ -127,7 +127,7 @@ function _validarTerceraFase() {
             },
             function (){_validarSegundaFase('5');},
             function () {
-                $('#oper_03').val(localStorage.User);
+                $('#oper_03').val(localStorage.Usuario);
                 CON850_P(function (e) {
                     if (e.id == 'S') {
                         _dllBomb03_1();
@@ -141,7 +141,7 @@ function _validarTerceraFase() {
 
 function _dllBomb03_1() {
     var data = bajarDatos_03();
-    SolicitarDll({ datosh: data }, on_dllBomb03_01, get_url("app/BOMB03_1.DLL"));
+    SolicitarDll({ datosh: data }, on_dllBomb03_01, get_url("app/bombas/BOMB03_1.DLL"));
 }
 
 function on_dllBomb03_01(data){
@@ -178,7 +178,7 @@ function bajarDatos_03() {
     datos_envio += "|";
     datos_envio += hora;
     datos_envio += "|";
-    datos_envio += localStorage.User;
+    datos_envio += localStorage.Usuario;
     datos_envio += "|";
     return datos_envio;
 }

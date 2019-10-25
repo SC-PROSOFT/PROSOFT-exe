@@ -163,7 +163,7 @@ function _validarTercero_11() {
             if (data.id == 'S') {
                 loader('show');
                 var datos_envio = datosEnvio();
-                datos_envio += localStorage.User;
+                datos_envio += localStorage.Usuario;
                 datos_envio += "|";
                 datos_envio += $_FECHA_INI;
                 datos_envio += "|";

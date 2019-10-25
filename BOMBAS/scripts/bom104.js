@@ -1109,7 +1109,7 @@ function _escribirTemp_104() {
 
 function _bajarDatos_104() {
     let sesion = localStorage.Sesion;
-    let operador = localStorage.User;
+    let operador = localStorage.Usuario;
 
     let comprobante = $('#numComprobante').val();
 
