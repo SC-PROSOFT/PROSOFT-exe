@@ -529,7 +529,7 @@ function datos_finalidad(nit, sexo, edad) {
 
 function buscar_consulta_externa() {
     //  HC811B    
-    var retorno ='';
+    var retorno = '';
 
     var fecha_hc = new Array();
     fecha_hc['ano'] = $_REG_HC['fecha_hc'].substring(0, 4);
@@ -630,10 +630,10 @@ function buscar_consulta_externa() {
         },
         get_url("APP/HICLIN/HC836A.DLL")
     );
-    if (retorno==2){
+    if (retorno == 2) {
         _cargarEventos("on");
         _toggleNav();
-	}
+    }
 }
 
 function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callback) {
@@ -648,13 +648,14 @@ function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callb
     var llave_dethc_env = '',
         sw_detalle = '  ',
         llave = $_REG_HC.llave_hc;
-    if (llave_dethc.length == 0) llave_dethc = $_REG_HC.llave_hc;
+
+    if (llave_dethc.length == 0) llave_dethc = llave;
 
     if (folio_dethc !== '**') {
         llave_dethc_env = $_REG_PACI[0].cod_paci + folio_dethc;
 
     } else {
-        var folio = llave.substring(15, 17) + cerosIzq(parseInt(llave.substring(17, 23) - 1), 6)
+        var folio = $_REG_HC.suc_folio_hc + cerosIzq((parseInt($_REG_HC.nro_folio_hc) - 1), 6)
         llave_dethc_env = $_REG_PACI[0].cod_paci + folio;
     }
     if (cods_dethc !== '**') {

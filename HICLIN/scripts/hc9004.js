@@ -1,4 +1,5 @@
-﻿// PO Pablo Olguin Crea,Guarda e Imprime Historias Clínicas de Oncología
+﻿$_REG_H9004 = [];
+// PO Pablo Olguin Crea,Guarda e Imprime Historias Clínicas de Oncología
 $(document).ready(function () {
 	iniciar_apertura_h9004();
 });
@@ -6,7 +7,6 @@ $(document).ready(function () {
 function iniciar_apertura_h9004() {
 
 	var llave = $_REG_HC.llave_hc,
-		fecha_hc = $_REG_HC.fecha_hc,
 		serv_hc = $_REG_HC.serv_hc,
 		novedad_hc = $_REG_HC.novedad_hc,
 		finalid_hc = $_REG_HC.finalid_hc,
@@ -27,7 +27,7 @@ function iniciar_apertura_h9004() {
 			datosh: data
 		},
 		validar_historia_h9004,
-		//Enviar 1 si es apertura, 2 Impresion
+		//Enviar 1 Abrir historia | 2 Grabar historia
 		get_url("APP/HICLIN/HC9004.DLL")
 	);
 }
@@ -42,6 +42,7 @@ function validarMedico_h9004() {
 }
 
 function validar_historia_h9004(data) {
+	console.log(data)
 	var admin = localStorage['Usuario'],
 		nit = $_USUA_GLOBAL[0].NIT,
 		res = data.split("|"),
@@ -139,6 +140,29 @@ function _get_detalles_h9004(data) {
 }
 
 function _on_formulario_h9004(sw) {
+	var datos_envio =
+		datosEnvio() +
+		$_REG_HC.llave_hc + '|' +
+		localStorage['Usuario'] + '|'
+	var datos_farmacos = [];
+	console.log(datos_envio)
+
+	SolicitarDll({
+			datosh: datos_envio
+
+		},
+		function (data) {
+			var res = data.split('|')
+
+			if (res[0] == '00') {
+				SolicitarDatos({}, function (datos_farma) {
+					datos_farmacos = datos_farma;
+				}, get_url("TEMP/" + res[3]))
+			} else {
+				plantillaError(res[0], res[1], res[2]);
+			}
+		}, get_url("APP/SALUD/SER809.DLL"));
+	console.log(datos_farmacos)
 	var f = new Date();
 	//Precarga campos formulario
 	$('#ano_hc_9004').val($_REG_HC.fecha_hc.substring(0, 4));
@@ -202,6 +226,12 @@ function _on_formulario_h9004(sw) {
 		$('#per_tora_hc_9004').val($_REG_HC['per_tora']);
 		$('#per_abdo_hc_9004').val($_REG_HC['per_abdo']);
 	}
+
+}
+$('#btn_grabar_9004').click(grabar_historia_9004);
+
+function grabar_historia_9004() {
+
 }
 
 function _salir_h9004() {
