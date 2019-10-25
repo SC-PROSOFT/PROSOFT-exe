@@ -4,6 +4,7 @@ var $_TABLA_BASE_DATOS = []
 
 var $_Token_Cliente_109;
 var $_Token_Acceso_109
+var $prueba_token
 
 var SQL_INSERT = "INSERT INTO sc_archpref VALUES";
 var SQL_UPDATE = '';
@@ -80,7 +81,7 @@ function _ventanaCentroCosto_109(e) {
             },
             callback: function (data) {
                 console.log(data)
-                $('#centroCosto_109').val(data.codigo.trim());
+                $('#centroCosto_109').val(data.cod_costo);
                 _enterInput('#centroCosto_109');
             }
         });
@@ -99,7 +100,7 @@ function _ventanaAlmacen_109(e) {
             },
             callback: function (data) {
                 console.log(data)
-                $('#almacen_109').val(data.codigo.trim());
+                $('#almacen_109').val(data.llave_loc + data.cod_local);
                 _enterInput('#almacen_109');
             }
         });
@@ -163,6 +164,9 @@ function buscarProv_fact(proveedor) {
             break;
         case '4':
             $('#descripFactElect_109').val('Ekomercio')
+            break;
+        case '5':
+            $('#descripFactElect_109').val('Emision')
             break;
     }
 }
@@ -273,7 +277,7 @@ function validar_NroPrefijo_109() {
         {
             form: "#validar_NRO_prefijo109",
             orden: '1',
-            event_f3: function() {_validacionTablaPrefijos_109('0')}
+            event_f3: function () { _validacionTablaPrefijos_109('0') }
         },
         function () { salir_109() },
         function () {
@@ -505,16 +509,19 @@ function validar_Costo_109() {
 
 function busquedaCosto_109(costo) {
     _consultaSql({
-        sql: `SELECT * FROM sc_archcos WHERE codigo LIKE '${costo}%'`,
+        sql: `SELECT * FROM sc_archcos WHERE cod_costo LIKE '${costo}%'`,
         db: $CONTROL,
         callback: function (error, results, fields) {
             console.log(results)
-            if (error) throw error;
-            else {
+            if (error) {
+                CON852('BD', 'BD', 'INV109', _toggleNav);
+                throw error;
+            } else {
                 var datos = results[0]
+                console.log(datos)
                 if (results.length > 0) {
-                    $('#centroCosto_109').val(datos.codigo.trim())
-                    $('#descrip_global_109').val(datos.nombre.trim())
+                    $('#centroCosto_109').val(datos.cod_costo.trim())
+                    $('#descrip_global_109').val(datos.nombre_costo.trim())
                     validar_Almacen_109()
                 } else {
                     $('#descrip_global_109').val('***************')
@@ -550,15 +557,16 @@ function validar_Almacen_109() {
 
 function busquedaAlmacen_109(almacen) {
     _consultaSql({
-        sql: `SELECT * FROM sc_almac WHERE codigo LIKE '${almacen}%'`,
+        sql: `SELECT * FROM sc_almac WHERE CONCAT(llave_loc, cod_local) LIKE '${almacen}%'`,
         db: $CONTROL,
         callback: function (error, results, fields) {
-            if (error) throw error;
-            else {
+            if (error) {
+                CON852('BD', 'BD', 'INV109', _toggleNav);
+                throw error;
+            } else {
                 var datos = results[0]
                 if (results.length > 0) {
-                    $('#almacen_109').val(datos.codigo.trim())
-                    $('#descrip_global_109').val(datos.nombre.trim())
+                    $('#descrip_global_109').val(datos.nombre_local.trim())
                     console.log('almacen bd')
                     validar_lista_109()
                 } else {
@@ -580,8 +588,8 @@ function validar_lista_109() {
         function () { validar_Almacen_109() },
         function () {
             var lista = $('#listaEnvio_109').val()
-            
-            if (lista == '1'){
+
+            if (lista == '1') {
                 agregarFilaTabla()
             } else {
                 CON851('03', '03', null, 'error', 'error');
@@ -738,7 +746,8 @@ function validar_factElect_109() {
         { "COD": "1", "DESCRIP": "Facse" },
         { "COD": "2", "DESCRIP": "Carvajal" },
         { "COD": "3", "DESCRIP": "Novacorp" },
-        { "COD": "4", "DESCRIP": "Ekomercio" }
+        { "COD": "4", "DESCRIP": "Ekomercio" },
+        { "COD": "5", "DESCRIP": "Emision" }
     ]
 
     POPUP({
@@ -754,7 +763,7 @@ function validar_factElect_109() {
         $('#descripFactElect_109').val(data.DESCRIP.trim())
 
         console.log(proveedor)
-        if (proveedor == '1' || proveedor == '4') {
+        if (proveedor == '1' || proveedor == '4' || proveedor == '5') {
             popUp_TokenFactElect_109()
         } else {
             _tablatxt_109()
@@ -779,12 +788,13 @@ function popUp_TokenFactElect_109() {
             }
         },
     });
-    console.log(dialogo2)
     // dialogo.init(function(){console.log('entro')})
     dialogo2.on('shown.bs.modal', function (e) {
         console.log('entro a token')
         $('.modal-content').css({ 'width': '900px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' })
         setTimeout(function () {
+            var token_prueba = $('.token_prueba_109')
+            validarChecked(token_prueba[1], arrayPrefijos_109[0].PRUEBA_TOKEN.trim())
             var cliente = $('.cliente_token_109')
             $(cliente[1]).val(arrayPrefijos_109[0].CLIENTE_TOKEN.trim())
             var acceso = $('.acceso_token_109')
@@ -833,6 +843,8 @@ function validar_Acceso_109() {
         function () {
             var acceso = $('.acceso_token_109')
             $_Token_Acceso_109 = espaciosDer($(acceso[1]).val(), 80)
+            var token_prueba = $('.token_prueba_109')
+            if ($(token_prueba[1]).prop('checked')) { $prueba_token  = 'S' } else { $prueba_token = 'N' } 
             console.log($_Token_Acceso_109)
             $('[data-bb-handler="main"]').click();
             _tablatxt_109()
@@ -883,9 +895,9 @@ function _tablatxt_109() {
             SQL_INSERT += `('${nro_sql}', '${prefijo}', '${descripcion_prefijo}')` + ","
 
         } else if (estado == '8') {
-            console.log(SQL_UPDATE)
-            SQL_UPDATE += `UPDATE sc_archpref SET codigo='${prefijo}',descripcion='${descripcion_prefijo}' WHERE id = '${nro_sql}' ;`
-            console.log(SQL_UPDATE)
+
+            SQL_UPDATE += `UPDATE sc_archpref SET cod_pref='${prefijo}',descrip_pref='${descripcion_prefijo}' WHERE id = '${nro_sql}' ;`
+
         } else if (estado == '9') {
 
             SQL_DELETE += `${nro_sql},`
@@ -912,7 +924,7 @@ function _grabardatos(txt_nombre) {
     var factElect = $('#factElect_109').val()
 
     LLAMADO_DLL({
-        dato: [sucFactPref, factElect, txt_nombre, $_Token_Cliente_109, $_Token_Acceso_109],
+        dato: [sucFactPref, factElect, txt_nombre, $_Token_Cliente_109, $_Token_Acceso_109, $prueba_token],
         callback: sql_check_109,
         nombredll: 'INV109-02',
         carpeta: 'INVENT'
@@ -1001,7 +1013,7 @@ function baseDatos_109(sql, estado) {
         db: $CONTROL,
         callback: function (error, results, fields) {
             if (error) {
-                CON852('BD','BD','INV109',_toggleNav);
+                CON852('BD', 'BD', 'INV109', _toggleNav);
                 throw error;
             } else {
                 console.log(results)
