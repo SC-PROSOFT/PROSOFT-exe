@@ -219,7 +219,7 @@ function _ventanapatologias_SAL7767(e) {
                 $("#patologiacronica_110c").focus();
             },
             callback: function (data) {
-                $('#patologiacronica_110c').val(data.codigo.trim());
+                $('#patologiacronica_110c').val(data.llave_cronic.trim());
                 _enterInput('#patologiacronica_110c');
             }
         });
@@ -2982,15 +2982,10 @@ function _datopatolcronic_7767() {
         if ($_PATOLCRONICPACIW == '000') {
             _evaluartutela_7767();
         } else {
-            // LLAMADO_DLL({
-            //     dato: [$_PATOLCRONICPACIW],
-            //     callback: _dataSAL7767_09,
-            //     nombredll: 'SAL7767_09',
-            //     carpeta: 'SALUD'
-            // });
+           
             _consultaSql({
                 db: 'datos_pros',
-                sql: 'SELECT * FROM datos_pros.sc_croni WHERE codigo LIKE "%' + $_PATOLCRONICPACIW + '%"',
+                sql: 'SELECT * FROM datos_pros.sc_croni WHERE llave_cronic LIKE "%' + $_PATOLCRONICPACIW + '%"',
                 callback: _consultapatologias_SAL7767
             });
         }
@@ -3008,7 +3003,7 @@ function _consultapatologias_SAL7767(error, results, fileds) {
     else {
         console.debug(results, results.length);
         for (var i in results) {
-            if (results[i].codigo.trim() == $_PATOLCRONICPACIW) {
+            if (results[i].llave_cronic.trim() == $_PATOLCRONICPACIW) {
                 console.log('encuentra patologias');
                 _evaluartutela_7767();
 
