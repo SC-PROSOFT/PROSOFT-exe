@@ -4,7 +4,7 @@ $_OUT = true;
 $_MENSAJE = '';
 
 for ($i = 0; $i < sizeof($_FILE); $i++) {
-    $_RUTA = "D:/PSC/PROG/DATOS/JSON/" . $_FILE[$i] . ".JSON";
+    $_RUTA = "C:/PROSOFT/TEMP/" . $_FILE[$i];
 
     if (file_exists($_RUTA)) {
        if (!unlink($_RUTA)) {
