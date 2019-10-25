@@ -12,6 +12,9 @@ ipcRenderer.on('ping', (e, m) => {
         var parametros = m.param.split('|');
         localStorage['IP_DATOS'] = parametros[0];
         localStorage['Modulo'] = parametros[1].toUpperCase();
+        var modulo = parametros[1].toUpperCase();
+        $('.imagen-cover').attr('style', `background: url(../imagenes/cover-${modulo.toLowerCase()}.webp)`);
+
         inicio();
     }
 });

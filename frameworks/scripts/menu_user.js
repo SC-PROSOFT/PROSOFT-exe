@@ -9,6 +9,10 @@ $(document).ready(function () {
     if (localStorage['Modulo'] == 'MIG') {
         cargarMenu()
     } else {
+
+        /* Cambio de imagen header por módulo */
+            console.log(localStorage.Modulo)
+        /* Cambio de imagen header por módulo */
         _cargarUsuario();
     }
     $('#cerrar_menu_user').click(function () {
