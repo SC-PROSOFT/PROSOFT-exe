@@ -1,27 +1,28 @@
-﻿$_REG_H9004 = [];
-// PO Pablo Olguin Crea,Guarda e Imprime Historias Clínicas de Oncología
+﻿// PO Pablo Olguin Crea,Guarda e Imprime Historias Clínicas de Oncología
 $(document).ready(function () {
 	iniciar_apertura_h9004();
 });
 
 function iniciar_apertura_h9004() {
-
+	$_REG_HC.sw_embar = '';
 	var llave = $_REG_HC.llave_hc,
 		serv_hc = $_REG_HC.serv_hc,
 		novedad_hc = $_REG_HC.novedad_hc,
 		finalid_hc = $_REG_HC.finalid_hc,
-		ciuda_paci = $_REG_PACI[0].ciudad_paci;
+		ciuda_paci = $_REG_PACI[0].ciudad_paci,
+		edad_paci = $_REG_HC.edad_hc.vlr_edad + $_REG_HC.edad_hc.unid_edad,
+		oper_hc = localStorage['Usuario'];
 
 	validarMedico_h9004();
 
 	var data = datosEnvio() + llave +
+		"|" + 1 +
+		"|" + oper_hc +
 		"|" + serv_hc +
 		"|" + novedad_hc +
 		"|" + finalid_hc +
 		"|" + ciuda_paci +
-		"|" + 1 + "|";
-
-
+		"|" + edad_paci + "|"
 
 	SolicitarDll({
 			datosh: data
@@ -42,7 +43,6 @@ function validarMedico_h9004() {
 }
 
 function validar_historia_h9004(data) {
-	console.log(data)
 	var admin = localStorage['Usuario'],
 		nit = $_USUA_GLOBAL[0].NIT,
 		res = data.split("|"),
@@ -53,6 +53,7 @@ function validar_historia_h9004(data) {
 	if (res[0] == "00") {
 		$_REG_HC["fecha"] = res[3].substring(0, 4) + "/" + res[3].substring(4, 6) + "/" + res[3].substring(6, 8);
 		$_REG_HC["procedencia"] = res[4];
+		$_REG_HC["sesion"] = res[5];
 
 		if (res[1] == "S") {
 			if (
@@ -95,13 +96,14 @@ function validar_historia_h9004(data) {
 	} else {
 		plantillaError(res[0], res[1], res[2]);
 	}
-
 	buscar_comprobante_historia_h9004();
 
 }
 
 function buscar_comprobante_historia_h9004() {
+
 	if ($_REG_HC.serv_hc == "02" || $_REG_HC.serv_hc == "08") {
+
 		buscar_consulta_externa();
 	}
 	switch ($_REG_HC.primera_hc) {
@@ -124,6 +126,8 @@ function buscar_comprobante_historia_h9004() {
 			// consultar_detalles_historia('**', ['9009','9004'], $_REG_HC.llave_hc, callback);
 			let folio = $_REG_HC.suc_folio_hc + cerosIzq((parseInt($_REG_HC.nro_folio_hc) - 1), 6)
 			let detalles_hc = ["1001", "2002", "2010", "2020", "2035", "2040", "4040", "4005", "7501"];
+			console.log(detalles_hc)
+			console.log(folio)
 			consultar_detalles_historia(folio, detalles_hc, $_REG_HC.llave_hc, _get_detalles_h9004);
 			break;
 
@@ -134,8 +138,13 @@ function buscar_comprobante_historia_h9004() {
 
 
 function _get_detalles_h9004(data) {
-	$_REG_HC.detales_hc = data['DETHC'];
-	_on_formulario_h9004(true);
+	console.log(data)
+	if (data == "99") {
+		_on_formulario_h9004(false);
+	} else {
+		_on_formulario_h9004(false);
+		$_REG_HC.detales_hc = data['DETHC'];
+	}
 
 }
 
@@ -145,7 +154,6 @@ function _on_formulario_h9004(sw) {
 		$_REG_HC.llave_hc + '|' +
 		localStorage['Usuario'] + '|'
 	var datos_farmacos = [];
-	console.log(datos_envio)
 
 	SolicitarDll({
 			datosh: datos_envio
@@ -162,7 +170,7 @@ function _on_formulario_h9004(sw) {
 				plantillaError(res[0], res[1], res[2]);
 			}
 		}, get_url("APP/SALUD/SER809.DLL"));
-	console.log(datos_farmacos)
+	console.log('3ntro');
 	var f = new Date();
 	//Precarga campos formulario
 	$('#ano_hc_9004').val($_REG_HC.fecha_hc.substring(0, 4));
@@ -231,8 +239,94 @@ function _on_formulario_h9004(sw) {
 $('#btn_grabar_9004').click(grabar_historia_9004);
 
 function grabar_historia_9004() {
+	var llave = $_REG_HC.llave_hc,
+		serv_hc = $_REG_HC.serv_hc,
+		novedad_hc = $_REG_HC.novedad_hc,
+		finalid_hc = $_REG_HC.finalid_hc,
+		ciuda_paci = $_REG_PACI[0].ciudad_paci,
+		edad_paci = $_REG_HC.edad_hc.vlr_edad + $_REG_HC.edad_hc.unid_edad,
+		oper_hc = localStorage['Usuario'],
+		motiv_hc = $("#motiv_hc_9004").text(),
+		peso_hc = $("#peso_hc_9004").val(),
+		talla_hc = $("#talla_hc_9004").val(),
+		imc_corp_hc = $("#imc_corp_hc_9004").val(),
+		per_cef_hc = $("#per_cef_hc_9004").val(),
+		per_abdo_hc = $("#per_abdo_hc_9004").val(),
+		per_tora_hc = $("#per_tora_hc_9004").val(),
+		sup_corp_hc = $("#sup_corp_hc_9004").val(),
+		sw_embar = $_REG_HC.sw_embar,
+		med_hc = $_REG_PROF[0].cod_prof,
+		datos_9004 = "";
+	var arr_9004 = $(".onco");
+	$.each(arr_9004, function (i, val) {
+		datos_9004 += val.value + "|";
+	});
+	datos_9004 = datos_9004.slice(0);
 
+
+	var data_env = datosEnvio() + llave +
+		"|" + 2 +
+		"|" + oper_hc +
+		"|" + serv_hc +
+		"|" + novedad_hc +
+		"|" + finalid_hc +
+		"|" + ciuda_paci +
+		"|" + edad_paci +
+		"|" + motiv_hc +
+		"|" + peso_hc +
+		"|" + talla_hc +
+		"|" + imc_corp_hc +
+		"|" + per_cef_hc +
+		"|" + per_abdo_hc +
+		"|" + per_tora_hc +
+		"|" + sup_corp_hc +
+		"|" + sw_embar +
+		"|" + med_hc +
+		datos_9004 + "|";
+
+	console.log(data_env)
+
+	var datosphp = {
+		llave: $_REG_HC["sesion"].trim(),
+		detalles_envio: {
+			enfer_act_hc: $("#enfer_act_hc_9004").val(),
+			exagen_hc: $("#exagen_hc_9004").val(),
+			ant_famil_hc: $("#ant_famil_hc_9004").val(),
+			ant_medi_hc: $("#ant_medi_hc_9004").val(),
+			ant_hemor_hc: $("#ant_hemor_hc_9004").val(),
+			ant_quiru_hc: $("#ant_quiru_hc_9004").val(),
+			ant_toxi_hc: $("#ant_toxi_hc_9004").val(),
+			ant_traum_hc: $("#ant_traum_hc_9004").val(),
+			ant_ginec_hc: $("#ant_ginec_hc_9004").val(),
+			analisis_hc: $("#analisis_hc_9004").val(),
+			observaciones_hc: $("#observaciones_hc_9004").val(),
+		}
+	}
+	console.log(datosphp.detalles_envio)
+	$.ajax({
+		data: datosphp,
+		type: 'POST',
+		async: false,
+		url: get_url('HICLIN/paginas/_datos_9004.php')
+	}).done(function (data) {
+		console.debug(data, 'TXT');
+		var res = data.split('|');
+		if (res[0].trim() == '00') {
+			// SolicitarDll({
+			// 		datosh: data_env
+			// 	},
+			// 	console.log(data),
+			// 	//Enviar 1 Abrir historia | 2 Grabar historia
+			// 	get_url("APP/HICLIN/HC9004.DLL")
+			// );
+			console.log("fine");
+		} else {
+			console.error(data);
+			plantillaError(res[0], res[1], res[2]);
+		}
+	});
 }
+
 
 function _salir_h9004() {
 	_cargarEventos("on");
