@@ -6151,39 +6151,737 @@
             },
             {
               "Id": "0972",
-              "Descripcion": "Menu listado de tarifas"
+              "Descripcion": "Menu listado de tarifas",
+              "Opc-segu": "IS2",
+              "Sub": [
+                {
+                  "Id": "09721",
+                  "Descripcion": "Lista general de tarifas",
+                  "Opc-segu": "IS21",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER103",
+                      "dll": "SALUD\\SER103.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09722",
+                  "Descripcion": "Lista de tarifas por tipo",
+                  "Opc-segu": "IS22",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER103A",
+                      "dll": "SALUD\\SER103A.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09723",
+                  "Descripcion": "Lista de tarifas por convenio",
+                  "Opc-segu": "IS23",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER103B",
+                      "dll": "SALUD\\SER103B.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09724",
+                  "Descripcion": "Catalogo de grupos servicios",
+                  "Opc-segu": "IS24",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER101P",
+                      "dll": "SALUD\\SER101P.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09725",
+                  "Descripcion": "Catalogo de procedim. (cups)",
+                  "Opc-segu": "IS25",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER103P",
+                      "dll": "SALUD\\SER103P.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09726",
+                  "Descripcion": "Listado de tarifas x contrato",
+                  "Opc-segu": "IS26",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER104P",
+                      "dll": "SALUD\\SER104P.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09727",
+                  "Descripcion": "Plano de tarifas por convenio",
+                  "Opc-segu": "IS27",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER107B",
+                      "dll": "SALUD\\SER107B.dll"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "Id": "0973",
-              "Descripcion": "Menu de convenios"
+              "Descripcion": "Menu de convenios",
+              "Opc-segu": "IS3",
+              "Sub": [
+                {
+                  "Id": "09731",
+                  "Descripcion": "Actualizar convenios",
+                  "Opc-segu": "IS31",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER104",
+                      "dll": "SALUD\\SER104.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09732",
+                  "Descripcion": "Listado de convenios",
+                  "Opc-segu": "IS31",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER107",
+                      "dll": "SALUD\\SER107.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09733",
+                  "Descripcion": "Convenio medicamentos",
+                  "Opc-segu": "IS33",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER104C",
+                      "dll": "SALUD\\SER104C.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09734",
+                  "Descripcion": "Duplicar convenio medicamento",
+                  "Opc-segu": "IS34",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER105C",
+                      "dll": "SALUD\\SER105C.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09735",
+                  "Descripcion": "Listado de convenios medicamentos",
+                  "Opc-segu": "IS35",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER106C",
+                      "dll": "SALUD\\SER106C.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09736",
+                  "Descripcion": "Restringir cups por entidad",
+                  "Opc-segu": "IS36",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER102R",
+                      "dll": "SALUD\\SER102R.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09737",
+                  "Descripcion": "Subir restricc. cups entidad",
+                  "Opc-segu": "IS37",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER307",
+                      "dll": "SALUD\\SER307.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09738",
+                  "Descripcion": "Cambio un convenio x NIT",
+                  "Opc-segu": "IS38",
+                  "Tipo": "RM",
+                  "Params": [
+                    {
+                      "formulario": "SER308",
+                      "dll": "SALUD\\SER308.dll"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "Id": "0974",
-              "Descripcion": "Auditoria de facturas",
-              "Opc-segu": "",
-              "Tipo": "POWER",
+              "Descripcion": "Menu facturacion salud",
+              "Opc-segu": "IS4",
               "Sub": [
                 {
                   "Id": "09741",
                   "Descripcion": "Apertura facturas",
-                  "Opc-segu": "S41",
+                  "Opc-segu": "IS41",
                   "Sub": [
                     {
                       "Id": "097411",
                       "Descripcion": "Apertura de facturas",
-                      "Opc-segu": "S41",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Opc-segu": "IS41",
                       "Tipo": "HTML",
                       "Href": "../../SALUD/PAGINAS/SAL7411.html"
+                    },
+                    {
+                      "Id": "097412",
+                      "Descripcion": "Dispersion de facturas",
+                      "Opc-segu": "IS412",
+                      "Sub": [
+                        {
+                          "Id": "0974121",
+                          "Descripcion": "Dispersion por comprobante",
+                          "Opc-segu": "IS41",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER108A",
+                              "dll": "SALUD\\SER108A.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974122",
+                          "Descripcion": "Dispersion por paciente",
+                          "Opc-segu": "IS41",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER108B",
+                              "dll": "SALUD\\SER108B.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974123",
+                          "Descripcion": "Clonacion de factura",
+                          "Opc-segu": "IS41",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER108D",
+                              "dll": "SALUD\\SER108D.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974124",
+                          "Descripcion": "Dispersion capital salud",
+                          "Opc-segu": "IS41",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER108G",
+                              "dll": "SALUD\\SER108G.dll"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097413",
+                      "Descripcion": "Facturar remisiones",
+                      "Opc-segu": "IS41",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER108R",
+                          "dll": "SALUD\\SER108R.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097414",
+                      "Descripcion": "Desmarca remisiones facturadas",
+                      "Opc-segu": "IS44",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER108S",
+                          "dll": "SALUD\\SER108S.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097415",
+                      "Descripcion": "Correcion de factura autoriz",
+                      "Opc-segu": "IS45",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER108T",
+                          "dll": "SALUD\\SER108T.dll"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "Id": "09742",
-                  "Descripcion": "Listado de facturacion"
+                  "Descripcion": "Listado de facturacion",
+                  "Opc-segu": "IS42",
+                  "Sub": [
+                    {
+                      "Id": "097421",
+                      "Descripcion": "Listado de facturacion",
+                      "Opc-segu": "IS421",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER110",
+                          "dll": "SALUD\\SER110.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097422",
+                      "Descripcion": "Facturacion por clase de comp",
+                      "Opc-segu": "IS422",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER422",
+                          "dll": "SALUD\\SER422.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097423",
+                      "Descripcion": "Incosistencias contra comp",
+                      "Opc-segu": "IS423",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER423",
+                          "dll": "SALUD\\SER423.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097424",
+                      "Descripcion": "Informe trazabilidad",
+                      "Opc-segu": "IS424",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER424",
+                          "dll": "SALUD\\SER424.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097425",
+                      "Descripcion": "Marcar capacitacion",
+                      "Opc-segu": "IS425",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER425",
+                          "dll": "SALUD\\SER425.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097426",
+                      "Descripcion": "Listado de radicacion",
+                      "Opc-segu": "IS425",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER426",
+                          "dll": "SALUD\\SER426.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097427",
+                      "Descripcion": "Listado impresion masivo",
+                      "Opc-segu": "IS427",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER427",
+                          "dll": "SALUD\\SER427.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097428",
+                      "Descripcion": "Cambio de razon social",
+                      "Opc-segu": "IS427",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER428",
+                          "dll": "SALUD\\SER428.dll"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "Id": "09743",
-                  "Descripcion": "Submenu impresion de facturas"
+                  "Descripcion": "Submenu impresion de facturas",
+                  "Opc-segu": "IS43",
+                  "Sub": [
+                    {
+                      "Id": "097431",
+                      "Descripcion": "Imprimir fact. orden paciente",
+                      "Opc-segu": "IS431",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109",
+                          "dll": "SALUD\\SER109.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097432",
+                      "Descripcion": "Imprimir fact. resumida",
+                      "Opc-segu": "IS432",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109B",
+                          "dll": "SALUD\\SER109B.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097433",
+                      "Descripcion": "Imprimir fact. orden servicio",
+                      "Opc-segu": "IS433",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109F",
+                          "dll": "SALUD\\SER109F.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097434",
+                      "Descripcion": "Imprimir fact. subtot paciente",
+                      "Opc-segu": "IS434",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109H",
+                          "dll": "SALUD\\SER109H.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097435",
+                      "Descripcion": "Imprimir fact. orden fecha",
+                      "Opc-segu": "IS435",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109D",
+                          "dll": "SALUD\\SER109D.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097436",
+                      "Descripcion": "Imprimir fact. paquete integ",
+                      "Opc-segu": "IS436",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109J",
+                          "dll": "SALUD\\SER109J.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097437",
+                      "Descripcion": "Sub menu fact. SOAT - FOSYGA",
+                      "Opc-segu": "IS437",
+                      "Sub": [
+                        {
+                          "Id": "0974371",
+                          "Descripcion": "Cuenta cobro SOAT FOSYGA",
+                          "Opc-segu": "IS4C1",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER109S",
+                              "dll": "SALUD\\SER109S.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974372",
+                          "Descripcion": "Diligenciar formato FURIPS",
+                          "Opc-segu": "IS4C2",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER4C2",
+                              "dll": "SALUD\\SER4C2.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974373",
+                          "Descripcion": "Reimprimir formato FURIPS",
+                          "Opc-segu": "IS4C3",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER4C3",
+                              "dll": "SALUD\\SER4C3.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974374",
+                          "Descripcion": "Informe FURIPS",
+                          "Opc-segu": "IS4C4",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER4C4",
+                              "dll": "SALUD\\SER4C4.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974375",
+                          "Descripcion": "Diligenciar formato FURTRAN",
+                          "Opc-segu": "IS4C5",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER4C5",
+                              "dll": "SALUD\\SER4C5.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974376",
+                          "Descripcion": "Reimprimir formato FURTRAN",
+                          "Opc-segu": "IS4C6",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER4C6",
+                              "dll": "SALUD\\SER4C6.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0974377",
+                          "Descripcion": "Reimprimir formato SOAT",
+                          "Tipo": "RM",
+                          "Params": [
+                            {
+                              "formulario": "SER4C7",
+                              "dll": "SALUD\\SER4C7.dll"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097438",
+                      "Descripcion": "Imprimir fact orden comprob",
+                      "Opc-segu": "IS438",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109L",
+                          "dll": "SALUD\\SER109L.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "097439",
+                      "Descripcion": "Imprimir fact resol 3374",
+                      "Opc-segu": "IS439",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109O",
+                          "dll": "SALUD\\SER109O.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743A",
+                      "Descripcion": "Fact resumen tar.plena descto",
+                      "Opc-segu": "IS43A",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109Q",
+                          "dll": "SALUD\\SER109Q.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743B",
+                      "Descripcion": "Impresion y cierre masivo",
+                      "Opc-segu": "IS43B",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109V",
+                          "dll": "SALUD\\SER109V.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743C",
+                      "Descripcion": "Impresion factura digital",
+                      "Opc-segu": "IS43C",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109U",
+                          "dll": "SALUD\\SER109U.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743D",
+                      "Descripcion": "Imprimir fact. capitacion",
+                      "Opc-segu": "IS43D",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109W",
+                          "dll": "SALUD\\SER109W.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743E",
+                      "Descripcion": "Imprimir fact. resum x CUPS",
+                      "Opc-segu": "IS43E",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109N",
+                          "dll": "SALUD\\SER109N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743G",
+                      "Descripcion": "Imprimir fact. orden salida",
+                      "Opc-segu": "IS43G",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109B1",
+                          "dll": "SALUD\\SER109B1.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743H",
+                      "Descripcion": "Imprimir fact. en csv",
+                      "Opc-segu": "IS43H",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109H",
+                          "dll": "SALUD\\SER109H.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743I",
+                      "Descripcion": "Impr. fact. subt. paci vlr uni",
+                      "Opc-segu": "IS43I",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109H",
+                          "dll": "SALUD\\SER109H.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743J",
+                      "Descripcion": "Impr. fact. hogares de paso",
+                      "Opc-segu": "IS43J",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109J8",
+                          "dll": "SALUD\\SER109J8.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09743J",
+                      "Descripcion": "Impr. fact. hogares de paso",
+                      "Opc-segu": "IS43J",
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109J8",
+                          "dll": "SALUD\\SER109J8.dll"
+                        }
+                      ]
+                    }
+
+
+
+
+
+
+                  ]
                 },
                 {
                   "Id": "09744",
@@ -6219,235 +6917,236 @@
                 }
               ]
             },
-			{
+            {
               "Id": "0975",
               "Descripcion": "Menu Cartera"
             },
-			{
+            {
               "Id": "0976",
               "Descripcion": "Menu administracion salud"
             },
-			{
+            {
               "Id": "0977",
               "Descripcion": "Menu pacientes y estadistica",
-			  "Opc-segu": "",
-			  "Tipo": "POWER",
-			  "Sub": [
-				{
+              "Opc-segu": "",
+              "Tipo": "POWER",
+              "Sub": [
+                {
                   "Id": "09771",
                   "Descripcion": "Actualizar Tablas"
                 },
-				{
+                {
                   "Id": "09772",
                   "Descripcion": "Actualizar Rips"
                 },
-				{
+                {
                   "Id": "09773",
                   "Descripcion": "Validacion de Rips"
                 },
-				{
+                {
                   "Id": "09774",
                   "Descripcion": "Generar archivos planos"
                 },
-				{
+                {
                   "Id": "09775",
                   "Descripcion": "Listados de estadistica"
                 },
-				{
+                {
                   "Id": "09776",
                   "Descripcion": "Mantenimiento de pacientes",
                   "Opc-segu": "IS76",
                   "Sub": [
-					{
-						"Id": "097761",
-						"Descripcion": "Listado de pacientes"
-					},
-					{
-						"Id": "097762",
-						"Descripcion": "Traslados de documento"
-					},
-					{
-						"Id": "097763",
-						"Descripcion": "Mantenimiento Base de datos"
-					},
-					{
-						"Id": "097764",
-						"Descripcion": "Activar prog. cuidado vital"
-					},
-					{
-						"Id": "097765",
-						"Descripcion": "Tabla etnias de pacientes"
-					},
-					{
-						"Id": "097766",
-						"Descripcion": "Control documentacion pacie"
-					},
                     {
-						"Id": "097767",
-						"Descripcion": "Actualizar pacientes",
-						"Opc-segu": "IS767",
-						"Tipo": "HTML",
-						"Href": "../../SALUD/paginas/SAL7767.html"
+                      "Id": "097761",
+                      "Descripcion": "Listado de pacientes"
                     },
-					{
-						"Id": "097768",
-						"Descripcion": "Actualizar pacientes restr"
-					},
-					{
-						"Id": "097769",
-						"Descripcion": "Caratula de paciente"
-					},
-					{
-						"Id": "09776A",
-						"Descripcion": "Clasificación de paciente"
-					},
-					{
-						"Id": "09776B",
-						"Descripcion": "Clasificación paises rips"
-					},
-					{
-						"Id": "09776C",
-						"Descripcion": "Parametrizar ingreso pacien"
-					},
-					{
-						"Id": "09776D",
-						"Descripcion": "Menu censo albergues"
-					}
+                    {
+                      "Id": "097762",
+                      "Descripcion": "Traslados de documento"
+                    },
+                    {
+                      "Id": "097763",
+                      "Descripcion": "Mantenimiento Base de datos"
+                    },
+                    {
+                      "Id": "097764",
+                      "Descripcion": "Activar prog. cuidado vital"
+                    },
+                    {
+                      "Id": "097765",
+                      "Descripcion": "Tabla etnias de pacientes"
+                    },
+                    {
+                      "Id": "097766",
+                      "Descripcion": "Control documentacion pacie"
+                    },
+                    {
+                      "Id": "097767",
+                      "Descripcion": "Actualizar pacientes",
+                      "Opc-segu": "IS767",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL7767.html"
+                    },
+                    {
+                      "Id": "097768",
+                      "Descripcion": "Actualizar pacientes restr"
+                    },
+                    {
+                      "Id": "097769",
+                      "Descripcion": "Caratula de paciente"
+                    },
+                    {
+                      "Id": "09776A",
+                      "Descripcion": "Clasificación de paciente"
+                    },
+                    {
+                      "Id": "09776B",
+                      "Descripcion": "Clasificación paises rips"
+                    },
+                    {
+                      "Id": "09776C",
+                      "Descripcion": "Parametrizar ingreso pacien"
+                    },
+                    {
+                      "Id": "09776D",
+                      "Descripcion": "Menu censo albergues"
+                    }
                   ]
                 },
                 {
                   "Id": "09777",
                   "Descripcion": "Seleccionar busqueda hist"
                 },
-				{
+                {
                   "Id": "09778",
                   "Descripcion": "Consulta de resultados lab"
-                },{
+                },
+                {
                   "Id": "09779",
                   "Descripcion": "Consulta de resultados rx"
-                },{
+                },
+                {
                   "Id": "0977A",
                   "Descripcion": "Imprimir laboratorios x paci"
                 }
-			  ]
+              ]
             },
-			{
+            {
               "Id": "0978",
               "Descripcion": "Menu de utilitarios"
             },
-			{
+            {
               "Id": "0979",
               "Descripcion": "Control de contratación"
             },
-			{
+            {
               "Id": "097A",
               "Descripcion": "Menu manejo de glosas"
             },
-			{
+            {
               "Id": "097B",
               "Descripcion": "Menu P.Q.R."
             },
-			{
+            {
               "Id": "097C",
               "Descripcion": "Menu citas (Agendamiento)",
-			  "Opc-segu": "",
-			  "Tipo": "POWER",
+              "Opc-segu": "",
+              "Tipo": "POWER",
               "Sub": [
-				{
-				  "Id": "097C1",
+                {
+                  "Id": "097C1",
                   "Descripcion": "Menu de citas",
-				  "Opc-segu": "ISC1",
-				  "Tipo": "POWER",
+                  "Opc-segu": "ISC1",
+                  "Tipo": "POWER",
                   "Sub": [
                     {
                       "Id": "097C11",
                       "Descripcion": "Actualiza citas",
-					  "Opc-segu": "ISC11",
-					  "Tipo": "HTML",
+                      "Opc-segu": "ISC11",
+                      "Tipo": "HTML",
                       "Href": "../../SALUD/PAGINAS/SAL97C11.html"
                     },
-					{
-					  "Id": "097C1,",
-				      "Descripcion": "Reimprime citas"
-					},
-					{
-					  "Id": "097C13",
-				      "Descripcion": "Cancelacion de citas"
-					},
-					{
-					  "Id": "097C14",
-				      "Descripcion": "Ventana de estado citas"
-					},
-					{
-					  "Id": "097C15",
-				      "Descripcion": "Relacion citas x paciente"
-					},
-					{
-					  "Id": "097C16",
-				      "Descripcion": "Planilla de agendamiento"
-					},
-					{
-					  "Id": "097C17",
-				      "Descripcion": "Menu mensajes de texto"
-					}	
-				  ]
+                    {
+                      "Id": "097C1,",
+                      "Descripcion": "Reimprime citas"
+                    },
+                    {
+                      "Id": "097C13",
+                      "Descripcion": "Cancelacion de citas"
+                    },
+                    {
+                      "Id": "097C14",
+                      "Descripcion": "Ventana de estado citas"
+                    },
+                    {
+                      "Id": "097C15",
+                      "Descripcion": "Relacion citas x paciente"
+                    },
+                    {
+                      "Id": "097C16",
+                      "Descripcion": "Planilla de agendamiento"
+                    },
+                    {
+                      "Id": "097C17",
+                      "Descripcion": "Menu mensajes de texto"
+                    }
+                  ]
                 },
-				{
+                {
                   "Id": "097C2",
                   "Descripcion": "Submenu demanda insatisfecha"
                 },
-				{
+                {
                   "Id": "097C3",
                   "Descripcion": "Relacion de citas inasistid"
                 },
-				{
+                {
                   "Id": "097C4",
                   "Descripcion": "Relacion de citas canceladas"
                 },
-				{
+                {
                   "Id": "097C5",
                   "Descripcion": "Imprimir horario atencion"
                 },
-				{
+                {
                   "Id": "097C6",
                   "Descripcion": "Submenu informes de citas"
                 },
-				{
+                {
                   "Id": "097C7",
                   "Descripcion": "Relación personal que atiende"
                 },
-				{
+                {
                   "Id": "097C8",
                   "Descripcion": "Traslado citas de un medico"
                 },
-				{
+                {
                   "Id": "097C9",
                   "Descripcion": "Exportar citas a otro pc"
                 },
-				{
+                {
                   "Id": "097CA",
                   "Descripcion": "Importar citas de otro pc"
                 },
-				{
-				  "Id": "097CB",
+                {
+                  "Id": "097CB",
                   "Descripcion": "Recalculo comprob en citas"
                 },
-				{
-				  "Id": "097CC",
+                {
+                  "Id": "097CC",
                   "Descripcion": "Limitar horario profesional"
                 },
-				{
-				  "Id": "097CD",
+                {
+                  "Id": "097CD",
                   "Descripcion": "Reporte atencion x unidades"
                 }
-				
-				]
+              ]
             },
-			{
+            {
               "Id": "097D",
               "Descripcion": "Menu cartera red externa"
             },
-			{
+            {
               "Id": "097E",
               "Descripcion": "Menu pamec"
             }
