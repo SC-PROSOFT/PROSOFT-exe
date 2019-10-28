@@ -104,12 +104,10 @@ header.header-v2{
     box-shadow: 0px 4px 30px -4px rgba(0,51,90,0.1);
     display: grid;
     grid-template-columns: 80% 20%;
-    position: relative;
-    background: url(https://nersasl.com/wp-content/uploads/2017/03/contabilidad-para-las-pymes.jpg);
-    background-size: 100% auto;
-    background-repeat: no-repeat;
-    background-position: 100% 33%;
-    filter: grayscale(0.6);
+    position: relative;    
+    background-size: 100% auto!important;
+    background-repeat: no-repeat!important;
+    background-position: 100% 33%!important;    
 }
 
 /* header.header-v2::before{

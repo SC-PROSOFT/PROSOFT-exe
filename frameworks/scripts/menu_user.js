@@ -5,14 +5,14 @@ $CONEXION_BD = {},
     $CONTROL = '',
     $_USUA_GLOBAL = '';
 
+$(function () {
+    $('.header-v2').attr('style', `background: url(../../imagenes/header-${localStorage.Modulo.toLowerCase()}.webp)`)
+});
+
 $(document).ready(function () {
     if (localStorage['Modulo'] == 'MIG') {
         cargarMenu()
     } else {
-
-        /* Cambio de imagen header por módulo */
-            console.log(localStorage.Modulo)
-        /* Cambio de imagen header por módulo */
         _cargarUsuario();
     }
     $('#cerrar_menu_user').click(function () {
@@ -53,7 +53,7 @@ function _onCargarUsuario(data) {
 
                 $('#user_menu_user').html(localStorage.Usuario + " - " + localStorage.Nombre);
                 $('#lblEmpresa').html($_USUA_GLOBAL[0].NOMBRE);
-                
+
                 let database = localStorage.Contab + "_" + localStorage.Mes;
                 $CONTROL = localStorage.Contab + "_13";
                 $CONEXION_BD = {
@@ -509,12 +509,12 @@ function LLAMADO_DLL(params) {
 
 _consultaSql = function (params) {
     var connect = $.parseJSON((JSON.stringify($CONEXION_BD)));
-    if ($CONEXION_BD.database.indexOf("/") != -1){
-        connect.database = params.db.replace("/","_") || $CONEXION_BD.database.replace("/","_");
+    if ($CONEXION_BD.database.indexOf("/") != -1) {
+        connect.database = params.db.replace("/", "_") || $CONEXION_BD.database.replace("/", "_");
     } else {
         connect.database = params.db || $CONEXION_BD.database;
     }
-    
+
 
     var connection = mysql.createConnection(connect);
     connection.connect();
