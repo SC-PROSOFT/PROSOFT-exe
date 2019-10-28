@@ -79,7 +79,8 @@
                         <div class="inline-inputs">
                             <label class="col-md-6 col-sm-8 col-xs-12">ESTADO</label>
                             <div class="input-group col-md-6 col-sm-4 col-xs-12" id="ESTADO_108">
-                                <input id="estado_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="estado_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="2" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -89,7 +90,7 @@
                             <label class="col-md-6 col-sm-8 col-xs-12">RETENCION</label>
                             <div class="input-group col-md-6 col-sm-4 col-xs-12" id="RETENCION_108">
                                 <input id="retencion_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="2" data-orden="4">
+                                    maxlength="2" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -97,12 +98,16 @@
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-8 col-xs-12">BLOQ RIPS? </label>
                             <div class="input-group col-md-6 col-sm-4 col-xs-12" id="PIC_108">
+                                <input id="bloq_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="1" data-orden="1">
+                            </div>
+                            <!-- <div class="input-group col-md-6 col-sm-4 col-xs-12" id="PIC_108">
                                 <select id="bloq_108" class="form-control select2 col-md-12">
                                     <option value="0" selected disabled>Seleccion</option>
                                     <option value="S"> SI</option>
                                     <option value="N"> NO </option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
@@ -117,7 +122,6 @@
                 </div>
 
 
-
                 <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                     <div class="col-md-12 col-sm-12 col-xs-12 head-box">
                         <label>
@@ -129,7 +133,7 @@
                             <label class="col-md-4 col-sm-8 col-xs-12">ID</label>
                             <div class="input-group col-md-12 col-sm-4 col-xs-12" id="PACIENTE_108">
                                 <input id="idpaciente_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="10" data-orden="1">
+                                    maxlength="15" data-orden="1">
                             </div>
                             <button type="button" id="f8pac_108" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                 <i class="icon-magnifier"></i>
@@ -159,7 +163,7 @@
                             <label class="col-md-5 col-sm-8 col-xs-12">TIPO</label>
                             <div class="input-group col-md-8 col-sm-4 col-xs-12">
                                 <input id="tipo_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="2" data-orden="5">
+                                    maxlength="2" data-orden="4">
                             </div>
                         </div>
                     </div>
@@ -190,7 +194,7 @@
                             <label class="col-md-6 col-sm-8 col-xs-12">FECHA ING</label>
                             <div class="input-group col-md-6 col-sm-4 col-xs-12" id="FECHAING_108">
                                 <input id="fechaing_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="16" data-orden="1">
+                                    maxlength="18" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -199,7 +203,7 @@
                             <label class="col-md-6 col-sm-8 col-xs-12">FECHA SAL</label>
                             <div class="input-group col-md-6 col-sm-4 col-xs-12" id="FECHASAL_108">
                                 <input id="fechasal_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="16" data-orden="1">
+                                    maxlength="18" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -219,12 +223,9 @@
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-8 col-xs-12">RED EXTERNA</label>
-                            <div class="input-group col-md-6 col-sm-4 col-xs-12" id="REDEXT_108">
-                                <select id="redext_108" class="form-control select2 col-md-12">
-                                    <option value="0" selected disabled>Seleccion</option>
-                                    <option value="S"> SI</option>
-                                    <option value="N"> NO </option>
-                                </select>
+                            <div class="input-group col-md-8 col-sm-4 col-xs-12" id="REDEXT_108">
+                                <input id="redext_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="2" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -233,7 +234,7 @@
                             <label class="col-md-10 col-sm-8 col-xs-12">CONTRATO </label>
                             <div class="input-group col-md-10 col-sm-4 col-xs-12" id="CONTRATO_108">
                                 <input id="contrato_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="4" data-orden="1">
+                                    maxlength="21" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -269,7 +270,7 @@
                             <label class="col-md-8 col-sm-8 col-xs-12">DIVISION </label>
                             <div class="input-group col-md-12 col-sm-4 col-xs-12" id="DIVISION_108">
                                 <input id="division_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="2" data-orden="4">
+                                    maxlength="2" data-orden="1">
                             </div>
                             <button type="button" id="f8division_108" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                 <i class="icon-magnifier"></i>
@@ -362,8 +363,9 @@
                             <label class="col-md-12 col-sm-6 col-xs-12" id="MOSTRAR_108">MOSTRAR CUANTOS PACIENTES VAN
                                 A ELBAORAR
                                 COMPROB.?</label>
-                            <div class="input-group col-md-3 col-sm-6 col-xs-12">
-                                <input id="mostrar_108" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            <div class="input-group col-md-3 col-sm-6 col-xs-12" id='COMPROBANTE_108'>
+                                <input id="mostrar_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1"
+                                    data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -379,16 +381,18 @@
                     <div class="col-md-2 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-9 col-sm-6 col-xs-12">SOLO COD CIS</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="codcis_108" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="CIS_108">
+                                <input id="codcis_108" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                    maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-5 col-sm-6 col-xs-12">MYT</label>
-                            <div class="input-group col-md-8 col-sm-6 col-xs-12">
-                                <input id="myt_108" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                            <div class="input-group col-md-8 col-sm-6 col-xs-12" id="MYT_108">
+                                <input id="myt_108" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                    maxlength="1">
                             </div>
                         </div>
                     </div>
@@ -397,72 +401,81 @@
                     <div class="col-md-2 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-8 col-sm-6 col-xs-12">CTRL X CL SERV</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="ctrlxserv_108" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="CTRLXSERV_108">
+                                <input id="ctrlxserv_108" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"
+                                    maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">MED</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl0_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="MED_108">
+                                <input id="controlcl0_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">CIRG</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl1_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="CIRUG_108">
+                                <input id="controlcl1_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">LAB</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl2_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="LAB_108">
+                                <input id="controlcl2_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">RX</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl3_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="RX_108">
+                                <input id="controlcl3_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">OTRO</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl4_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="OTRO_108">
+                                <input id="controlcl4_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">CONS</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl5_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="CONS_108">
+                                <input id="controlcl5_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">PATO</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl6_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="PATO_108">
+                                <input id="controlcl6_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-6 col-xs-12">PYP:</label>
-                            <div class="input-group col-md-5 col-sm-6 col-xs-12">
-                                <input id="controlcl7_108" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1">
+                            <div class="input-group col-md-5 col-sm-6 col-xs-12" id="PYP_108">
+                                <input id="controlcl7_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1" maxlength="1">
                             </div>
                         </div>
                     </div>
@@ -488,8 +501,9 @@
                     <div class="col-md-3 col-sm-2 col-xs-4">
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-6 col-xs-12">RUTA</label>
-                            <div class="input-group col-md-8 col-sm-6 col-xs-12">
-                                <input id="ruta_108" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            <div class="input-group col-md-8 col-sm-6 col-xs-12" id="ZONA_108">
+                                <input id="ruta_108" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="3" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -497,7 +511,8 @@
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-6 col-xs-12">EST</label>
                             <div class="input-group col-md-8 col-sm-6 col-xs-12" id="#DIASEST_108">
-                                <input id="est_108" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="est_108" class="form-control col-md-12 col-sm-12 col-xs-12"  
+                                maxlength="3" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -507,15 +522,17 @@
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-8 col-xs-12">CLASIFICACION</label>
                             <div class="input-group col-md-8 col-sm-4 col-xs-12">
-                                <input id="clasificacion_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="clasificacion_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="1" data-orden="1">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-8 col-sm-8 col-xs-12">ENTRA REMITIDO?</label>
-                            <div class="input-group col-md-4 col-sm-4 col-xs-12">
-                                <input id="remitido_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            <div class="input-group col-md-4 col-sm-4 col-xs-12" id="#REMITE_108">
+                                <input id="remitido_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="1" data-orden="1">
                             </div>
                         </div>
                     </div>
@@ -532,7 +549,7 @@
                         </div>
                     </div>
                     <div class="salto-linea"></div>
-                    <div class="col-md-3 col-sm-2 col-xs-6">
+                    <div class="col-md-4 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-7 col-sm-8 col-xs-12">TIPO DE EVENTO</label>
                             <div class="input-group col-md-7 col-sm-4 col-xs-12">
@@ -541,7 +558,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-2 col-xs-6">
+                    <div class="col-md-4 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-5 col-sm-8 col-xs-12">CIUDAD</label>
                             <div class="input-group col-md-7 col-sm-4 col-xs-12" id="CIUDAD_108">
@@ -551,27 +568,40 @@
                             <button type="button" id="f8ciudad_108" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                 <i class="icon-magnifier"></i>
                             </button>
+                            <div class="input-group col-md-10 col-sm-4 col-xs-12" id="NOMCIUDAD_108">
+                                <input id="nomciudad_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="20">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-2 col-xs-6">
+                    <div class="col-md-4 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-5 col-sm-8 col-xs-12">FUN. AUTORIZA</label>
                             <div class="input-group col-md-7 col-sm-4 col-xs-12" id="FUNCAUTO_108">
                                 <input id="funauto_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                     maxlength="10" data-orden="1">
                             </div>
+                            <button type="button" id="f8funauto_108" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                            <div class="input-group col-md-10 col-sm-4 col-xs-12" id="NOMFUNCAUTO_108">
+                                <input id="funautod_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    maxlength="20">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-2 col-xs-6">
+
+                    <div class="salto-linea"></div>
+                    <div class="col-md-6 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-8 col-sm-8 col-xs-12">NRO. AUTORIZACION</label>
                             <div class="input-group col-md-7 col-sm-4 col-xs-12" id="NROAUTO_108">
                                 <input id="nroauto_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="10" data-orden="1">
+                                    maxlength="15" data-orden="1">
                             </div>
                         </div>
                     </div>
-                    <div class="salto-linea"></div>
+                    <!-- <div class="salto-linea"></div> -->
                     <div class="col-md-6 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-5 col-sm-8 col-xs-12">OBSER. APERTURA:</label>
@@ -582,7 +612,39 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
+        </form>
+        <form class="form-horizontal">
+            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                    <div class="col-md-6 col-sm-4 col-xs-4">
+                        <div class="inline-inputs">
+                            <label class="col-md-4 col-sm-4 col-xs-12">CREADO</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-12">
+                                <input id="creado_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                            <div class="input-group col-md-5 col-sm-4 col-xs-12">
+                                <input id="creadod_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-4 col-xs-4">
+                        <div class="inline-inputs">
+                            <label class="col-md-4 col-sm-4 col-xs-12">MODIFICADO</label>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-12">
+                                <input id="modificado_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                            <div class="input-group col-md-5 col-sm-5 col-xs-12">
+                                <input id="modificadod_108" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    data-orden="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
