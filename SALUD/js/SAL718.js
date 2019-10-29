@@ -1,8 +1,9 @@
 /* NOMBRE RM --> SER102C // NOMBRE ELECTR --> SAL718 */
 
-var $_NovSal718, $_COD_SERV, $_COD_CUPS;
+var $_NovSal718; var $nitterc718 = '0'; var $ingrTerc718 = '0'; var $_PUCUSU718; var $llavemae718 = '0';
 
 $(document).ready(function () {
+    _inputControl('disabled');
 
     _toggleF8([
         { input: 'grupoSal', app: '718', funct: _ventanaGrupo718 },
@@ -10,10 +11,11 @@ $(document).ready(function () {
         { input: 'centrCost', app: '718', funct: _ventanaCentrCosto718 },
         { input: 'cuentaTerc', app: '718', funct: _ventanaContab718 },
         { input: 'nitTerc', app: '718', funct: ventanaTerceros718 },
-        { input: 'codPuc', app: '718', funct: _ventanaPUC718 }
+        { input: 'codPuc', app: '718', funct: _ventanaPUC718 },
+        { input: 'divSal1', app: '718', funct: _ventanaDivisUno718 },
+        { input: 'divSal2', app: '718', funct: _ventanaDivisDos718 }
 
     ]);
-
     ocultCajas718();
 });
 
@@ -59,7 +61,6 @@ function _ventanaCups718(e) {
         });
     }
 }
-
 
 // F8 CENTRO-COSTO //
 function _ventanaCentrCosto718(e) {
@@ -124,7 +125,6 @@ function ventanaTerceros718(e) {
     }
 }
 
-
 // F8 CUENTA-MAYOR //
 function _ventanaPUC718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
@@ -145,6 +145,47 @@ function _ventanaPUC718(e) {
     }
 }
 
+// F8 DIVISION //
+function _ventanaDivisUno718(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: "VENTANA DIVISION",
+            tipo: 'mysql',
+            db: $CONTROL,
+            tablaSql: 'sc_divis',
+            callback_esc: function () {
+                _validarDato()
+            },
+            callback: function (data) {
+                $('#divSal1_718').val(data.llave_div);
+                $('#descpCups1_718').val(data.descrip_div);
+                _enterInput('#divSal1_718');
+            }
+        });
+    }
+}
+
+function _ventanaDivisDos718(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: "VENTANA DIVISION",
+            tipo: 'mysql',
+            db: $CONTROL,
+            tablaSql: 'sc_divis',
+            callback_esc: function () {
+                _validarDato()
+            },
+            callback: function (data) {
+                $('#divSal2_718').val(data.llave_div);
+                $('#descpCups2_718').val(data.descrip_div);
+                _enterInput('#divSal2_718');
+            }
+        });
+    }
+}
+
+
+// CONDICION POR NIT PARA CAMBIO DE CAJAS //
 function ocultCajas718() {
     if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
         document.getElementById('cis_718').style.display = 'none';
@@ -169,9 +210,6 @@ function _evaluarCON850(novedad) {
     _inputControl('reset');
     _inputControl('disabled');
     console.debug(novedad)
-
-
-
 
     $_NovSal718 = novedad.id;
     switch (parseInt(novedad.id)) {
@@ -241,7 +279,6 @@ function _validarCUPS718() {
         function () {
             $grupoCups718 = $('#codCup_718').val();
 
-
             $LLAVECUP = $grupo718 + $grupoCups718;
 
             if ($grupoCups718.trim().length > 0) {
@@ -253,7 +290,6 @@ function _validarCUPS718() {
                     default:
                         _consultaSql({
                             sql: `SELECT * FROM sc_archcups  WHERE codigo = '${$LLAVECUP}'`,
-                            // sql: 'SELECT * FROM sc_archcups WHERE CONCAT(grupo_cup, nro_cup) LIKE "' + $LLAVECUP + '"',
                             db: 'datos_pros',
                             callback: function (error, results, fields) {
                                 if (error) throw error;
@@ -272,9 +308,6 @@ function _validarCUPS718() {
                                             CON851('01', '01', null, 'error', 'Error');
                                             _validarCUPS718()
                                         } else {
-                                            // $('#codCup_718').val(datos.nro_cup.trim())
-                                            // $('#descrpCups718').val(datos.descrip_cup.trim())
-                                            // tipoSer718();
                                             consultDatos718()
                                         }
                                     }
@@ -291,47 +324,44 @@ function _validarCUPS718() {
 
 
 function consultDatos718() {
-
-    console.debug('envio DLL  ' + $LLAVECUP)
     let datos_envio = datosEnvio()
     datos_envio += '|'
     datos_envio += $LLAVECUP
     SolicitarDll({ datosh: datos_envio }, mostrarDatos718, get_url('/APP/SALUD/SAL718C.DLL'));
-
 }
 
 function mostrarDatos718(data) {
     console.debug(data);
     var date = data.split('|');
 
-    $TIPOSERV718 = date[2].trim();
-    $CODABREV718 = date[3].trim();
-    $DURACION718 = date[4].trim();
-    $NIVE718 = date[5].trim();
-    $COPAGO718 = date[6].trim();
-    $NOPOS718 = date[7].trim();
-    $CIS718 = date[8].trim();
-    $EDADMIN718 = date[9].trim();
-    $EDADMAX718 = date[10].trim();
-    $UNIDMED718 = date[11].trim();
-    $SEXO718 = date[12].trim();
-    $DIAGN718 = date[13].trim();
-    $COSTO718 = date[14].trim();
-    $NOMCOSTO718 = date[15].trim();
-    $MEDICO718 = date[16].trim();
-    $PORC_CLIN718 = date[17].trim();
-    $PORC_OTR718 = date[18].trim();
-    $CTA_OTR718 = date[19].trim();
-    $NIT_OTR718 = date[20].trim();
-    $CTA_1CONT718 = date[21].trim();
-    $CTA_2CONT718 = date[22].trim();
-    $CTA_3CONT718 = date[23].trim();
-    $DIVIS718 = date[24].trim();
-    $DIVIS2718 = date[25].trim();
-    $DESCRP718 = date[26].trim();
+    $DESCRP718 = date[2].trim();
+    $TIPOSERV718 = date[3].trim();
+    $CODABREV718 = date[4].trim();
+    $DURACION718 = date[5].trim();
+    $NIVE718 = date[6].trim();
+    $COPAGO718 = date[7].trim();
+    $NOPOS718 = date[8].trim();
+    $CIS718 = date[9].trim();
+    $EDADMIN718 = date[10].trim();
+    $EDADMAX718 = date[11].trim();
+    $UNIDMED718 = date[12].trim();
+    $SEXO718 = date[13].trim();
+    $DIAGN718 = date[14].trim();
+    $COSTO718 = date[15].trim();
+    $NOMCOSTO718 = date[16].trim();
+    $MEDICO718 = date[17].trim();
+    $PORC_CLIN718 = date[18].trim();
+    $PORC_OTR718 = date[19].trim();
+    $CTA_OTR718 = date[20].trim();
+    $NIT_OTR718 = date[21].trim();
+    $CTA_1CONT718 = date[22].trim();
+    $CTA_2CONT718 = date[23].trim();
+    $CTA_3CONT718 = date[24].trim();
+    $DIVIS718 = date[25].trim();
+    $DIVIS2718 = date[26].trim();
     $OPERAD718 = date[27].trim();
     $FECHA718 = date[28].trim();
-
+    $_PUCUSU718 = date[29].trim();
 
     if (date[0].trim() == '00') {
         if ($_NovSal718 == '7') {
@@ -359,7 +389,6 @@ function mostrarDatos718(data) {
 
 
 function datosCompl718() {
-
     $('#descrpCups718').val($DESCRP718);
     $('#tipoServ718').val($TIPOSERV718);
     $('#codAbrev718').val($CODABREV718);
@@ -379,32 +408,62 @@ function datosCompl718() {
     $('#ingrClin718').val($PORC_CLIN718);
     $('#ingreTerc718').val($PORC_OTR718);
     $('#cuentaTerc_718').val($CTA_OTR718);
-    $('#nitTerc_718').val($NIT_OTR718);
+
+    if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
+        var datosep = $FECHA718
+        $('#codHeon_718').val($OPERAD718 + ' ' + datosep.substring(2, 8))
+    } else {
+        $('#nitTerc_718').val($NIT_OTR718);
+    }
+
     $('#codPuc_718').val($CTA_1CONT718);
     $('#codCoop_718').val($CTA_3CONT718);
     $('#codOfic_718').val($CTA_2CONT718);
     $('#divSal1_718').val($DIVIS718);
     $('#divSal2_718').val($DIVIS2718);
     $('#operador718').val($OPERAD718);
-
-
     var fechac718 = $FECHA718
     $('#fecha718').val(fechac718.substring(2, 8))
 
-
-    psre()
+    // tipoSer718()
+    continuarRegistro718()
 }
 
 
+function continuarRegistro718() {
+    switch (parseInt($_NovSal718)) {
+        case 8:
+            tipoSer718();
+            break;
+        case 9:
+            CON851P('54', _validarCUPS718, eliminarReg718)
+            break;
+    }
+}
 
+
+function eliminarReg718() {
+
+    LLAMADO_DLL({
+        dato: [$_NovSal718, $LLAVECUP],
+        callback: function (data) {
+            actualBD718(data, $LLAVECUP)
+        },
+        nombredll: 'SAL718-G',
+        carpeta: 'SALUD'
+    })
+}
+
+
+// NOVEDAD 7 //
 function registroNuevo718() {
-    $grpCps718 = $('#codCup_718').val()
+    // $grpCps718 = $('#codCup_718').val()
     $dcpCps718 = $('#descrpCups718').val()
 
     tipoSer718();
 }
 
-
+// NOVEDAD 8 //
 function tipoSer718() {
 
     if ($_USUA_GLOBAL[0].NIT == 800156469) {
@@ -483,7 +542,10 @@ function _validarAbrev718() {
             orden: '1'
         },
         function () { tipoSer718(); },
-        function () { _nivelAcompl718(); }
+        function () {
+            $ABREV718 = $('#codAbrev718').val()
+            _nivelAcompl718();
+        }
     )
 }
 
@@ -530,7 +592,7 @@ function pagoPacient718() {
             case '2':
             case '3':
                 $('#pagoPacient718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
-                $_PAGO718 = data.DESCRIP.trim()
+                $_PAGO718 = data.COD.trim()
                 setTimeout(procedNOPOS718, 300);
                 break;
         }
@@ -556,7 +618,7 @@ function procedNOPOS718() {
             case '2':
                 $('#procedNO718').val(data.DESCRIP.trim())
                 $_NOPOS718 = data.DESCRIP.trim()
-                if ($_USUA_GLOBAL[0].NIT == 830092718) {
+                if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
                     setTimeout(activarHL_718, 300);
                 } else {
                     setTimeout(datoCIS718, 300);
@@ -591,12 +653,12 @@ function activarHL_718() {
 }
 
 function datoCIS718() {
-    var datoCIS718 = [
+    var datCIS718 = [
         { "COD": "1", "DESCRIP": "Si" },
         { "COD": "2", "DESCRIP": "No" }
     ]
     POPUP({
-        array: datoCIS718,
+        array: datCIS718,
         titulo: 'C.I.S?',
         indices: [
             { id: 'COD', label: 'DESCRIP' }
@@ -656,8 +718,6 @@ function _validaCentroCost718() {
     )
 }
 
-
-
 function datosEdad718() {
     validarInputs(
         {
@@ -668,7 +728,6 @@ function datosEdad718() {
         function () { unidadMedida718() }
     )
 }
-
 
 function unidadMedida718() {
     var unidadMed718 = [
@@ -689,7 +748,6 @@ function unidadMedida718() {
             case '1':
             case '2':
             case '3':
-            case '4':
                 $('#undEdad718').val(data.DESCRIP.trim())
                 $UNIDMED718 = data.DESCRIP.trim()
                 setTimeout(sexoPaciente718, 300);
@@ -709,19 +767,18 @@ function sexoPaciente718() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        callback_f: unidadMedida718
+        callback_f: datosEdad718
     }, function (data) {
         switch (data.COD.trim()) {
             case '1':
             case '2':
                 $('#sexo718').val(data.DESCRIP.trim())
-                $_SEXOPAC718 = data.COD.trim()
+                $_SEXOPAC718 = data.DESCRIP.trim()
                 setTimeout(diagnostRips718, 300);
                 break;
         }
     })
 }
-
 
 function diagnostRips718() {
     var datoRips718 = [
@@ -734,7 +791,7 @@ function diagnostRips718() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        callback_f: sexoPaciente718
+        callback_f: datosEdad718
     }, function (data) {
         switch (data.COD.trim()) {
             case '1':
@@ -746,7 +803,6 @@ function diagnostRips718() {
         }
     })
 }
-
 
 function ingresoMedico718() {
     var datoMedico718 = [
@@ -776,7 +832,6 @@ function ingresoMedico718() {
     })
 }
 
-
 function ingresoClinica718() {
     validarInputs(
         {
@@ -784,7 +839,7 @@ function ingresoClinica718() {
             orden: '1'
         },
         function () { ingresoMedico718(); },
-        validarIngTercer718
+        function () { validarIngTercer718() }
     )
 }
 
@@ -799,15 +854,16 @@ function validarIngTercer718() {
         function () {
             $ingrTerc718 = $('#ingreTerc718').val();
             console.debug($ingrTerc718);
-            if ($_USUA_GLOBAL[0].NIT == 830092718 && parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
+            if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162 && parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
                 codigoHeon718()
-                // } else if (parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
-                //     console.debug('si')
-                //     validarPUC718();
-            } else if ($_USUA_GLOBAL[0].NIT == 830092718) {
+            } else if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
                 cuentTercero718();
             }
-
+            if (parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
+                validarPUC718()
+            } else {
+                cuentTercero718()
+            }
         }
     )
 }
@@ -839,12 +895,11 @@ function cuentTercero718() {
                                     console.log(datos)
                                     if (results.length = !results.length) {
                                         CON851('01', '01', null, 'error', 'Error');
-                                        _validarGrpo718()
+                                        cuentTercero718()
                                     } else {
                                         $('#cuentaTerc_718').val(datos.llave_mae.trim())
                                         $('#descrCta718').val(datos.nombre_mae.trim())
                                         terceroNit718()
-
                                     }
                                 }
                             }
@@ -856,48 +911,54 @@ function cuentTercero718() {
     )
 }
 
-
 function terceroNit718() {
-    $nitterc718 = $('#nitTerc_718').val();
-
-    if ($nitterc718.trim().length > 0) {
-        switch ($nitterc718) {
-            case false:
-                CON851('01', '01', null, 'error', 'error');
-                _validarCUPS718()
-                break;
-            default:
-                _consultaSql({
-                    sql: `SELECT * FROM sc_archter  WHERE cod_ter = '${$nitterc718}'`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            var datos = results[0]
-                            console.log(datos)
-                            if (results.length = !results.length) {
-                                CON851('01', '01', null, 'error', 'Error');
-                                _validarGrpo718()
-                            } else {
-                                $('#nitTerc_718').val(datos.cod_ter)
-                                $('#nombreTer718').val(datos.descrip_ter)
-                                psre()
-
+    validarInputs(
+        {
+            form: "#nitTerce718",
+            orden: '1'
+        },
+        function () { cuentTercero718(); },
+        function () {
+            $nitterc718 = parseFloat($('#nitTerc_718').val())
+            // parseFloat($ingrTerc718);
+            if ($nitterc718.trim().length > 0) {
+                switch ($nitterc718) {
+                    case false:
+                        CON851('01', '01', null, 'error', 'error');
+                        _validarCUPS718()
+                        break;
+                    default:
+                        _consultaSql({
+                            sql: `SELECT * FROM sc_archter  WHERE cod_ter = '${$nitterc718}'`,
+                            db: $CONTROL,
+                            callback: function (error, results, fields) {
+                                if (error) throw error;
+                                else {
+                                    var datos = results[0]
+                                    console.log(datos)
+                                    if (results.length = !results.length) {
+                                        CON851('01', '01', null, 'error', 'Error');
+                                        terceroNit718()
+                                    } else {
+                                        $('#nitTerc_718').val(datos.cod_ter)
+                                        $('#nombreTer718').val(datos.descrip_ter)
+                                        validarPUC718()
+                                    }
+                                }
                             }
-                        }
-                    }
-                })
-                break;
+                        })
+                        break;
+                }
+            }
         }
-    }
+    )
 }
-
 
 function codigoHeon718() {
     validarInputs(
         {
             form: "#codgHeon718",
-            orden: '2'
+            orden: '1'
         },
         function () { validarIngTercer718(); },
         function () { validarPUC718() }
@@ -912,16 +973,196 @@ function validarPUC718() {
             orden: '1'
         },
         function () { ingresoClinica718(); },
-        function () { psre(); }
+        function () {
+            if ($_SERV718 == 6) {
+                $('#codPuc_718').val('41250400050');
+                $('#codOfic_718').val('43124800001');
+            }
+            validarPucUsu718();
+            // } else {
+            //     division718()
+            // }
+        }
     )
 }
 
 
+function validarPucUsu718() {
+    // alert($_PUCUSU718)
+    switch ($_PUCUSU718) {
+        case '1':
+            $('#codPuc_718').val($CTA_1CONT718);
+            division718();
+            break;
+        case '2':
+            $('#codCoop_718').val($CTA_3CONT718);
+            division718();
+            break;
+        case '3':
+            $('#codPuc_718').val(CTA_1CONT718);
+            division718();
+            break;
+        case '4':
+            $('#codOfic_718').val(CTA_2CONT718);
+            division718();
+            break;
+        case '6':
+            $('#codOfic_718').val(CTA_2CONT718);
+            division718();
+            break;
+    }
+}
 
 
 
+function division718() {
+    validarInputs(
+        {
+            form: "#divis718",
+            orden: '1'
+        },
+        function () { validarPUC718(); },
+        function () {
+            $divUno718 = $('#divSal1_718').val();
+            divisionDos718();
+        }
+    )
+}
+
+function divisionDos718() {
+    validarInputs(
+        {
+            form: "#divisDos718",
+            orden: '1'
+        },
+        function () { division718(); },
+        function () {
+            $divDos718 = $('#divSal2_718').val();
+            // psre();
+            envioDatos718()
+        }
+    )
+}
 
 
+function envioDatos718() {
+
+    var DESCRIP718 = espaciosDer($('#descrpCups718').val(), 80)
+    var DURAC718 = cerosIzq($('#duracion718').val(), 3)
+    var NOPOS718 = $_NOPOS718.substring(0, 1)
+    var DATCIS718 = $_CIS718.substring(0, 1)
+    var $EdadMin718 = cerosIzq($('#edadMin718').val(), 3)
+    var $EdadMax718 = cerosIzq($('#edadMax718').val(), 3)
+    var MEDIDA718 = $UNIDMED718.substring(0, 1)
+    var SEXO718 = $_SEXOPAC718.substring(0, 1)
+    var DIAGN718 = $DIAGNRIPS718.substring(0, 1)
+    var INTRGMED718 = $INGRESMED718.substring(0, 1)
+    var $INGCLIN718 = $('#ingrClin718').val();
+    var NITTERC718 = cerosIzq($nitterc718.trim(), 10);
+    var $CODPUC718 = cerosIzq($('#codPuc_718').val(), 11);
+    var $CODCOOP718 = cerosIzq($('#codCoop_718').val(), 11);
+    var $CODOFIC718 = cerosIzq($('#codOfic_718').val(), 11);
+
+    LLAMADO_DLL({
+        dato: [$_NovSal718, $LLAVECUP, DESCRIP718, $_SERV718, $ABREV718, DURAC718, $NIVELAC, $_PAGO718, NOPOS718, DATCIS718,
+            $centroCosto718, $EdadMin718, $EdadMax718, MEDIDA718, SEXO718, DIAGN718, INTRGMED718, $INGCLIN718, $ingrTerc718,
+            $llavemae718, NITTERC718, $CODPUC718, $CODCOOP718, $CODOFIC718, $divUno718, $divDos718],
+        callback: function (data) {
+            actualBD718(data, $LLAVECUP, DESCRIP718)
+        },
+        nombredll: 'SAL718-G',
+        carpeta: 'SALUD'
+    })
+
+}
+
+
+function actualBD718(data, $LLAVECUP, DESCRIP718) {
+    loader('hide');
+    var rdll = data.split('|');
+    console.log(rdll[0])
+    if (rdll[0].trim() == '00') {
+        switch (parseInt($_NovSal718)) {
+            case 7:
+                _consultaSql({
+                    sql: `INSERT INTO sc_archcups VALUES ('${$LLAVECUP}', '${DESCRIP718}');`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                                    function () {
+                                        terminar718();
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
+                                    function () {
+                                        terminar718();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 8:
+                _consultaSql({
+                    sql: `UPDATE sc_archcups SET descripcion ='${DESCRIP718}' WHERE codigo = '${$LLAVECUP}' `,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
+                                    function () {
+                                        terminar718()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
+                                    function () {
+                                        terminar718();
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+            case 9:
+                _consultaSql({
+                    sql: `DELETE FROM sc_archcups WHERE codigo = '${$LLAVECUP}'`,
+                    db: 'datos_pros',
+                    callback: function (error, results, fields) {
+                        if (error) throw error;
+                        else {
+                            console.log(results)
+                            if (results.affectedRows > 0) {
+                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
+                                    function () {
+                                        terminar718()
+                                    });
+                            } else {
+                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
+                                    function () {
+                                        terminar718()
+                                    });
+                            }
+                        }
+                    }
+                })
+                break;
+        }
+    } else {
+        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+    }
+}
+
+function terminar718() {
+    _toggleNav();
+    _inputControl('reset');
+    _inputControl('disabled');
+
+}
 
 
 function psre() {
@@ -929,27 +1170,3 @@ function psre() {
 }
 
 
-
-function _limpiarDatos101(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
-        switch (parseInt($_NovSal718)) {
-            case 7:
-                mensaje = "Creado Correctamente"
-                break;
-            case 8:
-                mensaje = "Modificado correctamente"
-                break;
-            case 9:
-                mensaje = "Eliminado correctamente"
-                break;
-        }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
-    } else {
-        CON852(temp[0], temp[1], temp[2]);
-    }
-}
