@@ -579,9 +579,10 @@ function _grabardatos(nombre_archivo) {
     var fecha_modif = moment().format("YYYYMMDD")
     var hora_modif = moment().format("HHmmss")
 
-
+   
     LLAMADO_DLL({
-        dato: [nit, suc, clase, nro_fact, grupo, cod_Art, clase_art_fact, item, radiologo, registro_medico, nombre_radiologo, tecnologo, nombre_tecnologo, tipo_dx, dx, descrip_dx, birads, complejidad, fecha_modif, hora_modif, pagina, nombre_archivo],
+        dato: [nit, suc, clase, nro_fact, grupo, cod_Art, clase_art_fact, item, radiologo, registro_medico, nombre_radiologo, 
+            tecnologo, nombre_tecnologo, tipo_dx, dx, descrip_dx, birads, complejidad, fecha_modif, hora_modif, pagina, nombre_archivo],
         callback: llegadaDll_Rx421w,
         nombredll: 'RX-421W',
         carpeta: 'SALUD'
@@ -592,6 +593,11 @@ function llegadaDll_Rx421w(data) {
     var rdll = data.split('|');
     if (rdll[0].trim() == '00') {
         guardadoBaseDatos_rx421w()
+    } else if (rdll[0].trim() == 'SC'){
+        jAlert(
+            { titulo: 'Error ' + rdll[0].trim(), mensaje: '<b>Mensaje: </b>' + rdll[1] + '<br> <b>App:</b> ' + rdll[2] },
+            _toggleNav
+        );
     } else {
         loader('hide');
         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
