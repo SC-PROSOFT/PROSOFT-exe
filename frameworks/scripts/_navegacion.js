@@ -111,7 +111,7 @@ function _eventoBotones() {
                 set_titulo(idOpcion);
             } else {
                 var msj
-                msj = msjError('15');
+                msj = msjError('49');
                 jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> ${msj}` })
             }
         } else {
