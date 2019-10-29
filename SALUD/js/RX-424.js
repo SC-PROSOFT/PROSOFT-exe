@@ -109,8 +109,11 @@ $(document).ready(function () {
     _inputControl("disabled");
     RX424['PREFIJOUSU'] = $_USUA_GLOBAL[0].PREFIJ;
     RX424['NOMBREUSU'] = $_USUA_GLOBAL[0].NOMBRE;
+    RX424['ADMINW'] = localStorage.getItem('Usuario').trim();
     $('#nombreusu_rx424').text(RX424.NOMBREUSU);
     RX424['SUCW'] = RX424.PREFIJOUSU;
+    RX424['CODTER'] = '';
+    RX424['CODPROF'] = '';
     _evaluarprefijo_RX424('1');
 });
 
@@ -137,28 +140,21 @@ function _validarfecha_RX424() {
     RX424['NROFINW'] = parseInt(hastaMask_RX424.unmaskedValue);
     RX424['FECHAINI'] = momentMask_RX424.unmaskedValue;
     console.debug(RX424.FECHAINI);
-    _consultaSql({
-        db: 'san2019_13',
-        sql: 'SELECT * FROM san2019_13.sc_facturaservicios WHERE fecha_fact LIKE "%' + RX424.FECHAINI + '%"',
-        callback: function (error, results, fields) {
-            if (error) throw error;
-            else {
-                console.debug(results);
-                if (results.length == 0) {
-                    CON851('03', '03', null, 'error', 'Error');
-                    _evaluarprefijo_RX424('4');
-                } else {
-                    for (var i in results) {
-                        if (results[i].fecha_fact == RX424.FECHAINI) {
-                            _evaluarfechahasta_RX424();
-                            PDF = results;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    });
+    datos_envio = datosEnvio();
+    datos_envio += RX424.ADMINW + '|' + '1' + '|' + RX424.FECHAINI + '|' + RX424.CODTER + '|' + RX424.CODPROF
+    // SolicitarDll({ datosh: datos_envio }, _dataRX424_1, get_url("APP/SALUD/RX424.DLL"));
+    let URL = get_url("APP/SALUD/RX424.DLL");
+    postData({datosh:datos_envio}, URL)
+    .then(function (data)  {
+        console.debug(data);
+    })
+    .catch(err => {
+        console.debug(err);
+    })
+}
+function _dataRX424_1(data){
+    console.debug(data);
+    RX424.DATA = data;
 }
 
 function _evaluarfechahasta_RX424() {
