@@ -20,16 +20,15 @@ function _ventanaGrupo(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "GRUPOS DE SERVICIO",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_gruposer',
+            columnas: ["COD", "DESCRIP"],
+            data: arraygrpser,
             callback_esc: function () {
                 _validarConsulta711()
             },
             callback: function (data) {
                 console.debug(data);
-                $('#codigo_711').val(data.codigo_grser.trim())
-                $('#descrip711').val(data.descrip_grser.trim())
+                $('#codigo_711').val(data.COD.trim())
+                $('#descrip711').val(data.DESCRIP.trim())
                 _enterInput('#codigo_711');
             }
         });
@@ -41,16 +40,15 @@ function _ventanaContab(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "VENTANA PLAN DE CUENTAS",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archmae',
+            columnas: ["CTA_MAY", "SUB_CTA", "AUX_MAE", "NOMBRE_MAE", "TIPO_MAE"],
+            data: arraycontab,
             callback_esc: function () {
                 conContab_711
             },
             callback: function (data) {
                 console.debug(data);
-                $('#contab_711').val(data.llave_mae.trim() + data.nivel_mae.trim())
-                $('#descripContab_711').val(data.nombre_mae)
+                $('#contab_711').val(data.CTA_MAY.trim() + data.SUB_CTA.trim() + data.AUX_MAE.trim() + data.TIPO_MAE.trim())
+                $('#descripContab_711').val(data.NOMBRE_MAE.trim())
                 _enterInput('#contab_711');
             }
         });
@@ -240,12 +238,11 @@ function _llenarDatSer711(data) {
 }
 
 function eliminaRegis() {
-    var codgsr711 = cerosIzq($CODG711, 2)
 
     LLAMADO_DLL({
-        dato: [$_NovedSer711, codgsr711],
-        // callback: _elimRegis711,
-        callback: function (data) { validarBdSql(data, codgsr711) },
+        dato: [$_NovedSer711, $CODG711],
+        callback: guardaDatos711,
+        // callback: function (data) { validarBdSql(data, codgsr711) },
         nombredll: 'SAL711-02',
         carpeta: 'SALUD'
     })
@@ -277,15 +274,22 @@ function validarPorcen_711(orden) {
             var tercero = $('#ingr_terc711').val()
 
             console.log(tercero)
-            if ($('#ingr_terc711').val().trim().length > 0) {
+            if (parseFloat(tercero).length > 0) {
                 if (tercero + otro < 100) {
                     if ($('#contab_711').val().trim().length == 0) {
                         $('#contab_711').val('2815')
+                        console.log(tercero + ' 1214')
                     }
+                    console.log(tercero + '  455')
                     conContab_711()
-                } else {
-                    validarPorcen_711('2')
                 }
+            } else if (parseFloat(tercero) == '') {
+                console.log(tercero + '  64515')
+                conContab_711()
+            }
+            else {
+                conContab_711()
+                console.log(tercero + ' dsgsfg')
             }
         }
     )
@@ -317,113 +321,47 @@ function conContab_711() {
 
 
 function envioDat711() {
-    var novd711 = $_NovedSer711;
-    var codg711 = $CODG711;
     var descp711 = espaciosDer($('#descrip711').val(), 25);
     var ingre711 = cerosIzq($('#ingre_clin711').val(), 3);
     var terce711 = cerosIzq($('#ingr_terc711').val(), 4);
     var contab_711 = cerosIzq($('#contab_711').val(), 11);
 
     LLAMADO_DLL({
-        dato: [novd711, codg711, descp711, ingre711, terce711, contab_711],
-        callback: function (data) {
-            validarBdSql(data, codg711, descp711, ingre711, terce711, contab_711)
-        },
+        dato: [$_NovedSer711, $CODG711, descp711, ingre711, terce711, contab_711],
+        callback: guardaDatos711,
+        // function (data) {
+        //     validarBdSql(data, codg711, descp711, ingre711, terce711, contab_711)
+        // },
         nombredll: 'SAL711-02',
         carpeta: 'SALUD'
     })
 }
 
 
-function validarBdSql(data, codg711, descp711, ingre711, terce711, contab_711) {
+function guardaDatos711(data) {
+    console.debug(data)
     loader('hide');
     var rdll = data.split('|');
-    console.log(rdll[0])
+
     if (rdll[0].trim() == '00') {
-        switch (parseInt($_NovedSer711)) {
-            case 7:
-                _consultaSql({
-                    sql: `INSERT INTO sc_gruposer VALUES ('${codg711}', '${descp711}', '${ingre711}', '${terce711}', '${contab_711}' );`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                                    function () {
-                                        cajasLimp711();
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-                                    function () {
-                                        cajasLimp711();
-                                    });
-                            }
-                        }
-                    }
-                })
+        var msj
+        switch ($_NovedSer711) {
+            case '7': msj = 'Creado correctamente'
                 break;
-            case 8:
-                var BDSQL = `UPDATE sc_gruposer SET descrip_grser ='${descp711}', porc_cl_grser='${ingre711}', porc_otr_grser='${terce711}', otr_cta_grser='${contab_711}' WHERE codigo_grser = '${codg711}' `;
-                _consultaSql({
-                    sql: BDSQL,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-                                    function () {
-                                        cajasLimp711()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-                                    function () {
-                                        cajasLimp711();
-                                    });
-                            }
-                        }
-                    }
-                })
+            case '8': msj = 'Modificado correctamente'
                 break;
-            case 9:
-                _consultaSql({
-                    sql: `DELETE FROM sc_gruposer WHERE codigo_grser = '${codg711}'`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-                                    function () {
-                                        cajasLimp711()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-                                    function () {
-                                        cajasLimp711()
-                                    });
-                            }
-                        }
-                    }
-                })
+            case '9': msj = 'Eliminado correctamente'
                 break;
         }
+        jAlert({ titulo: 'Notificacion', mensaje: msj },
+            function () {
+                _toggleNav();
+                console.log('fin del programa')
+            });
     } else {
         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
-
-
-function cajasLimp711() {
-    _toggleNav();
-
-    _inputControl('reset');
-    _inputControl('disabled');
-}
-
 
 // FUNCIONES PARA DATOS NUEVOS
 function buscarDescrip_711(data) {
