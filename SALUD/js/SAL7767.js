@@ -73,7 +73,7 @@ function _ventanamaestropacientes_SAL7767(e) {
 
                 $('#numero_110c').val(data.cod_paci.trim());
                 _enterInput('#numero_110c');
-              
+
             }
         });
     }
@@ -90,7 +90,7 @@ function _ventanaciudad_SAL7767(e) {
                 $("#ciudad_110c").focus();
             },
             callback: function (data) {
-                
+
                 $('#ciudad_110c').val(data.cuenta.trim());
                 $('#ciudadd_110c').val(data.nombre.trim());
                 _enterInput('#ciudad_110c');
@@ -202,7 +202,7 @@ function _ventanamaestrodospaci_SAL7767(e) {
                 $('#cotizante_110c').val(data.cod_paci.trim());
                 $('#cotizanted_110c').val(data.descrip_paci.trim());
                 _enterInput('#cotizante_110c');
-              
+
             }
         });
     }
@@ -226,7 +226,7 @@ function _ventanapatologias_SAL7767(e) {
     }
 }
 
-function  _ventanaclasificacion_SAL7767(e) {
+function _ventanaclasificacion_SAL7767(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'VENTANA DE CLASIFICACION PACI',
@@ -245,7 +245,7 @@ function  _ventanaclasificacion_SAL7767(e) {
     }
 }
 
-function  _ventanaterceros_SAL7767(e) {
+function _ventanaterceros_SAL7767(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'VENTANA DE TERCEROS',
@@ -1660,35 +1660,35 @@ function _datociudad_7767() {
         }
     }
     else {
-        _consultaSql({
-            db: 'datos_pros',
-            sql: 'SELECT * FROM datos_pros.sc_archciud WHERE cuenta LIKE "%' + $_CIUPACIW + '%"',
-            callback: _consultaciudad_SAL7767
+        // _consultaSql({
+        //     db: 'datos_pros',
+        //     sql: 'SELECT * FROM datos_pros.sc_archciud WHERE cuenta LIKE "%' + $_CIUPACIW + '%"',
+        //     callback: _consultaciudad_SAL7767
+        // });
+        LLAMADO_DLL({
+            dato: [$_CIUPACIW],
+            callback: _dataSAL7767_04,
+            nombredll: 'SAL7767_04',
+            carpeta: 'SALUD'
         });
     }
 }
 
-function _consultaciudad_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_04(data) {
+    // console.debug(data, 'SAL7767_04');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPCIUDW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#ciudadd_110c").val($_DESCRIPCIUDW);
+        _datopais_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarciudad_7767();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cuenta.trim() == $_CIUPACIW) {
-                $_DESCRIPCIUDW = results[i].nombre;
-                $("#ciudadd_110c").val($_DESCRIPCIUDW);
-
-                _datopais_7767();
-
-            } else if (i == results.length - 1) {
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarciudad_7767();
-            }
-        }
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarciudad_7767();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
@@ -1720,45 +1720,60 @@ function _evaluarpais_7767() {
 
 function _mostrarpais_66717() {
     $_PAISPACIW = $("#pais_110c").val();
-    _consultaSql({
-        db: 'datos_pros',
-        sql: 'SELECT * FROM datos_pros.sc_pairip WHERE cod_pair LIKE "%' + $_PAISPACIW + '%"',
-        callback: _consultapais_SAL7767
+
+    LLAMADO_DLL({
+        dato: [$_PAISPACIW, $_ADMINW],
+        callback: _dataSAL7767_05,
+        nombredll: 'SAL7767_05',
+        carpeta: 'SALUD'
     });
-    // LLAMADO_DLL({
-    //     dato: [$_PAISPACIW, $_ADMINW],
-    //     callback: _dataSAL7767_05,
-    //     nombredll: 'SAL7767_05',
-    //     carpeta: 'SALUD'
-    //     });
 }
 
-function _consultapais_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_05(data) {
+    // console.debug(data, 'SAL7767_05');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPPAISW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#paisd_110c").val($_DESCRIPPAISW);
+        $("#ocupacion_110c").val('9998');
+        _evaluarocupacion_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _datopais_7767();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_pair.trim() == $_PAISPACIW) {
-                console.log('encuentra pais');
-                $_DESCRIPPAISW = results[i].descrip_pair;
-                $("#paisd_110c").val($_DESCRIPPAISW);
-                $("#ocupacion_110c").val('9998');
-                _evaluarocupacion_7767();
-
-            } else if (i == results.length - 1) {
-                console.log('no encuentra pais');
-                CON851('01', '01', null, 'error', 'error');
-                _datopais_7767();
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra pais');
-            CON851('01', '01', null, 'error', 'error');
-            _datopais_7767();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
+
+// function _consultapais_SAL7767(error, results, fileds) {
+//     console.debug(results);
+//     if (error) throw error;
+//     else {
+//         console.debug(results, results.length);
+//         for (var i in results) {
+//             if (results[i].cod_pair.trim() == $_PAISPACIW) {
+//                 console.log('encuentra pais');
+//                 $_DESCRIPPAISW = results[i].descrip_pair;
+//                 $("#paisd_110c").val($_DESCRIPPAISW);
+//                 $("#ocupacion_110c").val('9998');
+//                 _evaluarocupacion_7767();
+
+//             } else if (i == results.length - 1) {
+//                 console.log('no encuentra pais');
+//                 CON851('01', '01', null, 'error', 'error');
+//                 _datopais_7767();
+//             }
+//         }
+//         if (results.length == 0) {
+//             console.log('1 no encuentra pais');
+//             CON851('01', '01', null, 'error', 'error');
+//             _datopais_7767();
+//         }
+//     }
+// }
 
 function _evaluarocupacion_7767() {
     validarInputs({
@@ -1786,38 +1801,56 @@ function _datoocupacion_7767() {
 }
 
 function consultarocupacion_7767() {
-    _consultaSql({
-        db: 'datos_pros',
-        sql: 'SELECT * FROM datos_pros.sc_archocu WHERE cod_ocu LIKE "%' + $_OCUPPACIW + '%"',
-        callback: _consultaocupacion_SAL7767
+    LLAMADO_DLL({
+        dato: [$_OCUPPACIW],
+        callback: _dataSAL7767_06,
+        nombredll: 'SAL7767_06',
+        carpeta: 'SALUD'
     });
 }
 
-function _consultaocupacion_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_06(data) {
+    // console.debug(data, 'SAL7767_06');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPOCUPAW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#ocupaciond_110c").val($_DESCRIPOCUPAW);
+        _evaluarestrato_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarocupacion_7767();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_ocu.trim() == $_OCUPPACIW) {
-                console.log('encuentra ocupacion');
-                $_DESCRIPPAISW = results[i].nombre_ocu;
-                $("#ocupaciond_110c").val($_DESCRIPPAISW);
-                _evaluarestrato_7767();
-
-            } else if (i == results.length - 1) {
-                console.log('no encuentra ocupacion');
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarocupacion_7767();
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra ocupacion');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarocupacion_7767();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
+// function _consultaocupacion_SAL7767(error, results, fileds) {
+//     console.debug(results);
+//     if (error) throw error;
+//     else {
+//         console.debug(results, results.length);
+//         for (var i in results) {
+//             if (results[i].cod_ocu.trim() == $_OCUPPACIW) {
+//                 console.log('encuentra ocupacion');
+//                 $_DESCRIPPAISW = results[i].nombre_ocu;
+//                 $("#ocupaciond_110c").val($_DESCRIPPAISW);
+//                 _evaluarestrato_7767();
+
+//             } else if (i == results.length - 1) {
+//                 console.log('no encuentra ocupacion');
+//                 CON851('01', '01', null, 'error', 'error');
+//                 _evaluarocupacion_7767();
+//             }
+//         }
+//         if (results.length == 0) {
+//             console.log('1 no encuentra ocupacion');
+//             CON851('01', '01', null, 'error', 'error');
+//             _evaluarocupacion_7767();
+//         }
+//     }
+// }
 
 function _evaluarestrato_7767() {
     var estrato = [
@@ -1983,37 +2016,48 @@ function _datoeducacion_7767() {
         $("#colegiod_110c").val($_DESCRIPCOLEGIOW);
         _evaluaretnia_7767();
     } else {
-
-        // _consultaSql({
-        //     db: 'datos_pros',
-        //     sql: 'SELECT * FROM datos_pros.sc_coleg WHERE codigo LIKE "%' + $_INSTITUTOPACIW + '%"',
-        //     callback: _consultacolegio_SAL7767
-        // });
-        _consultaSql({
-            db: 'datos_pros',
-            sql: 'SELECT * FROM sc_coleg WHERE CONCAT(tipo_coleg, cod_coleg) LIKE "' + $_INSTITUTOPACIW + '"',
-            callback: _consultacolegio_SAL7767
+        LLAMADO_DLL({
+            dato: [$_INSTITUTOPACIW],
+            callback: _dataSAL7767_07,
+            nombredll: 'SAL7767_07',
+            carpeta: 'SALUD'
         });
     }
 }
 
-function _consultacolegio_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_07(data) {
+    // console.debug(data, 'SAL7767_07');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPCOLEGIOW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#colegiod_110c").val($_DESCRIPCOLEGIOW);
+        _evaluaretnia_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarcolegio_7767();
+    }
     else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarcolegio_7767();
-
-        } else {
-
-            $("#colegiod_110c").val(results[0].descrip_coleg);
-            _evaluaretnia_7767();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
+// function _consultacolegio_SAL7767(error, results, fileds) {
+//     console.debug(results);
+//     if (error) throw error;
+//     else {
+//         console.debug(results, results.length);
+//         if (results.length == 0) {
+//             CON851('01', '01', null, 'error', 'error');
+//             _evaluarcolegio_7767();
 
+//         } else {
+
+//             $("#colegiod_110c").val(results[0].descrip_coleg);
+//             _evaluaretnia_7767();
+//         }
+//     }
+// }
 
 function _evaluaretnia_7767() {
     validarInputs({
@@ -2094,8 +2138,8 @@ function _validacionesetnia_7767() {
                 // CON851('4J', '4J', null, 'error', 'error');
                 //// SE DEVUELVE A SELECCIONAR GRUPO ETNICO 
             }
-        });        
-        
+        });
+
 
     } else if ((($_ETNIAPACIW == '1') || ($_ETNIAPACIW == '2')) && ($_NITUSU != '0845000038')) {
 
@@ -2115,7 +2159,7 @@ function _validacionesetnia_7767() {
                 _validarresguardos_SAL7767();
             }
         });
-        
+
     } else {
         setTimeout(_evaluartipoafiliado_7767, 300);
     }
@@ -2284,57 +2328,31 @@ function _validarciudadaseg_7767() {
     if (($_CIUDASEGPACIW == '00000') || ($_CIUDASEGPACIW.trim() == '')) {
         datodesplazado_7767();
     } else {
-        // LLAMADO_DLL({
-        //     dato: [$_CIUDASEGPACIW],
-        //     callback: _dataSAL7767_045,
-        //     nombredll: 'SAL7767_04',
-        //     carpeta: 'SALUD'
-        // });
-        _consultaSql({
-            db: 'datos_pros',
-            sql: 'SELECT * FROM datos_pros.sc_archciud WHERE cuenta LIKE "%' + $_CIUDASEGPACIW + '%"',
-            callback: _consultaciudadaseg_SAL7767
+        LLAMADO_DLL({
+            dato: [$_CIUDASEGPACIW],
+            callback: _dataSAL7767_045,
+            nombredll: 'SAL7767_04',
+            carpeta: 'SALUD'
         });
     }
 }
 
-function _consultaciudadaseg_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_045(data) {
+    // console.debug(data, 'SAL7767_045');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPCIUDASEGW = date[1].trim();
+    if (swinvalid == "00") {
+
+        datodesplazado_7767();
+    }
+    else if (swinvalid == "01") {
+        setTimeout(_validacionestipoafiliado_7767, 500);
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].codigo.trim() == $_INSTITUTOPACIW) {
-                console.log('encuentra colegios');
-                datodesplazado_7767();
-            } else if (i == results.length - 1) {
-                console.log('no encuentra colegios');
-                setTimeout(_validacionestipoafiliado_7767, 500);
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra colegios');
-            setTimeout(_validacionestipoafiliado_7767, 500);
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-
-// function _dataSAL7767_045(data) {
-//     // console.debug(data, 'SAL7767_045');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     $_DESCRIPCIUDASEGW = date[1].trim();
-//     if (swinvalid == "00") {
-
-//         datodesplazado_7767();
-//     }
-//     else if (swinvalid == "01") {
-//         setTimeout(_validacionestipoafiliado_7767, 500);
-//     }
-//     else {
-//         CON852(date[0], date[1], date[2], _toggleNav);
-//     }
-// }
 
 
 function datodesplazado_7767() {
@@ -2369,57 +2387,65 @@ function _datoentidadafiliado_7767() {
         }
 
     } else {
-        _consultaSql({
-            db: 'datos_pros',
-            sql: 'SELECT * FROM datos_pros.sc_archent WHERE cod_ent LIKE "%' + $_EPSPACIW + '%"',
-            callback: _consultaentidades_SAL7767
+        LLAMADO_DLL({
+            dato: [$_EPSPACIW],
+            callback: _dataSAL7767_08,
+            nombredll: 'SAL7767_08',
+            carpeta: 'SALUD'
         });
+        // _consultaSql({
+        //     db: 'datos_pros',
+        //     sql: 'SELECT * FROM datos_pros.sc_archent WHERE cod_ent LIKE "%' + $_EPSPACIW + '%"',
+        //     callback: _consultaentidades_SAL7767
+        // });
     }
 }
 
-function _consultaentidades_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_08(data) {
+    // console.debug(data, 'SAL7767_08');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPENTIPACIW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#epsd_110c").val($_DESCRIPENTIPACIW);
+        _validacionesentidadpaci_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarentidadafiliada_7767();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_ent.trim() == $_EPSPACIW) {
-                console.log('encuentra eps');
-                $_DESCRIPENTIPACIW = results[i].nombre_ent;
-                $("#epsd_110c").val($_DESCRIPENTIPACIW);
-                _validacionesentidadpaci_7767();
-
-
-            } else if (i == results.length - 1) {
-                console.log('no encuentra eps');
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarentidadafiliada_7767();
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra eps');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarentidadafiliada_7767();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-// function _dataSAL7767_08(data) {
-//     // console.debug(data, 'SAL7767_08');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     $_DESCRIPENTIPACIW = date[1].trim();
-//     if (swinvalid == "00") {
-//         $("#epsd_110c").val($_DESCRIPENTIPACIW);
-//         _validacionesentidadpaci_7767();
-//     }
-//     else if (swinvalid == "01") {
-//         CON851('01', '01', null, 'error', 'error');
-//         _evaluarentidadafiliada_7767();
-//     }
+
+// function _consultaentidades_SAL7767(error, results, fileds) {
+//     console.debug(results);
+//     if (error) throw error;
 //     else {
-//         CON852(date[0], date[1], date[2], _toggleNav);
+//         console.debug(results, results.length);
+//         for (var i in results) {
+//             if (results[i].cod_ent.trim() == $_EPSPACIW) {
+//                 console.log('encuentra eps');
+//                 $_DESCRIPENTIPACIW = results[i].nombre_ent;
+//                 $("#epsd_110c").val($_DESCRIPENTIPACIW);
+//                 _validacionesentidadpaci_7767();
+
+
+//             } else if (i == results.length - 1) {
+//                 console.log('no encuentra eps');
+//                 CON851('01', '01', null, 'error', 'error');
+//                 _evaluarentidadafiliada_7767();
+//             }
+//         }
+//         if (results.length == 0) {
+//             console.log('1 no encuentra eps');
+//             CON851('01', '01', null, 'error', 'error');
+//             _evaluarentidadafiliada_7767();
+//         }
 //     }
 // }
+
 
 function _validacionesentidadpaci_7767() {
     if (($_ADMINW == 'ADMIN') || ($_ADMINW == 'GEBC')) {
@@ -2682,103 +2708,47 @@ function _mostrarcotizante_7767() {
 }
 
 function consultarcotizante_7767() {
-    // LLAMADO_DLL({
-    //     dato: [$_IDCOTIPACIW],
-    //     callback: _dataSER810C,
-    //     nombredll: 'SER810C',
-    //     carpeta: 'SALUD'
-    // });
-    _consultaSql({
-        db: 'san2019_13',
-        sql: 'SELECT * FROM san2019_13.sc_pacie WHERE cod_paci LIKE "%' + $_IDCOTIPACIW + '%"',
-        callback: _consultacodigo_SAL7767
+    LLAMADO_DLL({
+        dato: [$_IDCOTIPACIW],
+        callback: _dataSER810C,
+        nombredll: 'SER810C',
+        carpeta: 'SALUD'
     });
+
 }
 
-function _consultacodigo_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_paci.trim() == $_IDCOTIPACIW) {
-                console.log('encuentra');
-                $_DESCRIPCOTIPACW = results[i].descrip_paci;
-                $_PARENTPACIW = results[i].tipo_afil_paci;
-                if (($_PARENTPACIW == '1') || ($_PARENTPACIW == '3')) {
-                    $("#cotizanted_110c").val($_DESCRIPCOTIPACW);
-                    _validatipocotizante_7767()
+function _dataSER810C(data) {
+    // console.debug(data, 'SER810C');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPCOTIPACW = date[1];
+    $_PARENTPACIW = date[2].trim();
+    if (swinvalid == "00") {
+        if (($_PARENTPACIW == '1') || ($_PARENTPACIW == '3')) {
+            $("#cotizanted_110c").val($_DESCRIPCOTIPACW);
+            _validatipocotizante_7767()
 
-                } else {
-                    CON851('03', '03', null, 'error', 'error');
-                    _datocotizante_7767();
-
-                }
-
-            } else if (i == results.length - 1) {
-                console.log('no encuentra');
-                CON851P('08', '08', null, 'error', 'error');
-                $_SWORK = 'S';
-                if ($_SWORK = 'S') {
-                    //// CALL SER110CA
-                    ///// llama nuevamente el maestro de pacientes 
-                    //// GO TO MOSTRAR COTIZANTE 
-                } else {
-                    _evaluarcotizante_7767();
-                }
-
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra');
-            CON851P('08', '08', null, 'error', 'error');
-            $_SWORK = 'S';
-            if ($_SWORK = 'S') {
-                //// CALL SER110CA
-                ///// llama nuevamente el maestro de pacientes 
-                //// GO TO MOSTRAR COTIZANTE 
-            } else {
-                _evaluarcotizante_7767();
-            }
+        } else {
+            CON851('03', '03', null, 'error', 'error');
+            _datocotizante_7767();
         }
     }
+    else if (swinvalid == "01") {
+        CON851P('08', '08', null, 'error', 'error');
+        $_SWORK = 'S';
+        if ($_SWORK = 'S') {
+            //// CALL SER110CA
+            ///// llama nuevamente el maestro de pacientes 
+            //// GO TO MOSTRAR COTIZANTE 
+        } else {
+            _evaluarcotizante_7767();
+        }
+
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
 }
-
-// function _dataSER810C(data) {
-//     // console.debug(data, 'SER810C');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     $_DESCRIPCOTIPACW = date[1];
-//     $_PARENTPACIW = date[2].trim();
-//     if (swinvalid == "00") {
-//         if (($_PARENTPACIW == '1') || ($_PARENTPACIW == '3')) {
-//             $("#cotizanted_110c").val($_DESCRIPCOTIPACW);
-//             _validatipocotizante_7767()
-
-//         } else {
-//             CON851('03', '03', null, 'error', 'error');
-//             _datocotizante_7767();
-
-//         }
-
-//     }
-//     else if (swinvalid == "01") {
-
-//         CON851P('08', '08', null, 'error', 'error');
-//         $_SWORK = 'S';
-//         if ($_SWORK = 'S') {
-//             //// CALL SER110CA
-//             ///// llama nuevamente el maestro de pacientes 
-//             //// GO TO MOSTRAR COTIZANTE 
-//         } else {
-//             _evaluarcotizante_7767();
-//         }
-
-//     }
-//     else {
-//         CON852(date[0], date[1], date[2], _toggleNav);
-//     }
-// }
 
 function _validatipocotizante_7767() {
     if (($_TIPOAFILPACIW == '0') || ($_TIPOAFILPACIW == '1') || ($_TIPOAFILPACIW == '3')) {
@@ -2982,11 +2952,11 @@ function _datopatolcronic_7767() {
         if ($_PATOLCRONICPACIW == '000') {
             _evaluartutela_7767();
         } else {
-           
-            _consultaSql({
-                db: 'datos_pros',
-                sql: 'SELECT * FROM datos_pros.sc_croni WHERE llave_cronic LIKE "%' + $_PATOLCRONICPACIW + '%"',
-                callback: _consultapatologias_SAL7767
+            LLAMADO_DLL({
+                dato: [$_PATOLCRONICPACIW],
+                callback: _dataSAL7767_09,
+                nombredll: 'SAL7767_09',
+                carpeta: 'SALUD'
             });
         }
 
@@ -2997,45 +2967,45 @@ function _datopatolcronic_7767() {
     }
 }
 
-function _consultapatologias_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].llave_cronic.trim() == $_PATOLCRONICPACIW) {
-                console.log('encuentra patologias');
-                _evaluartutela_7767();
-
-            } else if (i == results.length - 1) {
-                console.log('no encuentra patologias');
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarpatologia_7767();
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra patologias');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarpatologia_7767();
-        }
-    }
-}
-
-// function _dataSAL7767_09(data) {
-//     // console.debug(data, 'SAL7767_09');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     if (swinvalid == "00") {
-//         _evaluartutela_7767();
-//     }
-//     else if (swinvalid == "01") {
-//         CON851('01', '01', null, 'error', 'error');
-//         _evaluarpatologia_7767();
-//     }
+// function _consultapatologias_SAL7767(error, results, fileds) {
+//     console.debug(results);
+//     if (error) throw error;
 //     else {
-//         CON852(date[0], date[1], date[2], _toggleNav);
+//         console.debug(results, results.length);
+//         for (var i in results) {
+//             if (results[i].llave_cronic.trim() == $_PATOLCRONICPACIW) {
+//                 console.log('encuentra patologias');
+//                 _evaluartutela_7767();
+
+//             } else if (i == results.length - 1) {
+//                 console.log('no encuentra patologias');
+//                 CON851('01', '01', null, 'error', 'error');
+//                 _evaluarpatologia_7767();
+//             }
+//         }
+//         if (results.length == 0) {
+//             console.log('1 no encuentra patologias');
+//             CON851('01', '01', null, 'error', 'error');
+//             _evaluarpatologia_7767();
+//         }
 //     }
 // }
+
+function _dataSAL7767_09(data) {
+    // console.debug(data, 'SAL7767_09');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == "00") {
+        _evaluartutela_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarpatologia_7767();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
 
 function _evaluartutela_7767() {
     validarInputs({
@@ -3095,50 +3065,36 @@ function _datoclasificacion_7767() {
                 _evaluarpoliconsulta_7767();
             } else {
 
-                // LLAMADO_DLL({
-                //     dato: [$_CODCLASP],
-                //     callback: _dataSAL7767_10,
-                //     nombredll: 'SAL7767_10',
-                //     carpeta: 'SALUD'
-                // });
-                _consultaSql({
-                    db: 'san2019_13',
-                    sql: 'SELECT * FROM san2019_13.sc_clasipaci WHERE cod_clasp LIKE "%' + $_CLASIFPACIW + '%"',
-                    callback: _consultaclasificacion_SAL7767
+                LLAMADO_DLL({
+                    dato: [$_CODCLASP],
+                    callback: _dataSAL7767_10,
+                    nombredll: 'SAL7767_10',
+                    carpeta: 'SALUD'
                 });
+
             }
             break;
     }
 }
 
-function _consultaclasificacion_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataSAL7767_10(data) {
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPCLASIFICACION = date[1].trim();
+    if (swinvalid == "00") {
+        $("#clasifd_110c").val($_DESCRIPCLASIFICACION);
+        $("#mamografia_110c").val('000000');
+        $_ANOULTMAMOPACIW = $("#mamografia_110c").val();
+        _evaluarpoliconsulta_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarclasificacion_7767();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_clasp.trim() == $_CLASIFPACIW) {
-                
-                $_DESCRIPCLASIFICACION = results[i].descrip_clasp;
-                $("#clasifd_110c").val($_DESCRIPCLASIFICACION);
-                $("#mamografia_110c").val('000000');
-                $_ANOULTMAMOPACIW = $("#mamografia_110c").val();
-                _evaluarpoliconsulta_7767();
-
-            } else if (i == results.length - 1) {
-               
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarclasificacion_7767();
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra archivo terceros');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarclasificacion_7767();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-
 
 function _evaluarpoliconsulta_7767() {
     validarInputs({
@@ -3846,7 +3802,12 @@ function _seleccionardiscapacidad_7767(discapacidad) {
         case '4':
         case '5':
         case '6':
-            _evaluarentidadfact_7767();
+            if ($_NOVEDAD7767 == '7') {
+                $("#entidad_110c").val('0');
+                _evaluarentidadfact_7767();
+            } else {
+                _evaluarentidadfact_7767();
+            }
             break;
         default:
             _evaluarobservaciones_7767();
@@ -3857,7 +3818,6 @@ function _seleccionardiscapacidad_7767(discapacidad) {
 
 
 function _evaluarentidadfact_7767() {
-    $("#entidad_110c").val('0');
     validarInputs({
         form: "#ENTIDAD_102",
         orden: "1"
@@ -3900,81 +3860,43 @@ function _validacionentidadfact_7767() {
             _evaluarembarazoriesgo_7767();
             //////////////////
         } else {
-            // LLAMADO_DLL({
-            //     dato: [$_ENTIFACTPACIW],
-            //     callback: _dataSAL7767_11,
-            //     nombredll: 'SAL7767_11',
-            //     carpeta: 'SALUD'
-            // });
-            _consultaSql({
-                db: 'san2019_13',
-                sql: 'SELECT * FROM san2019_13.sc_archter WHERE cod_ter LIKE "%' + $_ENTIFACTPACIW + '%"',
-                callback: _consultaentidad_SAL7767_02
+            LLAMADO_DLL({
+                dato: [$_ENTIFACTPACIW],
+                callback: _dataSAL7767_11,
+                nombredll: 'SAL7767_11',
+                carpeta: 'SALUD'
             });
         }
     }
 }
 
-function _consultaentidad_SAL7767_02(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_ter == $_ENTIFACTPACIW) {
-                console.log('encuentra entidades');
-                $_DESCRIPENTIPACIW = results[i].descrip_ter;
-                $("#entidadd_110c").val($_DESCRIPENTIPACIW);
-                if (($_ENTIFACTPACIW > '0') && ($_ENTIFACTPACIW != $_NITFACTPACIW)) {
-                    $_FECHANITPACIW = moment().format('YYYYMMDD');
-                    $("#fechasistd_110c").val($_FECHANITPACIW);
-                    _evaluarembarazoriesgo_7767();
+function _dataSAL7767_11(data) {
+    // console.log(data, "SAL7767-11");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPENTIPACIW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#entidadd_110c").val($_DESCRIPENTIPACIW);
+        if (($_ENTIFACTPACIW > '0') && ($_ENTIFACTPACIW != $_NITFACTPACIW)) {
+            $_FECHANITPACIW = moment().format('YYYYMMDD');
+            $("#fechasistd_110c").val($_FECHANITPACIW);
+            _evaluarembarazoriesgo_7767();
 
-                } else if ($_NITUSU == '0830092718') {
-                    _evaluarantecendentescancer();
-                } else {
-                    _leernitfact_7767();
-                }
-            } else if (i == results.length - 1) {
-                console.log('no encuentra entidades');
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarentidadfact_7767();
-            }
+        } else if ($_NITUSU == '0830092718') {
+            _evaluarantecendentescancer();
+        } else {
+            _leernitfact_7767();
         }
-        if (results.length == 0) {
-            console.log('1 no encuentra entidades');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarentidadfact_7767();
-        }
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarentidadfact_7767();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
-// function _dataSAL7767_11(data) {
-//     // console.log(data, "SAL7767-11");
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     $_DESCRIPENTIPACIW = date[1].trim();
-//     if (swinvalid == "00") {
-//         $("#entidadd_110c").val($_DESCRIPENTIPACIW);
-//         if (($_ENTIFACTPACIW > '0') && ($_ENTIFACTPACIW != $_NITFACTPACIW)) {
-//             $_FECHANITPACIW = moment().format('YYYYMMDD');
-//             $("#fechasistd_110c").val($_FECHANITPACIW);
-//             _evaluarembarazoriesgo_7767();
-
-//         } else if ($_NITUSU == '0830092718') {
-//             _evaluarantecendentescancer();
-//         } else {
-//             _leernitfact_7767();
-//         }
-//     }
-//     else if (swinvalid == "01") {
-//         CON851('01', '01', null, 'error', 'error');
-//         _evaluarentidadfact_7767();
-//     }
-//     else {
-//         CON852(date[0], date[1], date[2], _toggleNav);
-//     }
-// }
 
 function _evaluarembarazoriesgo_7767() {
     validarInputs({
@@ -4023,45 +3945,31 @@ function _datomedicofami_7767() {
         $("#medicofamd_110c").val($_DESCRIPMEDPACIW);
         _evaluaremail_7767();
     } else {
-        // LLAMADO_DLL({
-        //     dato: [$_MEDFAMIPACIW],
-        //     callback: _dataSAL7767_12,
-        //     nombredll: 'SAL7767_12',
-        //     carpeta: 'SALUD'
-        // });
-        _consultaSql({
-            db: 'san2019_13',
-            sql: 'SELECT * FROM san2019_13.sc_archprof WHERE codigo LIKE "%' + $_MEDFAMIPACIW + '%"',
-            callback: _consultaprofesionales_SAL7767
+        LLAMADO_DLL({
+            dato: [$_MEDFAMIPACIW],
+            callback: _dataSAL7767_12,
+            nombredll: 'SAL7767_12',
+            carpeta: 'SALUD'
         });
     }
 }
-function _consultaprofesionales_SAL7767(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].codigo == $_MEDFAMIPACIW) {
-                console.log('encuentra profesionales');
-                $_DESCRIPMEDPACIW = results[i].descripcion;
-                $("#medicofamd_110c").val($_DESCRIPMEDPACIW);
-                _evaluaremail_7767();
 
-            } else if (i == results.length - 1) {
-                console.log('no encuentra profesionales');
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarmedicofami_7767();
-            }
-        }
-        if (results.length == 0) {
-            console.log('1 no encuentra profesionales');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarmedicofami_7767();
-        }
+function _dataSAL7767_12(data) {
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPMEDPACIW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#medicofamd_110c").val($_DESCRIPMEDPACIW);
+        _evaluaremail_7767();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarmedicofami_7767();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-
 
 function _evaluaremail_7767() {
     validarInputs({
@@ -4310,8 +4218,8 @@ function _mostrardatos_7767() {
     $_MESNACIMPACIW = $_NACIMPACIW.substring(4, 6);
     $_DIANACIMPACIW = $_NACIMPACIW.substring(6, 8);
     $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
-    $_EDADPACW = $_ANOACTUALW - $_ANONACIMPACIW; 
-    
+    $_EDADPACW = $_ANOACTUALW - $_ANONACIMPACIW;
+
     $('#edad_110c').val($_EDADPACW);
 
     $('#gruposang_110c').val($_GRPSANGPACIW);
@@ -4412,9 +4320,6 @@ function _mostrardatos_7767() {
     $('#fechamodif_110c').val($_FECHAMODIFPACIW);
     $('#hrmodif_110c').val($_HORAMODIFPACIW);
 
-    // if(($_NOVEDAD7767 == '8') || ($_NOVEDAD7767 == '7')){
-    //     _validartipopac_7767(); 
-    // }else
     if ($_NOVEDAD7767 == '9') {
         _retiroregistro_7767();
     }
@@ -4425,7 +4330,6 @@ function _retirar() {
 }
 
 function _retiroregistro_7767() {
-    // _consultademostrarinf(); 
     bootbox.confirm({
         size: "small",
         onEscape: false,
@@ -4446,7 +4350,6 @@ function _retiroregistro_7767() {
                 _grabarcorresponsalia();
             }
             else {
-                // _toggleNav();
                 CON850(_dato_novedad_7767);
             }
         }
@@ -4504,8 +4407,6 @@ function _ventanacorresponsalia_7767() {
                 } else {
                     _eliminarregistro();
                 }
-
-                // toastr('Finalizado', 'SER108', 'success');
             }
         }
     });
@@ -4536,9 +4437,6 @@ function _grabardatos_7767() {
 
     LLAMADO_DLL({
         dato: [$_NOVEDAD7767, $_CODPACIW, $_TIPOPACIW, $_LUGARIDPACIW, $_APELLIDO1PACW, $_APELLIDO2PACW, $_NOMBRE1PACW, $_NOMBRE2PACW, $_NACIMPACIW, $_HEMOCLASPAC, $_SEXOPACIW, $_ESTCIVILPACIW, $_NIVESTUPACIW, $_ZONAPACIW, $_PADREPACIW, $_MADREPACIW, $_DIRPACIW, $_TELPACIW, $_CELPACIW, $_CIUPACIW, $_OCUPPACIW, $_PAISPACIW, $_ESTRATOPACIW, $_COPAGOPACIW, $_TIPOPACIW, $_INSTITUTOPACIW, $_ETNIAPACIW, $_COMUNIPACW, $_RESGUARPACIW, $_TIPOAFILPACIW, $_PORTABPACIW, $_CIUDASEGPACIW, $_EPSPACIW, $_CONTRATOPACIW, $_FECHAAFILPACIW, $_FICHAPACIW, $_CARNETPACIW, $_FECHAVENCEPACIW, $_FECHADEMPACIW, $_DEMANINDPACIW, $_IDCOTIPACIW, $_PARENTPACIW, $_VICTICONFLICPACIW, $_PROGEPSPACIW, $_ALTCOSPACIW, $_TUTELAPACIW, $_EMPRESAPACIW, $_CRONICOPACIW, $_PATOLCRONICPACIW, $_CLASIFPACIW, $_ACOMPAPACIW, $_TELACOMPACIW, $_CERTESTUDPACIW, $_PERIESTUDPACIW, $_ULTMAMOPACIW, $_CERTECONOPACIW, $_PERIECOPACIW, $_MULTICONSULPACIW, $_RESTRICCIONPACIW, $_VCMPACIW, $_DERECHOPACIW, $_OBSERVPACIW, $_DISCAPPACIW, $_EMBALTOPACIW, $_ENTIFACTPACIW, $_FECHANITPACIW, $_ANTCANCERPACIW, $_MEDFAMIPACIW, $_EMAILPACIW, $_OPERCREAPACIW, $_FECHACREAPACIW, $_HORACREAPACIW, $_OPERMODIFPACIW, $_FECHAMODIFPACIW, $_HORAMODIFPACIW],
-        // callback: function (data) {
-        //     validarbasesdatos_7767(data, $_CODPACIW)
-        // },
         callback: _dataSAL7767_13,
         nombredll: 'SAL7767_13',
         carpeta: 'SALUD'
@@ -4567,9 +4465,6 @@ function _eliminarregistro() {
 
     LLAMADO_DLL({
         dato: [$_NOVEDAD7767, $_CODPACIW, $_TIPOPACIW, $_LUGARIDPACIW, $_APELLIDO1PACW, $_APELLIDO2PACW, $_NOMBRE1PACW, $_NOMBRE2PACW, $_NACIMPACIW, $_HEMOCLASPAC, $_SEXOPACIW, $_ESTCIVILPACIW, $_NIVESTUPACIW, $_ZONAPACIW, $_PADREPACIW, $_MADREPACIW, $_DIRPACIW, $_TELPACIW, $_CELPACIW, $_CIUPACIW, $_OCUPPACIW, $_PAISPACIW, $_ESTRATOPACIW, $_COPAGOPACIW, $_TIPOPACIW, $_INSTITUTOPACIW, $_ETNIAPACIW, $_COMUNIPACW, $_RESGUARPACIW, $_TIPOAFILPACIW, $_PORTABPACIW, $_CIUDASEGPACIW, $_EPSPACIW, $_CONTRATOPACIW, $_FECHAAFILPACIW, $_FICHAPACIW, $_CARNETPACIW, $_FECHAVENCEPACIW, $_FECHADEMPACIW, $_DEMANINDPACIW, $_IDCOTIPACIW, $_PARENTPACIW, $_VICTICONFLICPACIW, $_PROGEPSPACIW, $_ALTCOSPACIW, $_TUTELAPACIW, $_EMPRESAPACIW, $_CRONICOPACIW, $_PATOLCRONICPACIW, $_CLASIFPACIW, $_ACOMPAPACIW, $_TELACOMPACIW, $_CERTESTUDPACIW, $_PERIESTUDPACIW, $_ULTMAMOPACIW, $_CERTECONOPACIW, $_PERIECOPACIW, $_MULTICONSULPACIW, $_RESTRICCIONPACIW, $_VCMPACIW, $_DERECHOPACIW, $_OBSERVPACIW, $_DISCAPPACIW, $_EMBALTOPACIW, $_ENTIFACTPACIW, $_FECHANITPACIW, $_ANTCANCERPACIW, $_MEDFAMIPACIW, $_EMAILPACIW, $_OPERCREAPACIW, $_FECHACREAPACIW, $_HORACREAPACIW, $_OPERMODIFPACIW, $_FECHAMODIFPACIW, $_HORAMODIFPACIW],
-        // callback: function (data) {
-        //     validarbasesdatos_7767(data, $_CODPACIW)
-        // },
         callback: _dataSAL7767_13,
         nombredll: 'SAL7767_13',
         carpeta: 'SALUD'
@@ -4582,7 +4477,13 @@ function _dataSAL7767_13(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
-        limpiarCajas_7767();
+        if ($_NOVEDAD7767 == '9') {
+            toastr.success('Se ha retirado', 'MAESTRO PACIENTES');
+            limpiarCajas_7767();
+        } else {
+            toastr.success('Se ha guardado', 'MAESTRO PACIENTES');
+            limpiarCajas_7767();
+        }
     }
     else if (swinvalid == "01") {
         CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
@@ -4594,104 +4495,11 @@ function _dataSAL7767_13(data) {
 }
 
 function limpiarCajas_7767() {
-    _toggleNav();
+    // _toggleNav();
+    CON850(_dato_novedad_7767);
     _inputControl('reset');
-    _inputControl('disabled');
-
+    // _inputControl('disabled');
 }
-
-// function validarbasesdatos_7767(data) {
-//     console.debug(data)
-//     loader('hide');
-//     var rdll = data.split('|');
-//     console.log(rdll[0])
-//     if (rdll[0].trim() == '00') {
-//         switch (parseInt($_NOVEDAD7767)) {
-//             case 7:
-//                 var SQL = `INSERT INTO sc_maesart(codigo,descripcion,unidad,referencia) VALUES ('${$_CODARTW}', '${$_DESCRIPARTW}', '${$_UNIDADARTW}', '${$_REFARTW}');`;
-//                 console.log(SQL)
-//                 _consultaSql({
-//                     sql: SQL,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas_7767()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas_7767()
-
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 8:
-//                 var SQL = `UPDATE sc_maesart SET descripcion='${$_DESCRIPARTW}', unidad='${$_UNIDADARTW}', referencia='${$_REFARTW}' WHERE codigo = '${$_CODARTW}'`;
-//                 console.log(SQL)
-//                 _consultaSql({
-//                     sql: SQL,
-
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results, 'resultados')
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas_7767()
-
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas_7767()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 9:
-//                 var SQL = `DELETE FROM sc_maesart WHERE codigo = '${$_CODARTW}'`;
-//                 console.log(SQL)
-
-//                 _consultaSql({
-//                     sql: SQL,
-
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas_7767()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas_7767()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//         }
-
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-
-// }
-
-
 
 
 
