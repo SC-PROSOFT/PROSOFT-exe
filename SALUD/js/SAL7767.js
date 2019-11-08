@@ -32,7 +32,7 @@ $(document).ready(function () {
 
 
     _toggleF8([
-        { input: 'numero', app: '110c', funct: _ventanamaestropacientes_SAL7767 },
+        // { input: 'numero', app: '110c', funct: _ventanamaestropacientes_SAL7767 },
         { input: 'ciudad', app: '110c', funct: _ventanaciudad_SAL7767 },
         { input: 'pais', app: '110c', funct: _ventanapais_SAL7767 },
         { input: 'ocupacion', app: '110c', funct: _ventanaocupaciones_SAL7767 },
@@ -45,139 +45,234 @@ $(document).ready(function () {
         { input: 'medicofam', app: '110c', funct: _ventanaprofesionales_SAL7767 }
 
     ]);
-    _buscarrestriccion_7767();
+    // _ventanaocupaciones_SAL7767();
+    _buscarrestriccion_7767()
 
 });
 
 //////// VENTANAS F8////////////////////////
 
+// function _ventanamaestropacientes_SAL7767(e) {
+//     var $_PACIENTES_7767 = [];
+//     // Cargar FD-PACI
+//     let URL = get_url("APP/" + "SALUD/SER810" + ".DLL");
+//     postData({
+//         datosh: datosEnvio() + localStorage['Usuario'] + "|"
+//     }, URL)
+//         .then((data) => {
+//             loader("hide");
+//             $_PACIENTES_7767 = data;
+//             console.log($_PACIENTES_7767)
+//             if ((e.type == "keydown" && e.which == 119) || e.type == "click") {
+//                 _ventanaDatos_lite_v2({
+//                     titulo: "VENTANA DE PACIENTES",
+//                     data: $_PACIENTES_7767.PACIENTES,
+//                     indice: ["COD", "NOMBRE", "SEXO"],
+//                     mascara: [{
+//                         "COD": 'Identificacion',
+//                         "NOMBRE": 'Nombre',
+//                         "SEXO": "Sexo"
+//                     }],
+//                     minLength: 3,
+//                     callback_esc: function () {
+//                         $("#numero_110c").focus();
+//                     },
+//                     callback: function (data) {
+//                         document.getElementById("numero_110c").value = data.COD.trim();
+//                         // document.getElementById("idpaciented_108").value = data.NOMBRE;
 
-function _ventanamaestropacientes_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos_lite({
-            titulo: 'BUSQUEDA DE PACIENTES',
-            db: $CONTROL,
-            tablaSql: 'sc_pacie',
-            indice: ['cod_paci', 'descrip_paci', 'nacim_paci', 'eps_paci'],
-            mascara: [
-                {
-                    // tipo_id_paci: 'hide',
-                    cod_paci: 'cedula'
-                }
-            ],
-            minLength: 1,
-            callback_esc: function () {
-                $('#numero_110c').focus();
-            },
-            callback: function (data) {
+//                         _enterInput('#numero_110c');
+//                     }
+//                 });
+//             }
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         });
+// }
 
-                $('#numero_110c').val(data.cod_paci.trim());
-                _enterInput('#numero_110c');
+// function _ventanamaestropacientes_SAL7767(e) {
+//     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+//         _ventanaDatos_lite({
+//             titulo: 'BUSQUEDA DE PACIENTES',
+//             db: $CONTROL,
+//             tablaSql: 'sc_pacie',
+//             indice: ['cod_paci', 'descrip_paci', 'nacim_paci', 'eps_paci'],
+//             mascara: [
+//                 {
+//                     // tipo_id_paci: 'hide',
+//                     cod_paci: 'cedula'
+//                 }
+//             ],
+//             minLength: 1,
+//             callback_esc: function () {
+//                 $('#numero_110c').focus();
+//             },
+//             callback: function (data) {
 
-            }
-        });
-    }
-}
+//                 $('#numero_110c').val(data.cod_paci.trim());
+//                 _enterInput('#numero_110c');
+
+//             }
+//         });
+//     }
+// }
 
 function _ventanaciudad_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA CIUDADES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archciud',
-            callback_esc: function () {
-                $("#ciudad_110c").focus();
-            },
-            callback: function (data) {
-
-                $('#ciudad_110c').val(data.cuenta.trim());
-                $('#ciudadd_110c').val(data.nombre.trim());
-                _enterInput('#ciudad_110c');
+    var $_CIUDAD_7767 = [];
+    let URL = get_url("APP/" + "CONTAB/CON809" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_CIUDAD_7767 = data;
+            console.log($_CIUDAD_7767)
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE CONSULTA DE CIUDADES",
+                    columnas: ["COD", "NOMBRE", "PAIS", "NOM_PAIS", "DEPART"],
+                    data: $_CIUDAD_7767.CIUDAD,
+                    callback_esc: function () {
+                        $("#ciudad_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('ciudad_110c').value = data.COD.trim();
+                        document.getElementById('ciudadd_110c').value = data.NOMBRE;
+                        _enterInput('#ciudad_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanapais_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA PAIS RIPS',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_pairip',
-            callback_esc: function () {
-                $("#pais_110c").focus();
-            },
-            callback: function (data) {
-
-                $('#pais_110c').val(data.cod_pair.trim());
-                $('#paisd_110c').val(data.descrip_pair.trim());
-                _enterInput('#pais_110c');
+    var $_PAISRIP_7767 = [];
+    let URL = get_url("APP/" + "SALUD/SER888" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_PAISRIP_7767 = data;
+            console.log($_PAISRIP_7767)
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA PAIS RIPS',
+                    columnas: ["CODIGO", "DESCRIP"],
+                    data: $_PAISRIP_7767.PAISESRIPS,
+                    callback_esc: function () {
+                        $("#pais_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('pais_110c').value = data.CODIGO;
+                        document.getElementById('paisd_110c').value = data.DESCRIP;
+                        _enterInput('#pais_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanaocupaciones_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA CIUDADES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archocu',
-            callback_esc: function () {
-                $("#ocupacion_110c").focus();
-            },
-            callback: function (data) {
-
-                $('#ocupacion_110c').val(data.cod_ocu.trim());
-                $('#ocupaciond_110c').val(data.nombre_ocu.trim());
-                _enterInput('#ocupacion_110c');
+    var $_OCUPACIONES_7767 = [];
+    let URL = get_url("APP/" + "SALUD/SER888" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_OCUPACIONES_7767 = data;
+            console.log($_OCUPACIONES_7767)
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE OCUPACIONES",
+                    columnas: ["COD-OCU", "NOMBRE-OCU"],
+                    data: $_OCUPACIONES_7767.OCUPACIONES,
+                    callback_esc: function () {
+                        $("#ocupacion_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('#ocupacion_110c').value = data.COD - OCU;
+                        document.getElementById('#ocupaciond_110c').value = data.NOMBRE - OCU;
+                        _enterInput('#ocupacion_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
+
 }
 
 function _ventanacolegios_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE INSTITUCIONES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_coleg',
-            callback_esc: function () {
-                $("#colegio_110c").focus();
-            },
-            callback: function (data) {
-                $_TIPO_COLEG = data.tipo_coleg.trim();
-                $_COD_COLEG = data.cod_coleg.trim();
-
-                $('#colegio_110c').val($_TIPO_COLEG + $_COD_COLEG);
-                $('#colegiod_110c').val(data.descrip_coleg.trim());
-                _enterInput('#colegio_110c');
+    var $_COLEGIOS_7767 = [];
+    let URL = get_url("APP/" + "SALUD/SER902" + ".DLL")
+    postData({
+        datash: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader('hide');
+            $_COLEGIOS_7767 = data;
+            console.log($_COLEGIOS_7767)
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE INSTITUCIONES',
+                    columnas: ["CODIGO", "DESCRIP", "CIUDAD"],
+                    data: $_COLEGIOS_7767.COLEGIOS,
+                    callback_esc: function () {
+                        $("#colegio_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('#colegio_110c').value = data.CODIGO.trim();
+                        document.getElementById('#colegiod_110c').value = data.DESCRIP;
+                        _enterInput('#colegio_110c');
+                    }
+                });
             }
+
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanaentidades_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE ENTIDADES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archent',
-            callback_esc: function () {
-                $("#eps_110c").focus();
-            },
-            callback: function (data) {
-                $('#eps_110c').val(data.cod_ent.trim());
-                $('#epsd_110c').val(data.nombre_ent.trim());
-                _enterInput('#eps_110c');
+    var $_ENTIDADES_7767 = [];
+    let URL = get_url("APP/" + "SALUD/SER853" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_ENTIDADES_7767 = data;
+            console.log($_ENTIDADES_7767)
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE ENTIDADES',
+                    columnas: ["COD-ENT", "NOMBRE-ENT", "NIT-ENT"],
+                    data: $_ENTIDADES_7767.ENTIDADES,
+                    callback_esc: function () {
+                        $("#eps_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('#eps_110c').value = data.COD - ENT;
+                        document.getElementById('#epsd_110c').value = data.NOMBRE - ENT;
+                        _enterInput('#eps_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanamaestrodospaci_SAL7767(e) {
@@ -209,21 +304,33 @@ function _ventanamaestrodospaci_SAL7767(e) {
 }
 
 function _ventanapatologias_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE PATOLOGIAS CRONICAS',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_croni',
-            callback_esc: function () {
-                $("#patologiacronica_110c").focus();
-            },
-            callback: function (data) {
-                $('#patologiacronica_110c').val(data.llave_cronic.trim());
-                _enterInput('#patologiacronica_110c');
+    var $_PATOLOGIAS_108 = [];
+    let URL = get_url("APP/" + "SALUD/SER858" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_PATOLOGIAS_108 = data;
+            console.log($_PATOLOGIAS_108)
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE PATOLOGIAS CRONICAS',
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_PATOLOGIAS_108.PATOLOGIAS,
+                    callback_esc: function () {
+                        $("#patologiacronica_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('#patologiacronica_110c').value = data.COD.trim();
+                        _enterInput('#patologiacronica_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanaclasificacion_SAL7767(e) {
@@ -512,6 +619,7 @@ var momentMaskcertecno = IMask($("#fechaecono_110c")[0], {
 });
 
 ///////////////////////// SAL7767///////////////////////////
+
 function _buscarrestriccion_7767() {
 
     $_OPSEGU = "IS767";
@@ -523,7 +631,7 @@ function _buscarrestriccion_7767() {
     });
 }
 function _dataCON904_01(data) {
-    // console.debug(data, "CON904-01");
+    console.debug(data, "CON904-01");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -1660,11 +1768,6 @@ function _datociudad_7767() {
         }
     }
     else {
-        // _consultaSql({
-        //     db: 'datos_pros',
-        //     sql: 'SELECT * FROM datos_pros.sc_archciud WHERE cuenta LIKE "%' + $_CIUPACIW + '%"',
-        //     callback: _consultaciudad_SAL7767
-        // });
         LLAMADO_DLL({
             dato: [$_CIUPACIW],
             callback: _dataSAL7767_04,
@@ -1748,33 +1851,6 @@ function _dataSAL7767_05(data) {
     }
 }
 
-// function _consultapais_SAL7767(error, results, fileds) {
-//     console.debug(results);
-//     if (error) throw error;
-//     else {
-//         console.debug(results, results.length);
-//         for (var i in results) {
-//             if (results[i].cod_pair.trim() == $_PAISPACIW) {
-//                 console.log('encuentra pais');
-//                 $_DESCRIPPAISW = results[i].descrip_pair;
-//                 $("#paisd_110c").val($_DESCRIPPAISW);
-//                 $("#ocupacion_110c").val('9998');
-//                 _evaluarocupacion_7767();
-
-//             } else if (i == results.length - 1) {
-//                 console.log('no encuentra pais');
-//                 CON851('01', '01', null, 'error', 'error');
-//                 _datopais_7767();
-//             }
-//         }
-//         if (results.length == 0) {
-//             console.log('1 no encuentra pais');
-//             CON851('01', '01', null, 'error', 'error');
-//             _datopais_7767();
-//         }
-//     }
-// }
-
 function _evaluarocupacion_7767() {
     validarInputs({
         form: "#OCUPACION_110C",
@@ -1826,31 +1902,7 @@ function _dataSAL7767_06(data) {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-// function _consultaocupacion_SAL7767(error, results, fileds) {
-//     console.debug(results);
-//     if (error) throw error;
-//     else {
-//         console.debug(results, results.length);
-//         for (var i in results) {
-//             if (results[i].cod_ocu.trim() == $_OCUPPACIW) {
-//                 console.log('encuentra ocupacion');
-//                 $_DESCRIPPAISW = results[i].nombre_ocu;
-//                 $("#ocupaciond_110c").val($_DESCRIPPAISW);
-//                 _evaluarestrato_7767();
 
-//             } else if (i == results.length - 1) {
-//                 console.log('no encuentra ocupacion');
-//                 CON851('01', '01', null, 'error', 'error');
-//                 _evaluarocupacion_7767();
-//             }
-//         }
-//         if (results.length == 0) {
-//             console.log('1 no encuentra ocupacion');
-//             CON851('01', '01', null, 'error', 'error');
-//             _evaluarocupacion_7767();
-//         }
-//     }
-// }
 
 function _evaluarestrato_7767() {
     var estrato = [
@@ -2042,22 +2094,7 @@ function _dataSAL7767_07(data) {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-// function _consultacolegio_SAL7767(error, results, fileds) {
-//     console.debug(results);
-//     if (error) throw error;
-//     else {
-//         console.debug(results, results.length);
-//         if (results.length == 0) {
-//             CON851('01', '01', null, 'error', 'error');
-//             _evaluarcolegio_7767();
 
-//         } else {
-
-//             $("#colegiod_110c").val(results[0].descrip_coleg);
-//             _evaluaretnia_7767();
-//         }
-//     }
-// }
 
 function _evaluaretnia_7767() {
     validarInputs({
@@ -3766,13 +3803,7 @@ function _datoobservaciones_7767() {
 }
 
 function _datodiscapacidad_7767() {
-    // var discapacidad = '[{"codigo": "1","descripcion": "SIN DISCAPACI"},{"codigo": "2","descripcion": "DISC.FISICA"},{"codigo": "3", "descripcion": "DISC.AUDITIVA"},{"codigo": "4","descripcion": "DISC.VISUAL"},{"codigo": "5","descripcion": "DISC.MENTAL"},{"codigo": "6","descripcion": "DISC.COGNITIV"}]'
-    // var discapacidades = JSON.parse(discapacidad);
-    // POPUP({
-    //     array: discapacidades,
-    //     titulo: 'TIPO DE DISCAPACIDAD'
-    // },
-    //     _seleccionardiscapacidad_7767);
+
     var discapacidad = [
         { "COD": "1", "DESCRIP": "SIN DISCAPACI" },
         { "COD": "2", "DESCRIP": "DISC.FISICA" },
@@ -4473,7 +4504,7 @@ function _eliminarregistro() {
 
 
 function _dataSAL7767_13(data) {
-    // console.debug(data, 'SAL7767_13');
+    console.debug(data, 'SAL7767_13');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -4496,8 +4527,9 @@ function _dataSAL7767_13(data) {
 
 function limpiarCajas_7767() {
     // _toggleNav();
-    CON850(_dato_novedad_7767);
     _inputControl('reset');
+    CON850(_dato_novedad_7767);
+
     // _inputControl('disabled');
 }
 
