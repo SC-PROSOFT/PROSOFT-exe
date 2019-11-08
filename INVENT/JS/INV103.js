@@ -542,33 +542,35 @@ function _dato0() {
 function _leergrupo() {
     $_GRUPOARTW = $("#grupo_103").val().trim();
     $_LLAVEGRUPOARTW = $_TIPOARTW + $_GRUPOARTW;
-
-    _consultaSql({
-        db: 'topalxe19_13',
-        sql: 'SELECT * FROM sc_grupoinv WHERE CONCAT(tipo_grupo, codigo_grupo) LIKE "' + $_LLAVEGRUPOARTW + '"',
-        callback: _consultagrupoinv_INV103_03
+    LLAMADO_DLL({
+        dato: [$_LLAVEGRUPOARTW],
+        callback: _dataINV103_02,
+        nombredll: 'INV103_02',
+        carpeta: 'INVENT'
     });
 }
 
-function _consultagrupoinv_INV103_03(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            $("#grupo_103").val("");
-            _evaluargrupo();
-
-        } else {
-            $('#grupod_103').val(results[0].descripcion_grupo);
-            if ((parseInt($_TIPOARTW) < "2") || (parseInt($_TIPOARTW) == "4")) {
-                $("#T91").css("display", "none");
-            }
-            else {
-                console.debug('no hidden vida-l');
-            }
+function _dataINV103_02(data) {
+    // console.debug(data, 'perform leer grupo');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPGRUPO = date[1].trim();
+    if (swinvalid == "00") {
+        $("#grupod_103").val($_DESCRIPGRUPO);
+        if ((parseInt($_TIPOARTW) < 2) || (parseInt($_TIPOARTW) == 4)) {
+            $("#T91").css("display", "none");
         }
+        else {
+            console.debug('no hidden vida-l');
+        }
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        $("#grupo_103").val("");
+        _evaluargrupo();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
@@ -582,31 +584,33 @@ function _mostrarclase() {
         $_TIPOUSO = '1';
         $_CODUSO = $_CLASEARTW;
         $_LLAVE_USOW = $_TIPOUSO + $_CODUSO;
-        _consultaSql({
-            db: 'topalxe19_13',
-            sql: 'SELECT * FROM sc_archuso WHERE CONCAT(tipo_uso, cod_uso) LIKE "' + $_LLAVE_USOW + '"',
-            callback: _perform2_INV103
+        LLAMADO_DLL({
+            dato: [$_LLAVE_USOW],
+            callback: _perform2,
+            nombredll: 'INV103_04',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function  _perform2_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'Error');
-            if ($_NOVEDAD == 7) {
-                _datoclase();
-            }
-
-        } else {
-            // $('#clased_103').val(results[0].descrip_uso);
-            // _leerarticulo();
+function _perform2(data) {
+    // console.debug(data, 'perform mostrar clase');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPUSO = date[1].trim();
+    if (swinvalid == "00") {
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'Error');
+        if ($_NOVEDAD == 7) {
+            _datoclase();
         }
     }
+    else {
+        CON852(date[0], date[1], date[3], _toggleNav);
+    }
 }
+
 
 function _ventanaclave() {
     if ($_NITUSU == "017355476") {
@@ -865,31 +869,36 @@ function _evaluargrupo() {
 function _leergrupol() {
     $_GRUPOARTW = $('#grupo_103').val();
     $_LLAVEGRUPOARTW = $_TIPOARTW + $_GRUPOARTW;
-    _consultaSql({
-        db: $CONTROL,
-        sql: 'SELECT * FROM sc_grupoinv WHERE CONCAT(tipo_grupo, codigo_grupo) LIKE "' + $_LLAVEGRUPOARTW + '"',
-        callback: _consultagrupoinv_INV103_01
+    LLAMADO_DLL({
+        dato: [$_LLAVEGRUPOARTW],
+        callback: _dataINV103_02,
+        nombredll: 'INV103_02',
+        carpeta: 'INVENT'
     });
 }
 
-function _consultagrupoinv_INV103_01(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            if ($_NOVEDAD == 7) {
-                CON851('01', '01', null, 'error', 'error');
-                $("#grupo_103").val("");
-                _evaluargrupo();
-            }
-            else {
-                _leergrupol2();
-            }
-        } else {
-            $('#grupod_103').val(results[0].descripcion_grupo);
+function _dataINV103_02(data) {
+    console.debug(data, 'INV103_02');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPGRUPO = date[1].trim();
+    if (swinvalid == "00") {
+        console.debug("envio a la otra caja");
+        $('#grupod_103').val($_DESCRIPGRUPO);
+        _leergrupol2();
+    }
+    else if (swinvalid == "01") {
+        if ($_NOVEDAD == 7) {
+            CON851('01', '01', null, 'error', 'error');
+            $("#grupo_103").val("");
+            _evaluargrupo();
+        }
+        else {
             _leergrupol2();
         }
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
@@ -961,26 +970,29 @@ function _evaluarclase() {
 function _consultagrupo() {
     $_GRUPOARTW = $('#grupo_103').val();
     $_LLAVEGRUPOARTW = $_TIPOARTW + $_GRUPOARTW;
-    _consultaSql({
-        db: $CONTROL,
-        sql: 'SELECT * FROM sc_grupoinv WHERE CONCAT(tipo_grupo, codigo_grupo) LIKE "' + $_LLAVEGRUPOARTW + '"',
-        callback: _consultagrupoinv_INV103_02
+    LLAMADO_DLL({
+        dato: [$_LLAVEGRUPOARTW],
+        callback: _dataINV103_023,
+        nombredll: 'INV103_02',
+        carpeta: 'INVENT'
     });
 }
 
-function _consultagrupoinv_INV103_02(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_023(data) {
+    // console.debug(data, 'INV103_02');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPGRUPO = date[1].trim();
+    if (swinvalid == "00") {
+        $('#grupod_103').val($_DESCRIPGRUPO);
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        $("#grupo_103").val("");
+        _evaluargrupo();
+    }
     else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            $("#grupo_103").val("");
-            _evaluargrupo();
-
-        } else {
-            $('#grupod_103').val(results[0].descripcion_grupo);
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
@@ -997,34 +1009,37 @@ function _mostrarclasel() {
         $_TIPOUSO = "1";
         $_CODUSO = $_CLASEARTW;
         $_LLAVE_USOW = $_TIPOUSO + $_CODUSO;
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_archuso WHERE CONCAT(tipo_uso, cod_uso) LIKE "' + $_LLAVE_USOW + '"',
-            callback: _consultaclaseuso_INV103_01
+        LLAMADO_DLL({
+            dato: [$_LLAVE_USOW],
+            callback: _dataINV103_04,
+            nombredll: 'INV103_04',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultaclaseuso_INV103_01(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            // CON851('01', '01', null, 'error', 'Error');
-            if ($_NOVEDAD == '7') {
-                _datoclase();
-            }
-            else {
-                _leerarticulo();
-            }
-        } else {
-            $('#clased_103').val(results[0].descrip_uso);
+function _dataINV103_04(data) {
+    // console.debug(data, "INV103_04");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPUSO = date[1].trim();
+    if (swinvalid == "00") {
+        $('#clased_103').val($_DESCRIPUSO);
+        _leerarticulo();
+    }
+    else if (swinvalid == "01") {
+        // CON851('01', '01', null, 'error', 'Error');
+        if ($_NOVEDAD == '7') {
+            _datoclase();
+        }
+        else {
             _leerarticulo();
         }
     }
+    else {
+        CON852(date[0], date[1], date[3], _toggleNav);
+    }
 }
-
 
 function _buscarclase() {
     console.log("buscar2clase");
@@ -1401,25 +1416,31 @@ function _leeruso() {
     else {
         $_TIPOUSO = "2";
         $_LLAVE_USOW = $_TIPOUSO + $_USOARTW;
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_archuso WHERE CONCAT(tipo_uso, cod_uso) LIKE "' + $_LLAVE_USOW + '"',
-            callback: _consultauso_INV103_02
+        LLAMADO_DLL({
+            dato: [$_LLAVE_USOW],
+            callback: _dataINV103_11,
+            nombredll: 'INV103_11',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultauso_INV103_02(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_11(data) {
+    // console.log(data, "INV103_11");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPUSO2 = date[1].trim();
+    if (swinvalid == "00") {
+        $('#usod_103').val($_DESCRIPUSO2);
+        _evaluaringactivo();
+        // _evaluarvisualizarweb();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluaruso();
+    }
     else {
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            _evaluaruso();
-        } else {
-            $('#usod_103').val(results[0].descrip_uso);
-            _evaluaringactivo();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
@@ -1440,34 +1461,30 @@ function _leeringrediente() {
         _evaluarnitprove();
     }
     else {
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_ingreact WHERE cod_ingr_act LIKE "%' + $_INGACTARTW + '%"',
-            callback: _consultaingactivo_INV103
+        LLAMADO_DLL({
+            dato: [$_INGACTARTW],
+            callback: _dataINV103_06,
+            nombredll: 'INV103_06',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultaingactivo_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_06(data) {
+    // console.debug(data, 'INV103_06');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPINGACT = date[1].trim();
+    if (swinvalid == "00") {
+        $('#ingactivod_103').val($_DESCRIPINGACT);
+        _evaluarnitprove();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluaringactivo();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_ingr_act.trim() == $_INGACTARTW) {
-                $_DESCRIPINGACT = results[i].descripcion_ing_act;
-                $('#ingactivod_103').val($_DESCRIPINGACT);
-                _evaluarnitprove();
-
-            } else if (i == results.length - 1) {
-                CON851('01', '01', null, 'error', 'error');
-                _evaluaringactivo();
-            }
-        }
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            _evaluaringactivo();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
@@ -1488,38 +1505,32 @@ function _leerpreveedor() {
         _evaluarotros();
     }
     else {
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_archter WHERE cod_ter LIKE "%' + $_NITARTW + '%"',
-            callback: _consultaterceros_INV103
+        LLAMADO_DLL({
+            dato: [$_NITARTW],
+            callback: _dataINV103_07,
+            nombredll: 'INV103_07',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultaterceros_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_07(data) {
+    // console.log(data, "INV103_07");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPTER = date[1].trim();
+    if (swinvalid == "00") {
+        $('#proveedorp_103').val($_DESCRIPTER);
+        _evaluarotros();
+    }
+    else if (swinvalid = "01") {
+        CON851('', 'No existe tercero', null, 'error', 'Error');
+        $('#proveedor_103').val('');
+        $('#proveedorp_103').val('');
+        _evaluarnitprove();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_ter == $_NITARTW) {
-                $_DESCRIPTER = results[i].descrip_ter;
-                $('#proveedorp_103').val($_DESCRIPTER);
-                _evaluarotros();
-
-            } else if (i == results.length - 1) {
-                CON851('', 'No existe tercero', null, 'error', 'Error');
-                $('#proveedor_103').val('');
-                $('#proveedorp_103').val('');
-                _evaluarnitprove();
-            }
-        }
-        if (results.length == 0) {
-            CON851('', 'No existe tercero', null, 'error', 'Error');
-            $('#proveedor_103').val('');
-            $('#proveedorp_103').val('');
-            _evaluarnitprove();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
@@ -1587,39 +1598,33 @@ function _leermarca() {
         $_DESCRIPMARCAARTW = '';
     }
     else {
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_marcas WHERE llave_marca LIKE "%' + $_CODMARCAARTW + '%"',
-            callback: _consultamarcas_INV103
+        LLAMADO_DLL({
+            dato: [$_CODMARCAARTW],
+            callback: _dataINV103_08,
+            nombredll: 'INV103_08',
+            carpeta: 'INVENT'
         });
-
     }
 }
 
-function _consultamarcas_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_08(data) {
+    // console.debug(data, "INV103_08");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPMARCAARTW = date[1].trim();
+    if (swinvalid == "00") {
+        $("#marcad_103").val($_DESCRIPMARCAARTW);
+        $_DESCRIPMARCAW = $_DESCRIPMARCAARTW;
+        _evaluarrefencia();
+    }
+    else if (swinvalid == "01") {
+        CON851('02', '02', null, 'error', 'error');
+        _evaluarmarca();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].llave_marca.trim() == $_CODMARCAARTW) {
-                $_DESCRIPMARCAARTW = results[i].descrip_marca;
-                $("#marcad_103").val($_DESCRIPMARCAARTW);
-                $_DESCRIPMARCAW = $_DESCRIPMARCAARTW;
-                _evaluarrefencia();
-
-            } else if (i == results.length - 1) {
-                CON851('02', '02', null, 'error', 'error');
-                _evaluarmarca();
-            }
-        }
-        if (results.length == 0) {
-            CON851('02', '02', null, 'error', 'error');
-            _evaluarmarca();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
-
 
 function _evaluarrefencia() {
     validarInputs({
@@ -1822,35 +1827,31 @@ function _validarpoliticas() {
             $_DESCRIPPOL = '';
             $('#politicad_103').val($_DESCRIPPOL);
         } else {
-            _consultaSql({
-                db: $CONTROL,
-                sql: 'SELECT * FROM sc_archpol WHERE cod_pol LIKE "%' + $_POLARTW + '%"',
-                callback: _consultapoliticas_INV103
+            LLAMADO_DLL({
+                dato: [$_POLARTW],
+                callback: _dataINV103_09,
+                nombredll: 'INV103_09',
+                carpeta: 'INVENT'
             });
         }
     }
 }
 
-function _consultapoliticas_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_09(data) {
+    // console.log(data, "INV103_09");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPPOL = date[1].trim();
+    if (swinvalid == "00") {
+        $("#politicad_103").val($_DESCRIPPOL);
+        _evaluarmerma();
+    }
+    else if (swinvalid == "01") {
+        CON851('', 'No existe la politica', null, 'warning', 'Advertencia!');
+        _evaluarpoliticas();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_pol.trim() == $_POLARTW) {
-                $_DESCRIPPOL = results[i].descrip_pol;
-                $("#politicad_103").val($_DESCRIPPOL);
-                _evaluarmerma();
-
-            } else if (i == results.length - 1) {
-                CON851('', 'No existe la politica', null, 'warning', 'Advertencia!');
-                _evaluarpoliticas();
-            }
-        }
-        if (results.length == 0) {
-            CON851('', 'No existe la politica', null, 'warning', 'Advertencia!');
-            _evaluarpoliticas();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
@@ -2144,37 +2145,34 @@ function _validarcosto() {
         _evaluarcosto();
     }
     else {
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_archcos WHERE cod_costo LIKE "%' + $_CCOSTOARTW + '%"',
-            callback: _consultacostos_INV103
+        LLAMADO_DLL({
+            dato: [$_CCOSTOARTW],
+            callback: _dataINV103_10,
+            nombredll: 'INV103_10',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultacostos_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_10(data) {
+    // console.log(data, "INV103_10");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_NOMBRECOSTO = date[1].trim();
+    if (swinvalid == "00") {
+        $("#ccostosd_103").val($_NOMBRECOSTO);
+        if (parseInt($_TIPOARTW) > 1) {
+            _evaluarvidautil();
+        } else {
+            _evaluarvlrreferencia();
+        }
+    }
+    else if (swinvalid == "01") {
+        CON851('02', '02', null, 'error', 'error');
+        _evaluarcosto();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].cod_costo.trim() == $_CCOSTOARTW) {
-                $_NOMBRECOSTO = results[i].nombre_costo;
-                $("#ccostosd_103").val($_NOMBRECOSTO);
-                if (parseInt($_TIPOARTW) > 1) {
-                    _evaluarvidautil();
-                } else {
-                    _evaluarvlrreferencia();
-                }
-            } else if (i == results.length - 1) {
-                CON851('02', '02', null, 'error', 'error');
-                _evaluarcosto();
-            }
-        }
-        if (results.length == 0) {
-            CON851('02', '02', null, 'error', 'error');
-            _evaluarcosto();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
@@ -2308,6 +2306,11 @@ function _datocuenta() {
     }
 }
 
+function _devolverprimerpag_103(){
+    $('#tab1').click();
+    _evaluacodigocontable(); 
+}
+
 function _evaluacodigocontable() {
     validarInputs({
         form: '#CONTABLE_103',
@@ -2331,53 +2334,49 @@ function _leercuenta() {
     else {
         $_TIPOMAE = "4";
         $_LLAVEMAE = $_CTAARTW + $_TIPOMAE;
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_archmae WHERE CONCAT(cta_mae, tipo_mae) LIKE "' + $_LLAVEMAE + '"',
-            callback: _consultaplandecuentas_INV103
+        LLAMADO_DLL({
+            dato: [$_LLAVEMAE],
+            callback: _dataINV103_12,
+            nombredll: 'INV103_12',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultaplandecuentas_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            // VA A DATO-CUENTA  HAY UN IF (TIPO-ART > 0) OPCION-GRABAR
-            // _evaluacodigocontable()
-            _datocuenta();
-        } else {
-            $_NOMBREMAE = results[0].nombre_mae;
-            $_CTAMAE = results[0].cta_mae;
-            $_MAYOR1MAE = $_CTAMAE.substring(0, 1);
-            $_PORCENTRETMAE = results[0].porcent_ret_mae;
-            // $_PORCENTRETMAE = $_PORCENTRETMAES.substring(0, 2);
-            $('#contablep_103').val($_NOMBREMAE);
+function _dataINV103_12(data) {
+    // console.debug(data, "INV103_12");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_NOMBREMAE = date[1].trim();
+    $_CTAMAE = date[2].trim();
+    console.log($_CTAMAE, 'ctamaes')
+    $_MAYOR1MAE = $_CTAMAE.substring(0, 1);
+    console.log($_MAYOR1MAE, 'mayor1mae')
+    $_PORCENTRETMAE = date[3].trim();
+    // $_PORCENTRETMAE = $_PORCENTRETMAES.substring(0, 2);
+    if (swinvalid == "00") {
+        $("#contablep_103").val($_NOMBREMAE);
 
-            if (($_MAYOR1MAE == '4') && (($_NITUSU == '0800202522') || (parseInt($_PORCENTRETMAE) > 0)) && ($_PORCENTRETMAE != $_TARW)) {
-                CON851('', 'Tarifa diferente a cuenta contable', null, 'warning', 'Advertencia!');
+        if (($_MAYOR1MAE == '4') && (($_NITUSU == '0800202522') || (parseInt($_PORCENTRETMAE) > 0)) && ($_PORCENTRETMAE != $_TARW)) {
+            CON851('', 'Tarifa diferente a cuenta contable', null, 'warning', 'Advertencia!');
 
-                if ($_NITUSU = '0800202522') {
-                    _leeriva();
-                }
-                else {
-                    _datocuenta();
-                }
-            }
-            else if (($_TIPOEMPRESA == 'H') || ($_TIPOEMPRESA == 'h')) {
-
-                _evaluarpresentacionsalud();
-
-            }
-            else {
+            if ($_NITUSU = '0800202522') {
                 _leeriva();
+            }else {
+                _datocuenta();
             }
-
-
+        } else if ($_TIPOEMPRESA == 'H') {
+            _evaluarpresentacionsalud();
+        }else {
+            _leeriva();
         }
+    }else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        // VA A DATO-CUENTA  HAY UN IF (TIPO-ART > 0) OPCION-GRABAR
+        // _evaluacodigocontable()
+        _datocuenta();
+    }else {
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
@@ -2499,16 +2498,27 @@ function _validartablal() {
 function _pestañaproduccion() {
     $('#tab5').click();
     if ($_NOVEDAD == '7') {
-        _evaluaralmacen();
+        if($_TIPOEMPRESA == 'H'){
+            _evaluaralmacensalud()
+        }else{
+            _evaluaralmacen();
+        }
+        
     }
     else {
-        console.debug('falta ')
         _validaciontablaalmacen_103();
     }
 }
-
+function _evaluaralmacensalud() {
+    validarInputs({
+        form: '#validarAlmacen_103',
+        orden: "1"
+    },
+        function () { _evaluarhomologosalud();},
+        _validaralmacen
+    )
+}
 function _evaluaralmacen() {
-
     validarInputs({
         form: '#validarAlmacen_103',
         orden: "1"
@@ -2516,7 +2526,6 @@ function _evaluaralmacen() {
         function () { pestañainicio() },
         _validaralmacen
     )
-
 }
 
 function _validaralmacen() {
@@ -2527,30 +2536,31 @@ function _validaralmacen() {
         _evaluarcodigoarticulo();
 
     } else {
-
-        _consultaSql({
-            db: $CONTROL,
-            sql: 'SELECT * FROM sc_almac WHERE CONCAT(llave_loc, cod_local) LIKE "' + $_ALMACENARTW + '"',
-            callback: _consultaalmacenes_INV103
+        LLAMADO_DLL({
+            dato: [$_ALMACENARTW],
+            callback: _dataINV103_21,
+            nombredll: 'INV103_21',
+            carpeta: 'INVENT'
         });
     }
 }
 
-function _consultaalmacenes_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_21(data) {
+    // console.log(data, "INV103_21");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == "00") {
+        // nuevaconsulta(); 
+        _evaluarcodigoarticulo();
+    }
+    else if (swinvalid = "01") {
+        CON851('01', '01', null, 'error', 'Error');
+        _evaluaralmacen();
+    }
     else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'Error');
-            _evaluaralmacen();
-
-        } else {
-            _evaluarcodigoarticulo();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
-
 
 function _evaluarcodigoarticulo() {
 
@@ -2566,29 +2576,34 @@ function _evaluarcodigoarticulo() {
 function _validarcodigoarticulo() {
     $_CODIGOARTW = $("#codigoart_103").val();
 
-    _consultaSql({
-        db: $CONTROL,
-        sql: 'SELECT * FROM sc_maesart WHERE CONCAT(tipo_art, grupo_art, numero_art, clase_art) LIKE "' + $_CODIGOARTW + '"',
-        callback: _consultacodarticulo_INV103
-    });
+    if ($_CODIGOARTW.trim() == '') {
+        $_CODIGOARTW = '';
+        _evaluarcantidadart();
 
-}
-
-function _consultacodarticulo_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
-    else {
-        console.debug(results, results.length);
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'Error');
-            _evaluaralmacen();
-
-        } else {
-            _evaluarcantidadart();
-        }
+    } else {
+        LLAMADO_DLL({
+            dato: [$_CODIGOARTW],
+            callback: _dataINV103_18_01,
+            nombredll: 'INV103_18',
+            carpeta: 'INVENT'
+        });
     }
 }
-
+function _dataINV103_18_01(data) {
+    // console.log(data, "INV103_18_01");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == "00") {
+        _evaluarcantidadart();
+    }
+    else if (swinvalid = "01") {
+        CON851('01', '01', null, 'error', 'Error');
+        _evaluaralmacen();
+    }
+    else {
+        CON852(date[0], date[1], date[3], _toggleNav);
+    }
+}
 
 function _evaluarcantidadart() {
 
@@ -2829,10 +2844,7 @@ function _grabardatos() {
     $_VLRULTCOMPRAARTW.length > 0 ? $_VLRULTCOMPRAARTW = $_VLRULTCOMPRAARTW : $_VLRULTCOMPRAARTW = ' ';
 
     $_FECHAULTCOMPRAARTW = momentMaskFecha.unmaskedValue;
-    console.log($_FECHAULTCOMPRAARTW);
-
     $_FECHACOMPRAALTAARTW = momentMaskFechacompra.unmaskedValue;
-    console.log($_FECHACOMPRAALTAARTW);
 
     if ($_NOVEDAD == '8') {
         $_FECHAMODARTW = moment().format('YYMMDD');
@@ -2881,24 +2893,26 @@ function _grabardatos() {
         $_HORAMODARTW = ' ';
         $_OPERMODARTW = ' ';
     }
+    // $_PRESENTACIONARTW 
+    // $_UNIDADARTW
+    // $_CONCENTRADOARTW 
+    // $_EXSISMEDARTW
+    // $_MEDREGULADOARTW
+    // $_SISDISARTW
+    // $_CLASERIESGOARTW
+    // $_HOMOLOGOARTW
+    // $_HOMOLOGOCODARTW
+    // $_CONVHOMOLOARTW
 
     $_CODARTW = $_TIPOARTW + $_GRUPOARTW + $_NUMEROARTW.padEnd(13, ' ') + $_CLASEARTW;
 
     LLAMADO_DLL({
         dato: [$_NOVEDAD, $_TIPOARTW, $_GRUPOARTW, $_NUMEROARTW, $_CLASEARTW, $_DESCRIPARTW, $_USOARTW, $_VISUALWEBARTW, $_INGACTARTW, $_NITARTW, $_ACOMPARTW, $_CODBARRASARTW, $_OTROSARTW, $_ESTADOARTW, $_CODMARCAARTW, $_DESCRIPMARCAARTW, $_REFARTW, $_DCTOGRALVTAARTW, $_AUTORETARTW, $_PAQUETESARTW, $_UNIDADARTW, $_REPOSARTW, $_UNIDCONVARTW, $_STOCKALMARTW, $_STOCKMINARTW, $_STOCKMAXARTW, $_POLARTW, $_MERMAARTW, $_FORMALIQARTW, $_PESOARTW, $_IVAARTW, $_VLRULTCOMPRAARTW, $_CANTCOMPARTW, $_FECHAULTCOMPRAARTW, $_COMPRAALTAARTW, $_FECHACOMPRAALTAARTW, $_COLORARTW, $_FECHALISTACOMP, $_TALLAARTW, $_PRECIOLISTACOMPRATW, $_CCOSTOARTW, $_VLRREFARTW, $_VLRRAZONABLEARTW, $_VLRRESIDUALARTW, $_VIDAUTILARTW, $_OBSERVFACTARTW, $_UBICAC2ARTW, $_IMPOCONSARTW, $_VLRIMPOCONSARTW, $_CTAARTW, $_OPERELABARTW, $_FECHAELABARTW, $_HORAELABARTW, $_OPERMODARTW, $_FECHAMODARTW, $_HORAMODARTW, $_NOMBRETXT, $_NOMBREDOSTXT],
-
-        callback: function (data) {
-            validarbasesdatos_103(data, $_CODARTW, $_DESCRIPARTW, $_USOARTW, $_VISUALWEBARTW, $_INGACTARTW, $_NITARTW, $_ACOMPARTW, $_CODBARRASARTW, $_OTROSARTW, $_ESTADOARTW, $_CODMARCAARTW, $_DESCRIPMARCAARTW, $_REFARTW, $_DCTOGRALVTAARTW, $_AUTORETARTW, $_PAQUETESARTW, $_UNIDADARTW, $_REPOSARTW, $_UNIDCONVARTW, $_STOCKALMARTW, $_STOCKMINARTW, $_STOCKMAXARTW, $_POLARTW, $_MERMAARTW, $_FORMALIQARTW, $_PESOARTW, $_IVAARTW, $_VLRULTCOMPRAARTW, $_CANTCOMPARTW, $_FECHAULTCOMPRAARTW, $_COMPRAALTAARTW, $_FECHACOMPRAALTAARTW, $_COLORARTW, $_FECHALISTACOMP, $_TALLAARTW, $_PRECIOLISTACOMPRATW, $_CCOSTOARTW, $_VLRREFARTW, $_VLRRAZONABLEARTW, $_VLRRESIDUALARTW, $_VIDAUTILARTW, $_OBSERVFACTARTW, $_UBICAC2ARTW, $_IMPOCONSARTW, $_VLRIMPOCONSARTW, $_CTAARTW, $_OPERELABARTW, $_FECHAELABARTW, $_HORAELABARTW, $_OPERMODARTW, $_FECHAMODARTW, $_HORAMODARTW)
-        },
+        callback: _dataINV103_17,
         nombredll: 'INV103_17',
         carpeta: 'INVENT'
     });
 }
-
-function _retirar() {
-    _cambioregistro();
-}
-
 
 function _retiroregistro() {
     // _cambioregistro();
@@ -2955,111 +2969,37 @@ function _eliminarregistro() {
 
     LLAMADO_DLL({
         dato: [$_NOVEDAD, $_TIPOARTW, $_GRUPOARTW, $_NUMEROARTW, $_CLASEARTW, $_DESCRIPARTW, $_USOARTW, $_VISUALWEBARTW, $_INGACTARTW, $_NITARTW, $_ACOMPARTW, $_CODBARRASARTW, $_OTROSARTW, $_ESTADOARTW, $_CODMARCAARTW, $_DESCRIPMARCAARTW, $_REFARTW, $_DCTOGRALVTAARTW, $_AUTORETARTW, $_PAQUETESARTW, $_UNIDADARTW, $_REPOSARTW, $_UNIDCONVARTW, $_STOCKALMARTW, $_STOCKMINARTW, $_STOCKMAXARTW, $_POLARTW, $_MERMAARTW, $_FORMALIQARTW, $_PESOARTW, $_IVAARTW, $_VLRULTCOMPRAARTW, $_CANTCOMPARTW, $_FECHAULTCOMPRAARTW, $_COMPRAALTAARTW, $_FECHACOMPRAALTAARTW, $_COLORARTW, $_FECHALISTACOMP, $_TALLAARTW, $_PRECIOLISTACOMPRATW, $_CCOSTOARTW, $_VLRREFARTW, $_VLRRAZONABLEARTW, $_VLRRESIDUALARTW, $_VIDAUTILARTW, $_OBSERVFACTARTW, $_UBICAC2ARTW, $_IMPOCONSARTW, $_VLRIMPOCONSARTW, $_CTAARTW, $_OPERELABARTW, $_FECHAELABARTW, $_HORAELABARTW, $_OPERMODARTW, $_FECHAMODARTW, $_HORAMODARTW, $_NOMBRETXT, $_NOMBREDOSTXT],
-        // callback: _dataINV103_17,
-        callback: function (data) {
-            validarbasesdatos_103(data, $_CODARTW)
-        },
+        callback: _dataINV103_17,
         nombredll: 'INV103_17',
         carpeta: 'INVENT'
     });
 }
 
-function validarbasesdatos_103(data, $_CODARTW, $_DESCRIPARTW, $_USOARTW, $_VISUALWEBARTW, $_INGACTARTW, $_NITARTW, $_ACOMPARTW, $_CODBARRASARTW, $_OTROSARTW, $_ESTADOARTW, $_CODMARCAARTW, $_DESCRIPMARCAARTW, $_REFARTW, $_DCTOGRALVTAARTW, $_AUTORETARTW, $_PAQUETESARTW, $_UNIDADARTW, $_REPOSARTW, $_UNIDCONVARTW, $_STOCKALMARTW, $_STOCKMINARTW, $_STOCKMAXARTW, $_POLARTW, $_MERMAARTW, $_FORMALIQARTW, $_PESOARTW, $_IVAARTW, $_VLRULTCOMPRAARTW, $_CANTCOMPARTW, $_FECHAULTCOMPRAARTW, $_COLORARTW, $_FECHALISTACOMP, $_TALLAARTW, $_PRECIOLISTACOMPRATW, $_CCOSTOARTW, $_VLRREFARTW, $_VLRRAZONABLEARTW, $_VLRRESIDUALARTW, $_VIDAUTILARTW, $_OBSERVFACTARTW, $_UBICAC2ARTW, $_IMPOCONSARTW, $_VLRIMPOCONSARTW, $_CTAARTW, $_OPERELABARTW, $_FECHAELABARTW, $_HORAELABARTW, $_OPERMODARTW, $_FECHAMODARTW, $_HORAMODARTW) {
-    console.log(data);
-    loader('hide');
-    var rdll = data.split('|');
-    console.log(rdll[0])
-    if (rdll[0].trim() == '00') {
-        switch (parseInt($_NOVEDAD)) {
-            case 7:
-                var SQL = `INSERT INTO sc_maesart(codigo,descrip_art,unidad_art,ref_art) VALUES ('${$_CODARTW}', '${$_DESCRIPARTW}', '${$_UNIDADARTW}', '${$_REFARTW}');`;
-                console.log(SQL)
-                _consultaSql({
-                    sql: SQL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas103()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas103()
-
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 8:
-                var SQL = `UPDATE sc_maesart SET descrip_art='${$_DESCRIPARTW}', unidad_art='${$_UNIDADARTW}', ref_art='${$_REFARTW}' WHERE CONCAT(tipo_preme, cod_preme) = '${$_CODARTW}'`;
-                console.log(SQL)
-                _consultaSql({
-                    sql: SQL,
-
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results, 'resultados')
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas103()
-
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas103()
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 9:
-                var SQL = `DELETE FROM sc_maesart WHERE CONCAT(tipo_preme, cod_preme) = '${$_CODARTW}'`;
-                console.log(SQL)
-
-                _consultaSql({
-                    sql: SQL,
-
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas103()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas103()
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
+function _dataINV103_17(data){
+    console.log(data, "_dataINV103_17");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == "00") {
+        if ($_NOVEDAD7767 == '9') {
+            toastr.success('Se ha retirado', 'MAESTRO ARTICULOS');
+            CON850(_evaluarNovedad); 
+            _inputControl('reset');
+        } else {
+            toastr.success('Se ha guardado', 'MAESTRO ARTICULOS');
+            CON850(_evaluarNovedad); 
+            _inputControl('reset');
         }
-
-    } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+    }else if (swinvalid == "01") {
+        CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
+        _evaluacodigocontable(); 
+    }else {
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
-
 }
 
-function limpiarCajas103() {
-    _toggleNav();
-    _inputControl('reset');
-    _inputControl('disabled');
 
+function _retirar() {
+    _cambioregistro();
 }
 
 function _cambioregistro() {
@@ -3548,7 +3488,7 @@ function _evaluarpresentacionsalud() {
         form: '#PRESENTACION_103',
         orden: "1"
     },
-        function () { _evaluacodigocontable(); },
+        function () { _devolverprimerpag_103(); },
         _presentacionsalud
     )
 }
@@ -3557,25 +3497,28 @@ function _presentacionsalud() {
     $_PRESENTACIONARTW = $('#presentacion_103').val();
     $_TIPOPREME = '1';
     $_LLAVEPREME = $_TIPOPREME + $_PRESENTACIONARTW;
-    _consultaSql({
-        db: $CONTROL,
-        sql: 'SELECT * FROM sc_archpres WHERE CONCAT(tipo_preme, cod_preme) LIKE "' + $_LLAVEPREME + '"',
-        callback: _consultapresentacion_INV103_01
+    LLAMADO_DLL({
+        dato: [$_LLAVEPREME],
+        callback: _dataINV103_19,
+        nombredll: 'INV103_19',
+        carpeta: 'INVENT'
     });
 }
 
-function _consultapresentacion_INV103_01(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_19(data) {
+    console.debug(data, 'INV103_19');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPRESENT = date[1].trim();
+    if (swinvalid == "00") {
+        $('#presentaciond_103').val($_DESCRIPRESENT);
+        _evaluarunidadmedsalud();
+    }
+    else if (swinvalid == "01") {
+        _presentacionsalud();
+    }
     else {
-        if (results.length == 0) {
-            console.log('no encuentra presentacion');
-            CON851('01', '01', null, 'error', 'error');
-            _presentacionsalud();
-        } else {
-            $('#presentaciond_103').val(results[0].descrip_preme);
-            _evaluarunidadmedsalud();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
@@ -3594,26 +3537,29 @@ function _unidadmesalud() {
     $_UNIDADARTW = $('#unidadme_103').val();
     $_TIPOPREME2 = '2';
     $_LLAVEPREME2 = $_TIPOPREME2 + $_UNIDADARTW;
-    _consultaSql({
-        db: $CONTROL,
-        sql: 'SELECT * FROM sc_archpres WHERE CONCAT(tipo_preme, cod_preme) LIKE "' + $_LLAVEPREME2 + '"',
-        callback: _consultapresentacion_INV103_02
+    LLAMADO_DLL({
+        dato: [$_LLAVEPREME2],
+        callback: _dataINV103_19,
+        nombredll: 'INV103_19',
+        carpeta: 'INVENT'
     });
 }
 
-function _consultapresentacion_INV103_02(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_19(data) {
+    console.debug(data, 'INV103_19');
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIUNIDADW = date[1].trim();
+    if (swinvalid == "00") {
+        $('#unidadmed_103').val($_DESCRIUNIDADW);
+        _evaluarconcentradosalud();
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarunidadmedsalud();
+    }
     else {
-        if (results.length == 0) {
-            console.log('no encuentra presentacion');
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarunidadmedsalud();
-        } else {
-
-            $('#unidadmed_103').val(results[0].descrip_preme);
-            _evaluarconcentradosalud();
-        }
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
@@ -3704,47 +3650,33 @@ function _sisdissalud() {
         _evaluarsismedsalud();
 
     } else if (($_SISDISARTW == 'S') || ($_SISDISARTW == 'N')) {
-        _evaluarriesgosalud();
+        if ($_LLAVEGRUPOARTW == '0MQ') {
+            _mostrarclaseriesgo()
+    
+        } else {
+            _evaluarhomologosalud();
+        }
+        // _evaluarriesgosalud();
     }
     else {
         _evaluarsisdissalud();
     }
 }
-function _evaluarriesgosalud() {
-    validarInputs({
-        form: '#CLASERIESGO_103',
-        orden: "1"
-    },
-        function () { _evaluarsisdissalud(); },
-        _riesgosalud
-    )
-}
-function _riesgosalud() {
-
-    if ($_LLAVEGRUPOARTW == '0MQ') {
-        _mostrarclaseriesgo()
-
-    } else {
-        _evaluarhomologosalud();
-    }
-}
 
 function _mostrarclaseriesgo() {
-    loader('hide');
     var riesgos = [
         { "COD": "1", "DESCRIP": "CL 1 RIESGO BAJO" },
         { "COD": "2A", "DESCRIP": "CL 2A RIESGO MODERADO" },
         { "COD": "2B", "DESCRIP": "CL 2B RIESGO ALTO" },
         { "COD": "3", "DESCRIP": "CL 3 RIESGO MUY ALTO" }
     ]
-
     POPUP({
         array: riesgos,
         titulo: 'CLASE DE RIESGO',
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        callback_f: _toggleNav
+        callback_f: _evaluarsisdissalud
     },
         _seleccionarriesgo103);
 }
@@ -3823,34 +3755,30 @@ function _codigohomologosalud() {
     }
 }
 function _evaluarcodhomologo() {
-    _consultaSql({
-        db: $CONTROL,
-        sql: 'SELECT * FROM sc_maesart WHERE homologo_cod_art LIKE "%' + $_HOMOLOGOCODARTW + '%"',
-        callback: _consultahomologo_INV103
+    LLAMADO_DLL({
+        dato: [$_HOMOLOGOCODARTW],
+        callback: _dataINV103_18,
+        nombredll: 'INV103_18',
+        carpeta: 'INVENT'
     });
 }
 
-function _consultaingactivo_INV103(error, results, fileds) {
-    console.debug(results);
-    if (error) throw error;
+function _dataINV103_18(data) {
+    // console.log(data, "INV103_10");
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPARTHOMO = date[1].trim();
+    if (swinvalid == "00") {
+        $("#codhomologod_103").val($_DESCRIPARTHOMO);
+        _evaluarconversionsalud();
+
+    }
+    else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarcodhomologosalud();
+    }
     else {
-        console.debug(results, results.length);
-        for (var i in results) {
-            if (results[i].homologo_cod_art.trim() == $_HOMOLOGOCODARTW) {
-
-                $_DESCRIPARTHOMO = results[i].descrip_art;
-                $("#codhomologod_103").val($_DESCRIPARTHOMO);
-                _evaluarconversionsalud();
-
-            } else if (i == results.length - 1) {
-                CON851('01', '01', null, 'error', 'error');
-                _evaluarcodhomologosalud();
-            }
-        }
-        if (results.length == 0) {
-            CON851('01', '01', null, 'error', 'error');
-            _evaluarcodhomologosalud();
-        }
+        CON852(date[0], date[1], date[3], _toggleNav);
     }
 }
 
