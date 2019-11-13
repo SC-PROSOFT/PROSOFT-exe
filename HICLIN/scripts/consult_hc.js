@@ -583,7 +583,7 @@ function buscar_consulta_externa() {
                 nit = $_USUA_GLOBAL[0].NIT,
                 serv = $_REG_HC.serv_hc,
                 prefijo = $_USUA_GLOBAL[0].PREFIJ;
-                console.log(res)
+            console.log(res)
 
             if (res[0].trim() == "00") {
                 var fecha_ult_consul = res[3];
@@ -609,7 +609,7 @@ function buscar_consulta_externa() {
                         // * 900475095 ips san fernando
 
                         if (([
-                            "892000401", "822007038", "900475095", "800175901", "19381427", "17306492",
+                                "892000401", "822007038", "900475095", "800175901", "19381427", "17306492",
                                 "31841010", "79152952", "72200727", "900030814", "900161116", "900424844",
                                 "74858598", "900988374", "19233740", "900264583", "900475095", "901146885",
                                 "900450008"
@@ -630,8 +630,8 @@ function buscar_consulta_externa() {
             }
         },
         get_url("APP/HICLIN/HC836A.DLL")
-        );
-        
+    );
+
     if (retorno == 2) {
         _cargarEventos("on");
         _toggleNav();
@@ -646,7 +646,7 @@ function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callb
        if folio.lenght!==0 => selecciona folio especifico
        callback: funcion que se ejecuta luego de consultar el json
     */
-   
+
     var llave_dethc_env = '',
         sw_detalle = '  ',
         llave = $_REG_HC.llave_hc;
@@ -681,9 +681,9 @@ function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callb
     }, function (data) {
         var res = data.split('|')
         if (res[0] == '00') {
-            if(res[1]=="99"){
-                callback(res[1]=="99")
-            }else{
+            if (res[1] == "99") {
+                callback(res[1])
+            } else {
                 SolicitarDatos({}, callback, get_url("TEMP/" + res[3]))
             }
         } else {

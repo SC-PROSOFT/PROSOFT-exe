@@ -4,79 +4,38 @@ $_COMP = {
 	tipo: "",
 	comprobante: ""
 };
-$(document).ready(function () {
-	$("#busqpaci_his").val("94475639");
-	// $("#busqpaci_his").val("000001120504800");
+if (document.readyState != "loading") _iniciar_menu_his();
+
+
+function _iniciar_menu_his() {
+	document.querySelector("#busqpaci_his").value = 94475639;
 	_inputControl("disabled");
 	loader("show");
-	_iniciar_menu_his();
+
 	_toggleF8([{
 		input: "busqpaci",
 		app: "his",
 		funct: _ventanaPacientes
 	}]);
-});
+	var URL = get_url("APP/HICLIN/ARCHIVOS-HC.DLL");
 
-function _iniciar_menu_his() {
-	var data = datosEnvio() + localStorage["Usuario"].trim();
-	SolicitarDll({
-			datosh: data
-		},
-		on_iniciar_menu_his,
-		get_url("APP/HICLIN/ARCHIVOS-HC.DLL")
-	);
-}
-
-function on_iniciar_menu_his(data) {
-	var res = data.split("|");
-
-	if (res[0].trim() == "00") {
-		_consultaSql({
-			sql: "Select * from sc_archprof where cod_prof = " + parseInt(res[1]),
-			bd: localStorage.Contab + "_13",
-			callback: function (error, results, fields) {
-				if (error) throw error;
-				else {
-					if (!results[0]) {
-						plantillaError("99", "Profesional no existe", "menu_his");
-					} else {
-						$_REG_PROF = JSON.parse(JSON.stringify(results));
-						$_REG_PROF.tabla_especialidad = new Array();
-						$_REG_PROF.tabla_especialidad = res[2].split(";");
-						$_REG_PROF.tabla_especialidad.pop();
-						validarPaciente();
-						loader("hide");
-					}
-				}
-			}
+	postData({
+			datosh: datosEnvio() + localStorage["Usuario"].trim()
+		}, URL)
+		.then((data) => {
+			var res = data.split("|");
+			obtenerDatosCompletos("PROFESIONALES", function (array_profesionales) {
+				$_REG_PROF = array_profesionales['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == parseInt(res[1].trim()));
+				$_REG_PROF.tabla_especialidad = new Array();
+				$_REG_PROF.tabla_especialidad = res[2].split(";");
+				$_REG_PROF.tabla_especialidad.pop();
+			})
+			validarPaciente();
+			loader("hide");
+		})
+		.catch((error) => {
+			console.log(error)
 		});
-	} else {
-		plantillaError(res[0], res[1], res[2]);
-	}
-}
-
-function _ventanaPacientes(e) {
-	if ((e.type == "keydown" && e.which == 119) || e.type == "click") {
-		_ventanaDatos_lite({
-			titulo: "VENTANA DE PACIENTES",
-			tablaSql: "sc_pacie",
-			indice: ["codigo", "descripcion"],
-			mascara: [],
-			minLength: 3,
-			callback_esc: function () {
-				$("#busqpaci_his").focus();
-			},
-			callback: function (data) {
-				$("#busqpaci_his")
-					.val(data.cedula)
-					.focus();
-			}
-		});
-	}
-}
-
-function ir_hc9004() {
-	$("#body_main").load("../../HICLIN/paginas/hc9004.html");
 }
 
 function validarPaciente() {
@@ -86,25 +45,17 @@ function validarPaciente() {
 		},
 		function () {
 			CON850_P(
-				function (e) {
-					if (e.id == "S") {
-						salir_modulo();
-					} else {
-						validarPaciente();
-					}
-				}, {
+				e.id == "S" ? salir_modulo() : validarPaciente(), {
 					msj: "03"
 				}
 			);
 		},
 		function () {
-			if ($("#busqpaci_his").val()) {
+			if (document.querySelector("#busqpaci_his").value) {
 				var data =
 					datosEnvio() +
-					cerosIzq($("#busqpaci_his").val(), 15) +
-					"|" +
-					localStorage["Usuario"] +
-					"|";
+					cerosIzq(document.querySelector("#busqpaci_his").value, 15) + "|" +
+					localStorage["Usuario"] + "|";
 
 				SolicitarDll({
 						datosh: data
@@ -126,105 +77,63 @@ function validarPaciente() {
 
 function cargarDatosPaci(data) {
 	var res = data.split("|");
+
+	console.log(res)
 	if (res[0].trim() == "00") {
-		_consultaSql({
-			sql: "Select * from sc_pacie where cod_paci =" + parseInt(cerosIzq($("#busqpaci_his").val(), 15)),
-			bd: localStorage.Contab + "_13",
-			callback: function (error, results, fields) {
-				if (error) throw error;
-				else {
-					if (!results[0]) {
-						plantillaError("99", "Paciente no existe", "menu_his", validarPaciente);
-					} else {
-						$_REG_PACI = JSON.parse(JSON.stringify(results));
-						validarOpcPacienteHc(res)
-					}
-				}
-			}
-		})
-	} else {
-		plantillaError(res[0], res[1], res[2]);
+		let URL = get_url("APP/" + "SALUD/SER810-1" + ".DLL");
+		postData({
+				datosh: datosEnvio() + res[1] + "|"
+			}, URL)
+			.then((data) => {
+				$_REG_PACI = data['REG-PACI'];
+				validarOpcPacienteHc(res);
+			})
+			.catch((error) => {
+				console.log(error)
+			});
 	}
 }
 
 function validarOpcPacienteHc(res) {
 	if (res[2].trim() == 1) {
-		//Existe historia clinica
-		var data = datosEnvio() + res[1] + "|";
-		SolicitarDll({
-				datosh: data
-			},
-			function (data) {
-				res = data.split("|");
-				if (res[0].trim() == "00") {
-					loader("hide");
-					$_REG_HC.primera_hc = 2;
-					montarHc811();
-				} else {
-					plantillaError(res[0], res[1], res[2], validarPaciente);
-				}
-			},
-			get_url("APP/HICLIN/HC811.DLL")
-		);
+		//Existe historia clinica anterior
+		let URL = get_url("APP/" + "HICLIN/HC811" + ".DLL");
+		console.log("datosh:", datosEnvio() + res[1] + "|")
+		postData({
+				datosh: datosEnvio() + res[1] + "|"
+			}, URL)
+			.then((data) => {
+				loader("hide");
+				$_REG_HC.primera_hc = 2;
+				montarHc811(data);
+			})
+			.catch((err) => {
+				console.debug(err)
+			});
 	} else {
-		//No existe historia
+		//No existe historia clinica anterior
 		$_REG_HC.primera_hc = 1;
-		_consultHc(res[3]);
+		_consultHc(res[3].trim());
 	}
 }
 
-function montarHc811() {
-	var url = get_url(
-		"TEMP/SC-HC811-" + localStorage["Sesion"].trim() + ".json"
-	);
-	SolicitarDatos({},
-		function (data) {
-			var hc = data.HC,
-				sw_open = 0;
-			hc.pop();
-			for (var i in hc) {
-				if (hc[i].ESTADO == 1) {
-					sw_open = 1;
-				}
-			}
+function montarHc811(data) {
+	var hc = data.HC,
+		sw_open = 0,
+		nuevahc;
+	for (var i in hc) {
+		if (hc[i].ESTADO == '1') {
+			sw_open = 1;
+		}
+	}
+	hc.pop();
+	if (sw_open !== 1) {
+		nuevahc = historiaNueva(hc);
+		hc.push(nuevahc)
+	}
+	hc.reverse();
+	_ventanaHistoriasPaciente(hc)
 
-			if (sw_open != 1) {
-				var nuevahc = historiaNueva(hc);
-				hc.push(nuevahc);
-			}
-			hc.reverse();
-
-			_ventanaDatos({
-				titulo: $_REG_PACI[0].descrip_paci,
-				columnas: [
-					"FOLIO-HC",
-					"NOM-SERV",
-					"FECHA-HC",
-					"HORA-HC",
-					"MOTIV-HC",
-					"ESTADO-HC"
-				],
-				data: hc,
-				orden: false,
-				callback_esc: function () {
-					$("#busqpaci_his").focus();
-				},
-				callback: function (data) {
-					var llave =
-						cerosIzq($_REG_PACI[0].cod_paci, 15) +
-						data["FOLIO-HC"].split("-")[0] +
-						data["FOLIO-HC"].split("-")[1];
-					$_REG_HC.peso=data['PESO']
-					$_REG_HC.talla=data['TALLA']
-					$_REG_HC.per_cef=data['PER_CEF']
-					$_REG_HC.per_tora=data['PER_TORA']
-					$_REG_HC.per_abdo=data['PER_ABDO']
-					_consultHc(llave);
-				}
-			});
-		},
-		url
-	);
 }
 
 function _consultHc(llave) {
@@ -235,7 +144,7 @@ function _consultHc(llave) {
 		},
 		function (data) {
 			var res = data.split("|");
-			if (res[0].trim() == "00") {
+			if (res[0] == "00") {
 
 				_mostrarDatosPaci(res);
 			} else {
@@ -319,8 +228,8 @@ function historiaNueva(hc) {
 		"HAB-HC": "    ",
 		"HORA-HC": date.getHours() + ":" + date.getMinutes(),
 		"HORA-ORD-SALIDA-HC": "00:00",
-		"ID-HC": $_REG_PACI[0].cod_paci.trim(),
-		"MED-HC": $_REG_PROF[0].cod_prof,
+		"ID-HC": $_REG_PACI[0].COD.trim(),
+		"MED-HC": $_REG_PROF.IDENTIFICACION,
 		"MOTIV-HC": "**ABRIR NUEVA HISTORIA**                            ",
 		"NIT-FACT-HC": "0000000000",
 		"NOM-SERV": "**NUEVA**",
@@ -336,4 +245,60 @@ function historiaNueva(hc) {
 		"UNSERV-HC": "00"
 	};
 	return nueva;
+}
+//---- Funciones de busqueda (F8)
+function _ventanaPacientes(e) {
+	var $PACIENTES = [];
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		obtenerDatosCompletos("PACIENTES", function (data) {
+			$PACIENTES = data.PACIENTES;
+			_ventanaDatos_lite_v2({
+				titulo: "VENTANA DE PACIENTES",
+				data: $PACIENTES,
+				indice: ["COD", "NOMBRE", "SEXO", "DERECHO"],
+				mascara: [{
+					"COD": 'IDENTIFICACION',
+					"NOMBRE": 'NOMBRE',
+					"ACOMPA�ANTE": "ACOMPAÑANTE"
+				}],
+				minLength: 3,
+				callback_esc: function () {
+					document.querySelector("#busqpaci_his").focus();
+				},
+				callback: function (data) {
+					document.querySelector("#busqpaci_his").value = data.COD;
+					document.querySelector("#busqpaci_his").focus();
+				}
+			})
+		});
+
+	}
+}
+
+function _ventanaHistoriasPaciente(hc) {
+	_ventanaDatos({
+		titulo: $_REG_PACI[0].DESCRIP,
+		columnas: [
+			"FOLIO-HC",
+			"NOM-SERV",
+			"FECHA-HC",
+			"HORA-HC",
+			"MOTIV-HC",
+			"ESTADO-HC"
+		],
+		data: hc,
+		orden: false,
+		callback_esc: function () {
+			document.getElementById("busqpaci_his").focus();
+		},
+		callback: function (data) {
+			var llave = cerosIzq($_REG_PACI[0].COD, 15) + data["FOLIO-HC"].split("-")[0] + data["FOLIO-HC"].split("-")[1];
+			$_REG_HC.peso = data['PESO']
+			$_REG_HC.talla = data['TALLA']
+			$_REG_HC.per_cef = data['PER_CEF']
+			$_REG_HC.per_tora = data['PER_TORA']
+			$_REG_HC.per_abdo = data['PER_ABDO']
+			_consultHc(llave);
+		}
+	})
 }
