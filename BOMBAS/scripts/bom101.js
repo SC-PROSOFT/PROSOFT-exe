@@ -18,13 +18,20 @@ var galonajeMask = new IMask(
 $(document).ready(function () {
     loader('hide');
     _crearJsonArticulos_101()
-
+    // prueba()
     _toggleF8([
         { input: 'producto', app: '101', funct: _ventanaProductos },
         { input: 'almacen', app: '101', funct: _vantanaAlmacenes },
         { input: 'centrocostos', app: '101', funct: _ventanaCentroCostos }
     ]);
 });
+
+function prueba(){
+    SolicitarDll({ datosh: datosEnvio() }, 
+    function (data){
+        console.log(data)
+    }, get_url("app/bombas/LISTCOMB.DLL"));
+}
 
 function _ventanaProductos(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {

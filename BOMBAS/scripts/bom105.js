@@ -36,7 +36,7 @@ function validarComprobante() {
         function () {
             loader('show');
             var comprobante = $('#numComprobante').val() ? $('#numComprobante').val() : '0';
-            $('#numComprobante').val(cerosIzq(comprobante, 5));
+            $('#numComprobante').val(cerosIzq(comprobante, 6));
 
             var datos_envio = datosEnvio() + cerosIzq(comprobante, 6) + "|";
 
