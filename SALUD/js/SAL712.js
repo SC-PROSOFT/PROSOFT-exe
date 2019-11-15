@@ -72,6 +72,7 @@ function _validarDato712() {
         function () {             
             var codigo712= $('#codigo_712').val();
             var busquedaArray = buscarDescp712(codigo712)
+            console.log("res",busquedaArray)
 
             $_CODIGOTARF712 = codigo712
 
@@ -92,6 +93,7 @@ function _validarDato712() {
                             }
                             break;
                         case 8:
+                        
                         case 9:
                             if (!busquedaArray) {
                                 CON851('01', '01', null, 'error', 'error');
@@ -109,8 +111,8 @@ function _validarDato712() {
 
 
 function _datosSer712(data) {
-    $('#codigo_712').text(data.COD);
-    $('#descripSer712').text(data.DESCRIP);
+    $('#codigo_712').val(data.COD);
+    $('#descripSer712').val(data.DESCRIP);
 
     switch (parseInt($_NovedSer712)) {
         case 8:
