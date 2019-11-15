@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     ]);
 
-    jsonGrupoServicio_711();
+    grupoServicio_711();
 });
 
 
@@ -35,7 +35,7 @@ function _ventanaGrupo(e) {
     }
 }
 
-// F8 CUENTA-MAYOR //
+// // F8 CUENTA-MAYOR //
 function _ventanaContab(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
@@ -56,96 +56,23 @@ function _ventanaContab(e) {
 }
 
 // llamado DLL GRUPO-SERVICIO
-function jsonGrupoServicio_711() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonGrupSer711,
-        nombredll: 'SAL711-01',
-        carpeta: 'SALUD'
-    })
-}
+function grupoServicio_711() {
+    obtenerDatosCompletos("GRUPO-SER", function (data) {
+        arraygrpser = data.CODIGOS;
+        ctaMayor_711()
+    });
+    console.log(arraygrpser)
 
-function on_jsonGrupSer711(data) {
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arraygrpser = data.CODIGOS;
-                arraygrpser.pop();
-                var arrayEliminar = [];
-                arrayEliminar.push(json);
-                _eliminarJson(arrayEliminar, on_eliminarJsonGrupSer711);
-                jsonCtamay_711();
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function on_eliminarJsonGrupSer711(data) {
-    console.debug(data);
-    var date = data.split('|');
-    if (date[0].trim() == '00') {
-        console.debug('json eliminado');
-    } else {
-        console.error(res[1]);
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
 }
 
 // Llamado DLL CUENTA-MAYOR
-function jsonCtamay_711() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_Ctamay711,
-        nombredll: 'CON801',
-        carpeta: 'CONTAB'
-    })
-}
+function ctaMayor_711() {
+    obtenerDatosCompletos("CTA-MAYOR", function (data) {
+        arraycontab = data.MAESTROS;
+        arraycontab.pop();
 
-function on_Ctamay711(data) {
-    console.debug(data);
-    var rdll = data.split('|');
-    if (rdll[0].trim() == '00') {
-        var json = rdll[1].trim();
-        var rutaJson = get_url("temp/" + json);
-        SolicitarDatos(
-            null,
-            function (data) {
-                arraycontab = data.MAESTROS
-                arraycontab.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json);
-                console.debug(json);
-                _eliminarJson(arrayEliminar, on_eliminarJson711);
-            },
-            rutaJson
-        );
-    } else {
-        loader('hide');
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
-}
-
-
-function on_eliminarJson711(data) {
-    console.debug('llego a eliminar')
-    loader('hide');
-    var rdll = data.split('|');
-    if (rdll[0].trim() == '00') {
-        loader('hide');
-        CON850(_evaluarCON850);
-    } else {
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
+    });
+    CON850(_evaluarCON850);
 }
 
 // NOVEDAD //
@@ -167,12 +94,13 @@ function _evaluarCON850(novedad) {
 }
 
 function _validarConsulta711() {
-    validarInputs(
-        {
-            form: "#consulta",
-            orden: '1'
+    validarInputs({
+        form: "#consulta",
+        orden: '1'
+    },
+        function () {
+            CON850(_evaluarCON850);
         },
-        function () { CON850(_evaluarCON850); },
         function () {
             var codigo_711 = $('#codigo_711').val();
             var busquedaArray = buscarDescrip_711(codigo_711)
@@ -232,43 +160,62 @@ function _llenarDatSer711(data) {
             detalle711()
             break;
         case 9:
-            CON851P('54', _validarConsulta711, eliminaRegis)
+            CON851P('54', _validarConsulta711, eliminar711)
             break;
     }
 }
 
-function eliminaRegis() {
-
-    LLAMADO_DLL({
-        dato: [$_NovedSer711, $CODG711],
-        callback: guardaDatos711,
-        // callback: function (data) { validarBdSql(data, codgsr711) },
-        nombredll: 'SAL711-02',
-        carpeta: 'SALUD'
-    })
+function eliminar711(){
+    var URL = get_url("APP/SALUD/SAL711-02.DLL");
+    var data = $_NovedSer711 + "|" + $CODG711;
+    postData({
+        datosh: datosEnvio()  + data
+    }, URL)
+        .then(() => {
+            //TOAST CORRECTO
+            var msj
+            switch ($_NovedSer711) {
+                case '9':
+                    msj = 'Eliminado correctamente'
+                    break;
+            }
+            jAlert({
+                titulo: 'Notificacion',
+                mensaje: msj
+            },
+                function () {
+                    _toggleNav();
+                    console.log('fin del programa')
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
-
-
 
 /// NOVEDAD 7 ////
 function detalle711() {
-    validarInputs(
-        {
-            form: '#detalle',
-            orden: '1'
+    validarInputs({
+        form: '#detalle',
+        orden: '1'
+    },
+        function () {
+            _validarConsulta711();
         },
-        function () { _validarConsulta711(); },
-        function () { validarPorcen_711('1') }
+        function () {
+            validarPorcen_711('1')
+        }
     )
 }
 
 function validarPorcen_711(orden) {
-    validarInputs(
-        {
-            form: '#porcentajes',
-            orden: orden
+    validarInputs({
+        form: '#porcentajes',
+        orden: orden
+    },
+        function () {
+            detalle711();
         },
-        function () { detalle711(); },
         function () {
             var otro = $('#ingre_clin711').val()
             var tercero = $('#ingr_terc711').val()
@@ -286,8 +233,7 @@ function validarPorcen_711(orden) {
             } else if (parseFloat(tercero) == '') {
                 console.log(tercero + '  64515')
                 conContab_711()
-            }
-            else {
+            } else {
                 conContab_711()
                 console.log(tercero + ' dsgsfg')
             }
@@ -296,12 +242,13 @@ function validarPorcen_711(orden) {
 }
 
 function conContab_711() {
-    validarInputs(
-        {
-            form: '#contables',
-            orden: '1'
+    validarInputs({
+        form: '#contables',
+        orden: '1'
+    },
+        function () {
+            validarPorcen_711('2');
         },
-        function () { validarPorcen_711('2'); },
         function () {
             var valor = $('#contab_711').val()
 
@@ -326,42 +273,70 @@ function envioDat711() {
     var terce711 = cerosIzq($('#ingr_terc711').val(), 4);
     var contab_711 = cerosIzq($('#contab_711').val(), 11);
 
-    LLAMADO_DLL({
-        dato: [$_NovedSer711, $CODG711, descp711, ingre711, terce711, contab_711],
-        callback: guardaDatos711,
-        // function (data) {
-        //     validarBdSql(data, codg711, descp711, ingre711, terce711, contab_711)
-        // },
-        nombredll: 'SAL711-02',
-        carpeta: 'SALUD'
-    })
+    var URL = get_url("APP/SALUD/SAL711-02.DLL");
+    var data = $_NovedSer711 + "|" + $CODG711 + "|" + descp711 + "|" + ingre711 + "|" + terce711 + "|" + contab_711;
+    postData({
+        datosh: datosEnvio()  + data
+    }, URL)
+        .then(() => {
+            //TOAST CORRECTO
+            var msj
+            switch ($_NovedSer711) {
+                case '7':
+                    msj = 'Creado correctamente'
+                    break;
+                case '8':
+                    msj = 'Modificado correctamente'
+                    break;
+                case '9':
+                    msj = 'Eliminado correctamente'
+                    break;
+            }
+            jAlert({
+                titulo: 'Notificacion',
+                mensaje: msj
+            },
+                function () {
+                    _toggleNav();
+                    console.log('fin del programa')
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
 
 
-function guardaDatos711(data) {
-    console.debug(data)
-    loader('hide');
-    var rdll = data.split('|');
+// function guardaDatos711(data) {
+//     console.debug(data)
+//     loader('hide');
+//     var rdll = data.split('|');
 
-    if (rdll[0].trim() == '00') {
-        var msj
-        switch ($_NovedSer711) {
-            case '7': msj = 'Creado correctamente'
-                break;
-            case '8': msj = 'Modificado correctamente'
-                break;
-            case '9': msj = 'Eliminado correctamente'
-                break;
-        }
-        jAlert({ titulo: 'Notificacion', mensaje: msj },
-            function () {
-                _toggleNav();
-                console.log('fin del programa')
-            });
-    } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
-}
+//     if (rdll[0].trim() == '00') {
+//         var msj
+//         switch ($_NovedSer711) {
+//             case '7':
+//                 msj = 'Creado correctamente'
+//                 break;
+//             case '8':
+//                 msj = 'Modificado correctamente'
+//                 break;
+//             case '9':
+//                 msj = 'Eliminado correctamente'
+//                 break;
+//         }
+//         jAlert({
+//             titulo: 'Notificacion',
+//             mensaje: msj
+//         },
+//             function () {
+//                 _toggleNav();
+//                 console.log('fin del programa')
+//             });
+//     } else {
+//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+//     }
+// }
 
 // FUNCIONES PARA DATOS NUEVOS
 function buscarDescrip_711(data) {
