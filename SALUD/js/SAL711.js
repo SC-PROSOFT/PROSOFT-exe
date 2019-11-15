@@ -165,11 +165,11 @@ function _llenarDatSer711(data) {
     }
 }
 
-function eliminar711(){
+function eliminar711() {
     var URL = get_url("APP/SALUD/SAL711-02.DLL");
     var data = $_NovedSer711 + "|" + $CODG711;
     postData({
-        datosh: datosEnvio()  + data
+        datosh: datosEnvio() + data
     }, URL)
         .then(() => {
             //TOAST CORRECTO
@@ -225,17 +225,13 @@ function validarPorcen_711(orden) {
                 if (tercero + otro < 100) {
                     if ($('#contab_711').val().trim().length == 0) {
                         $('#contab_711').val('2815')
-                        console.log(tercero + ' 1214')
                     }
-                    console.log(tercero + '  455')
                     conContab_711()
                 }
             } else if (parseFloat(tercero) == '') {
-                console.log(tercero + '  64515')
                 conContab_711()
             } else {
                 conContab_711()
-                console.log(tercero + ' dsgsfg')
             }
         }
     )
@@ -276,7 +272,7 @@ function envioDat711() {
     var URL = get_url("APP/SALUD/SAL711-02.DLL");
     var data = $_NovedSer711 + "|" + $CODG711 + "|" + descp711 + "|" + ingre711 + "|" + terce711 + "|" + contab_711;
     postData({
-        datosh: datosEnvio()  + data
+        datosh: datosEnvio() + data
     }, URL)
         .then(() => {
             //TOAST CORRECTO
@@ -287,9 +283,6 @@ function envioDat711() {
                     break;
                 case '8':
                     msj = 'Modificado correctamente'
-                    break;
-                case '9':
-                    msj = 'Eliminado correctamente'
                     break;
             }
             jAlert({
@@ -306,37 +299,6 @@ function envioDat711() {
         });
 }
 
-
-// function guardaDatos711(data) {
-//     console.debug(data)
-//     loader('hide');
-//     var rdll = data.split('|');
-
-//     if (rdll[0].trim() == '00') {
-//         var msj
-//         switch ($_NovedSer711) {
-//             case '7':
-//                 msj = 'Creado correctamente'
-//                 break;
-//             case '8':
-//                 msj = 'Modificado correctamente'
-//                 break;
-//             case '9':
-//                 msj = 'Eliminado correctamente'
-//                 break;
-//         }
-//         jAlert({
-//             titulo: 'Notificacion',
-//             mensaje: msj
-//         },
-//             function () {
-//                 _toggleNav();
-//                 console.log('fin del programa')
-//             });
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-// }
 
 // FUNCIONES PARA DATOS NUEVOS
 function buscarDescrip_711(data) {
