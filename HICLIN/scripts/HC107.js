@@ -216,7 +216,6 @@ function _evaluardato3_hc107() {
 
 function _dato3_HC107() {
     HC107['CODIGOW'] = $('#codigo_hc107').val();
-    HC107.PASOW = '2';
     if (parseInt(HC107.CODIGOW) == 0) {
         CON851('02', '02', null, 'error', 'Error');
         $('#codigo_hc107').val('');
@@ -225,98 +224,48 @@ function _dato3_HC107() {
         HC107.CODIGOW = HC107.CODIGOW.padStart(6, '0');
         HC107['LLAVEW'] = HC107.CLW + HC107.CODIGOW;
         datos_envio = datosEnvio();
-        datos_envio += HC107.ADMINW + '|' + HC107.PASOW + '|' + HC107.NOVEDADW + '|' + HC107.LLAVEW + '|' + HC107.DETALLEW + '|' + HC107.FORMATOCONSENW + '|' + HC107.NOMBRETXT
+        datos_envio += HC107.ADMINW + '|' + '2' + '|' + HC107.NOVEDADW + '|' + HC107.LLAVEW + '|' + HC107.DETALLEW + '|' + HC107.FORMATOCONSENW + '|' + HC107.NOMBRETXT
         console.debug(datos_envio);
-        SolicitarDll({ datosh: datos_envio }, _dataHC10700_1_HC107, get_url('app/HICLIN/HC107-00.DLL'));
+        // SolicitarDll({ datosh: datos_envio }, _dataHC10700_1_HC107, get_url('app/HICLIN/HC107-00.DLL'));
+        let URL = get_url("APP/HICLIN/HC107-00.DLL");
+        postData({ datosh: datos_envio }, URL)
+            .then(function (data) {
+                console.debug(data);
+                HC107.MACROEVOL = data.MACROEVOL[0];
+                HC107['DETALLEW'] = HC107.MACROEVOL.DETALLE_MACRO;
+                HC107['TABLAVIAS'] = HC107.MACROEVOL.VIAS_MACRO;
+                HC107['FORMATOCONSENW'] = HC107.MACROEVOL.FORMATO_CONSEN;
+                HC107['TABLACODFORM'] = HC107.MACROEVOL.COD_FORM;
+                HC107['TABLAPROGHC107'] = HC107.MACROEVOL.COMANDOS;
+                HC107['OPERW'] = HC107.MACROEVOL.OPER_MACRO;
+                HC107['FECHAOPERW'] = HC107.MACROEVOL.FECHA_MACRO;
+                for (var i in HC107.MACROEVOL.TABLA_MACRO) {
+                    if (i == 0) {
+                        HC107.RENGMACRO = HC107.MACROEVOL.TABLA_MACRO[i].RENG1;
+                    } else {
+                        HC107.RENGMACRO += HC107.MACROEVOL.TABLA_MACRO[i].RENG1;
+                        if (i == 28) {
+                            $('#textarea_hc107').val(HC107.RENGMACRO);
+                            $('#detalle_hc107').val(HC107.DETALLEW);
+                            _datoc_HC107();
+                        }
+                    }
+                }
+            })
+            .catch(err => {
+                console.debug(err);
+                if (data.STATUS == '01') {
+                    if (HC107.NOVEDADW == '7') {
+                        _datoc_HC107();
+                    } else {
+                        CON851('01', '01', null, 'error', 'Error');
+                        $('#codigo_hc107').val('');
+                        SER874_HC107();
+                    }
+                }
+            })
     }
 }
-
-function _dataHC10700_1_HC107(data) {
-    console.debug(data);
-    data = data.split('|');
-    HC107['DETALLEW'] = data[1].trim();
-    HC107['TABLAVIAS'] = [data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), data[6].trim(), data[7].trim()];
-    HC107['FORMATOCONSENW'] = data[8].trim();
-    HC107['TABLACODFORM'] = [data[9].trim(), data[10].trim(), data[11].trim()];
-    HC107['TABLAPROGHC107'] = [data[12].trim(), data[13].trim(), data[14].trim(), data[15].trim(), data[16].trim(), data[17].trim(), data[18].trim(), data[19].trim(), data[20].trim(), data[21].trim(), data[22].trim(), data[23].trim(), data[24].trim(), data[25].trim(), data[26].trim()];
-    HC107['OPERW'] = data[27].trim();
-    HC107['FECHAOPERW'] = data[28].trim();
-    HC107['NOMBRETXTW'] = data[29].trim();
-    let rutaJson = get_url('temp/' + HC107.NOMBRETXTW);
-    if (data[0].trim() == '00') {
-        if (HC107.NOVEDADW == '8' || HC107.NOVEDADW == '9') {
-            $('#detalle_hc107').val(HC107.DETALLEW);
-            SolicitarDatos(
-                null,
-                function (data) {
-                    HC107.RENGMARCROW = data.trim();
-                    $('#textarea_hc107').val(HC107.RENGMARCROW);
-                    console.debug(data);
-                    let arrayEliminar = [];
-                    arrayEliminar.push(HC107.NOMBRETXTW);
-                    _eliminarJson(arrayEliminar, on_eliminartxtconsultaHC107);
-                    _datoc_HC107();
-                },
-                rutaJson
-            );
-        } else {
-            CON851('01', '01', null, 'error', 'Error');
-            $('#codigo_hc107').val('');
-            SER874_HC107();
-        }
-    } else if (data[0].trim() == '01') {
-        if (HC107.NOVEDADW == '7') {
-            _datoc_HC107();
-        } else {
-            CON851('01', '01', null, 'error', 'Error');
-            $('#codigo_hc107').val('');
-            SER874_HC107();
-        }
-    } else {
-        CON852(data[0], data[1], data[2], _toggleNav);
-    }
-}
-function on_eliminartxtconsultaHC107(data){
-    console.debug(data);
-    var date = data.split('|');
-    if (date[0].trim() == '00') {
-        console.debug('json eliminado');
-    } else {
-        console.error(res[1]);
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
-// function _consultacodigo_hc107(error, results, fileds) {
-//     console.debug(results);
-//     if (error) throw error;
-//     else {
-//         console.debug(results, results.length);
-//         if (results.length == 0) {
-//             var validar = 1;
-//             _leercodigo_HC107(validar);
-//         } else {
-//             var validar = 0
-//             $('#detalle_hc107').val(results[0].detalle);
-//             _leercodigo_HC107(validar);
-//         }
-//     }
-// }
-
-// function _Erro1_HC107() {
-//     if (HC107.NOVEDADW == '7') {
-//         CON851('00', '00', null, 'error', 'Error');
-//         $('#codigo_hc107').val('');
-//         _evaluardato3_hc107();
-//     } else {
-//         CON851('01', '01', null, 'error', 'Error');
-//         $('#codigo_hc107').val('');
-//         _evaluardato3_hc107();
-//     }
-// }
-
-// function _nuevo_HC107() {
-//     _datoc_HC107();
-// }
 
 function _datoc_HC107() {
     if (HC107.CLW == 'C') {
@@ -422,8 +371,8 @@ function _verificarvalorestablaprog() {
             $('#TABLAPROGW_HC107 tbody').append(
                 '<tr>' +
                 '<td>' + i + '</td>' +
-                '<td>' + TABLAPROGHC107[i].codigo + '</td>' +
-                '<td>' + TABLAPROGHC107[i].descripcion + '</td>' +
+                '<td>' + TABLAPROGHC107[i].PROG + '</td>' +
+                // '<td>' + TABLAPROGHC107[i].descripcion + '</td>' +
                 '</tr>'
             )
         }
@@ -444,52 +393,41 @@ function _evaluardataprog_HC107() {
 
 function _validardataprog_HC107() {
     HC107['PROGW'] = $('#progw_hc107').val();
-    _consultaSql({
-        db: 'datos_pros',
-        sql: 'SELECT * FROM datos_pros.sc_progev WHERE llave_progev LIKE "' + HC107.PROGW + '"',
-        callback: function (error, results, fileds) {
-            if (error) throw error;
-            else {
-                console.debug(results, results.length);
-                if (results.length > 0) {
-                    for (var i in results) {
-                        console.debug(i, results[i].llave_progev, HC107.PROGW);
-                        // if (results[i].llave_progev.trim() == HC107.PROGW) {
-                        TABLAPROGHC107.push({ codigo: results[i].llave_progev.padEnd(10, ' '), descripcion: results[i].descrip_progev });
-                        if (HC107.CONTEO == 14) {
-                            $('.btn-primary').click();
-                            HC107.CONTEO = 0;
-                            break;
-                        } else {
-                            var fila = $('#TABLAPROGW_HC107 tbody').find('tr:eq(' + HC107.CONTEO + ')');
-                            if (fila.length > 0) {
-                                var html = '<td>' + HC107.CONTEO + '</td>' +
-                                    '<td>' + results[i].llave_progev + '</td>' +
-                                    '<td>' + results[i].descrip_progev + '</td>';
-                                fila.html(html);
-                            } else {
-                                $('#TABLAPROGW_HC107 tbody').append(
-                                    '<tr>' +
-                                    '<td>' + HC107.CONTEO + '</td>' +
-                                    '<td>' + results[i].llave_progev + '</td>' +
-                                    '<td>' + results[i].descrip_progev + '</td>' +
-                                    '</tr>'
-                                );
-                            }
-                            $('#TABLAPROGW_HC107').scrollTop($('#TABLAPROGW_HC107')[0].scrollHeight);
-                            HC107.CONTEO = HC107.CONTEO + 1;
-                            _evaluardataprog_HC107();
-                        }
-                        // }
-                    }
+    datos_envio = datosEnvio();
+    datos_envio += HC107.ADMINW + '|' + '3' + '|' + HC107.NOVEDADW + '|' + HC107.LLAVEW + '|' + HC107.DETALLEW + '|' + HC107.FORMATOCONSENW + '|' + HC107.NOMBRETXT + '|' + HC107.PROGW.padEnd(10,' ');
+    console.debug(datos_envio);
+    let URL = get_url("APP/HICLIN/HC107-00.DLL");
+    postData({ datosh: datos_envio }, URL)
+        .then(function (data) {
+            console.debug(data);
+            HC107.DESCRIPPROGEV = data.PROG_EV[0].DESCRIP_PROGEV
+            if (HC107.CONTEO == 14) {
+                $('.btn-primary').click();
+                HC107.CONTEO = 0;
+            } else {
+                var fila = $('#TABLAPROGW_HC107 tbody').find('tr:eq(' + HC107.CONTEO + ')');
+                if (fila.length > 0) {
+                    var html = '<td>' + HC107.CONTEO + '</td>' +
+                        '<td>' + HC107.LLAVEPROGEV + '</td>' +
+                        '<td>' + HC107.DESCRIPPROGEV + '</td>';
+                    fila.html(html);
                 } else {
-                    CON851('01', '01', null, 'error', 'Error');
-                    $('#progw_hc107').val('');
-                    _evaluardataprog_HC107();
+                    $('#TABLAPROGW_HC107 tbody').append(
+                        '<tr>' +
+                        '<td>' + HC107.CONTEO + '</td>' +
+                        '<td>' + HC107.LLAVEPROGEV + '</td>' +
+                        '<td>' + HC107.DESCRIPPROGEV + '</td>' +
+                        '</tr>'
+                    );
                 }
+                $('#TABLAPROGW_HC107').scrollTop($('#TABLAPROGW_HC107')[0].scrollHeight);
+                HC107.CONTEO = HC107.CONTEO + 1;
+                _evaluardataprog_HC107();
             }
-        }
-    });
+        })
+        .catch(err => {
+            console.debug(err);
+        })
 }
 
 function _evaluartextarea_HC107() {
@@ -526,8 +464,7 @@ function _datoformato_HC107() {
             callback_f: _toggleNav
         },
             _evaluardatoformato_HC107);
-    }
-    else {
+    } else {
         _datovias_HC107();
     }
 }
