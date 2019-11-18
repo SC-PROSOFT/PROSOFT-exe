@@ -1,5 +1,6 @@
-const path = require('path'),
-    mysql = require('mysql');
+const path = require('path');
+const mysql = require('mysql');
+const { BrowserWindow } = require('electron').remote;
 
 $CONEXION_BD = {},
     $CONTROL = '',
@@ -40,7 +41,6 @@ function _onCargarUsuario(data) {
                 $_USUA_GLOBAL[0].NIT = parseInt($_USUA_GLOBAL[0].NIT);
                 $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
                 $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
-
                 $_USUA_GLOBAL[0].RUTA_LOGO = path.join('file://', __dirname, '../imagenes/logo/' + $_USUA_GLOBAL[0].NIT + '.BMP');
 
                 let mes = evaluarMes_min(localStorage.Mes);
@@ -212,43 +212,51 @@ function _toggleNav() {
     var nav = $('.navbar-collapse');
     var visible = nav.is(':visible');
     var widthScreen = $(document).width();
+    let Window = BrowserWindow.getAllWindows();
 
-    // if (widthScreen > 992) { // Pantalla grande
-    if (visible) {
-        if (widthScreen > 992) {
-            nav.hide('slide', function () {
-                $(this).attr('style', 'display:none!important;');
-            });
-
-            $('.page-fixed-main-content').animate({
-                'margin-left': '0'
-            });
-        } else {
-            nav.slideToggle('slow', function () {
-                $(this).attr('style', 'display:none!important;');
-            });
-        }
-
-        _cargarEventos('off');
-    } else {
-        if (widthScreen > 992) {
-            nav.show('slide', function () {
-                $(this).removeAttr('style');
-            });
-
-            $('.page-fixed-main-content').animate({
-                'margin-left': '280px'
-            });
-        } else {
-            nav.slideToggle('slow', function () {
-                $(this).attr('style', 'display:block!important;');
-            });
-        }
-        _cargarEventos('on');
-        //$('#body_main').html('')
+    if (Window.length > 1) {
+        const { ipcRenderer } = require('electron');
+        let vector = ['salir', 'ejemplo']
+        ipcRenderer.send('ventana2', { param: vector });
     }
+    else {
+        // if (widthScreen > 992) { // Pantalla grande
+        if (visible) {
+            if (widthScreen > 992) {
+                nav.hide('slide', function () {
+                    $(this).attr('style', 'display:none!important;');
+                });
 
-    $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('.page-fixed-main-content').animate({
+                    'margin-left': '0'
+                });
+            } else {
+                nav.slideToggle('slow', function () {
+                    $(this).attr('style', 'display:none!important;');
+                });
+            }
+
+            _cargarEventos('off');
+        } else {
+            if (widthScreen > 992) {
+                nav.show('slide', function () {
+                    $(this).removeAttr('style');
+                });
+
+                $('.page-fixed-main-content').animate({
+                    'margin-left': '280px'
+                });
+            } else {
+                nav.slideToggle('slow', function () {
+                    $(this).attr('style', 'display:block!important;');
+                });
+            }
+            _cargarEventos('on');
+            //$('#body_main').html('')
+        }
+
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    }
 }
 
 function _inputControl(set) {
@@ -521,3 +529,37 @@ _consultaSql = function (params) {
     connection.query(params.sql, params.callback);
     connection.end();
 }
+
+function _EventocrearSegventana(data, callbackfunction) {
+    if (data[0] == 'on') {
+        var ventanaespera = bootbox.dialog({
+            message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>' + data[1] + '</div>',
+            closeButton: false,
+            buttons: {
+                aceptar: {
+                    label: 'Continue',
+                    className: 'btn-primary',
+                    callback: function () {
+                        console.debug('creando segunda ventana');
+                        callbackfunction();
+                    }
+                }
+            }
+        });
+        ventanaespera.init($('.modal-footer').hide());
+    }
+    else {
+        console.debug('click en la primer ventana');
+        $('.btn-primary').click();
+    }
+}
+
+function _Seconndwindow(data) {
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.send(data.params[0], data.params);
+}
+
+require('electron').ipcRenderer.on('closed2', (event, message) => {
+    console.debug(message);
+    _EventocrearSegventana('off');
+});

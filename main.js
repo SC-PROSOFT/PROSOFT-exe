@@ -1,4 +1,5 @@
 const { BrowserWindow, Menu, app, shell, dialog, ipcMain } = require('electron');
+const electron = require('electron');
 const argv = require('process').argv;
 const jquery = require('jquery');
 const mysql = require('mysql');
@@ -293,3 +294,41 @@ function cerrarVentana() {
 
 
 app.on('ready', creaVentana);
+let win2
+function SegundaVentana(data) {
+  var tamano = electron.screen.getAllDisplays();
+  var tamano = tamano[0].size;
+  win2 = new BrowserWindow({
+    frame: false,
+    width: parseInt(tamano.width - (tamano.width*0.1)),
+    height: parseInt(tamano.height - (tamano.height*0.1)),
+    icon: 'build/SC.ico',
+    parent: win,
+    webPrefences: {
+      nodeIntegration: true,
+      plugins: true,
+      contextIsolation: false,
+    }
+  });
+
+  win2.setBounds({y: 40});
+  win2.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
+  win2.webContents.on('did-finish-load', () => {
+    let dir = path.join(__dirname, data[1]);
+    data.push(dir);
+    win2.webContents.send('finish', data);
+  })
+}
+
+ipcMain.on('another', (e, m) => {
+  console.log(m);
+  SegundaVentana(m);
+});
+
+// ipcMain.on('ventana2', (e, m) => {
+//   console.log('ventana2')
+//   if (m.param[0] == 'salir') {
+//     win2.close();
+//     win.webContents.send('closed2', m);
+//   }
+// })
