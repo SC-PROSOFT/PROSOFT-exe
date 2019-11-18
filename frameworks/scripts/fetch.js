@@ -7,9 +7,13 @@ function postData(datos, servicio) {
             fetch(servicio, { method: 'POST', body: formData })
                 .then(res => {
                     if (!res.ok) reject(res)
-                    return res.json()
+                    return res.text()
                 })
-                .then(response => {
+                .then(res => {
+                    let encode = encodeURI(res), decode, response;
+                    encode = encode.replace(/%0D%0A/g, "")
+                    decode = decodeURI(encode);
+                    response = JSON.parse(decode)
                     if (response.STATUS == '00') {
                         resolve(response.MENSAJE)
                     } else {
@@ -28,7 +32,7 @@ function postData(datos, servicio) {
                             msj = msj.trim() + ': ' + mensaje;
                         }
 
-                        if (!tipo || tipo == '1') {
+                        if (!tipo || tipo == '2') {
                             jAlert(
                                 { titulo: 'Error ' + code, mensaje: '<b>Mensaje: </b>' + msj + '<br> <b>App:</b> ' + app },
                                 () => {

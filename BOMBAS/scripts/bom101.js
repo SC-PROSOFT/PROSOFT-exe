@@ -18,7 +18,7 @@ var galonajeMask = new IMask(
 $(document).ready(function () {
     loader('hide');
     _crearJsonArticulos_101()
-    // prueba()
+    prueba()
     _toggleF8([
         { input: 'producto', app: '101', funct: _ventanaProductos },
         { input: 'almacen', app: '101', funct: _vantanaAlmacenes },

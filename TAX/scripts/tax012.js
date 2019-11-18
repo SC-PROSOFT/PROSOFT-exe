@@ -170,7 +170,7 @@ function _validarAgencia_tax012() {
             remesasAgencia_tax012.unmaskedValue = '0';
             evaluarDescripcionAgencia();
         } else {
-            plantillaToast('99', '00', null, 'warning');
+            plantillaToast('99', '01', null, 'warning');
             evaluarAgencia_tax012();
         }
     }
