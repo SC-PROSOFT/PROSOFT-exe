@@ -1,0 +1,396 @@
+<script>
+    const { ipcRenderer } = require('electron'),
+        fs = require('fs'),
+        exec = require('child_process').exec,
+        path = require('path'),
+        remote = require('electron').remote;
+    window.$ = window.jQuery = require('jquery');
+</script>
+<style>
+    html,
+    body,
+    #documento,
+    #pagina1 {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .encabezado {
+        width: 100%;
+        display: relative;
+        padding-top: 60px;
+    }
+
+    .logo {
+        width: 50%;
+        height: 50%;
+        position: absolute;
+    }
+
+    .logo img{
+        width: 30%;
+        width: 30%;
+    }
+
+    .nombreusu_rx {
+        width: 100%;
+        display: flex;
+    }
+
+    .interpretacion_rx {
+        width: 100%;
+        display: flex;
+        padding-bottom: 30px;
+    }
+
+    .comprobante_rx {
+        width: 100%;
+        display: flex;
+    }
+
+    .fecha_rx {
+        width: 85%;
+        display: flex;
+        margin: auto;
+        border-bottom: 2px solid black;
+    }
+
+    .fecha_rx a {
+        padding-left: 70%;
+    }
+
+    .datos_rx {
+        width: 85%;
+        margin: auto;
+    }
+
+    .primera_linea {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .segunda_linea {
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .tercera_linea {
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 2px solid black;
+    }
+
+    .contenido_rx {
+        padding-top: 80px;
+        padding-bottom: 70px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .firmamedico_rx {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .fechat_rx {
+        width: 85%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #pagina2 {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .encabezado2 {
+        width: 100%;
+        display: relative;
+    }
+
+    #pagina3 {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .encabezado3 {
+        width: 100%;
+        display: relative;
+    }
+</style>
+<div id="pagina1">
+    <div class="encabezado">
+        <div class="logo">
+
+        </div>
+        <div class="nombreusu_rx">
+            <!-- VARIABLE NOMBRE-USU -->
+            <a style="font-size:16px; margin:0 auto;" class="usuariotxt_rxi02a"> </a>
+        </div>
+        <div class="interpretacion_rx">
+            <a style="font-size:16px; margin:0 auto;"> </a>
+        </div>
+        <div class="comprobante_rx">
+            <a style="font-size:16px; margin:0 auto;" class="comprobantetxt_rxi02a"> </a>
+        </div>
+        <div class="fecha_rx">
+            <div class="fechat_rx">
+                <a style="font-size:13px;" class="fechafacttxt_rxi02a"> </a>
+            </div>
+        </div>
+    </div>
+    <div class="datos_rx">
+        <div class="primera_linea">
+            <div class="diagn_rx">
+                <a style="font-size:16px; margin:0 auto;" class="pacientetxt_rxi02a"> DIAGN: </a>
+            </div>
+            <div class="paciente_rx">
+                <a style="font-size:16px; margin:0 auto;" class="pacientetxt_rxi02a"> Paciente:</a>
+            </div>
+            <div class="id_rx">
+                <a style="font-size:16px; margin:0 auto;" class="idtxt_rxi02a"> ID: </a>
+            </div>
+        </div>
+        <div class="segunda_linea">
+            <div class="edad_rx">
+                <a style="font-size:16px; margin:0 auto;" class="edadtxt_rxi02a"> Edad: </a>
+            </div>
+            <div class="sexo_rx">
+                <a style="font-size:16px; margin:0 auto;" class="sexotxt_rxi02a"> Sexo: </a>
+            </div>
+            <div class="entidad_rx">
+                <a style="font-size:16px; margin:0 auto;" class="entidadtxt_rxi02a"> Entidad: </a>
+            </div>
+        </div>
+        <div class="tercera_linea">
+            <div class="estudio1_rx">
+                <a style="font-size:16px; margin:0 auto;" class="estudiotxt_rxi02a"> Estudio: </a>
+            </div>
+        </div>
+    </div>
+    <div class="contenido_rx">
+        <div class="detalle1_rx">
+            <a style="font-size:16px; margin:0 auto; white-space: normal;" id="detalle1txt_rxi02a"> </a>
+        </div>
+    </div>
+    <div class="firmamedico_rx">
+        <div class="firmaprofe"></div>
+        <div class="interpretado"><a style="font-size:16px; margin:0 auto;"> Estudio Interpretado por: </a></div>
+        <div class="profesional_rx"><a style="font-size:16px; margin:0 auto;" class="profetxt_rxi02a">  </a></div>
+        <div class="detalleprof_rx"><a style="font-size:16px; margin:0 auto;" class="detalletxt_rxi02a">  </a></div>
+        <div class="registromed_rx"><a style="font-size:16px; margin:0 auto;" class="registrotxt_rxi02a">  </a></div>
+    </div>
+</div>
+<!-- PAGINA 2 -->
+<div id="pagina2">
+    <div class="encabezado2">
+        <div class="logo">
+            
+        </div>
+        <div class="nombreusu_rx">
+            <!-- VARIABLE NOMBRE-USU -->
+            <a style="font-size:16px; margin:0 auto;" class="usuariotxt_rxi02a"> </a>
+        </div>
+        <div class="interpretacion_rx">
+            <a style="font-size:16px; margin:0 auto;"> </a>
+        </div>
+        <div class="comprobante_rx">
+            <a style="font-size:16px; margin:0 auto;" class="comprobantetxt_rxi02a"> </a>
+        </div>
+        <div class="fecha_rx">
+            <div class="fechat_rx">
+                <a style="font-size:13px;" class="fechafacttxt_rxi02a"> </a>
+            </div>
+        </div>
+    </div>
+    <div class="datos_rx">
+        <div class="primera_linea">
+            <div class="diagn_rx">
+                <a style="font-size:16px; margin:0 auto;" class="pacientetxt_rxi02a"> DIAGN: </a>
+            </div>
+            <div class="paciente_rx">
+                <a style="font-size:16px; margin:0 auto;" class="pacientetxt_rxi02a"> Paciente:</a>
+            </div>
+            <div class="id_rx">
+                <a style="font-size:16px; margin:0 auto;" class="idtxt_rxi02a"> ID: </a>
+            </div>
+        </div>
+        <div class="segunda_linea">
+            <div class="edad_rx">
+                <a style="font-size:16px; margin:0 auto;" class="edadtxt_rxi02a"> Edad: </a>
+            </div>
+            <div class="sexo_rx">
+                <a style="font-size:16px; margin:0 auto;" class="sexotxt_rxi02a"> Sexo: </a>
+            </div>
+            <div class="entidad_rx">
+                <a style="font-size:16px; margin:0 auto;" class="entidadtxt_rxi02a"> Entidad: </a>
+            </div>
+        </div>
+        <div class="tercera_linea">
+            <div class="estudio1_rx">
+                <a style="font-size:16px; margin:0 auto;" class="estudiotxt_rxi02a"> Estudio: </a>
+            </div>
+        </div>
+    </div>
+    <div class="contenido_rx">
+        <div class="detalle1_rx">
+            <a style="font-size:16px; margin:0 auto;" id="detalle2txt_rxi02a"> Segundo contenido de RX </a>
+        </div>
+    </div>
+    <div class="firmamedico_rx">
+        <div class="firmaprofe"></div>
+        <div class="interpretado"><a style="font-size:16px; margin:0 auto;"> Estudio Interpretado por: </a></div>
+        <div class="profesional_rx"><a style="font-size:16px; margin:0 auto;" class="profetxt_rxi02a">  </a></div>
+        <div class="detalleprof_rx"><a style="font-size:16px; margin:0 auto;" class="detalletxt_rxi02a">  </a></div>
+        <div class="registromed_rx"><a style="font-size:16px; margin:0 auto;" class="registrotxt_rxi02a">  </a></div>
+    </div>
+</div>
+<div id="pagina3">
+    <div class="encabezado3">
+        <div class="logo">
+            
+        </div>
+        <div class="nombreusu_rx">
+            <!-- VARIABLE NOMBRE-USU -->
+            <a style="font-size:16px; margin:0 auto;" class="usuariotxt_rxi02a"> </a>
+        </div>
+        <div class="interpretacion_rx">
+            <a style="font-size:16px; margin:0 auto;"> </a>
+        </div>
+        <div class="comprobante_rx">
+            <a style="font-size:16px; margin:0 auto;" class="comprobantetxt_rxi02a"> </a>
+        </div>
+        <div class="fecha_rx">
+            <div class="fechat_rx">
+                <a style="font-size:13px;" class="fechafacttxt_rxi02a"> </a>
+            </div>
+        </div>
+    </div>
+    <div class="datos_rx">
+        <div class="primera_linea">
+            <div class="diagn_rx">
+                <a style="font-size:16px; margin:0 auto;" class="pacientetxt_rxi02a"> DIAGN: </a>
+            </div>
+            <div class="paciente_rx">
+                <a style="font-size:16px; margin:0 auto;" class="pacientetxt_rxi02a"> Paciente:</a>
+            </div>
+            <div class="id_rx">
+                <a style="font-size:16px; margin:0 auto;" class="idtxt_rxi02a"> ID: </a>
+            </div>
+        </div>
+        <div class="segunda_linea">
+            <div class="edad_rx">
+                <a style="font-size:16px; margin:0 auto;" class="edadtxt_rxi02a"> Edad: </a>
+            </div>
+            <div class="sexo_rx">
+                <a style="font-size:16px; margin:0 auto;" class="sexotxt_rxi02a"> Sexo: </a>
+            </div>
+            <div class="entidad_rx">
+                <a style="font-size:16px; margin:0 auto;" class="entidadtxt_rxi02a"> Entidad: </a>
+            </div>
+        </div>
+        <div class="tercera_linea">
+            <div class="estudio1_rx">
+                <a style="font-size:16px; margin:0 auto;" class="estudiotxt_rxi02a"> Estudio: </a>
+            </div>
+        </div>
+    </div>
+    <div class="contenido_rx">
+        <div class="detalle1_rx">
+            <a style="font-size:16px; margin:0 auto;" id="detalle3txt_rxi02a"> Primer contenido de RX </a>
+        </div>
+    </div>
+    <div class="firmamedico_rx">
+        <div class="firmaprofe"></div>
+        <div class="interpretado"><a style="font-size:16px; margin:0 auto;"> Estudio Interpretado por: </a></div>
+        <div class="profesional_rx"><a style="font-size:16px; margin:0 auto;" class="profetxt_rxi02a">  </a></div>
+        <div class="detalleprof_rx"><a style="font-size:16px; margin:0 auto;" class="detalletxt_rxi02a">  </a></div>
+        <div class="registromed_rx"><a style="font-size:16px; margin:0 auto;" class="registrotxt_rxi02a">  </a></div>
+    </div>
+</div>
+<script>
+    var RXI02A = [];
+    ipcRenderer.on('ping', (e, data) => {
+        RXI02A = data.datos;
+
+        RXI02A.DESCRIP_PACIRX = "Paciente: " + RXI02A.DESCRIP_PACIRX;
+        RXI02A.COMPROBANTE = "COMPROBANTE DE PRESTACION DE SERVICIOS: " + RXI02A.COMPROBANTE;
+        RXI02A.IDHIS_FACTRX = "ID: " + RXI02A.IDHIS_FACTRX;
+        RXI02A.EDAD_RX = "Edad: " + RXI02A.EDAD_RX;
+        RXI02A.REGMED_RX = "REG. " + RXI02A.REGMED_RX;
+        RXI02A.DESCRIP1_CUPRX = "Estudio: " + RXI02A.DESCRIP1_CUPRX;
+        switch (RXI02A.SEXO_RX) {
+            case 'M':
+                RXI02A.SEXO_RX = "Sexo: Masc"
+                break;
+            case 'F':
+                RXI02A.SEXO_RX = "Sexo: Fem."
+                break;
+        }
+        RXI02A.DESCRIP_TER = "Entidad: " + RXI02A.DESCRIP_TER;
+        $('.pacientetxt_rxi02a').text(RXI02A.DESCRIP_PACIRX);
+        $('.comprobantetxt_rxi02a').text(RXI02A.COMPROBANTE);
+        $('.idtxt_rxi02a').text(RXI02A.IDHIS_FACTRX);
+        $('.sexotxt_rxi02a').text(RXI02A.SEXO_RX);
+        $('.fechafacttxt_rxi02a').text(RXI02A.FECHA_FACTRX);
+        $('.usuariotxt_rxi02a').text(RXI02A.USU);
+        $('.entidadtxt_rxi02a').text(RXI02A.DESCRIP_TER);
+        $('.profe1txt_rxi02a').text(RXI02A.NOMMEDICO_RX);
+        $('.edadtxt_rxi02a').text(RXI02A.EDAD_RX);
+        $('.estudiotxt_rxi02a').text(RXI02A.DESCRIP1_CUPRX);
+        $('.diagn_rx').hide();
+        if (parseInt(RXI02A.IDRADIOLOGO_RX) > 0) {
+            $('.profetxt_rxi02a').text(RXI02A.IDRADIOLOGO_RX);
+            $('.detalletxt_rxi02a').text(RXI02A.NOMMEDICO_RX);
+            $('.registrotxt_rxi02a').text(RXI02A.REGMED_RX);
+        } else if (parseInt(RXI02A.IDRADIOLOGO_RX) == 0) {
+            $('.profe1xt_rxi02a').text('');
+            $('.detalletxt_rxi02a').text('');
+            $('.registrotxt_rxi02a').text('');
+        }
+        // $('#detalle1txt_rxi02a').append(RXI02A.RESULTADOPPAL);
+        // $('#detalle1txt_rxi02a').text(RXI02A.RESULTADOPPAL);
+        $('#detalle1txt_rxi02a').html(RXI02A.HTMLRESULTADOPPAL);
+        if(RXI02A.HTMLCOMPPPAL == '0'){
+            $('#pagina2').hide();
+        } else if (RXI02A.HTMLCOMPPPAL != '0') {
+            $('#detalle2txt_rxi02a').html(RXI02A.HTMLCOMPPPAL);
+        } if(RXI02A.HTMLADICPPAL == '0'){
+            $('#pagina3').hide();
+        } else if (RXI02A.HTMLDICPPAL != '0') {
+            $('#detalle2txt_rxi02a').html(RXI02A.HTMLDICPPAL);
+        }
+
+        var nit = RXI02A.NIT;
+        var url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);
+
+        fs.readFile(url, function (err, data) {
+            if (err) throw err;
+            var dataImg1 = Buffer.from(data).toString('base64');
+            $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg1}`).appendTo('.logo')
+        });
+
+        var nitprofe = parseInt(RXI02A.IDRADIOLOGO_RX);
+        var urlprofe = path.join(`P:\\PROG\\DATOS\\17329215.bmp`);
+        fs.readFile(urlprofe, function (err, data) {
+            if (err) throw err;
+            var dataImg2 = Buffer.from(data).toString('base64');
+            $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg2}`).appendTo('.firmaprofe')
+        });
+
+    })
+</script>
