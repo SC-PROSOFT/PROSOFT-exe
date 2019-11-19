@@ -128,7 +128,8 @@ function _eventoBotones() {
             var msj
             msj = msjError(cerosIzq(data.Cod.trim(), 2));
             jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> ${msj}` })
-        } else if (data.Tipo == 'POWER' || data.Href || data.Tipo == 'JS') {
+        } else if (data.Tipo == 'POWER' || data.Tipo == 'RM'
+            || data.Href || data.Tipo == 'JS') {
             if (localStorage['Modulo'] == 'MIG') {
                 if (data.Tipo == 'JS') {
                     loadScript(data.Js)
@@ -167,6 +168,38 @@ function _validarSegu(datos, callback) {
             get_url("app/CON904.DLL")
         );
     }
+}
+
+function _infoRm_bat(data) {
+    var mes = evaluarMes_min(localStorage.Mes),
+        usuario = espaciosDer(localStorage.Usuario, 4),
+        clave = localStorage.Clave ? espaciosDer(localStorage.Clave, 8) : '########',
+        cbl = data.params[0].dll;
+
+
+    var argumentos = `${usuario}-${clave}-${cbl}`;
+
+    var batch = `
+    @echo off\r\n
+    TITLE MAIN_ELECT\r\n
+    P:\r\n
+    CD \\${localStorage.Contab}\\${mes}\r\n    
+    set p1=${argumentos.padEnd(100, '*')}\r\n
+    SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\SALUD\\;EXPORT RUNPATH\r\n    
+    runcobol MAIN k c=P:\\rmcobol\\windows.cfg A %p1%\r\n    
+    echo on\r\n
+    exit\r\n    
+    `;
+
+    var nombre_bat = "C:\\PROSOFT\\TEMP\\MENU-" + localStorage.Sesion.trim() + ".BAT";
+
+    let retornar = {
+        nombre_bat: nombre_bat,
+        batch: batch
+    }
+
+    return retornar;
+
 }
 
 function _validarScript_bat(data) {

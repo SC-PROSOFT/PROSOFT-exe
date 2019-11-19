@@ -10,6 +10,9 @@
         params: [],
         lote: [],
         callback: null,
+        datosRm: {
+            params: []
+        },
 
         _init: function () {
             switch ($.ventanaMain.tipo) {
@@ -24,11 +27,56 @@
                     $.ventanaMain._ventana_power();
                     break;
                 case 'RM':
-                    console.log('En desarrollo')
+                    $.ventanaMain._ventana_rm()
                     break;
                 // default:
                 //     break;
             }
+        },
+        _ventana_rm: function () {
+            // var script_bat = _infoRm_bat(this.datosRm)
+            var script_bat = _infoRm_bat($.ventanaMain)
+            console.log(script_bat)
+            if (script_bat) {
+                fs.writeFile(
+                    script_bat.nombre_bat,
+                    script_bat.batch,
+                    (err) => {
+                        if (err) console.error('Error escribiendo bat: \n\n' + err);
+                        else {
+                            _cargarEventos('off');
+                            jAlert({
+                                mensaje: `<div style="text-align: center;">`
+                                    + `Debe cerrar el siguiente programa: <br>`
+                                    + `<b>${$.ventanaMain.id.substring(1, $.ventanaMain.id.length).split('').join('-')} - ${$.ventanaMain.descripcion}</b>`
+                                    + `</div>`,
+                                titulo: 'Esperando RM',
+                                autoclose: false,
+                                btnCancel: false,
+                                footer: false
+                            }, function () { });
+
+                            exe(script_bat.nombre_bat, function (err, data) {
+                                if (err) console.error('Error ejecutando bat: \n\n' + err);
+                                else {
+                                    fs.unlink(script_bat.nombre_bat, function (err) {
+                                        if (err) console.error('Error eliminando bat: \n\n' + err);
+                                        else {
+                                            jAlert_close();
+                                            if ($.ventanaMain.callback) {
+                                                $.ventanaMain.callback();
+                                            } else {
+                                                _cargarEventos('on');
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                )
+            }
+
         },
         _ventana_html: function () {
             $('#body_main').load($.ventanaMain.href, function () { _toggleNav(); })
@@ -63,9 +111,9 @@
                                     if (err) console.error('Error eliminando bat: \n\n' + err);
                                     else {
                                         jAlert_close();
-                                        if ($.ventanaMain.callback){
+                                        if ($.ventanaMain.callback) {
                                             $.ventanaMain.callback();
-                                        }else{
+                                        } else {
                                             _cargarEventos('on');
                                         }
                                     }
