@@ -2,6 +2,10 @@
 
 var $_NovedSer711, arraygrpser, arraycontab;
 
+var ingrterc711_Mask = new IMask(document.getElementById('ingr_terc711'),
+    { mask: Number, min: 0, max: 99, scale: 1, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
+);
+
 $(document).ready(function () {
 
 
@@ -57,17 +61,24 @@ function _ventanaContab(e) {
 
 // llamado DLL GRUPO-SERVICIO
 function grupoServicio_711() {
-    obtenerDatosCompletos("GRUPO-SER", function (data) {
+    data = [];
+    data.nombreFd = "GRUPO-SER";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
         arraygrpser = data.CODIGOS;
+
         ctaMayor_711()
     });
-    console.log(arraygrpser)
+    console.log(arraygrpser, 'datos llegada' )
 
 }
 
 // Llamado DLL CUENTA-MAYOR
 function ctaMayor_711() {
-    obtenerDatosCompletos("CTA-MAYOR", function (data) {
+    data = [];
+    data.nombreFd = "CTA-MAYOR";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
         arraycontab = data.MAESTROS;
         arraycontab.pop();
 
@@ -141,14 +152,16 @@ function _validarConsulta711() {
             }
         }
     )
-
 }
 
 function _llenarDatSer711(data) {
     $('#codigo_711').val(data.COD.trim());
     $('#descrip711').val(data.DESCRIP.trim());
     $('#ingre_clin711').val(data.INGR_CLIN.trim());
-    $('#ingr_terc711').val(data.INGR_TERC.trim());
+
+    tercero = data.INGR_TERC.trim();
+    ingrterc711_Mask.typedValue = tercero;  
+
     var codigoCont = data.COD_CONTAB.trim()
     if (codigoCont.length > 0) {
         $('#contab_711').val(codigoCont);
@@ -218,9 +231,7 @@ function validarPorcen_711(orden) {
         },
         function () {
             var otro = $('#ingre_clin711').val()
-            var tercero = $('#ingr_terc711').val()
-
-            console.log(tercero)
+            tercero  = ingrterc711_Mask.unmaskedValue;
             if (parseFloat(tercero).length > 0) {
                 if (tercero + otro < 100) {
                     if ($('#contab_711').val().trim().length == 0) {
@@ -247,7 +258,6 @@ function conContab_711() {
         },
         function () {
             var valor = $('#contab_711').val()
-
             var busqueda = buscarCodContb(valor)
             switch (busqueda) {
                 case false || undefined:
@@ -266,11 +276,11 @@ function conContab_711() {
 function envioDat711() {
     var descp711 = espaciosDer($('#descrip711').val(), 25);
     var ingre711 = cerosIzq($('#ingre_clin711').val(), 3);
-    var terce711 = cerosIzq($('#ingr_terc711').val(), 4);
     var contab_711 = cerosIzq($('#contab_711').val(), 11);
 
     var URL = get_url("APP/SALUD/SAL711-02.DLL");
-    var data = $_NovedSer711 + "|" + $CODG711 + "|" + descp711 + "|" + ingre711 + "|" + terce711 + "|" + contab_711;
+    var data = $_NovedSer711 + "|" + $CODG711 + "|" + descp711 + "|" + ingre711 + "|" + tercero + "|" + contab_711;
+    console.debug(data);
     postData({
         datosh: datosEnvio() + data
     }, URL)

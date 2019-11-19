@@ -19,7 +19,7 @@ $(document).ready(function () {
 function _ventanaGrptar(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: "GRUPOS DE SERVICIO",
+            titulo: "VENTANA NOMBRE DE TARIFAS",
             columnas: ["COD", "DESCRIP"],
             data: arraytarifas,
             callback_esc: function () {
@@ -37,7 +37,10 @@ function _ventanaGrptar(e) {
 
 // llamado DLL NOM-TARIF
 function nombreTarf712() {
-    obtenerDatosCompletos("NOM-TAR", function (data) {
+    data = [];
+    data.nombreFd = "NOM-TAR";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
         arraytarifas = data.NOMTAR;
     });
     CON850(_evaluarCON850);
