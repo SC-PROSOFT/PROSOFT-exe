@@ -17,6 +17,7 @@ function _iniciar_menu_his() {
 		app: "his",
 		funct: _ventanaPacientes
 	}]);
+	// VALIDA Archivos para creacion Historia
 	var URL = get_url("APP/HICLIN/ARCHIVOS-HC.DLL");
 
 	postData({
@@ -24,8 +25,8 @@ function _iniciar_menu_his() {
 		}, URL)
 		.then((data) => {
 			var res = data.split("|");
-			obtenerDatosCompletos("PROFESIONALES", function (array_profesionales) {
-				$_REG_PROF = array_profesionales['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == parseInt(res[1].trim()));
+			obtenerDatosCompletos({"nombreFd":"PROFESIONALES"}, function (array_profesionales) {
+				$_REG_PROF.datos_prof = array_profesionales['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == parseInt(res[1].trim()));
 				$_REG_PROF.tabla_especialidad = new Array();
 				$_REG_PROF.tabla_especialidad = res[2].split(";");
 				$_REG_PROF.tabla_especialidad.pop();
@@ -37,7 +38,6 @@ function _iniciar_menu_his() {
 			console.log(error)
 		});
 }
-
 function validarPaciente() {
 	validarInputs({
 			form: "#formConsult_his",
@@ -51,18 +51,20 @@ function validarPaciente() {
 			);
 		},
 		function () {
-			if (document.querySelector("#busqpaci_his").value) {
-				var data =
-					datosEnvio() +
-					cerosIzq(document.querySelector("#busqpaci_his").value, 15) + "|" +
-					localStorage["Usuario"] + "|";
-
-				SolicitarDll({
-						datosh: data
-					},
-					cargarDatosPaci,
-					get_url("APP/HICLIN/HC000-1.DLL")
-				)
+			if (document.querySelector("#busqpaci_his").value.length > 0) {
+				// Crea Historia Clinica
+				let URL = get_url("APP/" + "HICLIN/HC000-1" + ".DLL");
+				postData({
+						datosh: datosEnvio() +
+							cerosIzq(document.querySelector("#busqpaci_his").value, 15) + "|" +
+							localStorage["Usuario"] + "|"
+					}, URL)
+					.then((data) => {
+						cargarDatosPaci(data);
+					})
+					.catch((error) => {
+						console.log(error)
+					});
 			} else {
 				jAlert({
 						titulo: "Error ",
@@ -77,9 +79,7 @@ function validarPaciente() {
 
 function cargarDatosPaci(data) {
 	var res = data.split("|");
-
 	console.log(res)
-	if (res[0].trim() == "00") {
 		let URL = get_url("APP/" + "SALUD/SER810-1" + ".DLL");
 		postData({
 				datosh: datosEnvio() + res[1] + "|"
@@ -91,7 +91,6 @@ function cargarDatosPaci(data) {
 			.catch((error) => {
 				console.log(error)
 			});
-	}
 }
 
 function validarOpcPacienteHc(res) {
@@ -152,6 +151,7 @@ function _consultHc(llave) {
 			}
 		},
 		get_url("APP/HICLIN/HC000-2.DLL")
+
 	);
 }
 
@@ -203,11 +203,16 @@ function _mostrarDatosPaci(resp) {
 				break;
 		}
 	}
+
+	// llamado al HC904A RECALCULAR CENSO HOSPITALARIO
+	recalcularCenso_hosp(function(){
 	$("#descrip_hc_his").val(descrip_hc);
 	_toggleNav();
 	$(".menuToggle").attr("style", "display: block;");
 	$("#formConsult_his").attr("hidden", true);
 	$(".footer").attr("hidden", true);
+	}),$_REG_PROF.ATIENDE_PROF;
+
 }
 
 function historiaNueva(hc) {

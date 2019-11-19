@@ -1,37 +1,8 @@
-function consult_ultdethc(codigo) {
-    var retornar = false;
-    for (var i in $DATOS_DETHC) {
-        if ($DATOS_DETHC[i]['COD-DETHC'].trim().toLowerCase() == codigo.toLowerCase()) {
-            retornar = $DATOS_DETHC[i];
-            break;
-        }
-    }
-    return retornar;
-}
-
-function consultarItemArray_dethc(COD_DETHC) {
-    var retornar = false;
-    for (var i in $DATOS_DETHC) {
-        if (COD_DETHC == $DATOS_DETHC[i]['COD-DETHC'] && $LLAVE_HC == $DATOS_DETHC[i]['LLAVE-HC']) {
-            retornar = {
-                index: i,
-                array: $DATOS_DETHC[i]
-            }
-            break;
-        }
-    }
-    return retornar;
-}
-
-
 function consult_enfermedad(codigo) {
     var retornar = false;
-    for (var i in $_ENFERMEDADES) {
-        if ($_ENFERMEDADES[i].COD.trim().toLowerCase() == codigo.toLowerCase()) {
-            retornar = $_ENFERMEDADES[i];
-            break;
-        }
-    }
+    obtenerDatosCompletos("ENFERMEDADES", function (data) {
+        retornar = data.ENFERMEDADES.find(arr => arr.COD_ENF == codigo);
+    })
     return retornar;
 }
 
@@ -583,8 +554,6 @@ function buscar_consulta_externa() {
                 nit = $_USUA_GLOBAL[0].NIT,
                 serv = $_REG_HC.serv_hc,
                 prefijo = $_USUA_GLOBAL[0].PREFIJ;
-            console.log(res)
-
             if (res[0].trim() == "00") {
                 var fecha_ult_consul = res[3];
                 //Sin comprobante retorno=2, con comprobante retorno=1
@@ -635,6 +604,22 @@ function buscar_consulta_externa() {
     if (retorno == 2) {
         _cargarEventos("on");
         _toggleNav();
+    }
+}
+
+function recalcularCenso_hosp(callback,atiende_prof) {
+    var f = new Date();
+    if (f.getHours() > 04 && f.getHours() < 20) {
+        let URL = get_url("APP/" + "HICLIN/HC904A" + ".DLL");
+        postData({
+                datosh: datosEnvio() + (f.getFullYear() + 1) + "|" + 7+"|"+atiende_prof+"|"
+            }, URL)
+            .then(() => {
+                callback
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 }
 

@@ -22,7 +22,7 @@ function _confirmar_medico_h03() {
 	$_REG_PROF.tabla_especialidad[1] = "491";
 	//-------------------------
 	if (admin != "GEBC" || admin != "0101") {
-		var atiende = $_REG_PROF.ATIENDE_PROF;
+		var atiende = $_REG_PROF.datos_prof.ATIENDE_PROF;
 		if (
 			atiende == "1" ||
 			atiende == "2" ||
@@ -65,7 +65,7 @@ function confirmarNovedad_menu_h03() {
 }
 
 function datoUnidad_h03() {
-	if ($_REG_PROF.ATIENDE_PROF == "3" || $_REG_PROF.ATIENDE_PROF == "6") {
+	if ($_REG_PROF.datos_prof.ATIENDE_PROF == "3" || $_REG_PROF.datos_prof.ATIENDE_PROF == "6") {
 		finValidarUnidad_h03("08");
 	} else {
 		on_datoUnidad_h03();
@@ -187,7 +187,7 @@ function datoFinalidad_h03() {
 					label: "descripcion"
 				}],
 				callback_f: function () {
-					if ($_REG_PROF.ATIENDE_PROF == "3" || $_REG_PROF.ATIENDE_PROF == "6") {
+					if ($_REG_PROF.datos_prof.ATIENDE_PROF == "3" || $_REG_PROF.datos_prof.ATIENDE_PROF == "6") {
 						CON850_P(
 							function (e) {
 								if (e.id == "S") {
@@ -225,7 +225,7 @@ function validarFinalidad(data) {
 	if (
 		($_USUA_GLOBAL[0].NIT == 900005594 || $_USUA_GLOBAL[0].NIT == 800037979) &&
 		(data.codigo == "10" || data.codigo == "11") &&
-		$_REG_PROF.ATIENDE_PROF == "3"
+		$_REG_PROF.datos_prof.ATIENDE_PROF == "3"
 	) {
 		plantillaToast("", "15", null, "error", "error");
 		datoFinalidad_h03();
@@ -237,7 +237,7 @@ function validarFinalidad(data) {
 
 function seleccionarPrograma_h03() {
 	var edad = $_REG_HC.edad_hc,
-		ATIENDE_PROF = $_REG_PROF.ATIENDE_PROF,
+		atiende_prof = $_REG_PROF.datos_prof.ATIENDE_PROF,
 		esp_prof = $_REG_PROF.tabla_especialidad,
 		serv = $_REG_HC.serv_hc,
 		finalidad = $_REG_HC.finalid_hc,
@@ -250,9 +250,9 @@ function seleccionarPrograma_h03() {
 		if (
 			(edad.unid_edad == "D" ||
 				(edad.unid_edad == "M" && edad.vlr_edad == "1")) &&
-			(ATIENDE_PROF == "2" ||
-				ATIENDE_PROF == "3" ||
-				ATIENDE_PROF == "6" ||
+			(atiende_prof == "2" ||
+				atiende_prof == "3" ||
+				atiende_prof == "6" ||
 				esp_prof[0] == "550")
 		) {
 			if (
@@ -269,9 +269,9 @@ function seleccionarPrograma_h03() {
 			(edad.unid_edad == "M" && edad.vlr_edad > 1) ||
 			(edad.unid_edad == "A" &&
 				edad.vlr_edad < 5 &&
-				(ATIENDE_PROF == "2" ||
-					ATIENDE_PROF == "3" ||
-					ATIENDE_PROF == "6" ||
+				(atiende_prof == "2" ||
+					atiende_prof == "3" ||
+					atiende_prof == "6" ||
 					esp_prof[0] == "550"))
 		) {
 			if (

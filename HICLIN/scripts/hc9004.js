@@ -1,35 +1,25 @@
 ﻿// PO Pablo Olguin Crea,Guarda e Imprime Historias Clínicas de Oncología
-if (document.readyState != "loading") iniciar_apertura_h9004();
-
-function iniciar_apertura_h9004() {
-	$_REG_HC.sw_embar = '';
-	var llave = $_REG_HC.llave_hc,
-		oper_hc = localStorage['Usuario'];
-
-	validarMedico_h9004();
-
-	var datos_env = datosEnvio() + llave + "|" + oper_hc + "|"
-
-	// let URL = get_url("APP/" + "HICLIN/HC9004" + ".DLL");
-	// postData({
-	// 		datosh: datos_env
-	// 	}, URL)
-	// 	.then((data) => {
-	// 		console.log(data.MENSAJE)
-	// 		// validar_historia_h9004
-	// 	})
-	// 	.catch((error) => {
-	// 		console.log(error)
-	// 	});
-}
+if (document.readyState != "loading") validarMedico_h9004();
 
 function validarMedico_h9004() {
-	var atiende_prof = $_REG_PROF[0].atiende_prof,
+	obtenerDatosCompletos("PROFESIONALES", function (data) {
+		$_REG_PROF.datos_prof = data['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == $_REG_PROF.datos_prof.IDENTIFICACION.trim());
+
+	})
+	var atiende_prof = $_REG_PROF.ATIENDE_PROF,
 		esp_prof = $_REG_PROF.tabla_especialidad;
 	if ((atiende_prof == 'A') && ["250", "140", "460", "461", "464", "462"].find(arr => arr == esp_prof[0] ? true : false)) {
 		atiende_prof = "1";
 		$_REG_HC.oper_elab_hc = atiende_prof;
 	}
+}
+
+function validarPaciente_h9004() {
+	var sw_valid = '';
+	obtenerDatosCompletos("PACIENTES", function (data) {
+		if (data['PACIENTES'].find(arr => arr.COD.trim() == $_REG_PACI[0].COD.trim())) sw_valid = "00";
+	})
+	if (sw_valid == "00") validar_historia_h9004();
 }
 
 function _llenarDatosPag1() {
@@ -53,59 +43,68 @@ function validarPagUno() {
 	);
 }
 
-function validar_historia_h9004(data) {
-	console.log(data)
-	var admin = localStorage['Usuario'],
-		nit = $_USUA_GLOBAL[0].NIT,
-		res = data.split("|"),
-		temporal = $_REG_HC.temporal_hc,
-		estado = $_REG_HC.estado_hc,
-		oper = $_REG_HC.oper_elab_hc;
-	$_REG_HC["fecha"] = res[3].substring(0, 4) + "/" + res[3].substring(4, 6) + "/" + res[3].substring(6, 8);
-	$_REG_HC["procedencia"] = res[4];
-	$_REG_HC["sesion"] = res[5].trim();
-	if ($_REG_PACI[0].sexo_paci == "F") {
-		if (res[1] == "S") {
-			if (
-				(admin = "GEBC" || temporal == "1") ||
-				(estado == "1" && oper == admin) ||
-				(nit == "800037021" && admin == "ADMI") ||
-				(nit == "892000401" && admin == "ADMI")
-			) {
-				if (res[2] > 0 && res[2] <= 3) {
-					$_REG_HC.sw_embar = "S";
+function validar_historia_h9004() {
+	SolicitarDll({
+			datosh: datosEnvio()+
+		},
+		function (data) {
+			var res = data.split("|");
+			if (res[0] = "00") {
+				if (res[2].trim() == 1) {
+					let msj = "No fue totalmente diligenciada"
+					jAlert({
+						titulo: "ATENCION! ",
+						mensaje: "El paciente ya tiene historia clinica" + "<br>" +
+							"abierta, con fecha " + $_REG_HC.fecha + "<br>" + msj
+					}, _salir_h9004)
+
 				}
 			} else {
-				let msj = "No fue totalmente diligenciada"
-				jAlert({
-					titulo: "ATENCION! ",
-					mensaje: "El paciente ya tiene historia clinica" + "<br>" +
-						"abierta, con fecha " + $_REG_HC9004.fecha + "<br>" + msj
-				}, _salir_h9004)
-
+				plantillaError(res[0], res[1], res[2]);
 			}
-		} else {
-			if (estado == 2) {
-				CON851("70", "70", null, "error", "error");
+		},
+		get_url("APP/HICLIN/HC000-1.DLL")
+	)
+	console.log(data)
+	var admin = localStorage['Usuario'],
+
+		if ($_REG_PACI[0].sexo_paci == "F") {
+			if (res[1] == "S") {
 				if (
+					(admin = "GEBC" || temporal == "1") ||
+					(estado == "1" && oper == admin) ||
+					(nit == "800037021" && admin == "ADMI") ||
+					(nit == "892000401" && admin == "ADMI")
+				) {
+					if (res[2] > 0 && res[2] <= 3) {
+						$_REG_HC.sw_embar = "S";
+					}
+				} else {
+					_salir_h9004();
+
+				}
+			} else {
+				if (estado == 2) {
+					CON851("70", "70", null, "error", "error");
+					if (
+						(admin !== "GEBC") ||
+						(nit !== "800037021" && admin !== "ADMI") ||
+						(nit !== "892000401" && admin !== "ADMI")
+					) {
+						_salir_h9004();
+					}
+				} else if (
 					(admin !== "GEBC") ||
 					(nit !== "800037021" && admin !== "ADMI") ||
 					(nit !== "892000401" && admin !== "ADMI")
 				) {
+					CON851("81", "81", null, "error", "error");
 					_salir_h9004();
-				}
-			} else if (
-				(admin !== "GEBC") ||
-				(nit !== "800037021" && admin !== "ADMI") ||
-				(nit !== "892000401" && admin !== "ADMI")
-			) {
-				CON851("81", "81", null, "error", "error");
-				_salir_h9004();
-			} else $_REG_HC.novedad_hc = 8;
+				} else $_REG_HC.novedad_hc = 8;
+			}
+		} else {
+			$_REG_HC.sw_embar = 0;
 		}
-	} else {
-		$_REG_HC.sw_embar = 0;
-	}
 
 	buscar_comprobante_historia_h9004();
 
@@ -186,7 +185,7 @@ function _on_formulario_h9004(sw) {
 	document.getElementById("dia_hc_9004").value = $_REG_HC.fecha_hc.substring(6, 8);
 	document.getElementById("hora_hc_9004").value = f.getHours();
 	document.getElementById("min_hc_9004").value = f.getMinutes();
-	document.getElementById("med_hc_9004").value = $_REG_PROF[0].descrip_prof + ' reg.' + $_REG_PROF[0].reg_med_prof;
+	document.getElementById("med_hc_9004").value = $_REG_PROF.descrip_prof + ' reg.' + $_REG_PROF.reg_med_prof;
 	document.getElementById("act_hc_9004").value = $_REG_HC.novedad_hc;
 	document.getElementById("unser_hc_9004").value = $_REG_HC.serv_hc;
 	document.getElementById("proced_hc_9004").value = $_REG_HC.procedencia;
@@ -264,7 +263,7 @@ function grabar_historia_9004() {
 		per_tora_hc = document.querySelector("#per_tora_hc_9004").value,
 		sup_corp_hc = document.querySelector("#sup_corp_hc_9004").value,
 		sw_embar = $_REG_HC.sw_embar,
-		med_hc = $_REG_PROF[0].cod_prof,
+		med_hc = $_REG_PROF.cod_prof,
 		datos_9004 = "";
 
 	var arr_9004 = document.querySelectorAll(".onco");
