@@ -2,7 +2,7 @@
 
 // import { loadavg } from "os";
 
-var arraySucur119, arrayDivis719, arrayMaest119, arrayTerceros119, arrayProfesionales119, $_NOVEDAD, arrayEspecial119, arrayDatosCompletos119, arrayProfes719, arrayOperad719, arrayHorProf_119 = [];
+var arraySucursal_119, arrayDivision_119, arrayMaestros_119, arrayTerceros119, arrayProfesionales119, $_NovedSal719, arrayDatosCompletos119, arrayProfesion_119, arrayOperador_119, arrayHorProf_119 = [];
 var arrayHorProfMoment_119, $novPopUp
 var salas119;
 var fechaActual119
@@ -15,7 +15,7 @@ var maskFechas = [];
 var maskHora = [];
 var maskFrec = [];
 
-var $_fechaPopUp_119, $_fechaDeshabDesde_119, $_fechaDeshabHasta_119, $añoDeshabDesde
+var $_fechaPopUp_119, $_fechaDeshabDesde_119, $_fechaDeshabHasta_119
 var maskFechaPop = []
 var maskHoraPop = [];
 var maskFrecPop = [];
@@ -48,7 +48,7 @@ $(".imaskFrec").each(function (index, element) {
 });
 
 $("#desAgenDesde_ser119").each(function (index, element) {
-    // console.log(element)
+    console.log(element)
     var momentFormat = 'YYYY/MM/DD-HH:mm';
     var momentMask = IMask(element, {
         mask: Date,
@@ -193,11 +193,11 @@ $(document).ready(function () {
         { input: 'operAsig2', app: '119', funct: _ventanaOperador719 },
         { input: 'operAsig3', app: '119', funct: _ventanaOperador719 },
         { input: 'operAsig4', app: '119', funct: _ventanaOperador719 },
-        { input: 'operAsig5', app: '119', funct: _ventanaOperador719 },
-        { input: 'profesion', app: '119', funct: _ventanaProfesion719 }
+        { input: 'operAsig5', app: '119', funct: _ventanaOperador719 }
+        // { input: 'profesion', app: '119', funct: _ventanaProfesion719 }
 
     ]);
-    crearJsonTerceros719();
+    datosTerceros719();
 });
 
 
@@ -222,7 +222,7 @@ function _ventanaFecha719(e) {
 
 function _ventanaTerceros719(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        switch (parseInt($_NOVEDAD)) {
+        switch (parseInt($_NovedSal719)) {
             case 7: f8Terceros719();
                 break;
             case 8: f8Profesionales719();
@@ -235,17 +235,16 @@ function _ventanaTerceros719(e) {
 
 function f8Terceros119() {
     _ventanaDatos({
-        titulo: 'Ventana De Terceros',
-        tipo: 'mysql',
-        db: $CONTROL,
-        tablaSql: 'sc_archter',
+        titulo: "Ventana De Terceros",
+        columnas: ["COD", "NOMBRE"],
+        data: arrayTerceros119,
         callback_esc: function () {
             modificar719()
         },
         callback: function (data) {
-            var cedula = cerosIzq(data.codigo, 10)
-            $("#identificacion_119").val(cedula)
-            $("#nombre_119").val(data.descripcion);
+            // var cedula = cerosIzq(data.codigo, 10)
+            $("#identificacion_119").val(data.COD)
+            $("#nombre_119").val(data.NOMBRE);
             _enterInput('#identificacion_119');
         }
     });
@@ -253,17 +252,16 @@ function f8Terceros119() {
 
 function f8Profesionales719() {
     _ventanaDatos({
-        titulo: 'Ventana De Profesionales',
-        tipo: 'mysql',
-        db: $CONTROL,
-        tablaSql: 'sc_archprof',
+        titulo: "Ventana De Terceros",
+        columnas: ["NOMBRE", "IDENTIFICACION"],
+        data: arrayProfesion_119,
         callback_esc: function () {
             modificar719()
         },
         callback: function (data) {
-            var cedula = cerosIzq(data.codigo, 10)
+            var cedula = cerosIzq(data.IDENTIFICACION, 10)
             $("#identificacion_119").val(cedula)
-            $("#nombre_119").val(data.descripcion);
+            $("#nombre_119").val(data.NOMBRE);
             _enterInput('#identificacion_119');
         }
     });
@@ -273,9 +271,8 @@ function _ventanaCuentRte719(e) { // Habilitar F8
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "VENTANA PLAN DE CUENTAS",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archmae',
+            columnas: ["CTA_MAY", "SUB_CTA", "AUX_MAE", "NOMBRE_MAE", "TIPO_MAE"],
+            data: arrayMaestros_119,
             callback_esc: function () {
                 ctaRetenfuente_119()
             },
@@ -290,10 +287,9 @@ function _ventanaCuentRte719(e) { // Habilitar F8
 function _ventanaDivis719(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: 'Ventana De Divisiones',
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_divis',
+            titulo: "Ventana De Divisiones",
+            columnas: ["COD", "DESCRIP"],
+            data: arrayDivision_119,
             callback_esc: function () {
                 divisionCups_119()
             },
@@ -426,207 +422,89 @@ function _Especialistas719(e) {
     }
 }
 
+
+// DLLS
+
+function crearJsonTerceros119() {
+    let datosEnvio119 = datosEnvio();
+
+    var url = urlDll('CON802', 'contab')
+
+    SolicitarDll({ datosh: datosEnvio119 }, on_crearJsonTerceros_119, url);
+}
+
 // inicio json //
-
-function crearJsonTerceros719() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonTerceros719,
-        nombredll: 'CON802',
-        carpeta: 'CONTAB'
-    })
+function datosTerceros719() {
+    data = [];
+    data.nombreFd = "TERCEROS";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
+        arrayTerceros119 = data.TERCEROS;
+        arrayTerceros119.pop();
+        datosMaestros719()
+    });
 }
 
-function on_jsonTerceros719(data) {
-    console.debug(data + ' terce');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arrayTerceros119 = data.TERCEROS
-                arrayTerceros119.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_eliminarJsonTerceros719);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
+function datosMaestros719() {
+    data = [];
+    data.nombreFd = "CTA-MAYOR";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
+        arrayMaestros_119 = data.MAESTROS;
+        arrayMaestros_119.pop();
+        datosProfesion719()
+    });
 }
 
-function on_eliminarJsonTerceros719(data) {
-    console.log(data);
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
-        // jsonSucur719();
-        jsonMaestros719()
-    } else {
-        loader('hide');
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
+function datosProfesion719() {
+    data = [];
+    data.nombreFd = "PROFESIONALES";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
+        arrayProfesion_119 = data.ARCHPROF;
+        arrayProfesion_119.pop();
+        datosDivision719()
+    });
 }
 
-function jsonMaestros719() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonMaest719,
-        nombredll: 'CON801',
-        carpeta: 'CONTAB'
-    })
+function datosDivision719() {
+    data = [];
+    data.nombreFd = "DIVISION";
+    data.busqueda = '';
+    obtenerDatosCompletos(data, function (data) {
+        arrayDivision_119 = data.CODIGOS;
+        arrayDivision_119.pop();
+        // datosOperador719()
+    });
+    CON850(evaluarNovedad119);
 }
 
-function on_jsonMaest719(data) {
-    console.debug(data + ' maestros');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arrayMaest119 = data.MAESTROS
-                arrayMaest119.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_elimJsonMstr719);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
 
-function on_elimJsonMstr719(data) {
-    console.log(data);
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
-        // crearJsonDivision719()
-        crearJsonOperad719()
-    } else {
-        loader('hide');
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
-
-// function crearJsonDivision719() {
-//     LLAMADO_DLL({
-//         dato: [],
-//         callback: on_jsonDivis719,
-//         nombredll: 'INV809',
-//         carpeta: 'INVENT'
-//     })
+// PDTE POR REALIZAR EN DATOSCOMPLETOS
+// function datosDivision719() {
+//     data = [];
+//     data.nombreFd = "OPERADOR";
+//     data.busqueda = '';
+//     obtenerDatosCompletos(data, function (data) {
+//         arrayOperador_119 = data.OPER;
+//         arrayOperador_119.pop();
+//     });
+//     CON850(_evaluarCON850);
 // }
 
-// function on_jsonDivis719(data) {
-//     console.debug(data + ' division');
-//     var date = data.split('|');
-//     var swinvalid = date[0].trim();
-//     var json = date[1].trim();
-//     var rutaJson = get_url("temp/" + json);
-//     if (swinvalid == '00') {
-//         SolicitarDatos(
-//             null,
-//             function (data) {
-//                 arrayDivis719 = data.DIVISION
-//                 arrayDivis719.pop()
-//                 var arrayEliminar = [];
-//                 arrayEliminar.push(json)
-//                 _eliminarJson(arrayEliminar, on_elimJsonDivis719);
-//             },
-//             rutaJson
-//         );
-//     }
-//     else {
-//         loader('hide');
-//         CON852(date[0], date[1], date[2], _toggleNav);
-//     }
-// }
-// function on_elimJsonDivis719(data) {
-//     console.log(data);
-//     var res = data.split('|');
-//     if (res[0].trim() == '00') {
-//         console.debug('json eliminado')
-//         crearJsonOperad719()
-//     } else {
-//         loader('hide');
-//         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-//     }
-// }
 
-function crearJsonOperad719() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonOperd719,
-        nombredll: 'CON982',
-        carpeta: 'CONTAB'
-    })
-}
+/// FIN DLL /// 
 
-function on_jsonOperd719(data) {
-    console.debug(data + ' operador');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
-        SolicitarDatos(
-            null,
-            function (data) {
-                arrayOperad719 = data.ARCHREST
-                arrayOperad719.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_elimJsonOperad719);
-            },
-            rutaJson
-        );
-    }
-    else {
-        loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function on_elimJsonOperad719(data) {
-    console.log(data);
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
-        llamarNovedad119()
-    } else {
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
-/// FIN JSON /// 
-
-
-
-//NOVEDAD//
-function llamarNovedad119() {
-    CON850(evaluarNovedad119)
-}
-
+// NOVEDAD //
 function evaluarNovedad119(novedad) {
-    $_NOVEDAD = novedad.id;
+    _inputControl('reset');
+    _inputControl('disabled');
+    $_NovedSal719 = novedad.id;
     switch (parseInt(novedad.id)) {
 
         case 7:
         case 8:
-        case 9: modificar719();
+        case 9: modificar_119();
             break;
         default:
             _toggleNav();
@@ -635,7 +513,8 @@ function evaluarNovedad119(novedad) {
     $('#novedad_119').val(novedad.id + ' - ' + novedad.descripcion)
 }
 
-function modificar719() {
+function modificar_119() {
+
     validarInputs(
         {
             form: '#validarIdentificacion',
@@ -644,235 +523,330 @@ function modificar719() {
         function () { CON850(evaluarNovedad119); },
         function () {
             var Identificacion119 = $('#identificacion_119').val();
+            var busquedaArray = busquedaTerceros119(Identificacion119);
+
             $identificacion_global = Identificacion119
 
-            let datos_envio = datosEnvio()
-            datos_envio += '|'
-            datos_envio += $identificacion_global
-            SolicitarDll({ datosh: datos_envio }, on_datoProfes719, get_url('/APP/SALUD/SAL719C.DLL'));
+            switch (parseInt($_NovedSal719)) {
+                case 7:
+                    //console.log("pare novedad nuevo")
+                    if (!busquedaArray) {
+                        $("#nombre_119").val(busquedaArray.NOMBRE.trim());
+                        detalle_119()
+                    } else {
+                        CON851('00', '00', null, 'error', 'error');
+                        modificar_119()
+                    }
+                    break;
+                case 8:
+                case 9:
+                    if (!busquedaArray) {
+                        // $('#nombre_119').val(busquedaArray.NOMBRE.trim());
+                        // crearJsonDatosCompletos(busquedaArray.IDENTIFICACION);
+                        datosProfes719()
+                        
+                    } else {
+                        CON851('01', '01', null, 'error');
+                        modificar_119()
+                        $('#nombre_119').val(busquedaArray.NOMBRE.trim());
+                    }
+                    break;
+            }
+
         }
     )
 }
 
-function on_datoProfes719(data) {
-    console.debug(data);
-    var date = data.split('|');
 
-    $_NOMPROF = date[1].trim();
-    $_DESCRPROF = date[2].trim();
-    $_REGPROF = date[3].trim();
-    $_ATIENPROF = date[4].trim();
-    $_CONTRPROF = date[5].trim();
-    $_PORCPROF = date[6].trim();
-    $_ESTADPROF = date[7].trim();
+// llamado DLL PROF-COMPLETOS
+// function datosProfes719() {
+//     data = [];
+//     data.nombreFd = "PROFESIONAL_DOS";
+//     data.busqueda = '';
+//     obtenerDatosCompletos(data, function (data) {
+//         arrayProfesionales119 = data.PERSATI;
 
-    $_CUENTAPROF = date[8].trim();
-    $_DESCTAPROF = date[9].trim();
-    $_DIVPROF = date[10].trim();
-    $_DESCDIVPROF = date[11].trim();
-    $_SUCURPROF = date[12].trim();
-    $_DESCSUCPROF = date[13].trim();
-    $_CL1PROF = date[14].trim();
-    $_CL2PROF = date[15].trim();
-    $_CL3PROF = date[16].trim();
-    $_CL4PROF = date[17].trim();
-    $_CL5PROF = date[18].trim();
-    $_CL6PROF = date[19].trim();
-    $_CL7PROF = date[20].trim();
+//         // ctaMayor_711()
+        
+//     alert(arrayProfesionales119, 'datos llegada' )
+//     });
+//     alert(arrayProfesionales119, 'datos llegada' )
 
-    $_ESPC1PROF = date[21].trim();
-    $_DESCESP1PROF = date[22].trim();
-    $_ESPC2PROF = date[23].trim();
-    $_DESCESP2PROF = date[24].trim();
-    $_ESPC3PROF = date[25].trim();
-    $_DESCESP3PROF = date[26].trim();
-    $_ESPC4PROF = date[27].trim();
-    $_DESCESP4PROF = date[28].trim();
-    $_ESPC5PROF = date[29].trim();
-    $_DESCESP5PROF = date[30].trim();
+// }
 
-    $_OPER1PROF = date[31].trim();
-    $_OPER2PROF = date[32].trim();
-    $_OPER3PROF = date[33].trim();
-    $_OPER4PROF = date[34].trim();
-    $_OPER5PROF = date[35].trim();
+function crearJsonDatosCompletos(identificacion) {
 
-    $_INTMINPROF = date[36].trim();
-    $_CANTCITAPROF = date[37].trim();
-    $_FORMAPROF = date[38].trim();
-    $_SOBREAPROF = date[39].trim();
+    loader('show');
+    identificacion = cerosIzq(identificacion, 10)
 
-    $_OPERPROF = date[40].trim();
-    $_FECHPROF = date[41].trim();
+    let datosEnvio119 = datosEnvio();
+    datosEnvio119 += identificacion;
 
-    $_FECINICPROF = date[42].trim();
-    $_HORAINIPROF = date[43].trim();
-    $_FECFINPROF = date[44].trim();
-    $_HORAFINPROF = date[45].trim();
-    $_IMPDVDPROF = date[46].trim();
-    $_IMPBIRPROF = date[47].trim();
-    $_IMPNOMRPROF = date[48].trim();
-    $_ASOCPROF = date[49].trim();
+    //console.log(datosEnvio119)
+    var url = urlDll('SAL719-01', 'salud')
 
-    // $_LUNPROF = date[34].trim();
-    // $_MARTPROF = date[35].trim();
-    // $_MIERCPROF = date[36].trim();
-    // $_JUEVPROF = date[37].trim();
-    // $_VIERPROF = date[38].trim();
-    // $_SABADPROF = date[39].trim();
+    SolicitarDll({ datosh: datosEnvio119 }, on_crearJsonDatosCompletos, url);
+}
 
-
-
-    if (date[0].trim() == '00') {
-        if ($_NOVEDAD == '7') {
-            CON851('00', '00', null, 'error', 'Error');
-            modificar_119();
-        }
-        else {
-            datosProfs()
-        }
-    }
-    else if (date[0].trim() == '01') {
-        if ($_NOVEDAD == '7') {
-            detalle_119();
-        }
-        else {
-            CON851('01', '01', null, 'error', 'Error');
-            modificar_119();
-        }
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
+function on_crearJsonDatosCompletos(data) {
+    var rdll = data.split('|');
+    //console.log(rdll[0]);
+    var nombrejs = 'PERSATI-' + localStorage.getItem('key_sesion');
+    if (rdll[0].trim() == '00') {
+        var rutaJson = urlJson('JSC-PERSATI-');
+        //console.log(rutaJson);
+        SolicitarDatos(
+            null,
+            function (data) {
+                //console.log(data)
+                arrayDatosCompletos119 = data.PERSATI
+                eliminarJson(nombrejs);
+                mostrarDatosCompletos(arrayDatosCompletos119[0]);
+            },
+            rutaJson
+        );
+    } else {
+        CON852(rdll[0], rdll[1], rdll[2]);
     }
 }
 
-function datosProfs() {
-    $("#nombre_119").val($_NOMPROF);
-    $('#detalle_119').val($_DESCRPROF);
-    $('#registro_ser119').val($_REGPROF);
-    $('#profesion_119').val($_ATIENPROF);
-    // $('#descriprof_119').val(search_array_Profesion119(datos.ATIENDE.trim()));
+function mostrarDatosCompletos(datos) {
+    mayorRet_119 = datos.MAYORRET.trim();
+    console.log(mayorRet_119)
 
-    switch ($_CONTRPROF) {
-        case "1":
-            $('#contratacion_119').val('Valor Fijo');
+    $("#nombre_119").val(datos.DESCRIP.trim());
+    $('#oper_ser119').val(datos.OPER.trim());
+    $('#fecha_ser119').val(datos.FECHA.trim());
+
+    $('#detalle_119').val(datos.DETALLE.trim());
+    $('#registro_ser119').val(datos.REGISTRO.trim());
+
+    $('#profesion_119').val(datos.ATIENDE.trim());
+    $('#descriprof_119').val(search_array_Profesion119(datos.ATIENDE.trim()));
+
+
+    $('#cuentaRte_119').val(datos.CTARET.trim());
+    $('#descRetenfuente_119').val(datos.NOMCTA.trim());
+
+    $('#division_119').val(datos.DIVISION.trim());
+    $('#descCUPS_119').val(datos.DESCDIV.trim());
+
+    $('#sucursal_119').val(datos.SUCURSAL.trim());
+    $('#descSuc_119').val(datos.DESCSUC.trim());
+
+    validarChecked('#Medicamentos_119', datos.CL1.trim())
+    validarChecked('#procQuirur_ser119', datos.CL2.trim())
+    validarChecked('#procDiag_ser119', datos.CL3.trim())
+    validarChecked('#imagen_ser119', datos.CL4.trim())
+    validarChecked('#serv_ser119', datos.CL5.trim())
+    validarChecked('#consulter_ser119', datos.CL6.trim())
+    validarChecked('#promPrev_ser119', datos.CL7.trim())
+
+    var contratacion_119 = datos.CONTRATO.trim();
+    console.log(contratacion_119)
+    switch (contratacion_119) {
+        case "1": $('#contratacion_119').val('Valor Fijo');
+
             break;
         case "2":
             $('#contratacion_119').val('% Sobre Facturacion');
-            $('#medico_119').val($_PORCPROF);
+            $('#medico_119').val(datos.PORCENT.trim());
             break;
     }
 
-    switch ($_ESTADPROF) {
-        case "1":
-            $('#estAct_119').val('Activo')
+
+    var estadoAct_119 = datos.ESTADO.trim();
+    switch (estadoAct_119) {
+        case "1": $('#estAct_119').val('Activo')
+
             break;
-        case "2":
-            $('#estAct_119').val('Inactivo')
+        case "2": $('#estAct_119').val('Inactivo')
+
             break;
     }
 
-    $('#cuentaRte_119').val($_CUENTAPROF);
-    $('#descRetenfuente_119').val($_DESCTAPROF);
-    $('#division_119').val($_DIVPROF);
-    $('#descCUPS_119').val($_DESCDIVPROF);
-    $('#sucursal_119').val($_SUCURPROF);
-    $('#descSuc_119').val($_DESCSUCPROF);
+    $('#espec1_119').val(datos.ESP1.trim());
+    $('#DescEspec1_119').val(datos.DESCESP1.trim());
 
-    validarChecked('#Medicamentos_119', $_CL1PROF);
-    validarChecked('#procQuirur_ser119', $_CL2PROF);
-    validarChecked('#procDiag_ser119', $_CL3PROF);
-    validarChecked('#imagen_ser119', $_CL4PROF);
-    validarChecked('#serv_ser119', $_CL5PROF);
-    validarChecked('#consulter_ser119', $_CL6PROF);
-    validarChecked('#promPrev_ser119', $_CL7PROF);
-
-    $('#espec1_119').val($_ESPC1PROF);
-    $('#DescEspec1_119').val($_DESCESP1PROF);
-    $('#espec2_119').val($_ESPC2PROF);
-    $('#DescEspec2_119').val($_DESCESP2PROF);
-    $('#espec3_119').val($_ESPC3PROF);
-    $('#DescEspec3_119').val($_DESCESP3PROF);
-    $('#espec4_119').val($_ESPC4PROF);
-    $('#DescEspec4_119').val($_DESCESP4PROF);
-    $('#espec5_119').val($_ESPC5PROF);
-    $('#DescEspec5_119').val($_DESCESP5PROF);
-
-    $('#operAsig1_119').val($_OPER1PROF);
-    if ($_OPER1PROF === 'XXXX') {
-        $('#descAsig1_119').val('TODOS LOS OPERADORES');
-    }
-    $('#operAsig2_119').val($_OPER2PROF);
-    if ($_OPER2PROF === 'XXXX') {
-        $('#descAsig2_119').val('TODOS LOS OPERADORES');
-    }
-    $('#operAsig3_119').val($_OPER3PROF);
-    if ($_OPER3PROF === 'XXXX') {
-        $('#descAsig3_119').val('TODOS LOS OPERADORES');
-    }
-    $('#operAsig4_119').val($_OPER4PROF);
-    if ($_OPER4PROF === 'XXXX') {
-        $('#descAsig4_119').val('TODOS LOS OPERADORES');
-    }
-    $('#operAsig5_119').val($_OPER5PROF);
-    if ($_OPER5PROF === 'XXXX') {
-        $('#descAsig5_119').val('TODOS LOS OPERADORES');
-    }
-
-    $('#asigCita_ser119').val($_INTMINPROF);
-    $('#cantMaxCitas_Ser119').val($_CANTCITAPROF);
-
-    validarChecked('#agendaExcep719', $_FORMAPROF);
-    validarChecked('#sobreAgenda719', $_SOBREAPROF);
+    $('#espec2_119').val(datos.ESP2.trim());
+    $('#DescEspec2_119').val(datos.DESCESP2.trim());
+    $('#espec3_119').val(datos.ESP3.trim());
+    $('#DescEspec3_119').val(datos.DESCESP3.trim());
+    $('#espec4_119').val(datos.ESP4.trim());
+    $('#DescEspec4_119').val(datos.DESCESP4.trim());
+    $('#espec5_119').val(datos.ESP5.trim());
+    $('#DescEspec5_119').val(datos.DESCESP5.trim());
 
 
-    $('#oper_ser119').val($_OPERPROF);
-    $('#fecha_ser119').val($_FECHPROF);
 
-    $FECDESDE = $_FECINICPROF
-    $FECDESDE += $_HORAINIPROF;
+    $('#operAsig1_119').val(datos.OPERAUT.trim());
+    $('#descAsig1_119').val(search_operador_119(datos.OPERAUT.trim()));
 
-    $FECHAST = $_FECFINPROF
-    $FECHAST += $_HORAFINPROF;
+    $('#operAsig2_119').val(datos.OPERCIRU.trim());
+    $('#descAsig2_119').val(search_operador_119(datos.OPERCIRU.trim()));
 
-    if ($FECHAST != "0000000000") {
+    $('#operAsig3_119').val(datos.OPEROTR.trim());
+    $('#descAsig3_119').val(search_operador_119(datos.OPEROTR.trim()));
+
+    $('#operAsig4_119').val(datos.OPERAUT4.trim());
+    $('#descAsig4_119').val(search_operador_119(datos.OPERAUT4.trim()));
+
+    $('#operAsig5_119').val(datos.OPERAUT5.trim());
+    $('#descAsig5_119').val(search_operador_119(datos.OPERAUT5.trim()));
+
+    $('#asigCita_ser119').val(datos.INTMIN.trim());
+    $('#cantMaxCitas_Ser119').val(datos.CITAS.trim());
+
+    validarChecked('#agenExcep_ser119', datos.FORMAGEN.trim())
+    validarChecked('#sobreAgen_ser119', datos.SOBREAGEN.trim())
+
+    var fechaDesde_119 = datos.ANOINI.trim();
+    fechaDesde_119 += datos.MESINI.trim();
+    fechaDesde_119 += datos.DIAINI.trim();
+    fechaDesde_119 += datos.HRINI.trim();
+
+    var fechaHasta_119 = datos.ANOFIN.trim()
+    fechaHasta_119 += datos.MESFIN.trim();
+    fechaHasta_119 += datos.DIAFIN.trim();
+    fechaHasta_119 += datos.HRFIN.trim();
+
+    //console.log(fechaDesde_119)
+    if (fechaDesde_119 != "0000000000") {
         var fechaDesdeMask_119 = buscarMaskFecha('desAgenDesde_ser119')
-        fechaDesdeMask_119.unmaskedValue = $FECHAST
+        fechaDesdeMask_119.unmaskedValue = fechaDesde_119
 
         var fechaHastaMask_119 = buscarMaskFecha('desAgenHasta_ser119')
-        fechaHastaMask_119.unmaskedValue = $FECHAST
+        fechaHastaMask_119.unmaskedValue = fechaHasta_119
     }
 
-    validarChecked('#impDVD_119', $_IMPDVDPROF)
-    validarChecked('#impMenBir_119', $_IMPBIRPROF)
-    validarChecked('#impMenNorm_119', $_IMPNOMRPROF)
-    validarChecked('#asocRad_119', $_ASOCPROF)
+    /*
+        for (var i in datos.TABLA) {
+            var suc1 = ('sucursal1_' + i)
+            $('#' + suc1).val(datos.TABLA[i].SUCURSAL1);
+        }*/
 
-    continuar719()
-    console.debug(' DATOS COMPLETOS');
-}
+    for (var i in datos.TABLA) {
+        var index = buscarMaskHora('horaIngreso1_' + i)
+        // //console.log(i)
+        // //console.log(index)
+        maskHora[index].unmaskedValue = datos.TABLA[i].HORAING1
+    }
+
+    for (var i in datos.TABLA) {
+        var index = buscarMaskHora('horaSalida1_' + i)
+        // //console.log(i)
+        // //console.log(index)
+        maskHora[index].unmaskedValue = datos.TABLA[i].HORARET1
+    }
+
+    for (var i in datos.TABLA) {
+        var fre1 = ('fre1_' + i)
+        $('#' + fre1).val(datos.TABLA[i].INTMINTAB1);
+    }
+
+    ////////////////////////////////////////////////////////////
+
+    /*
+        for (var i in datos.TABLA) {
+            var suc2 = ('sucursal2_' + i)
+            $('#' + suc2).val(datos.TABLA[i].SUCURSAL2);
+        }*/
+
+    for (var i in datos.TABLA) {
+        var index = buscarMaskHora('horaIngreso2_' + i)
+        // //console.log(i)
+        // //console.log(index)
+        maskHora[index].unmaskedValue = datos.TABLA[i].HORAING2
+    }
+
+    for (var i in datos.TABLA) {
+        var index = buscarMaskHora('horaSalida2_' + i)
+        // //console.log(i)
+        // //console.log(index)
+        maskHora[index].unmaskedValue = datos.TABLA[i].HORARET2
+    }
+
+    for (var i in datos.TABLA) {
+        var fre2 = ('fre2_' + i)
+        $('#' + fre2).val(datos.TABLA[i].INTMINTAB2);
+    }
+
+    //////////////////////////////////////////////////
+
+    /*
+        for (var i in datos.TABLA) {
+            var suc3 = ('sucursal3_' + i)
+            $('#' + suc3).val(datos.TABLA[i].SUCURSAL3);
+        }
+    
+        for (var i in datos.TABLA) {
+            var index = buscarMaskHora('horaIngreso3_' + i)
+            // //console.log(i)
+            // //console.log(index)
+            maskHora[index].unmaskedValue = datos.TABLA[i].HORAING3
+        }
+    
+        for (var i in datos.TABLA) {
+            var index = buscarMaskHora('horaSalida3_' + i)
+            // //console.log(i)
+            // //console.log(index)
+            maskHora[index].unmaskedValue = datos.TABLA[i].HORARET3
+        }
+    
+        for (var i in datos.TABLA) {
+            var fre3 = ('fre3_' + i)
+            $('#' + fre3).val(datos.TABLA[i].INTMINTAB3);
+        }
+    
+    
+    
+        /////////////////////////////////////////////////
+    
+        for (var i in datos.TABLA) {
+            var suc4 = ('sucursal4_' + i)
+            $('#' + suc4).val(datos.TABLA[i].SUCURSAL4);
+        }
+    
+        for (var i in datos.TABLA) {
+            var index = buscarMaskHora('horaIngreso4_' + i)
+            // //console.log(i)
+            // //console.log(index)
+            maskHora[index].unmaskedValue = datos.TABLA[i].HORAING4
+        }
+    
+        for (var i in datos.TABLA) {
+            var index = buscarMaskHora('horaSalida4_' + i)
+            // //console.log(i)
+            // //console.log(index)
+            maskHora[index].unmaskedValue = datos.TABLA[i].HORARET4
+        }
+    
+        for (var i in datos.TABLA) {
+            var fre4 = ('fre4_' + i)
+            $('#' + fre4).val(datos.TABLA[i].INTMINTAB4);
+        }*/
 
 
-function continuar719() {
-    switch (parseInt($_NOVEDAD)) {
+    loader('hide');
+    switch (parseInt($_NovedSal719)) {
         case 8:
+            console.log('entro a cambiar datos')
             detalle_119();
             break;
         case 9:
+            console.log('entro a eliminar datos')
             CON851P('54', modificar_119, eliminarRegistro_119)
             break;
     }
 }
 
 
-
 function eliminarRegistro_119() {
-    loader('show')
     console.log("Estoy eliminando el registro");
     var identificacion = cerosIzq($identificacion_global, 10)
     console.log(identificacion)
     LLAMADO_DLL({
-        dato: [$_NOVEDAD, identificacion],
+        dato: [$_NovedSal719, identificacion],
         callback: validarEliminiarRegistro1_119,
         nombredll: 'SAL719-03',
         carpeta: 'SALUD'
@@ -882,14 +856,13 @@ function eliminarRegistro_119() {
 function validarEliminiarRegistro1_119(data) {
     console.log(data);
     console.log("elimnando");
+    loader('hide');
     var rdll = data.split('|');
 
     if (rdll[0].trim() == '00') {
-        loader('hide');
         jAlert({ titulo: 'Notificacion', mensaje: "Eliminado correctamente" }, function () { _toggleNav(); });
     } else {
         console.log(rdll)
-        loader('hide');
         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
@@ -924,10 +897,12 @@ function buscarMaskHora(element) {
         //  if (id == element) retornar = maskHora[i];
         if (id == element) retornar = i;
     }
+
     return retornar;
 }
 
 function detalle_119() {
+
     validarInputs(
         {
             form: '#validarDetalle119',
@@ -948,26 +923,28 @@ function registro_119() {
         },
         function () { CON850(evaluarNovedad119); },
         function () {
-            _ventanaProfesion719();
+            _ventanaProfesion_119();
         }
     )
 }
 
-function _ventanaProfesion719() {
+
+function _ventanaProfesion_119() {
+    //console.log('entro al f8 de profesion')
     _ventanaDatos({
         titulo: "Personal que atiende",
-        tipo: 'mysql',
-        db: $CONTROL,
-        tablaSql: 'sc_archatiend',
+        columnas: ["CODIGO", "DESCRIPCION"],
+        data: arrayProfesion_119,
         callback_esc: function () {
             registro_119()
         },
         callback: function (data) {
-            $("#profesion_119").val(data.codigo)
-            $("#descriprof_119").val(data.nombre)
+            $("#profesion_119").val(data.CODIGO.trim())
+            $("#descriprof_119").val(data.DESCRIPCION.trim())
             ctaRetenfuente_119();
         }
     });
+
 }
 
 function ctaRetenfuente_119() {
@@ -983,6 +960,8 @@ function ctaRetenfuente_119() {
             if (ctaRetFuente.trim().length > 0) {
                 var descCta = search_Cta_Ret_Fuente_119(ctaRetFuente)
                 var mayRet = ctaRetFuente.substring(0, 4);
+
+                //console.log(mayRet + ' ' + mayorRet_119)
                 if (mayRet == mayorRet_119) {
                     switch (descCta) {
                         case false:
@@ -1009,17 +988,19 @@ function ctaRetenfuente_119() {
 
 function search_Cta_Ret_Fuente_119(cuenta) {
     var retornar = false;
-    for (var i in arrayMaest119) {
-        if (arrayMaest119[i].CTA_MAY.trim() == cuenta) {
-            if (arrayMaest119[i].PORCENT_RET.trim().length > 0) {
 
-                retornar = arrayMaest119[i].NOMBRE_MAE.trim();
+    for (var i in arrayMaestros_119) {
+        if (arrayMaestros_119[i].CTA_MAY.trim() == cuenta) {
+            if (arrayMaestros_119[i].PORCENT_RET.trim().length > 0) {
+
+                retornar = arrayMaestros_119[i].NOMBRE_MAE.trim();
             } else {
                 retornar = 'error 04'
             }
             break;
         }
     }
+
     return retornar;
 }
 
@@ -1034,53 +1015,36 @@ function divisionCups_119() {
         },
         function () {
             var divCups = $("#division_119").val()
-            var descrpCups = $("#descDiv_119").val()
+            var busquedaDivCups = search_Division119(divCups)
+
             if (divCups.trim().length > 0) {
-                switch (divCups) {
-                    case false:
-                        CON851('01', '01', null, 'error', 'error');
-                        divisionCups_119()
-                        break;
-                    default:
-                        $('#descDiv_119').val(descrpCups);
-                        sucursal_119()
-                        break;
+                if (!busquedaDivCups) {
+                    CON851('01', '01', null, 'error', 'error');
+                    divisionCups_119()
+                } else {
+                    $("#descDiv_119").val(busquedaDivCups)
+                    sucursal_119()
                 }
             } else {
-                _consultaSql({
-                    sql: `SELECT * FROM sc_divis SET descripcion ='${descrpCups}' WHERE codigo = '${divCups}' `,
-                    // sql: `SELECT * FROM sc_divis WHERE codigo = '${divCups}'`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            var datos = results[0]
-                            console.log(datos)
-                            if (results.length > 0) {
-                                $(divCups).val(data.codigo.trim())
-                                $(descrpCups).val(data.descripcion.trim())
-                                sucursal_119()
-                            } else if (results.length == '') {
-                                sucursal_119()
-                            }
-                        }
-                    }
-                })
+                sucursal_119();
             }
         }
     )
 }
 
-// function search_Division119(codigo) {
-//     var retornar = false;
-//     for (var i in arrayDivis719) {
-//         if (arrayDivis719[i].CODIGO.trim() == codigo) {
-//             retornar = arrayDivis719[i].DESCRIPCION.trim();
-//             break;
-//         }
-//     }
-//     return retornar;
-// }
+function search_Division119(codigo) {
+
+    var retornar = false;
+    for (var i in arrayDivision_119) {
+        if (arrayDivision_119[i].CODIGO.trim() == codigo) {
+            retornar = arrayDivision_119[i].DESCRIPCION.trim();
+            break;
+        }
+    }
+    return retornar;
+}
+
+
 
 function sucursal_119() {
     validarInputs(
@@ -1092,75 +1056,59 @@ function sucursal_119() {
             divisionCups_119();
         },
         function () {
-            var sucur71A = $("#sucursal_119").val()
-            var descrsucur71A = $("#descSuc_119").val()
+            var sucur = $("#sucursal_119").val()
+            var busquedaSucursal = search_Sucursal_119(sucur)
 
-            if (sucur71A.trim().length > 0) {
-                switch (sucur71A) {
+            if (sucur.trim().length > 0) {
+                switch (busquedaSucursal) {
                     case false:
                         CON851('01', '01', null, 'error', 'error');
                         sucursal_119()
                         break;
                     default:
-                        $('#descSuc_119').val(descrsucur71A);
+                        $("#descSuc_119").val(busquedaSucursal)
                         tipoContratacion_119()
-                        break;
                 }
             } else {
-                _consultaSql({
-                    sql: `SELECT * FROM sc_sucur WHERE codigo = '${sucur71A}'`,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            var datos = results[0]
-                            console.log(datos)
-                            if (results.length > 0) {
-                                $(sucur71A).val(data.codigo.trim())
-                                $(descrsucur71A).val(data.descripcion.trim())
-                                tipoContratacion_119()
-                            } else if (results.length == '') {
-                                tipoContratacion_119()
-                            }
-                        }
-                    }
-                })
+                tipoContratacion_119();
             }
         }
     )
+
 }
 
 
 function tipoContratacion_119() {
-    var datoContra = [
-        { "COD": "1", "DESCRIP": "Valor Fijo" },
-        { "COD": "2", "DESCRIP": "% Sobre Facturacion" }
-    ]
+    var codTipoContratacion = '[{"COD": "1","DESCRIP": "Valor Fijo"},{"COD": "2","DESCRIP": "% Sobre Facturacion"}]'
+    var arrayContratacion_119 = JSON.parse(codTipoContratacion)
+
     POPUP({
-        array: datoContra,
-        titulo: 'Tipo De Contratacion',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: sucursal_119
+        array: arrayContratacion_119,
+        titulo: 'Tipo De Contratacion'
     }, function (data) {
-        console.log(data);
-        switch (data.COD) {
+        switch (data.id.trim()) {
             case '1':
-                $('#contratacion_119').val(data.DESCRIP.trim())
-                $contrato119 = data.COD.trim()
-                setTimeout(estadoAct_719, 300);
+                $('#contratacion_119').val(data.id.trim() + '. ' + data.descripcion.trim())
+                $contrato119 = data.id.trim()
+                estadoAct_119()
                 break;
             case '2':
-                $('#contratacion_119').val(data.DESCRIP.trim())
-                $contrato119 = data.COD.trim()
-                setTimeout(validarPorcentMed719, 300);
+                $('#contratacion_119').val(data.id.trim() + '. ' + data.descripcion.trim())
+                $contrato119 = data.id.trim()
+                validarPorcentMed()
+                break;
+            case 'F':
+                sucursal_119()
                 break;
         }
+
     })
+
 }
 
-function validarPorcentMed719() {
+
+
+function validarPorcentMed() {
     validarInputs(
         {
             form: '#validarPorcMedico',
@@ -1173,42 +1121,67 @@ function validarPorcentMed719() {
             var medico = $('#medico_119').val()
 
             if (medico > 100) {
-                validarPorcentMed719()
+                validarPorcentMed()
             } else if (medico == 0) {
                 jAlert(
                     { titulo: 'Atencion ', mensaje: '<b>Mensaje: </b>' + 'Si el tipo de contratacion es 2 y el % asignado es 0, el sistema asume el % del grupo del cup' }, estadoAct_119);
 
             } else if (medico > 0 && medico <= 100) {
-                estadoAct_719()
+                estadoAct_119()
             }
         }
 
     )
 }
 
-function estadoAct_719() {
-    var datoEstado = [
-        { "COD": "1", "DESCRIP": "Activo" },
-        { "COD": "2", "DESCRIP": "Inactivo" }
-    ]
+
+function estadoAct_119() {
+    console.log('entro a estado actual')
+    var estadoActual = '[{"COD": "1","DESCRIP": "ACTIVO"},{"COD": "2","DESCRIP": "INACTIVO"}]'
+    var arrayEstadoAct_119 = JSON.parse(estadoActual)
+
     POPUP({
-        array: datoEstado,
-        titulo: 'Estado Actual',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: tipoContratacion_119
+        array: arrayEstadoAct_119,
+        titulo: 'Estado Actual'
     }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#estAct_119').val(data.DESCRIP.trim())
-                $estado119 = data.COD.trim()
-                // setTimeout(validarEspecialidad_119(1), 300);
-                validarEspecialidad_119(1);
+        if (data.id.trim() == 'F') {
+            tipoContratacion_119()
+        } else {
+            $('#estAct_119').val(data.id.trim() + '. ' + data.descripcion.trim())
+            $estado119 = data.id.trim()
+            validarEspecialidad_119(1);
         }
     })
 }
+
+function search_Sucursal_119(codigo) {
+
+    var retornar = false;
+    for (var i in arraySucursal_119) {
+        if (arraySucursal_119[i].CODIGO.trim() == codigo) {
+            retornar = arraySucursal_119[i].DESCRIPCION.trim();
+            break;
+        }
+    }
+    return retornar;
+}
+
+
+function search_Especialidad_119(codigo) {
+    var retornar = false;
+
+    //console.log(codigo + 'search operador')
+
+    for (var i in arrayEspecialidad_119) {
+        if (arrayEspecialidad_119[i].CODIGO.trim() == codigo) {
+            retornar = arrayEspecialidad_119[i].NOMBRE.trim();
+            break;
+        }
+    }
+
+    return retornar;
+}
+
 
 function validarEspecialidad_119(id) {
     validarInputs(
@@ -1224,17 +1197,20 @@ function validarEspecialidad_119(id) {
             }
         },
         function () {
+            //console.log($('#operAsig' + id + '_119').val() + 'operAsig' + id + 'validar operador')
             var codigoEspec_119 = $('#espec' + id + '_119').val();
-            var desEspec_119 = $('#DescEspec' + id + '_119').val();
+            var desEspec_119 = search_Especialidad_119(codigoEspec_119)
 
             if (codigoEspec_119.trim().length > 0) {
-                switch (codigoEspec_119) {
+                switch (desEspec_119) {
                     case false:
                         CON851('01', '01', null, 'error', 'error');
                         validarEspecialidad_119(id)
                         break;
+
                     default:
                         $('#DescEspec' + id + '_119').val(desEspec_119);
+
                         if (id == '5') {
                             validarOperador_119(1)
                         } else {
@@ -1242,53 +1218,29 @@ function validarEspecialidad_119(id) {
                         }
                 }
             } else {
-                _consultaSql({
-                    sql: `SELECT * FROM sc_archesp WHERE codigo = '${codigoEspec_119}'`,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            // var datos = results[0]
-                            // console.log(datos)
-                            if (results.length > 0) {
-                                switch (id) {
-                                    case 29:
-                                        validarOperador_119(1)
-                                        break;
-                                    default:
-                                        validarEspecialidad_71A(parseInt(id) + 1);
-                                        break;
-                                }
-                                var consecutivo = cerosIzq(datos.codigo.toString().trim(), 3)
-                                $(idDescp71A).val(data.nombre.trim())
-                                $(idDescp71A).val(consecutivo)
-                                validarOperador_119()
-                            } else if (results.length == '') {
-                                validarOperador_119()
-                            }
-                        }
-                    }
-                })
-                // switch (id) {
-                //     case 5:
-                //         validarOperador_119(1)
-                //         break;
-                //     default:
-                //         validarEspecialidad_119(parseInt(id) + 1)
-                // }
+                switch (id) {
+                    case 5:
+                        validarOperador_119(1)
+                        break;
+                    default:
+                        validarEspecialidad_119(parseInt(id) + 1)
+                }
             }
         }
     )
+
 }
 
 function search_operador_119(codigo) {
     var retornar = false;
+
+    //console.log(codigo + 'search operador')
     if (codigo === 'XXXX') {
         retornar = 'TODOS LOS OPERADORES';
     } else {
-        for (var i in arrayOperad719) {
-            if (arrayOperad719[i].CODIGO.trim() == codigo) {
-                retornar = arrayOperad719[i].DESCRIPCION.trim();
+        for (var i in arrayOperador_119) {
+            if (arrayOperador_119[i].CODIGO.trim() == codigo) {
+                retornar = arrayOperador_119[i].DESCRIPCION.trim();
                 break;
             }
         }
@@ -1310,6 +1262,8 @@ function validarOperador_119(id) {
             }
         },
         function () {
+            //console.log($('#operAsig' + id + '_119').val() + 'operAsig' + id + 'validar operador')
+
             var codigoOper_119 = $('#operAsig' + id + '_119').val();
             var desOper_119 = search_operador_119(codigoOper_119)
 
@@ -1325,25 +1279,7 @@ function validarOperador_119(id) {
                     if (id == '5') {
                         validarCitas_119()
                     } else {
-                        _consultaSql({
-                            sql: `SELECT * FROM sc_sucur WHERE codigo = '${sucur71A}'`,
-                            db: 'datos_pros',
-                            callback: function (error, results, fields) {
-                                if (error) throw error;
-                                else {
-                                    var datos = results[0]
-                                    console.log(datos)
-                                    if (results.length > 0) {
-                                        $(sucur71A).val(data.codigo.trim())
-                                        $(descrsucur71A).val(data.descripcion.trim())
-                                        tipoContratacion_119()
-                                    } else if (results.length == '') {
-                                        tipoContratacion_119()
-                                    }
-                                }
-                            }
-                        })
-                        // validarOperador_119(parseInt(id) + 1)
+                        validarOperador_119(parseInt(id) + 1)
                     }
             }
         }
@@ -1368,7 +1304,7 @@ function validarCitas_119() {
                 CON851('03', '03', null, 'error');
                 validarCitas_119()
             } else {
-                // fechaActual119 = fechaActualGlobal()
+                fechaActual119 = fechaActualGlobal()
                 validarMaxCitas_119()
             }
 
@@ -1410,69 +1346,35 @@ function validarMaxCitas_119() {
         },
         function () {
             console.log('-> Sale popup')
-            agendCitas719()
-            // if ($('#asigCita_ser119').val().length > 0) {
-            //     // agenExcep_119();
-            //     agendCitas719()
-            // } else {
-            //     $('#agenExcep_ser119').prop('checked', false);
-            //     validarDeshabilitarDesde()
-            // }
+            if ($('#asigCita_ser119').val().length > 0) {
+                agenExcep_119();
+            } else {
+                $('#agenExcep_ser119').prop('checked', false);
+                validarDeshabilitarDesde()
+            }
 
         }
     )
 
 }
-function agendCitas719() {
-    var datosAgenda = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datosAgenda,
-        titulo: 'Usar agendamiento por excepciones?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: validarCitas_119
-    }, function (data) {
-        console.log(data);
-        switch (data.COD) {
-            case '1':
-                $('#agendaExcep719').val(data.DESCRIP.trim())
-                $AGENDA = data.DESCRIP.trim()
-                setTimeout(validarPopup_119, 300);
-                break;
-            case '2':
-                $('#agendaExcep719').val(data.DESCRIP.trim())
-                $AGENDA = data.DESCRIP.trim()
-                setTimeout(sobreAgnd719, 300);
-                break;
-        }
-    })
-}
 
-function sobreAgnd719() {
-    var datosSobreagnd = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datosSobreagnd,
-        titulo: 'Permitir Sobre Agendar?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: agendCitas719
-    }, function (data) {
-        console.log(data);
-        switch (data.COD) {
-            case '1':
-            case '2':
-                $('#sobreAgenda719').val(data.DESCRIP.trim())
-                $SOBREAGND = data.DESCRIP.trim()
-                setTimeout(validarDeshabilitarDesde, 300);
-                break;
+function agenExcep_119() {
+    bootbox.confirm({
+        size: "small",
+        message: "Usar agendamiento por excepciones?",
+        callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
+            console.log(result)
+            if (result == true) {
+                $('#agenExcep_ser119').prop('checked', true);
+                bootbox.hideAll()
+                validarPopup_119();
+            }
+            else {
+                $('#agenExcep_ser119').prop('checked', false);
+                bootbox.hideAll()
+                validarDeshabilitarDesde()
+            }
+
         }
     })
 }
@@ -1480,7 +1382,7 @@ function sobreAgnd719() {
 function validarPopup_119() {
     console.log('va a abrir pop up de fehca y horario de atencion')
     var fuente = $('#popUpHorarioAtencion_119').html();
-    var dialogo2 = bootbox.dialog({
+    var dialogo = bootbox.dialog({
         title: "Fecha y Horario De Atencion",
         message: fuente,
         buttons: {
@@ -1495,9 +1397,8 @@ function validarPopup_119() {
     });
 
 
-    // dialogo.init(function () {
-    dialogo2.on('shown.bs.modal', function () {
-        // Inicia validación pop-up
+    dialogo.init(function () {
+        // Inicia validaci�n pop-up
 
         // var fechaPopUp = $('.fechaPopUp_119');
         console.log('Popup abierto')
@@ -1581,57 +1482,57 @@ function validarPopup_119() {
             maskFrecPop.push(blocksMaskFrec);
         });
         console.log('termina mascara')
-        setTimeout(function () { jsonHorarProfes719() }, 500);
+        setTimeout(function () { jsonHorarioProfesionales() }, 500);
     })
 }
 
-function jsonHorarProfes719() {
+function jsonHorarioProfesionales() {
+    loader('show')
     LLAMADO_DLL({
-        dato: [],
-        callback: on_jsonHorarProfes719,
+        dato: [$identificacion_global],
+        callback: on_jsonHorarioProfesionales,
         nombredll: 'SER819H',
-        carpeta: 'SALUD'
+        carpeta: 'salud'
     })
 }
 
-function on_jsonHorarProfes719(data) {
-    console.debug(data + ' horario profe');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    var json = date[1].trim();
-    var rutaJson = get_url("temp/" + json);
-    if (swinvalid == '00') {
+function on_jsonHorarioProfesionales(data) {
+    var rdll = data.split('|');
+    if (rdll[0].trim() == '00') {
+
+        var rutaJson = urlJson('JSC-HORAR-');
         SolicitarDatos(
             null,
             function (data) {
+                //console.log(data)
                 arrayHorProf_119 = data.AGENDA
                 arrayHorProf_119.pop()
+                console.log(arrayHorProf_119)
                 var arrayEliminar = [];
-                arrayEliminar.push(json)
-                _eliminarJson(arrayEliminar, on_elimHorarioPrf719);
-                modifArrayHorProf719();
+                arrayEliminar.push('JSC-HORAR-' + localStorage.getItem('key_sesion'))
+                _eliminarJson(arrayEliminar, on_eliminarJsonHorar_119);
             },
             rutaJson
         );
-    }
-    else {
+    } else {
         loader('hide');
-        CON852(date[0], date[1], date[2], _toggleNav);
+        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
 
-function on_elimHorarioPrf719(data) {
-    console.log(data);
+function on_eliminarJsonHorar_119() {
     loader('hide');
-    var res = data.split('|');
-    if (res[0].trim() == '00') {
-        console.debug('json eliminado')
+    var rdll = data.split('|');
+    if (rdll[0].trim() == '00') {
+        modificarArrayHorario_119()
     } else {
+        console.error(rdll[1]);
         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
     }
 }
 
-function modifArrayHorProf719() {
+
+function modificarArrayHorario_119() {
     arrayHorProfMoment_119 = arrayHorProf_119
     for (var i in arrayHorProfMoment_119) {
         var fechaIni = arrayHorProfMoment_119[i].FECHA
@@ -2067,7 +1968,7 @@ function on_eliminarJsonHorar_119() {
     loader('hide');
     var rdll = data.split('|');
     if (rdll[0].trim() == '00') {
-        modifArrayHorProf719()
+        modificarArrayHorario_119()
     } else {
         console.error(rdll);
         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
@@ -2164,7 +2065,7 @@ function popUpRango_119() {
                     break;
                 default:
                     $rangoBloqueo119 = result
-                    guardarDatosCompletos_119()
+                    validar_Confirmar_119()
                     break;
             }
 
@@ -2182,16 +2083,16 @@ function popUpRango_119() {
     });
 }
 
-// function validar_Confirmar_119() {
-//     $val_Tabla_119 = '  '
-//     if ($('#agendaExcep719').prop('checked') || ($('#asigCita_ser119').val().length == 0)) {
-//         $val_Tabla_119 = 'NO'
-//         guardarDatosCompletos_119()
-//     } else {
-//         $val_Tabla_119 = 'SI'
-//         tabla(1)
-//     }
-// }
+function validar_Confirmar_119() {
+    $val_Tabla_119 = '  '
+    if ($('#agenExcep_ser119').prop('checked') || ($('#asigCita_ser119').val().length == 0)) {
+        $val_Tabla_119 = 'NO'
+        guardarDatosCompletos_119()
+    } else {
+        $val_Tabla_119 = 'SI'
+        validarLunes_119(1)
+    }
+}
 
 
 function validarFrecuenciaTabla_119(valor) {
@@ -3031,25 +2932,25 @@ function validarCerrarHorario() {
     if ($nitUsuario119 == '0830092718' || $nitUsuario119 == '0830092719') {
         popUpMensajeImpresion_119()
     } else {
-        enviarDatosCompletos_119()
+        bajarDatosTabla_119()
     }
 }
 
+
 function popUpMensajeImpresion_119() {
-    if ($_NOVEDAD == '7') {
+    if ($_NovedSal719 == '7') {
         $("#impDVD_119").prop('checked', false)
         $("#impMenBir_119").prop('checked', false)
         $("#impMenNorm_119").prop('checked', false)
         $("#asocRad_119").prop('checked', false)
-    }
-    //  else {
-    // var data = arrayDatosCompletos119[0];
+    } else {
+        var data = arrayDatosCompletos119[0];
 
-    // if ($_IMPDVDPROF == 'S') { $("#impDVD_119").prop('checked', true) } else { $("#impDVD_119").prop('checked', false) }
-    // if ($_IMPBIRPROF == 'S') { $("#impMenBir_119").prop('checked', true) } else { $("#impMenBir_119").prop('checked', false) }
-    // if ($_IMPNOMRPROF == 'S') { $("#impMenNorm_119").prop('checked', true) } else { $("#impMenNorm_119").prop('checked', false) }
-    // if ($_ASOCPROF == 'S') { $("#asocRad_119").prop('checked', true) } else { $("#asocRad_119").prop('checked', false) }
-    // }
+        if (data.DATO_DVD.trim() == 'S') { $("#impDVD_119").prop('checked', true) } else { $("#impDVD_119").prop('checked', false) }
+        if (data.DATO_BIRAD.trim() == 'S') { $("#impMenBir_119").prop('checked', true) } else { $("#impMenBir_119").prop('checked', false) }
+        if (data.DATO_NORM.trim() == 'S') { $("#impMenNorm_119").prop('checked', true) } else { $("#impMenNorm_119").prop('checked', false) }
+        if (data.DATO_ASOCI.trim() == 'S') { $("#asocRad_119").prop('checked', true) } else { $("#asocRad_119").prop('checked', false) }
+    }
     var fuente = $('#popUpMensajeImpresion_119').html();
     var configimpre = bootbox.dialog({
         title: "Config. Impresion Resultado",
@@ -3059,16 +2960,11 @@ function popUpMensajeImpresion_119() {
                 label: "Aceptar",
                 className: "blue",
                 callback: function () {
-                    if ($_IMPDVDPROF == 'S') { $("#impDVD_119").prop('checked', true) } else { $("#impDVD_119").prop('checked', false) }
-                    if ($_IMPBIRPROF == 'S') { $("#impMenBir_119").prop('checked', true) } else { $("#impMenBir_119").prop('checked', false) }
-                    if ($_IMPNOMRPROF == 'S') { $("#impMenNorm_119").prop('checked', true) } else { $("#impMenNorm_119").prop('checked', false) }
-                    if ($_ASOCPROF == 'S') { $("#asocRad_119").prop('checked', true) } else { $("#asocRad_119").prop('checked', false) }
-
-                    // if ($("#impDVD_119").prop('md-checkbox')) { $impDvd119 = 'S' } else { $impDvd119 = 'N' }
-                    // if ($("#impMenBir_119").prop('md-checkbox')) { $impMenBir119 = 'S' } else { $impMenBir119 = 'N' }
-                    // if ($("#impMenNorm_119").prop('md-checkbox')) { $impMenNorm119 = 'S' } else { $impMenNorm119 = 'N' }
-                    // if ($("#asocRad_119").prop('md-checkbox')) { $asocRad119 = 'S' } else { $asocRad119 = 'N' }
-                    enviarDatosCompletos_119()
+                    if ($("#impDVD_119").prop('checked')) { $impDvd119 = 'S' } else { $impDvd119 = 'N' }
+                    if ($("#impMenBir_119").prop('checked')) { $impMenBir119 = 'S' } else { $impMenBir119 = 'N' }
+                    if ($("#impMenNorm_119").prop('checked')) { $impMenNorm119 = 'S' } else { $impMenNorm119 = 'N' }
+                    if ($("#asocRad_119").prop('checked')) { $asocRad119 = 'S' } else { $asocRad119 = 'N' }
+                    bajarDatosTabla_119()
 
                 }
             }
@@ -3089,7 +2985,6 @@ function buscarHoraTabla_119(tipo, grupo, posicion) {
     if (tipo == 'ing') {
         nombreDato = 'horaIngreso' + grupo + '_' + posicion
     } else if (tipo == 'sal') {
-        y
         nombreDato = 'horaSalida' + grupo + '_' + posicion
     }
 
@@ -3102,207 +2997,6 @@ function buscarHoraTabla_119(tipo, grupo, posicion) {
 
     return retornar;
 }
-
-// function tablaSucur719() {
-//     _inputControl('reset');
-//     validarInputs(
-//         {
-//             form: '#Sucursal719',
-//             orden: "1"
-//         },
-//         function () { validarDeshabilitarDesde() },
-//         function () {
-//             $sucursal719 = $('#sucur719').val();
-//             tablaEntrad719()
-
-//         }
-//     )
-// }
-// function tablaEntrad719() {
-//     validarInputs(
-//         {
-//             form: '#Entrada719',
-//             orden: "1"
-//         },
-//         function () { tablaSucur719() },
-//         function () {
-//             $entrad719 = $('#entra719').val();
-//             tablaSalid719()
-
-//         }
-//     )
-// }
-// function tablaSalid719() {
-//     validarInputs(
-//         {
-//             form: '#Salida719',
-//             orden: "1"
-//         },
-//         function () { tablaEntrad719() },
-//         function () {
-//             $salida719 = $('#sale719').val();
-//             tablaFrec719()
-
-//         }
-//     )
-// }
-// function tablaFrec719() {
-//     validarInputs(
-//         {
-//             form: '#Frecuencia719',
-//             orden: "1"
-//         },
-//         function () { tablaSalid719() },
-//         function () {
-//             $frecuencia719 = $('#frecue719').val();
-//             datosTabla719()
-
-//         }
-//     )
-// }
-
-// function datosTabla719() {
-//     if ($sucursal719 == '') {
-//         $('#TABLAPROFES719 tbody').append(
-//             '<tr>' +
-//             '<td>' + $sucursal719 + '</td>' +
-//             '<td>' + $entrad719 + '</td>' +
-//             '<td>' + $salida719 + '</td>' +
-//             '<td>' + $frecuencia719 + '</td>' +
-//             '</tr>'
-//         )
-//         if ($sucursal719 == '') {
-//             _inputControl('reset');
-//             popUpMensajeImpresion_119()
-//         } else {
-//             console.debug('con datos')
-//             _inputControl('reset');
-//             datosTablaDos719()
-//         }
-//         // console.debug('sin datos')
-//         // datosTablaDos719()
-//     }
-//     else {
-//         $('#TABLAPROFES719 tbody').append(
-//             '<tr>' +
-//             '<td>' + $sucursal719 + '</td>' +
-//             '<td>' + $entrad719 + '</td>' +
-//             '<td>' + $salida719 + '</td>' +
-//             '<td>' + $frecuencia719 + '</td>' +
-//             '</tr>'
-//         )
-//         if ($sucursal719 == '') {
-//             _inputControl('reset');
-//             popUpMensajeImpresion_119()
-//         } else {
-//             console.debug('con datos')
-//             _inputControl('reset');
-//             tablaSucurDos719()
-//         }
-
-//         // console.debug('con datos')
-//         // tablaSucurDos719()
-//     }
-// }
-
-
-// function tablaSucurDos719() {
-//     _inputControl('reset');
-//     validarInputs(
-//         {
-//             form: '#Sucursal719',
-//             orden: "1"
-//         },
-//         function () { validarDeshabilitarDesde() },
-//         function () {
-//             $sucursalDos719 = $('#sucur719').val();
-//             tablaEntradDos719()
-
-//         }
-//     )
-// }
-// function tablaEntradDos719() {
-//     validarInputs(
-//         {
-//             form: '#Entrada719',
-//             orden: "1"
-//         },
-//         function () { tablaSucurDos719() },
-//         function () {
-//             $entradDos719 = $('#entra719').val();
-//             tablaSalidDos719()
-
-//         }
-//     )
-// }
-// function tablaSalidDos719() {
-//     validarInputs(
-//         {
-//             form: '#Salida719',
-//             orden: "1"
-//         },
-//         function () { tablaEntradDos719() },
-//         function () {
-//             $salidaDos719 = $('#sale719').val();
-//             tablaFrecDos719()
-
-//         }
-//     )
-// }
-// function tablaFrecDos719() {
-//     validarInputs(
-//         {
-//             form: '#Frecuencia719',
-//             orden: "1"
-//         },
-//         function () { tablaSalidDos719() },
-//         function () {
-//             $frecuenciaDos719 = $('#frecue719').val();
-//             datosTablaDos719()
-
-//         }
-//     )
-// }
-
-
-// function datosTablaDos719() {
-//     if ($sucursalDos719 == '') {
-//         _inputControl('reset');
-//         $('#TABLAPROFESUNO719 tbody').append(
-//             '<tr>' +
-//             '<td>' + $sucursalDos719 + '</td>' +
-//             '<td>' + $entradDos719 + '</td>' +
-//             '<td>' + $salidaDos719 + '</td>' +
-//             '<td>' + $frecuenciaDos719 + '</td>' +
-//             '</tr>'
-//         )
-//         console.debug('sin datos')
-//         _inputControl('reset');
-//         popUpMensajeImpresion_119()
-//     }
-//     else {
-//         $('#TABLAPROFESUNO719 tbody').append(
-//             '<tr>' +
-//             '<td>' + $sucursalDos719 + '</td>' +
-//             '<td>' + $entradDos719 + '</td>' +
-//             '<td>' + $salidaDos719 + '</td>' +
-//             '<td>' + $frecuenciaDos719 + '</td>' +
-//             '</tr>'
-//         )
-//         if ($sucursal719 == '') {
-//             _inputControl('reset');
-//             popUpMensajeImpresion_119()
-//         } else {
-//             console.debug('con datos')
-//             _inputControl('reset');
-//             tablaSucur719()
-//         }
-
-//     }
-// }
-
-
-
 
 function buscarFrecuenciaTabla_119(grupo, posicion) {
     var nombreDato = 'fre' + grupo + '_' + posicion
@@ -3405,7 +3099,7 @@ function temporalHorarios() {
         data: { array: datosTablaEnvio_119, sesion: localStorage.key_sesion },
         type: 'POST',
         async: false,
-        url: get_url('frameworks/scripts/php/_datosTabla_SAL719.php')
+        url: 'http://' + localStorage.ip_server.trim() + '/frameworks/inc/_datosTabla_SER119.php'
     }).done(function (data) {
         var res = data.split('|');
         if (res[0].trim() == '00') {
@@ -3419,7 +3113,6 @@ function temporalHorarios() {
 }
 
 function enviarDatosCompletos_119() {
-    console.debug('enviar datos ')
     var identificacion = cerosIzq($identificacion_global.trim(), 10)
     var detalle = espaciosDer($("#detalle_119").val(), 30)
     var registro = espaciosDer($("#registro_ser119").val().trim(), 10)
@@ -3461,13 +3154,11 @@ function enviarDatosCompletos_119() {
     var intMin = cerosIzq($("#asigCita_ser119").val(), 2)
     var cantMax = cerosIzq($("#cantMaxCitas_Ser119").val(), 3)
 
-    // var formaAgen
-    // if ($("#agenExcep_ser119").prop('checked')) { formaAgen = 'S' } else { formaAgen = 'N' }
-    // var sobreAgen
-    // if ($("#sobreAgen_ser119").prop('checked')) { sobreAgen = 'S' } else { sobreAgen = 'N' }
+    var formaAgen
+    if ($("#agenExcep_ser119").prop('checked')) { formaAgen = 'S' } else { formaAgen = 'N' }
+    var sobreAgen
+    if ($("#sobreAgen_ser119").prop('checked')) { sobreAgen = 'S' } else { sobreAgen = 'N' }
 
-    var agenda = $AGENDA.substring(0, 1);
-    var sobreagn = $SOBREAGND.substring(0, 1);
     var rango = cerosIzq($rangoBloqueo119, 2)
 
 
@@ -3487,41 +3178,31 @@ function enviarDatosCompletos_119() {
     } else {
         fechaHasta = cerosIzq(fechaHasta, 12)
     }
-    var consultasTer;
 
 
-    if ($("#impDVD_119").prop('checked')) { $impDvd119 = 'S' } else { $impDvd119 = 'N' }
-    if ($("#impMenBir_119").prop('checked')) { $impMenBir119 = 'S' } else { $impMenBir119 = 'N' }
-    if ($("#impMenNorm_119").prop('checked')) { $impMenNorm119 = 'S' } else { $impMenNorm119 = 'N' }
-    if ($("#asocRad_119").prop('checked')) { $asocRad119 = 'S' } else { $asocRad119 = 'N' }
 
-    var verificarTabla = $val_Tabla_119;
+
+    var verificarTabla = $val_Tabla_119
 
     LLAMADO_DLL({
-        dato: [$_NOVEDAD, identificacion, registro, medicamentos, procQuir, procDiag, imagen, servicios,
-            consultasTer, promPrev, espec1, espec2, espec3, espec4, espec5, intMin, oper1, oper2, oper3,
-            rango, ctaRet, cantMax, divCup, fechaDesde, fechaHasta, sobreagn, $asocRad119, agenda,
-            estado, divCup, atiende, contrato, porcenMed, $impMenBir119, $impMenNorm119,
-            $impDvd119, oper4, oper5, detalle, sucursal],
-        // callback: validarEliminiarRegistro2_719,
-        // dato: [$_NOVEDAD, identificacion, detalle, registro, atiende, contrato, porcenMed, estado, ctaRet,
-        //     divCup, sucursal, medicamentos, procQuir, procDiag, imagen, servicios, consultasTer, promPrev,
-        //     espec1, espec2, espec3, espec4, espec5, oper1, oper2, oper3, oper4, oper5, intMin, cantMax,
-        //     agenda, sobreagn, rango, fechaDesde, fechaHasta, verificarTabla, $impDvd119, $impMenBir119, $impMenNorm119, $asocRad119],
-        callback: validarEliminiarRegistro2_719,
+        dato: [$_NovedSal719, identificacion, detalle, registro, atiende, contrato, porcenMed, estado, ctaRet,
+            divCup, sucursal, medicamentos, procQuir, procDiag, imagen, servicios, consultasTer, promPrev,
+            espec1, espec2, espec3, espec4, espec5, oper1, oper2, oper3, oper4, oper5, intMin, cantMax,
+            formaAgen, sobreAgen, rango, fechaDesde, fechaHasta, verificarTabla, $impDvd119, $impMenBir119, $impMenNorm119, $asocRad119],
+        callback: validarEliminiarRegistro2_119,
         nombredll: 'SAL719-03',
         carpeta: 'SALUD'
     })
 }
 
-function validarEliminiarRegistro2_719(data) {
-    console.debug(data, 'respuesta dll')
+function validarEliminiarRegistro2_119(data) {
+    console.debug(data)
     loader('hide');
     var rdll = data.split('|');
 
     if (rdll[0].trim() == '00') {
         var msj
-        switch ($_NOVEDAD) {
+        switch ($_NovedSal719) {
             case '7': msj = 'Creado correctamente'
                 break;
             case '8': msj = 'Modificado correctamente'
@@ -3533,7 +3214,33 @@ function validarEliminiarRegistro2_719(data) {
                 console.log('fin del programa')
             });
     } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+        //CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
     }
 }
 
+
+/*/ busqueda /*/
+function busquedaTerceros119(data) {
+    var retornar = false;
+    for (var i in arrayTerceros119) {
+        if (arrayTerceros119[i].IDENTIFICACION == data) {
+            retornar = arrayTerceros119[i];
+            break;
+        }
+    }
+    return retornar;
+
+}
+
+function search_array_Profesion119(data) {
+    var retornar = false;
+
+    for (var i in arrayProfesion_119) {
+        if (arrayProfesion_119[i].CODIGO.trim() == data) {
+            retornar = arrayProfesion_119[i].DESCRIPCION.trim();
+            break;
+        }
+    }
+    return retornar;
+
+}
