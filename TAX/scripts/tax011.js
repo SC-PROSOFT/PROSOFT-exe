@@ -21,23 +21,7 @@ var sostenimiento_011 = new IMask(
     ]);
 
     modalidades_tax011();
-    // prueba();
-
 })();
-
-function prueba() {
-    var datos_envio = datosEnvio() + "1I|";
-    var data = {
-        "datosh": datos_envio,
-        "LIN-001": "prueba123",
-        "LIN-002": "prueba456",
-        "LIN-003": "aasdaskdnhjkahsjkdhjaksdhjkasndjknasjkdnasjkdnjkasndjknasjdnajksdnjkasndjkasnjkdnasjkdnjkashdjkasndaskjdnasjkbfasgfhjagchjbaschjbashbcjasbjcabsckjbasjkcbjkasbcjkabsjkcbaskjcbkajsbcjkasbjanksdmklamsdklmaslkdmklasdnklashdjkasgjkbaskjdbhjasdaasdaskdnhjkahsjkdhjaksdhjkasndjknasjkdnasjkdnjkasndjknasjdnajksdnjkasndjkasnjkdnasjkdnjkashdjkasndaskjdnasjkbfasgfhjagchjbaschjbashbcjasbjcabsckjbasjkcbjkasbcjkabsjkcbaskjcbkajsbcjkasbjanksdmklamsdklmaslkdmklasdnklashdjkASDHASJKDGHJASGkjhazsdjkashdjkhasdnasdasdaasdaskdnhjkahsjkdhjaksdhjkasndjknasjkdnasjkdnjkasndjknasjdnajksdnjkasndjkasnjkdnasjkdnjkashdjkasndaskjdnasjkbfasgfhjagchjbaschjbashbcjasbjcabsckjbasjkcbjkasbcjkabsjkcbaskjcbkajsbcjkasbjanksdmklamsdklmaslkdmklasdnklashdjkasgjkbaskjdbhjasdaasdaskdnhjkahsjkdhjaksdhjkasndjknasjkdnasjkdnjkasndjknasjdnajksdnjkasndjkasnjkdnasjkdnjkashdjkasndaskjdnasjkbfasgfhjagchjbaschjbashbcjasbjcabsckjbasjkcbjkasbcjkabsjkcbaskjcbkajsbcjkasbjanksdmklamsdklmaslkdmklasdnklashdjkASDHASJKDGHJASGkjhazsdjkashdjkhasdnasdasd"
-    };
-    postData(data, get_url("app/TAX/TAX132-2.DLL"))
-        .then(datos => {
-            console.log(datos)
-        })
-}
 
 function _ventanaModalidades_tax011(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
@@ -91,7 +75,6 @@ function articulos_tax011() {
     postData({ datosh: datosEnvio() }, get_url("app/TAX/INV803.DLL"))
         .then(data => {
             // loader('hide')
-            console.log(data)
             $_TAX011.ARTICULOS = data.Articulos;
             $_TAX011.ARTICULOS.pop()
             CON850(_evaluarNovedad_tax011);
@@ -128,17 +111,46 @@ function _validadModalidad_tax011() {
             return e.CODIGO == idModalidad.toUpperCase();
         })
 
-    if (busqueda) {
+    if (busqueda && $_TAX011.NOVEDAD != '7') {
         document.getElementById('modalidadDescrip_011').value = busqueda.DESCRIP.trim()
         sostenimiento_011.unmaskedValue = busqueda.SOSTENI
         document.getElementById('codArticulo_011').value = busqueda['COD-ART'].trim()
         var busquedaArticulo = buscarArticulo_011(busqueda['COD-ART'].trim());
         if (busquedaArticulo) document.getElementById('descripArticulo_011').value = busquedaArticulo.DESCRIP.trim()
 
-        evaluarDescrp_011('1')
+        if ($_TAX011.NOVEDAD == '8') {
+            evaluarDescrp_011('1')
+        } else {
+            CON850_P(function (e) {
+                if (e.id == 'S') {
+                    var datos_envio = datosEnvio();
+                    datos_envio += $_TAX011.NOVEDAD;
+                    datos_envio += "|";
+                    datos_envio += idModalidad;
+                    datos_envio += "|";
+                    postData({ datosh: datos_envio }, get_url("app/TAX/TAX011.DLL"))
+                        .then(data => {
+                            console.log(data)
+                            jAlert({ titulo: 'Notificacion', mensaje: "Eliminado correctamente" }, modalidades_tax011);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            evaluarModalidad_tax011();
+                        })
+                } else {
+                    evaluarModalidad_tax011();
+                }
+            }, {
+                msj: '02'
+            });
+        }
     } else {
-        plantillaToast('99', '01', null, 'warning');
-        evaluarModalidad_tax011()
+        if ($_TAX011.NOVEDAD == '7' && !busqueda) {
+            evaluarDescrp_011();
+        } else {
+            plantillaToast('99', '01', null, 'warning');
+            evaluarModalidad_tax011()
+        }
     }
 }
 
@@ -178,9 +190,7 @@ function _evaluarArticulo_011() {
 
             if (busquedaArticulo) {
                 document.getElementById('descripArticulo_011').value = busquedaArticulo.DESCRIP.trim();
-
                 if ($_USUA_GLOBAL[0].NIT == 892000113) _validacionFinal_011()
-
             } else {
                 plantillaToast('99', '01', null, 'warning');
                 _evaluarArticulo_011()
@@ -193,7 +203,6 @@ function _evaluarArticulo_011() {
 function _validacionFinal_011() {
     CON850_P(function (e) {
         if (e.id == 'S') {
-            console.log('Guardar datos')
             var codModalidad = document.getElementById('modalidad_011').value,
                 descripModalidad = document.getElementById('modalidadDescrip_011').value.trim(),
                 sostenimiento = sostenimiento_011.unmaskedValue || "0",
@@ -201,29 +210,27 @@ function _validacionFinal_011() {
                 cuentaDebito = document.getElementById('cuentaDebito').value,
                 articulo = document.getElementById('codArticulo_011').value;
 
-
             var datos = datosEnvio()
-                + '|' + $_TAX011.NOVEDAD
-                + '|' + codModalidad
+                + $_TAX011.NOVEDAD
+                + '|' + codModalidad.toUpperCase()
                 + '|' + descripModalidad
                 + '|' + sostenimiento.padStart(10, "0")
                 + '|' + cuentaCredito
                 + '|' + cuentaDebito
                 + '|' + articulo.padEnd(18, " ")
                 + '|';
-
-            console.log(datos)
             postData({ datosh: datos }, get_url("app/TAX/TAX011.DLL"))
                 .then(data => {
                     console.log(data)
+                    jAlert({ titulo: 'Notificacion', mensaje: "Modificado correctamente" }, modalidades_tax011);
                 })
                 .catch(err => {
                     console.log(err)
+                    _evaluarArticulo_011();
                 })
         } else {
             setTimeout(_evaluarArticulo_011, 500)
         }
-        // setTimeout(_evaluarArticulo_011, 500)
     }, {})
 }
 

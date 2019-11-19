@@ -143,7 +143,6 @@ function _validarAgencia_tax012() {
         if ($_TAX012.NOVEDAD == '8') {
             evaluarDescripcionAgencia();
         } else {
-            console.log('desea Eliminar')
             CON850_P(function (e) {
                 if (e.id == 'S') {
                     var datos_envio = datosEnvio();
@@ -154,6 +153,10 @@ function _validarAgencia_tax012() {
                         .then(data => {
                             console.log(data)
                             jAlert({ titulo: 'Notificacion', mensaje: "Eliminado correctamente" }, agencias_tax012);
+                        })
+                        .catch(err =>{
+                            console.log(err);
+                            evaluarAgencia_tax012();
                         })
                 } else {
                     evaluarAgencia_tax012();
@@ -314,8 +317,12 @@ function confirmarTax012() {
                     console.log(data)
                     jAlert({ titulo: 'Notificacion', mensaje: "Modificado correctamente" }, agencias_tax012);
                 })
+                .catch(err =>{
+                    console.log(err);
+                    evaluarSucursal();
+                })
         } else {
-            evaluarRemesaAgencia();
+            evaluarSucursal();
         }
     }, {})
 }
