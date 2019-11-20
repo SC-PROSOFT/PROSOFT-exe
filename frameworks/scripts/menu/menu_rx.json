@@ -111,7 +111,21 @@
                     "Opc-segu": "ISR4",
                     "Tipo": "HTML",
                     "Href": "../../SALUD/paginas/RX-425.html"
+                },
+                {
+                    "Id": "076",
+                    "Descripcion": "Detallado de comprobantes",
+                    "Tipo": "HTML",
+                    "Href": "../../SALUD/paginas/SER548.html"
+                },
+                {
+                    "Id": "077",
+                    "Descripcion": "Envio detallado por correo",
+                    "Opc-segu": "RX52",
+                    "Tipo": "HTML",
+                    "Href": "../../SALUD/paginas/RX505.html"
                 }
+
             ]
         },
         {

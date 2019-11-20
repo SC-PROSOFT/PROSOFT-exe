@@ -6622,13 +6622,8 @@
                       "Id": "097435",
                       "Descripcion": "Imprimir fact. orden fecha",
                       "Opc-segu": "IS435",
-                      "Tipo": "RM",
-                      "Params": [
-                        {
-                          "formulario": "SER109D",
-                          "dll": "SALUD\\SER109D.dll"
-                        }
-                      ]
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SER109D.html"
                     },
                     {
                       "Id": "097436",
