@@ -69,7 +69,7 @@
     }
 
     #contenido #tabla-secundaria {
-        width: 80%;
+        width: 100%;
     }
 
     table thead tr {
@@ -121,6 +121,16 @@
         display: block;
         margin-top: 50px;
     }
+
+    table#tabla-secundaria tbody tr td:nth-child(5),
+    table#tabla-secundaria tbody tr td:nth-child(6) {
+        text-align: right;
+    }
+
+    table#tabla-secundaria tbody tr td:nth-child(3) {
+        text-align: left;
+    }
+
 
     table thead:after {
         content: " ";
@@ -206,7 +216,7 @@
     </div>
 </div>
 <script>
-    var $_LISTADO, $_TOTALES, $_TIPO, $_URL;
+    var $_LISTADO, $_TOTALES, $_TIPO, $_URL, $_TABLA2;
     ipcRenderer.on('ping', (e, data) => {
         console.log(data);
         $_TOTALES = data.extra.totales;
@@ -226,11 +236,20 @@
     })
 
     var _getDatos = function (url) {
-        $.getJSON(url, function (data) {
-            $_LISTADO = data.LISTADO
-            $_LISTADO.pop();
-            montarImpresion_109();
-        });
+        fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log(data)
+                $_LISTADO = data.LISTADO
+                $_LISTADO.pop();
+
+                $_TABLA2 = data['LINEA-ART']
+                if ($_TABLA2) $_TABLA2.pop()
+
+                montarImpresion_109();
+            });
     }
 
 
@@ -253,6 +272,23 @@
                 + ' <td>' + listado[i].SOBRET.trim() + '</td>'
                 + ' <td>' + listado[i].GLOBAL.trim() + '</td>'
                 + ' <td>' + listado[i].TOTAL.trim() + '</td>'
+                + '</tr>'
+            );
+        }
+
+        var listado2 = $_TABLA2;
+        for (var i in listado2) {
+            $('#contenido table#tabla-secundaria tbody').append(''
+                + '<tr>'
+                + ' <td>' + listado2[i].SEC.trim() + '</td>'
+                + ' <td>' + listado2[i].NIT.trim() + '</td>'
+                + ' <td>' + listado2[i].NOMB.trim() + '</td>'
+                + ' <td>' + listado2[i].REFER.trim() + '</td>'
+                + ' <td>' + listado2[i].DEBITO.trim() + '</td>'
+                + ' <td>' + listado2[i].CREDIT.trim() + '</td>'
+                + ' <td>' + listado2[i].ART.trim() + '</td>'
+                + ' <td>' + listado2[i].DEUDA.trim() + '</td>'
+                + ' <td>' + listado2[i].PLACA.trim() + '</td>'
                 + '</tr>'
             );
         }

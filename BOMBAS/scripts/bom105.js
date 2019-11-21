@@ -59,7 +59,7 @@ function on_validarComprobante(data) {
                 $_INFO_COMP_105 = res;
 
                 var arrayEliminar = [];
-                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion + '.JSON') 
+                arrayEliminar.push('SC-LISTCOMB-' + localStorage.Sesion + '.JSON')
                 _eliminarJson(arrayEliminar, on_eliminarJson_105);
             },
             rutaJson
@@ -168,9 +168,9 @@ function _validacionFinal_105() {
             _init_105();
         }
     }, {
-            msj: '00',
-            overlay_show: false
-        })
+        msj: '00',
+        overlay_show: false
+    })
 }
 
 function _popupImpresion() {

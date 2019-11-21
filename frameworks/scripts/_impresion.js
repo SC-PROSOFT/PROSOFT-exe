@@ -67,7 +67,7 @@
                                 winPdf.destroy();
                             })
                         })
-                    }, 100);
+                    }, 500);
                 }
 
                 else if ($.print.tipo == 'pdf_masivo') {
@@ -89,8 +89,24 @@
             winPdf.on('closed', () => {
                 if ($.print.tipo == 'csv') {
                     // exec('"C:\\Program Files\\LibreOffice\\program\\scalc.exe" "' + urlTmp + '.csv"', (error, stdout, stderr) => { });
-                    exec('start "' + urlTmp + '.csv"', (error, stdout, stderr) => { });
-                    $.print._printEnd();
+                    // exec('start "' + urlTmp + '.csv"', (error, stdout, stderr) => { });
+                    var date = new Date();
+                    var str = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString() + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+                    var nombreBat = `C:\\PROSOFT\\TEMP\\ABRIR-BAT-${str}.BAT`
+                    fs.writeFile(
+                        nombreBat,
+                        `start ${urlTmp}.csv`,
+                        (err) => {
+                            if (err) alert('Error escribiendo bat: \n\n' + err);
+                            else {
+                                exe(nombreBat, function (err, data) {
+                                    if (err) alert('Error ejecutando bat: \n\n' + err);
+                                    else {
+                                        $.print._printEnd();
+                                    }
+                                });
+                            }
+                        });
                 } else if ($.print.tipo == 'pdf') {
                     winPdf = null;
                     const win = new BrowserWindow({
@@ -116,9 +132,9 @@
                                     return
                                 }
                             })
-                        }, 500)
+                        }, 1000)
                     });
-                } else if ($.print.tipo == 'pdf_masivo'){
+                } else if ($.print.tipo == 'pdf_masivo') {
                     $.print._printEnd();
                 }
 

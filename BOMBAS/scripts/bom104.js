@@ -67,12 +67,15 @@ var cantidadVentanaMask;
 // !Máscaras inputs
 
 $(document).ready(function () {
+    loader('show')
     _inputControl('reset');
     _inputControl('disabled');
     _crearJsonVendedores_104();
 
     _toggleF8([
         { input: 'vendedor', app: '104', funct: _ventanaVendedores },
+        { input: 'codigoCuenta', app: '104', funct: _ventanaCuentas },
+        { input: 'nitTerceroInpt', app: '104', funct: _ventanaTerceros },
     ]);
 });
 
@@ -84,8 +87,6 @@ $(document).on('keydown', '#itemVales', function (e) {
     }
 })
 
-// $(document).on('keydown', '#vendedor', _ventanaVendedores);
-// $(document).on('click', '#vendedorBtn', _ventanaVendedores);
 function _ventanaVendedores(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
@@ -104,25 +105,28 @@ function _ventanaVendedores(e) {
     }
 }
 
-$(document).on('keydown', '#codigoCuenta', function (e) {
-    if (e.which == 119) {
+
+function _ventanaCuentas(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "Busqueda plan de cuentas",
             columnas: ["CTA", "DESCRIP", "TIPO"],
             data: $_CUENTAS_104,
             callback_esc: function () {
-                $('#codigoCuenta').focus();
+                $('#codigoCuenta_104').focus();
             },
             callback: function (data) {
                 let cod = data.CTA.trim()
-                $('#codigoCuenta').val(cod).focus();
-                _enterInput('#codigoCuenta');
+                $('#codigoCuenta_104').val(cod).focus();
+                _enterInput('#codigoCuenta_104');
             }
         });
     }
-});
+}
 
-$(document).on('keydown', '#nitTerceroInpt', function (e) {
+
+// $(document).on('keydown', '#nitTerceroInpt_104', function (e) {
+function _ventanaTerceros(e) {
     if (e.which == 119) {
         _ventanaDatos_lite_v2({
             titulo: 'Busqueda terceros',
@@ -139,15 +143,16 @@ $(document).on('keydown', '#nitTerceroInpt', function (e) {
             ],
             minLength: 1,
             callback_esc: function () {
-                $('#nitTerceroInpt').focus();
+                $('#nitTerceroInpt_104').focus();
             },
             callback: function (data) {
-                $('#nitTerceroInpt').val(data.COD.trim());
-                _enterInput('#nitTerceroInpt');
+                $('#nitTerceroInpt_104').val(data.COD.trim());
+                _enterInput('#nitTerceroInpt_104');
             }
         });
     }
-});
+}
+// });
 
 
 function _crearJsonVendedores_104() {
@@ -278,13 +283,46 @@ function on_consultarComprobante(data) {
 function _initIslas() {
     $('#tablaVenta tbody').html('');
     $('#primeraIslaInpt,#segundaIslaInpt,#terceraIslaInpt').val('').attr('disabled', 'true')
-    validarPrimeraIsla();
+    // validarPrimeraIsla();
+    validarDia_104();
+}
+
+
+function validarDia_104() {
+    validarInputs(
+        { form: '#validarDia', orden: '1' },
+        _toggleNav,
+        () => {
+            var dia = parseFloat(document.getElementById('diaInicial').value) || 0,
+                mes = parseFloat(document.getElementById('mesInicial').value) || 0,
+                dia_max = 0;
+
+            switch (mes) {
+                case 1: dia_max = 31; break;
+                case 2: dia_max = 29; break;
+                case 3: dia_max = 31; break;
+                case 4: dia_max = 30; break;
+                case 5: dia_max = 31; break;
+                case 6: dia_max = 30; break;
+                case 7: dia_max = 31; break;
+                case 8: dia_max = 31; break;
+                case 9: dia_max = 30; break;
+                case 10: dia_max = 31; break;
+                case 11: dia_max = 30; break;
+                case 12: dia_max = 31; break;
+                default: dia_max = 30; break;
+            }
+
+            if (dia < 0 | dia > dia_max) validarDia_104()
+            else validarPrimeraIsla()
+        }
+    )
 }
 
 function validarPrimeraIsla() {
     validarInputs(
         { form: '#primeraIsla', orden: '1' },
-        _toggleNav,
+        validarDia_104,
         on_validarPrimeraIsla
     )
 }
@@ -698,8 +736,8 @@ function on_validacionSegundaTabla_104() {
         var consulta = _consultarItemArray_vales(segundoItem);
         if (consulta) {
             $('#itemVales').val(consulta.array.item);
-            $('#codigoCuenta').val(consulta.array.codCuenta);
-            $('#nitTerceroInpt').val(consulta.array.nitTercero);
+            $('#codigoCuenta_104').val(consulta.array.codCuenta);
+            $('#nitTerceroInpt_104').val(consulta.array.nitTercero);
             $('#documentoInpt').val(consulta.array.documento);
             valorValeMask.unmaskedValue = consulta.array.valorVale.toString();
             $('#itemVales').val(cerosIzq(segundoItem, 3))
@@ -717,7 +755,7 @@ function _validarPlanCuenta() {
         { form: '#validarCuenta', orden: '1' },
         _validacionSegundaTabla_104,
         function () {
-            var codCuenta = $('#codigoCuenta').val();
+            var codCuenta = $('#codigoCuenta_104').val();
             var validacion = buscarCuentaContable_104(codCuenta);
             if (validacion) {
                 _validarTercero()
@@ -734,10 +772,10 @@ function _validarTercero() {
         { form: '#nitTercero', orden: '1' },
         _validarPlanCuenta,
         function () {
-            var nitTercero = $('#nitTerceroInpt').val();
+            var nitTercero = $('#nitTerceroInpt_104').val();
             var validacion = buscarTercero_014(nitTercero);
             if (validacion) {
-                $('#nitTerceroInpt').val(validacion.COD.trim());
+                $('#nitTerceroInpt_104').val(validacion.COD.trim());
                 _validarDocumento();
             } else {
                 plantillaToast('99', '01', null, 'warning');
@@ -754,7 +792,7 @@ function _validarDocumento() {
         function () {
             var sesion = localStorage.Sesion;
             let documento = $('#documentoInpt').val();
-            let nitTercero = $('#nitTerceroInpt').val();
+            let nitTercero = $('#nitTerceroInpt_104').val();
 
             let añoInicial = cerosIzq($('#añoInicial').val(), 2);
             let mesInicial = cerosIzq($('#mesInicial').val(), 2)
@@ -826,7 +864,8 @@ function on_validarPopup() {
         }
         setTimeout(function () { validarArticuloPopup() }, 500);
 
-        $(document).on('keydown', '.codArticuloVentana', function (e) {
+        $('.codArticuloVentana').unbind()
+        $('.codArticuloVentana').bind('keydown', function (e) {
             if (e.which == 119) {
                 _ventanaDatos({
                     titulo: "Ventana articulos",
@@ -842,7 +881,9 @@ function on_validarPopup() {
                     }
                 });
             }
-        });
+        })
+
+        // $(document).on('keydown', '.codArticuloVentana', function (e) {});
 
     })
 }
@@ -858,7 +899,11 @@ function validarArticuloPopup() {
             var codProductoEl = $('.codArticuloVentana');
             var codProducto = $(codProductoEl[1]).val();
             var validacion = buscarProducto_104(codProducto);
-            if (validacion) {
+            if (!codProducto) {
+                segundaFasePopup('1');
+                let descripProducto = $('.descripArticuloVentana');
+                $(descripProducto[1]).val('')
+            } else if (validacion) {
                 let code = validacion.GRP.trim() + validacion.NUMERO.trim();
                 $(codProductoEl[1]).val(code);
                 let descripProducto = $('.descripArticuloVentana');
@@ -881,8 +926,8 @@ function segundaFasePopup(orden) {
         validarArticuloPopup,
         function () {
             var item = $('#itemVales').val();
-            var codCuenta = $('#codigoCuenta').val();
-            var nitTercero = $('#nitTerceroInpt').val();
+            var codCuenta = $('#codigoCuenta_104').val();
+            var nitTercero = $('#nitTerceroInpt_104').val();
             var documento = $('#documentoInpt').val();
             var valorVale = valorValeMask.unmaskedValue;
             let codProducto = $('.codArticuloVentana');
@@ -953,8 +998,8 @@ function _modificarTablaVales() {
 }
 
 function _initBoxVales() {
-    $('#codigoCuenta').val('');
-    $('#nitTerceroInpt').val('');
+    $('#codigoCuenta_104').val('');
+    $('#nitTerceroInpt_104').val('');
     $('#documentoInpt').val('');
     valorValeMask.unmaskedValue = '';
 }
@@ -1032,6 +1077,7 @@ function _validacionFinal_104() {
 }
 
 function _escribirTemp_104() {
+    loader('show')
     if ($_DATOS_TABLA.length < 1) $_DATOS_TABLA = false;
     else {
         for (var i in $_DATOS_TABLA) {
@@ -1102,6 +1148,7 @@ function _escribirTemp_104() {
             _bajarDatos_104();
         } else {
             console.error(data);
+            loader('hide')
             plantillaError(res[0], res[1], res[2]);
         }
     });
@@ -1162,6 +1209,7 @@ function on_enviarDatos_104(data) {
         console.log(datos_envio)
         SolicitarDll({ datosh: datos_envio }, on_segundaConsulta, get_url("app/bombas/BOM020.DLL"));
     } else {
+        loader('hide')
         plantillaError(res[0], res[1], res[2]);
     }
 }
@@ -1180,6 +1228,7 @@ function on_segundaConsulta(data) {
             _fin_104();
         }
     } else {
+        loader('hide')
         plantillaError(res[0], res[1], res[2]);
     }
 }
@@ -1189,11 +1238,13 @@ function on_terceraConsulta(data) {
     if (res[0].trim() == '00') {
         _fin_104();
     } else {
+        loader('hide')
         plantillaError(res[0], res[1], res[2]);
     }
 }
 
 function _fin_104() {
+    loader('hide')
     console.log('Reiniciar todo');
 
     $('#tablaVenta tbody').html('')
