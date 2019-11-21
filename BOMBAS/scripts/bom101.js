@@ -30,7 +30,7 @@ function prueba(){
     SolicitarDll({ datosh: datosEnvio() }, 
     function (data){
         console.log(data)
-    }, get_url("app/bombas/LISTCOMB.DLL"));
+    }, get_url("app/bombas/BOMXXX.DLL"));
 }
 
 function _ventanaProductos(e) {
