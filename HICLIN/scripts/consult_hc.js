@@ -610,7 +610,7 @@ function buscar_consulta_externa() {
 function recalcularCenso_hosp(callback,atiende_prof) {
     var f = new Date();
     if (f.getHours() > 04 && f.getHours() < 20) {
-        let URL = get_url("APP/" + "HICLIN/HC904A" + ".DLL");
+        let URL = get_url("APP/" + "HICLIN/HC904A.DLL");
         postData({
                 datosh: datosEnvio() + (f.getFullYear() + 1) + "|" + 7+"|"+atiende_prof+"|"
             }, URL)
