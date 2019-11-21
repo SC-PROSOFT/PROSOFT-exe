@@ -23,6 +23,7 @@
             if (this.tipo) {
                 if (this.tipo.toLowerCase() == 'pdf') this._sendPdf()
                 else if (this.tipo.toLowerCase() == 'csv') this._sendPdf()
+                else if (this.tipo.toLowerCase() == 'pdf_masivo') this._sendPdf()
             } else {
                 alert('Debes definir un tipo de impresión')
             }
@@ -44,6 +45,7 @@
             winPdf.loadURL(ventaPdf);
 
             var urlTmp = 'C:\\PROSOFT\\TEMP\\' + $.print.nombre;
+            console.debug($.print.tipo);
             winPdf.webContents.on('did-finish-load', () => {
                 winPdf.webContents.send(
                     'ping',
@@ -56,6 +58,19 @@
                 )
 
                 if ($.print.tipo == 'pdf') {
+                    setTimeout(function () {
+                        winPdf.webContents.printToPDF({}, (error, data) => {
+                            if (error) throw error
+                            let filePdf = path.join(urlTmp + '.pdf');
+                            fs.writeFile(filePdf, data, (error) => {
+                                if (error) throw error
+                                winPdf.destroy();
+                            })
+                        })
+                    }, 100);
+                }
+
+                else if ($.print.tipo == 'pdf_masivo') {
                     setTimeout(function () {
                         winPdf.webContents.printToPDF({}, (error, data) => {
                             if (error) throw error
@@ -103,6 +118,8 @@
                             })
                         }, 500)
                     });
+                } else if ($.print.tipo == 'pdf_masivo'){
+                    $.print._printEnd();
                 }
 
             })
@@ -116,6 +133,7 @@
     imprimir = function (params, callback) {
         $.print.callback = callback || false;
         $.print._init(params);
+        console.debug(params);
     }
 
 })(jQuery);
