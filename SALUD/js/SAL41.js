@@ -42,7 +42,6 @@ function _MaskDate_41() {
     var premesfact = $_MESFACT;
     var anofact = parseInt(preanofact);
     var mesfact = parseInt(premesfact);
-    var diafact = $_DIAACT;
     var fechaMask = IMask($("#fecha_SAL41")[0], {
         mask: Date,
         pattern: 'Y-m-d',
@@ -50,7 +49,7 @@ function _MaskDate_41() {
         blocks: {
             Y: { mask: IMask.MaskedRange, placeholderChar: 'y', from: anofact, to: anofact, maxLength: 4 },
             m: { mask: IMask.MaskedRange, placeholderChar: 'm', from: mesfact, to: mesfact, maxLength: 2 },
-            d: { mask: IMask.MaskedRange, placeholderChar: 'd', from: diafact, to: diafact, maxLength: 2 },
+            d: { mask: IMask.MaskedRange, placeholderChar: 'd', from: 01, to: 31, maxLength: 2 },
         },
         format: function (date) {
             return moment(date).format("YYYY-MM-DD");
@@ -139,6 +138,7 @@ $(document).ready(function () {
     $_IVAUSU2 = $_USUA_GLOBAL[0].IVA2;
     $_IVAUSU3 = $_USUA_GLOBAL[0].IVA3;
     $_ALMPREF = 'ALM01';
+    parametros = [];
     _toggleF8([
         { input: 'claseservicio', app: 'SAL41', funct: _ventanaClases_41 },
         { input: 'factura', app: 'SAL41', funct: _ventanaFormapago_41 },
@@ -159,20 +159,32 @@ $(document).ready(function () {
 ///////////////////////////////// F8 /////////////////////////////////////////////////
 function _ventanaClases_41(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "TIPO DE SERVICIO",
-            columnas: ["codigo", "descripcion"],
-            data: $_SERVICIO_401,
-            callback_esc: function () {
-                $("#claseservicio_SAL41").focus();
-            },
-            callback: function (data) {
-                console.debug(data);
-                clfactMask.typedValue = data.codigo;
-                _enterInput('#claseservicio_SAL41');
-            }
-        });
+        // _ventanaDatos({
+        //     titulo: "TIPO DE SERVICIO",
+        //     columnas: ["codigo", "descripcion"],
+        //     data: $_SERVICIO_401,
+        //     callback_esc: function () {
+        //         $("#claseservicio_SAL41").focus();
+        //     },
+        //     callback: function (data) {
+        //         console.debug(data);
+        //         clfactMask.typedValue = data.codigo;
+        //         _enterInput('#claseservicio_SAL41');
+        //     }
+        // });
+        parametros = {
+            valoresselect: ['Descripcion', 'Identificacion'],
+            f8data: 'PACIENTES',
+            columnas: [{title:'COD'},{title:'NOMBRE'},{title: 'EPS'}],
+            callback: _evaluarf8cargado,
+            cancel: _toggleNav
+        };
+        F8LITE(parametros);
     }
+}
+
+function _evaluarf8cargado(data) {
+    console.debug(data);
 }
 
 function _ventanaNumeroFactura_41(e) {

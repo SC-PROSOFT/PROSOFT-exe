@@ -33,7 +33,8 @@ $(document).ready(function () {
         // { input: 'factura', app: '108', funct: _ventanaFacturacion },
         { input: 'nit', app: '108', funct: _ventanaTerceros },
         { input: 'convenio', app: '108', funct: _ventanaConvenios },
-        { input: 'idpaciente', app: '108', funct: _ventanaPacientes },
+        { input: "idpaciente", app: "108", funct: _ventanaPacientes },
+        // { input: 'idpaciente', app: '108', funct: _ventanaPacientes },
         { input: 'servicio', app: '108', funct: _ventanaServicio },
         { input: 'costos', app: '108', funct: _ventanaCostos },
         { input: 'division', app: '108', funct: _ventanaDivision },
@@ -155,42 +156,21 @@ function _ventanaConvenios(e) {
 }
 
 function _ventanaPacientes(e) {
-    var $_PACIENTES_108 = [];
-    // Cargar FD-PACI
-    let URL = get_url("APP/" + "SALUD/SER810" + ".DLL");
-    postData({
-        datosh: datosEnvio() + localStorage['Usuario'] + "|"
-    }, URL)
-        .then((data) => {
-            loader("hide");
-            $_PACIENTES_108 = data;
-            console.log($_PACIENTES_108)
-            if ((e.type == "keydown" && e.which == 119) || e.type == "click") {
-                _ventanaDatos_lite_v2({
-                    titulo: "VENTANA DE PACIENTES",
-                    data: $_PACIENTES_108.PACIENTES,
-                    indice: ["COD", "NOMBRE", "SEXO"],
-                    mascara: [{
-                        "COD": 'Identificacion',
-                        "NOMBRE": 'Nombre',
-                        "SEXO": "Sexo"
-                    }],
-                    minLength: 3,
-                    callback_esc: function () {
-                        $("#idpaciente_108").focus();
-                    },
-                    callback: function (data) {
-                        document.getElementById("idpaciente_108").value = data.COD.trim();
-                        document.getElementById("idpaciented_108").value = data.NOMBRE;
+    var $PACIENTES = [];
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 
-                        _enterInput('#idpaciente_108');
-                    }
-                });
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+        parametros = {
+            valoresselect: ['Descripcion', 'Identificacion'],
+            f8data: 'PACIENTES',
+            columnas: [{ title: 'COD' }, { title: 'NOMBRE' }, { title: 'EPS' }],
+            callback: (data) => {
+                document.querySelector("#idpaciente_108").value = data.COD;
+                document.querySelector("#idpaciente_108").focus();
+            },
+            cancel: () => { document.querySelector("#idpaciente_108").focus() }
+        };
+        F8LITE(parametros);
+    }
 }
 
 function _ventanaServicio(e) {
@@ -510,7 +490,7 @@ function _dato_novedad_SAL7411(novedad) {
         case 8:
         case 9:
             if ($_NOVEDAD == 9) {
-                if (($_ADMINW == "ADMI") || ($_ADMINW == "GEBC")){
+                if (($_ADMINW == "ADMI") || ($_ADMINW == "GEBC")) {
                     _infoCON007B_01();
                 }
                 else {
@@ -577,28 +557,37 @@ function _dataCON904_01(data) {
     }
 }
 
+// function _prefijo() {
+//     var servicio = [
+//         { "COD": "A", "DESCRIP": "AMBULATORIO" },
+//         { "COD": "P", "DESCRIP": "PENSIONADO" },
+//         { "COD": "T", "DESCRIP": "T. ACCI. TRANSITO" }
+//     ]
+//     POPUP({
+//         array: servicio,
+//         titulo: 'SERVICIO',
+//         indices: [
+//             { id: 'COD', label: 'DESCRIP' }
+//         ],
+//         callback_f: function () {
+//             CON850(_dato_novedad_SAL7411)
+//         },
+//     },
+//         _evaluarprefijo);
+// }
 function _prefijo() {
-    var servicio = [
-        { "COD": "A", "DESCRIP": "AMBULATORIO" },
-        { "COD": "P", "DESCRIP": "PENSIONADO" },
-        { "COD": "T", "DESCRIP": "T. ACCI. TRANSITO" }
-    ]
-    POPUP({
-        array: servicio,
-        titulo: 'SERVICIO',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: function () {
-            CON850(_dato_novedad_SAL7411)
-        },
+    var servicio = '[{"codigo": "A","descripcion": "AMBULATORIO"},{"codigo": "P", "descripcion": "PENSIONADO"},{"codigo": "T","descripcion": "T. ACCI. TRANSITO"}]'
+    var servicios = JSON.parse(servicio);
+    SER808({
+        array: servicios,
+        titulo: 'SERVICIO'
     },
-        _evaluarprefijo);
+        _evaluarprefijo
+    )
 }
-
-function _evaluarprefijo(servicio) {
-    $_PREFIJOW = servicio.COD;
-    switch (servicio.COD) {
+function _evaluarprefijo(servicios) {
+    $_PREFIJOW = servicios.id;
+    switch (servicios.id) {
         case 'A':
         case 'P':
         case 'T':
@@ -606,11 +595,27 @@ function _evaluarprefijo(servicio) {
             // _subfacturas();
             break;
         default:
-            CON850(_dato_novedad_SAL7411);
+            _devolvernovedad();
             break;
     }
-    $("#prefijo_108").val(servicio.COD + " - " + servicio.DESCRIP);
+    $("#prefijo_108").val(servicios.id + " - " + servicios.descripcion);
 }
+
+// function _evaluarprefijo(servicios) {
+//     $_PREFIJOW = servicios.COD;
+//     switch (servicios.COD) {
+//         case 'A':
+//         case 'P':
+//         case 'T':
+//             _infoSER108_03();
+//             // _subfacturas();
+//             break;
+//         default:
+//             CON850(_dato_novedad_SAL7411);
+//             break;
+//     }
+//     $("#prefijo_108").val(servicios.COD + " - " + servicios.DESCRIP);
+// }
 
 // function _subfacturas() {   ////FILTRO DE FACTURAS ///////////
 //     console.log('subfacturas'); 
@@ -2859,7 +2864,7 @@ function _datopol_SAL7411() {
                         callback: function (data) {
                             document.getElementById('ruta_108').value = data.ZONA;
                             setTimeout(_evaluardiasest_SAL7411, 300);
-                            
+
                         }
                     });
                 }
@@ -3040,7 +3045,7 @@ function _datotipodeevento() {
     }
 }
 
-function _tipodeevento_SAL7411(){
+function _tipodeevento_SAL7411() {
     var tipoeventow = [
         { "COD": "1", "DESCRIP": "ACCIDENTE DE TRANSI" },
         { "COD": "2", "DESCRIP": "SISMO" },
@@ -3089,7 +3094,7 @@ function _evaluardatotipoeventow_108(tipoeventow) {
         case '14':
         case '15':
         case '16':
-        // case '18':
+            // case '18':
             $("#ciudad_108").val('50689');
             _evaluarciudad_SAL7411();
             break;
@@ -3331,7 +3336,7 @@ function _grabardatos() {
 function _dataSER108_02(data) {
     // console.log(data, "SER108-02");
     var date = data.split('|');
-    var swinvalid = date[0]; 
+    var swinvalid = date[0];
     if (swinvalid == "00") {
         if ($_NOVEDAD == '7') {
             BUSCARNUMERO(_grabarnumero);
@@ -3423,7 +3428,7 @@ function _imprimirfactura_SAL7411() {
 
 function _impresion_SAL7411() {
     console.log('impresion', SAL7411.FACTURAS);
-    SAL7411.NOMBREPDF = SAL7411.FACTURAS.FACTURA; 
+    SAL7411.NOMBREPDF = SAL7411.FACTURAS.FACTURA;
     console.log(SAL7411.NOMBREPDF, '$_NOMBREPDF')
     opcinesImpresion_SAL7411 = {
         datos: SAL7411.FACTURAS,
@@ -3561,9 +3566,9 @@ function _dataSER108_01(data) {
     $_ZONATER = date[60].trim();
     $_OPERMODNUM = date[61].trim();
     $_FECHANACPAC = date[62].trim();
-    $_ANONACPAC7411 = $_FECHANACPAC.substring(0,4); 
-    $_MESNACPAC7411 = $_FECHANACPAC.substring(4,6);
-    $_DIANACPAC7411 = $_FECHANACPAC.substring(6,8);
+    $_ANONACPAC7411 = $_FECHANACPAC.substring(0, 4);
+    $_MESNACPAC7411 = $_FECHANACPAC.substring(4, 6);
+    $_DIANACPAC7411 = $_FECHANACPAC.substring(6, 8);
     if (swinvalid == '00') {
         _mostrardatos_SAL7411();
     }
@@ -3585,8 +3590,8 @@ function _mostrardatos_SAL7411() {
     $("#pic_108").val($_CTAPICNUM);
     $("#idpaciente_108").val($_IDPACNUM);
     $("#idpaciented_108").val($_DESCRIPPACINUM);
-    $_EDADPACIW = $_ANOACTUALW - $_ANONACPAC7411; 
-    $("#edad_108").val($_EDADPACIW); 
+    $_EDADPACIW = $_ANOACTUALW - $_ANONACPAC7411;
+    $("#edad_108").val($_EDADPACIW);
     $("#tipo_108").val($_TIPOFACTNUM);
     $("#habit_108").val($_HABNUM);
     $("#porcent_108").val($_PORCENCOPAGONUM);
@@ -3651,10 +3656,10 @@ function _mostrardatos_SAL7411() {
     $("#modificadod_108").val($_ANOMODNUM + '/' + $_MESMODNUM + '/' + $_DIAMODNUM);
     $("#bloqueo_108").val($_OPERBLOQNUM);
 
-    if(($_ESTADONUM == '1') && ($_SEGRIPSNUMW == 'S') && ($_OPERNUM )){
+    if (($_ESTADONUM == '1') && ($_SEGRIPSNUMW == 'S') && ($_OPERNUM)) {
         CON851('72', '72', null, 'error', 'error');
-        _evaluarfactura(); 
-    }else if(($_NITUSU == '0800037021') && ($_ADMINW == 'JASP') && ($_OPERNUM != $_ADMINW)){
+        _evaluarfactura();
+    } else if (($_NITUSU == '0800037021') && ($_ADMINW == 'JASP') && ($_OPERNUM != $_ADMINW)) {
         CON851('15', '15', null, 'error', 'error');
         _evaluarfactura();
     }
@@ -3775,7 +3780,7 @@ function _eliminarregistro() {
 function _dataSER108_02_02(data) {
     console.log(data, "SER108-02_02");
     var date = data.split('|');
-    var swinvalid = date[0]; 
+    var swinvalid = date[0];
     if (swinvalid == "00") {
         toastr.success('Se ha retirado', 'APERTURA DE FACTURACION');
         _inputControl('reset');
@@ -3910,10 +3915,13 @@ function _ventanaipsante() {
                 label: 'Aceptar',
                 className: 'btn-info',
                 callback: function () {
+                    ventanaipsante.off('show.bs.modal');
                     $_NOMBREANTIPS = $("#nombreips_108").val();
                     $_VLRFACTIPS = $("#vlrfact_108").val();
                     $_VLRCOPAIPS = $("#nombreips_108").val();
-                    ventanaipsante.off('show.bs.modal');
+                    $_PORCRETENCW = "00";
+                    $("#retencion_108").val($_PORCRETENCW);
+                    _datopic_SAL7411();
                 }
             }
         }
@@ -3938,9 +3946,6 @@ function validaripsante(orden) {
 }
 function _aceptaripsante() {
     $(".btn-info").click();
-    $_PORCRETENCW = "00";
-    $("#retencion_108").val($_PORCRETENCW);
-    _datopic_SAL7411();
 }
 
 function BUSCARNUMERO(callback) {
