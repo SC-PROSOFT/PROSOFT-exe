@@ -127,7 +127,7 @@ function _ventanaCuentas(e) {
 
 // $(document).on('keydown', '#nitTerceroInpt_104', function (e) {
 function _ventanaTerceros(e) {
-    if (e.which == 119) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos_lite_v2({
             titulo: 'Busqueda terceros',
             data: $_TERCEROS_104,

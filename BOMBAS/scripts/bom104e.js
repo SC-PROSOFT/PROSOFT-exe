@@ -14,57 +14,57 @@ var $_SURTIDORES_104E,
 
 var numAnterior = new IMask(
     document.getElementById('numAnter'),
-    { mask: Number, min: 0, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min:-9999999999, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
 );
 
 var numActual = new IMask(
     document.getElementById('numActual'),
-    { mask: Number, min: 0, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorActualMask = new IMask(
     document.getElementById('valorActual'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var galonajeTotalMask = new IMask(
     document.getElementById('galonajeTotal'),
-    { mask: Number, min: 0, max: 9999999999, scale: 3, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 9999999999, scale: 3, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorTotalMask = new IMask(
     document.getElementById('valorTotal'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorValeMask = new IMask(
     document.getElementById('valorVale'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorCombustibleMask = new IMask(
     document.getElementById('totalCombustible'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorCreditosMask = new IMask(
     document.getElementById('totalCreditos'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorFinanciacionMask = new IMask(
     document.getElementById('totalFinanciacion'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorChequesMask = new IMask(
     document.getElementById('totalCheques'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorEfectivoMask = new IMask(
     document.getElementById('totalEfectivo'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 $(document).ready(function () {
@@ -74,7 +74,9 @@ $(document).ready(function () {
     $('#formatoImpresion').select2().on('select2:select', validarFormato_104e);
 
     _toggleF8([
-        { input: 'vendedor', app: '104e', funct: _ventanaVendedores }
+        { input: 'vendedor', app: '104e', funct: _ventanaVendedores },
+        { input: 'codigoCuenta', app: '104e', funct: _ventanaCuentas_104e },
+        { input: 'nitTerceroInpt', app: '104e', funct: _ventanaTerceros_104e }
     ]);
 });
 
@@ -109,33 +111,63 @@ function _ventanaVendedores(e) {
     }
 };
 
-$(document).on('keydown', '#codigoCuenta', function (e) {
-    if (e.type == "keydown" && e.which == 119) {
+function _ventanaCuentas_104e(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'Busqueda CUENTA',
             columnas: ["CTA", "DESCRIP", "TIPO"],
             data: $_CUENTAS_104E,
+            callback_esc: function () {
+                $('#codigoCuenta_104e').focus();
+            },
             callback: function (data) {
-                $('#codigoCuenta').val(data.CTA.trim());
-                _enterInput('#codigoCuenta');
+                $('#codigoCuenta_104e').val(data.CTA.trim());
+                _enterInput('#codigoCuenta_104e');
             }
         });
     }
-});
+}
 
-$(document).on('keydown', '#nitTerceroInpt', function (e) {
-    if (e.type == "keydown" && e.which == 119) {
-        _ventanaDatos({
-            titulo: 'Busqueda TERCEROS',
-            columnas: ["NOMBRE", "COD", "TELEF", "CIUDAD", "ACT"],
+function _ventanaTerceros_104e(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos_lite_v2({
+            titulo: 'Busqueda terceros',
             data: $_TERCEROS_104E,
+            indice: ['COD', 'NOMBRE'],
+            mascara: [
+                {
+                    COD: 'Identificacion',
+                    NOMBRE: 'Nombre',
+                    TELEF: 'Telefono',
+                    CIUDAD: 'Ciudad',
+                    ACT: 'Actividad',
+                }
+            ],
+            minLength: 1,
+            callback_esc: function () {
+                $('#nitTerceroInpt_104e').focus();
+            },
             callback: function (data) {
-                $('#nitTerceroInpt').val(data.COD.trim().replace(/\,/g, ''));
-                _enterInput('#nitTerceroInpt');
+                $('#nitTerceroInpt_104e').val(data.COD.trim().replace(/\,/g, ''));
+                _enterInput('#nitTerceroInpt_104e');
             }
         });
     }
-});
+}
+
+// $(document).on('keydown', '#nitTerceroInpt', function (e) {
+//     if (e.type == "keydown" && e.which == 119) {
+//         _ventanaDatos({
+//             titulo: 'Busqueda TERCEROS',
+//             columnas: ["NOMBRE", "COD", "TELEF", "CIUDAD", "ACT"],
+//             data: $_TERCEROS_104E,
+//             callback: function (data) {
+//                 $('#nitTerceroInpt').val(data.COD.trim().replace(/\,/g, ''));
+//                 _enterInput('#nitTerceroInpt');
+//             }
+//         });
+//     }
+// });
 
 
 function _crearJsonVendedores_104e() {
@@ -814,8 +846,8 @@ function _calcularGalonaje_104e() {
 function _modificarTabla_104e() {
     var items = $('#tablaVenta tbody tr');
     var totalGalonaje = 0, totalValor = 0;
-    var masked = IMask.createMask({ mask: Number, min: 0, max: 999999999, scale: 3, thousandsSeparator: ',', radix: '.' });
-    var masked2 = IMask.createMask({ mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' });
+    var masked = IMask.createMask({ mask: Number, min: -9999999999, max: 999999999, scale: 3, thousandsSeparator: ',', radix: '.' });
+    var masked2 = IMask.createMask({ mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' });
 
     for (var i = 0; i < items.length; i++) {
         let elemento = $(items[i])
@@ -893,8 +925,8 @@ function on_validacionSegundaTabla_104e() {
         var consulta = _consultarItemArray_vales_104e(segundoItem);
         if (consulta) {
             $('#itemVales').val(consulta.array.item);
-            $('#codigoCuenta').val(consulta.array.codCuenta);
-            $('#nitTerceroInpt').val(consulta.array.nitTercero);
+            $('#codigoCuenta_104').val(consulta.array.codCuenta);
+            $('#nitTerceroInpt_104e').val(consulta.array.nitTercero);
             $('#documentoInpt').val(consulta.array.documento);
             valorValeMask.unmaskedValue = consulta.array.valorVale.toString();
             $('#itemVales').val(cerosIzq(segundoItem, 3))
@@ -903,13 +935,13 @@ function on_validacionSegundaTabla_104e() {
             _initBoxVales_104e();
         }
 
-        let codigoActual = $('#codigoCuenta').val().trim().length;
+        let codigoActual = $('#codigoCuenta_104e').val().trim().length;
         let sucursal = $('#sucursal').val().trim();
         if (codigoActual == 0) {
             if (sucursal == '1') {
-                $('#codigoCuenta').val('13050500001');
+                $('#codigoCuenta_104e').val('13050500001');
             } else {
-                $('#codigoCuenta').val('13050500002');
+                $('#codigoCuenta_104e').val('13050500002');
             }
         }
 
@@ -922,7 +954,7 @@ function _validarPlanCuenta_104e() {
         { form: '#validarCuenta', orden: '1' },
         _validacionSegundaTabla_104e,
         function () {
-            var codCuenta = $('#codigoCuenta').val();
+            var codCuenta = $('#codigoCuenta_104e').val();
             var validacion = buscarCuentaContable_104e(codCuenta);
             if (validacion) {
                 _validarTercero_104e();
@@ -938,10 +970,10 @@ function _validarTercero_104e() {
         { form: '#nitTercero', orden: '1' },
         _validarPlanCuenta_104e,
         function () {
-            var nitTercero = $('#nitTerceroInpt').val();
+            var nitTercero = $('#nitTerceroInpt_104e').val();
             var validacion = buscarTercero_104e(nitTercero);
             if (validacion) {
-                $('#nitTerceroInpt').val(validacion.COD.trim());
+                $('#nitTerceroInpt_104e').val(validacion.COD.trim());
                 _validarDocumento_104e();
             } else {
                 plantillaToast('99', '01', null, 'warning');
@@ -958,7 +990,7 @@ function _validarDocumento_104e() {
         function () {
             var sesion = localStorage.Sesion;
             let documento = $('#documentoInpt').val();
-            let nitTercero = $('#nitTerceroInpt').val();
+            let nitTercero = $('#nitTerceroInpt_104e').val();
 
             let añoInicial = cerosIzq($('#añoInicial').val(), 2);
             let mesInicial = cerosIzq($('#mesInicial').val(), 2)
@@ -1010,7 +1042,7 @@ function on_validarPopup_104e() {
         // Inicia validación pop-up        
         cantidadVentanaMask = new IMask(
             document.getElementsByClassName('cantidadVentana')[1],
-            { mask: Number, min: 0, max: 9999, scale: 2, thousandsSeparator: ',', radix: '.' }
+            { mask: Number, min: -9999999999, max: 9999, scale: 2, thousandsSeparator: ',', radix: '.' }
         );
 
         var item = cerosIzq($('#itemVales').val(), 3)
@@ -1026,6 +1058,26 @@ function on_validarPopup_104e() {
         }
 
         setTimeout(function () { validarArticuloPopup_104e() }, 500);
+
+        $('.codArticuloVentana').unbind()
+        $('.codArticuloVentana').bind('keydown', function (e) {
+            if (e.which == 119) {
+                _ventanaDatos({
+                    titulo: "Ventana articulos",
+                    columnas: ["GRP", "NUMERO", "DESCRIP", "UNID", "VALOR", "REFER"],
+                    data: $_ARTICULOS_104E,
+                    callback_esc: function () {
+                        $('.codArticuloVentana').focus();
+                    },
+                    callback: function (data) {
+                        let grp = data.GRP.trim()
+                        $('.codArticuloVentana').val(grp + data.NUMERO.trim()).focus();
+                        _enterInput('.codArticuloVentana');
+                    }
+                });
+            }
+        })
+
     })
 }
 
@@ -1042,6 +1094,8 @@ function validarArticuloPopup_104e() {
             var validacion = buscarProducto_104e(codProducto);
             if (codProducto.length < 1) {
                 segundaFasePopup_104e('1');
+                let descripProducto = $('.descripArticuloVentana');
+                $(descripProducto[1]).val('')
             } else if (validacion) {
                 let code = validacion.GRP.trim() + validacion.NUMERO.trim();
                 $(codProductoEl[1]).val(code);
@@ -1065,9 +1119,9 @@ function segundaFasePopup_104e(orden) {
         validarArticuloPopup_104e,
         function () {
             var item = $('#itemVales').val();
-            var codCuenta = $('#codigoCuenta').val();
+            var codCuenta = $('#codigoCuenta_104e').val();
 
-            var nitTercero = $('#nitTerceroInpt').val();
+            var nitTercero = $('#nitTerceroInpt_104e').val();
             var infoTercero = buscarTercero_104e(nitTercero) || 'Sin definir';
             var documento = $('#documentoInpt').val();
             var valorVale = valorValeMask.unmaskedValue;
@@ -1122,7 +1176,7 @@ function segundaFasePopup_104e(orden) {
 
 function _modificarTablaVales_104e() {
     $('#tablaVales tbody').html('');
-    var masked = IMask.createMask({ mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' });
+    var masked = IMask.createMask({ mask: Number, min: -9999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' });
     var valorTotal = 0;
     for (var i in $_DATOS_VALES_104E) {
         var maskedValue = masked.resolve($_DATOS_VALES_104E[i].valorVale.toString());
@@ -1484,8 +1538,8 @@ function _fin_104e() {
 }
 
 function _initBoxVales_104e() {
-    $('#codigoCuenta').val('');
-    $('#nitTerceroInpt').val('');
+    $('#codigoCuenta_104e').val('');
+    $('#nitTerceroInpt_104e').val('');
     $('#documentoInpt').val('');
     valorValeMask.unmaskedValue = '';
 }
