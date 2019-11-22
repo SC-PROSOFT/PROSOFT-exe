@@ -9,32 +9,32 @@ var $_VENDEDORES_104,
 // Máscaras inputs
 var numAnterior = new IMask(
     document.getElementById('numAnter'),
-    { mask: Number, min: 0, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
 );
 
 var numActual = new IMask(
     document.getElementById('numActual'),
-    { mask: Number, min: 0, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorActualMask = new IMask(
     document.getElementById('valorActual'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var galonajeTotalMask = new IMask(
     document.getElementById('galonajeTotal'),
-    { mask: Number, min: 0, max: 9999999999, scale: 3, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 9999999999, scale: 3, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorTotalMask = new IMask(
     document.getElementById('valorTotal'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorValeMask = new IMask(
     document.getElementById('valorVale'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorCombustibleMask = new IMask(
@@ -44,7 +44,7 @@ var valorCombustibleMask = new IMask(
 
 var valorCreditosMask = new IMask(
     document.getElementById('totalCreditos'),
-    { mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
 );
 
 var valorFinanciacionMask = new IMask(
@@ -976,7 +976,7 @@ function segundaFasePopup(orden) {
 
 function _modificarTablaVales() {
     $('#tablaVales tbody').html('');
-    var masked = IMask.createMask({ mask: Number, min: 0, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' });
+    var masked = IMask.createMask({ mask: Number, min: -999999999, max: 999999999, scale: 0, thousandsSeparator: ',', radix: '.' });
     var valorTotal = 0;
     for (var i in $_DATOS_VALES) {
         var maskedValue = masked.resolve($_DATOS_VALES[i].valorVale.toString());

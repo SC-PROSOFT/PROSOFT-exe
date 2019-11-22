@@ -1,4 +1,5 @@
-var $_FORMATO_109, $_LISTADO_109;
+var $_FORMATO_109, $_LISTADO_109,
+    $_RANGO = [], $_IDX_ACTUAL = 0;
 
 $(document).ready(function () {
     loader('hide');
@@ -54,16 +55,51 @@ function validarFase1_109(orden) {
             orden: orden
         },
         habilitarFormato,
-        _enviarDatos_109
+        _formatRango_109
     )
 }
 
-function _enviarDatos_109() {
-    var comprobanteInicial = cerosIzq($('#comprobanteInicial').val(), 6);
-    var comprobanteFinal = cerosIzq($('#comprobanteInicial').val(), 6)
-    var detallado = espaciosIzq($('#detallado').val(), 1)
+function _formatRango_109() {
+    var comprobanteInicial = document.getElementById('comprobanteInicial').value.padStart(6, "0"),
+        comprobanteFinal = document.getElementById('comprobanteFinal').value.padStart(6, "0"),
+        actual = comprobanteInicial;
 
-    var datos_envio = datosEnvio() + comprobanteInicial + '|' + comprobanteFinal + '|' + detallado + '|';
+
+    while (actual <= parseFloat(comprobanteFinal)) {
+        $_RANGO.push(actual.toString().padStart(6, "0"))
+        actual = parseFloat(actual) + 1;
+    }
+
+    _enviarDatos_109()
+}
+
+function _enviarDatos_109() {
+    validarDetallado_109()
+}
+
+function validarDetallado_109() {
+    validarInputs(
+        {
+            form: '#fase2',
+            orden: '1'
+        },
+        () => {
+            $('#contenido table#tabla-principal tbody').html('');
+            $('#contenido table#tabla-secundaria tbody').html('');
+            habilitarFormato();
+            $_RANGO = [];
+            $_IDX_ACTUAL = 0;
+        },
+        on_validarDetallado_109
+    )
+}
+
+function on_validarDetallado_109() {
+    var comprobante = $_RANGO[$_IDX_ACTUAL]
+    var detallado = espaciosIzq($('#detallado').val(), 1)
+    console.log(comprobante)
+
+    var datos_envio = datosEnvio() + comprobante + '|' + comprobante + '|' + detallado + '|';
     loader('show');
     SolicitarDll({ datosh: datos_envio }, on_enviarDatos_109, get_url("app/BOMBAS/BOM111.DLL"));
 }
@@ -73,19 +109,22 @@ function on_enviarDatos_109(data) {
     if (res[0].trim() == '00') {
         let nombreEmpresa = $_USUA_GLOBAL[0].NOMBRE.trim();
         let nitEmpresa = $_USUA_GLOBAL[0].NIT.toString().trim();
-        let comprobanteInicial = $('#comprobanteInicial').val();
+        // let comprobanteInicial = $('#comprobanteInicial').val();
 
         res.push(nombreEmpresa);
         res.push(nitEmpresa);
-        res.push(comprobanteInicial);
+        res.push($_RANGO[$_IDX_ACTUAL]);
         res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"));
+
+        var date = new Date(),
+            str = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString() + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
 
         var opcionesImpresiones = {
             datos: get_url('TEMP/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
             formato: 'bombas/bom109.formato.html',
-            nombre: 'LISTADO-VENT-COMBUST-' + localStorage.Sesion
+            nombre: 'LISTADO-VENT-COMBUST-' + str
         };
 
         if ($_FORMATO_109 == 'PDF') {
@@ -102,8 +141,14 @@ function on_enviarDatos_109(data) {
 }
 
 function finImpresion_109() {
+    console.log($_IDX_ACTUAL, $_RANGO.length - 1)
     loader('hide');
-    $('#contenido table#tabla-principal tbody').html('');
-    $('#contenido table#tabla-secundaria tbody').html('');
-    habilitarFormato();
+    if ($_IDX_ACTUAL != ($_RANGO.length - 1)) {
+        $_IDX_ACTUAL = $_IDX_ACTUAL + 1;
+        _enviarDatos_109()
+    } else {
+        $('#contenido table#tabla-principal tbody').html('');
+        $('#contenido table#tabla-secundaria tbody').html('');
+        habilitarFormato();
+    }
 }

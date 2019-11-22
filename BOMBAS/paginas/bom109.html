@@ -27,32 +27,35 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-8 col-sm-12 col-xs-12 box-center" id="fase1">
-                    <div class="col-md-6 col-sm-6 col-xs-6">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-7 col-xs-7">Desde el número:</label>
-                            <div class="input-group col-md-5 col-sm-5 col-xs-5">
-                                <input id="comprobanteInicial" type="number" class="form-control col-md-12" maxlength="5"
-                                    data-orden="1" required="true">
+                <div class="form-group col-md-8 col-sm-12 col-xs-12 box-center">
+                    <div id="fase1">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7">Desde el número:</label>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                    <input id="comprobanteInicial" type="number" class="form-control col-md-12"
+                                        maxlength="5" data-orden="1" required="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7">Hasta el número:</label>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                    <input id="comprobanteFinal" type="number" class="form-control col-md-12"
+                                        maxlength="5" data-orden="2" required="true">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
-                        <div class="inline-inputs">
-                            <label class="col-md-7 col-sm-7 col-xs-7">Hasta el número:</label>
-                            <div class="input-group col-md-5 col-sm-5 col-xs-5">
-                                <input id="comprobanteFinal" type="number" class="form-control col-md-12" maxlength="5"
-                                    data-orden="2" required="true">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="display:flex;margin-top: 15px;" id="faseValidarValor_impto">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="display:flex;margin-top: 15px;" id="fase2">
                         <div class="col-md-10 inline-inputs">
                             <label class="col-md-8 col-sm-10 col-xs-10">¿Desea
                                 visualizar detallado?: (art/cant/placa) </label>
                             <div class="input-group col-md-2 col-sm-2 col-xs-2">
-                                <input id="detallado" type="text" class="form-control col-md-12 col-sm-12 col-xs-12 uppercase"
-                                    required="true" maxlength="1" data-orden="3">
+                                <input id="detallado" type="text"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12 uppercase" required="true"
+                                    maxlength="1" data-orden="1">
                             </div>
                         </div>
                     </div>

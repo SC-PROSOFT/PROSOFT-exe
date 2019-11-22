@@ -132,7 +132,7 @@
                                     return
                                 }
                             })
-                        }, 1000)
+                        }, 2000)
                     });
                 } else if ($.print.tipo == 'pdf_masivo') {
                     $.print._printEnd();
