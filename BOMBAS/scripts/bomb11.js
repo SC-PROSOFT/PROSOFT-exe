@@ -4,10 +4,14 @@ $(document).ready(function () {
     _inputControl('disabled');
     $_FECHA_ACT = moment().format('YY-MM-DD');
     _crearJsonTerceros();
+
+    _toggleF8([
+        { input: 'nitBomb', app: '11', funct: _ventanatTerceros },
+    ]);
 });
 
-$(document).on('click', '#nitBtnBomb11', _ventanatTerceros);
-$(document).on('keydown', '#nitBomb11', _ventanatTerceros);
+// $(document).on('click', '#nitBtnBomb11', _ventanatTerceros);
+// $(document).on('keydown', '#nitBomb11', _ventanatTerceros);
 
 function _ventanatTerceros(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
@@ -16,8 +20,8 @@ function _ventanatTerceros(e) {
             columnas: ["COD", "NOMBRE"],
             data: $_TERCEROS_11,
             callback: function (data) {
-                $('#nitBomb11').val(data.COD);
-                $('#nitBomb11').focus();
+                $('#nitBomb_11').val(data.COD);
+                $('#nitBomb_11').focus();
             }
         });
     }
@@ -151,9 +155,9 @@ function nitProcesar() {
 }
 
 function _validarTercero_11() {
-    var descript = buscarTercero_11($('#nitBomb11').val());
-    if (descript || $('#nitBomb11').val() == '99') {
-        if ($('#nitBomb11').val() == '99') {
+    var descript = buscarTercero_11($('#nitBomb_11').val());
+    if (descript || $('#nitBomb_11').val() == '99') {
+        if ($('#nitBomb_11').val() == '99') {
             $('#descripBomb11').val('PROCESO TOTAL');
         } else {
             $('#descripBomb11').val(descript.NOMBRE);
@@ -168,7 +172,7 @@ function _validarTercero_11() {
                 datos_envio += "|";
                 datos_envio += $_FECHA_FIN;
                 datos_envio += "|";
-                datos_envio += cerosIzq($('#nitBomb11').val(), 10);
+                datos_envio += cerosIzq($('#nitBomb_11').val(), 10);
                 datos_envio += "|";
                 datos_envio += $_DATOS_BOMB11[2];
                 datos_envio += "|";
