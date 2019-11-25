@@ -1,11 +1,11 @@
 ($ => {
     $.F8NUME = {
-        overlay_id: 'overlay-f8_lite',
-        content_id: 'content-f8_lite',
+        overlay_id: 'overlay-f8_nume',
+        content_id: 'content-f8_nume',
         css_id: 'css_ventanaDatos_lite',
         tabla_id: 'datos',
-        id_input: 'input_busquedaF8Lite',
-        id_select: 'select_busquedaF8Lite',
+        id_input: 'input_busquedaF8nume',
+        id_select: 'select_busquedaF8nume',
         datatable: [],
         titulo: 'Ventana de búsqueda',
         valoresselect: '',
@@ -226,7 +226,7 @@
         },
 
         _sendData: () => {
-            if ($(`#${$.F8NUME.id_input}`).val().length > 10) {
+            if ($(`#${$.F8NUME.id_input}`).val().length > 7) {
                 alert('Ingresar menos de 10 caracteres');
                 CON851('Ingresar menos de 10 caracteres', null, 'error')
             } else if ($(`#${$.F8NUME.id_input}`).val().length < 3) {
@@ -239,6 +239,7 @@
                     datosh: datosEnvio() + '1' + '|' + $(`#${$.F8NUME.id_input}`).val().toUpperCase()
                 }, URL)
                     .then(data => {
+                        console.log(data, 'dataensa')
                         var array = data[$.F8NUME.f8data];
                         table = [];
                         $.F8NUME.datatable = array;
@@ -379,7 +380,7 @@
         },
 
     }
-    F8LITE = params => {
+    F8NUME = params => {
         if (!params.callback) {
             alert('Callback sin definir');
             console.error('Falta definir una función para retornar los datos');
@@ -395,7 +396,7 @@
         // $.F8NUME.data = params.data;
         $.F8NUME.valoresselect = params.valoresselect || ['Seleccionar'];
         $.F8NUME.f8data = params.f8data || null;
-        $.F8NUME.columnas = params.columnas || ['NOMBRE', 'DESCRIPCION'];
+        $.F8NUME.columnas = params.columnas || ['DESCRIPCION', 'PACIENTE'];
         $.F8NUME.callback = params.callback || null;
         $.F8NUME.cancelcallback = params.cancel || null;
         $.F8NUME._init();

@@ -30,11 +30,10 @@ $(document).ready(function () {
     $_PUCUSU = $_USUA_GLOBAL[0].PUC;
     $_CONTROLFORMUUSU = $_USUA_GLOBAL[0].CTRL_FORMU;
     _toggleF8([
-        // { input: 'factura', app: '108', funct: _ventanaFacturacion },
+        { input: 'factura', app: '108', funct: _ventanaFacturacion },
         { input: 'nit', app: '108', funct: _ventanaTerceros },
         { input: 'convenio', app: '108', funct: _ventanaConvenios },
         { input: "idpaciente", app: "108", funct: _ventanaPacientes },
-        // { input: 'idpaciente', app: '108', funct: _ventanaPacientes },
         { input: 'servicio', app: '108', funct: _ventanaServicio },
         { input: 'costos', app: '108', funct: _ventanaCostos },
         { input: 'division', app: '108', funct: _ventanaDivision },
@@ -82,6 +81,24 @@ $(document).ready(function () {
 //             console.log(error)
 //         });
 // }
+function _ventanaFacturacion(e) {
+    
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+
+        parametros = {
+            valoresselect: ['FACTURA', 'DESCRIPCION'],
+            f8data: 'NUMERACION',
+            columnas: [{ title: 'COD' }, { title: 'NOM_PAC' }, { title: 'DESCRIP' }, { title: 'FECHA_ING' }, { title: 'CONVENIO' }],
+            callback: (data) => {
+                console.log('data',data)
+                document.querySelector("#factura_108").value = data.COD;
+                document.querySelector("#factura_108").focus();
+            },
+            cancel: () => { document.querySelector("#factura_108").focus() }
+        };
+        F8NUME(parametros);
+    }
+}
 
 function _ventanaTerceros(e) {
     var $_TERCEROS_108 = [];
@@ -92,7 +109,6 @@ function _ventanaTerceros(e) {
         .then((data) => {
             loader("hide");
             $_TERCEROS_108 = data;
-            console.log($_TERCEROS_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos_lite_v2({
                     titulo: 'VENTANA DE TERCEROS',
@@ -132,7 +148,6 @@ function _ventanaConvenios(e) {
         .then((data) => {
             loader("hide");
             $_CONVENIO_108 = data;
-            console.log($_CONVENIO_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE CONVENIOS",
@@ -182,7 +197,6 @@ function _ventanaServicio(e) {
         .then((data) => {
             loader("hide");
             $_SERVIHOSP_108 = data;
-            console.log($_SERVIHOSP_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE SERVICIOS HOSPITALARIOS",
@@ -213,7 +227,6 @@ function _ventanaCostos(e) {
         .then((data) => {
             loader("hide");
             $_COSTOS = data;
-            console.log($_COSTOS)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE CONSULTA CENTRO DE COSTOS",
@@ -244,7 +257,6 @@ function _ventanaDivision(e) {
         .then((data) => {
             loader("hide");
             $_DIVISION_108 = data;
-            console.log($_DIVISION_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE CONSULTA DE DIVISION",
@@ -276,7 +288,6 @@ function _ventanaCiudad(e) {
         .then((data) => {
             loader("hide");
             $_CIUDAD_108 = data;
-            console.log($_CIUDAD_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE CONSULTA DE CIUDADES",
@@ -308,7 +319,6 @@ function _ventanaOrigen(e) {
         .then((data) => {
             loader("hide");
             $_IPS_108 = data;
-            console.log($_IPS_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE CONSULTA DE IPS",
@@ -339,7 +349,6 @@ function _ventanaTercerosautoriza(e) {
         .then((data) => {
             loader("hide");
             $_FUNCIONARIO_108 = data;
-            console.log($_FUNCIONARIO_108)
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos_lite_v2({
                     titulo: 'VENTANA DE TERCEROS',
@@ -521,7 +530,6 @@ function _infoCON007B_01() {
 }
 
 function _dataCON007B_01(data) {
-    // console.log(data, "CON007B")
     var date = data.split("|");
     var segw = date[1].substring(0, 1);
     if (segw == "0" || segw == "3" || segw == "5") {
@@ -576,7 +584,7 @@ function _dataCON904_01(data) {
 //         _evaluarprefijo);
 // }
 function _prefijo() {
-    var servicio = '[{"codigo": "A","descripcion": "AMBULATORIO"},{"codigo": "P", "descripcion": "PENSIONADO"},{"codigo": "T","descripcion": "T. ACCI. TRANSITO"}]'
+    var servicio = '[{"codigo": "A","descripcion": "AMBULATORIO"},{"codigo": "P", "descripcion": "PENSIONADO"},{"codigo": "T","descripcion": "ACCI.TRANSITO"}]'
     var servicios = JSON.parse(servicio);
     SER808({
         array: servicios,
@@ -592,10 +600,10 @@ function _evaluarprefijo(servicios) {
         case 'P':
         case 'T':
             _infoSER108_03();
-            // _subfacturas();
+           
             break;
         default:
-            _devolvernovedad();
+        CON850(_dato_novedad_SAL7411)
             break;
     }
     $("#prefijo_108").val(servicios.id + " - " + servicios.descripcion);
@@ -627,20 +635,20 @@ function _evaluarprefijo(servicios) {
 //         .then((data) => {
 //             loader("hide");
 //             $_FACTURACION_108 = data;
-//             console.log($_FACTURACION_108)
+//          
 //             $.each($_FACTURACION_108.NUMERACION, function (key, value) {
 
 //                 if (value['COD'].substring(0, 1) == 'A') {
 //                     $_facturas_A.push(value);
-//                     console.log($_facturas_A)
+//                  
 //                 }
 //                 else if (value['COD'].substring(0, 1) == 'P') {
 //                     $_facturas_P.push(value);
-//                     console.log($_facturas_P)
+//                     
 //                 }
 //                 else if (value['COD'].substring(0, 1) == 'T') {
 //                     $_facturas_T.push(value);
-//                     console.log($_facturas_T)
+//               
 //                 }
 //             });
 //         })
@@ -660,7 +668,6 @@ function _infoSER108_03() {
 }
 
 function _dataSER108_03(data) {
-    console.log(data, "SER108-03");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -781,7 +788,6 @@ function _dataCON007_01(data) {
     swinvalid = date[0];
     $_ULTFECHA = date[2];
     $_NUMEROCTL = date[3];
-    // console.log($_ULTFECHA, $_NUMEROCTL);
     if (swinvalid == "00") {
         if ($_NOVEDAD == "7") {
             $_NROW = $_NUMEROCTL;
@@ -810,7 +816,6 @@ function _validarCON007_01() {
         else {
             $("#factura_108").val($_NUMEROCTL);
             $_LLAVEW = $_PREFIJOW + $_NROW;
-            console.log($_LLAVEW, 'numero de factura')
             LLAMADO_DLL({
                 dato: [$_LLAVEW],
                 callback: _dataSER108_04,
@@ -860,9 +865,7 @@ function _nuevoregistro() {
     $_NROW = $("#factura_108").val();
     $_SWCREAR = "1";
     $_FECHASIST = moment().format('L');
-    console.log($_FECHASIST, 'fechasistema')
     $_FECHA_ACT = moment().format('YY/MM/DD');
-    console.log($_FECHA_ACT, 'fecha actual')
     $_ANOACT = $_FECHA_ACT.substring(0, 2);
     $_MESLNK = $_FECHA_LNK.substring(2, 4)
     if ((parseInt($_ANOLNK) < parseInt($_ANOACT)) && (parseInt($_MESLNK) == 12)) {
@@ -874,14 +877,11 @@ function _nuevoregistro() {
 }
 
 function _infoSER108F_01() {
-    // console.log($_ANOLNK, $_LLAVEW, parseInt($_ANOLNK));
     let datos_envio = datosEnvio()
     datos_envio += $_ADMINW + '|' + parseInt($_ANOLNK) + '|' + $_LLAVEW
-    console.debug(datos_envio);
     SolicitarDll({ datosh: datos_envio }, _datainfoSER108F_01, get_url('app/SALUD/SER108F.DLL'));
 }
 function _datainfoSER108F_01(data) {
-    // console.log(data, "SER108F");
     var date = data.split("|");
     var swinvalid = date[0];
     if (swinvalid < "00") {
@@ -971,7 +971,6 @@ function _dataSER108_05(data) {
     } else if (swinvalid == "01") {
         if ($_SWTER == '0') {
             _creartercero_7411();
-            console.log('LLAMA PROGRAMA MAESTRO DE TERCEROS')
         } else {
             $("#nitd_108").val('NO EXISTE TERCERO');
             _evaluarnit_SAL7411();
@@ -1009,7 +1008,7 @@ function _validarfacturaparticular() {
 }
 
 function _dataCON904_03(data) {
-    // console.log(data, "CON904_03");
+
     date = data.split("|");
     if (date[4] == "00") {
         _evaluarconvenio_SAL7411();
@@ -1052,7 +1051,6 @@ function consultaconvenio_SAL7411() {
     });
 }
 function _dataCON904_04(data) {
-    // console.log(data, "CON904_04");
     date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -1063,7 +1061,6 @@ function _dataCON904_04(data) {
     }
 }
 function _dataSER108_06(data) {
-    console.log(data, "SER108_06");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_DESCRIPTAR = date[1].trim();
@@ -1086,7 +1083,6 @@ function _datoestado() {
         _mostrarestado_SAL7411();
     }
     if ($_ADMINW == "GEBC") {
-        console.log('admin')
         _cambiarestado_SAL7411();
     }
     else {
@@ -1130,7 +1126,6 @@ function _evaluarcambiarestado_SAL7411(estados, ) {
     }
     $("#estado_108").val(estados.COD + " - " + estados.DESCRIP);
 }
-
 function _evaluarestado_SAL7411() {
 
     console.log($_ESTADOW, "$_ESTADOW");
@@ -1140,28 +1135,36 @@ function _evaluarestado_SAL7411() {
     if (($_NITUSU == "0900147959") && ($_NOVEDAD == "8") && ($_ESTADONUM == "0") && ($_ESTADOW == "1")) {
         $_FACTURANUMW = $_LLAVENUM;
         if ($_NRO1NUMW == "9") {
-            console.log("estoy en la segunda condicion condicion")
+            console.log("estoy en la primera condicion condicion")
             _mostrarestado_SAL7411();
         }
         else {
-            console.log("estoy en la tercera condicion condicion")
+            console.log("estoy en la segunda condicion condicion")
             CON851('14', '14', null, 'error', 'error');
-            $_ESTADOW = $_ESTADONUM; $
-                ("#estado_108").val($_ESTADOW);
+            $_ESTADOW = $_ESTADONUM; 
+            ("#estado_108").val($_ESTADOW);
             _cambiarestado_SAL7411();
         }
 
-    } else if (($_NITUSU == "0844001287") && ($_NOVEDAD == "8")) {
+    } else if (($_ESTADOW == '1') && ($_ESTADONUM != '1')){
+        if(($_ADMINW == 'GEBC') || ($_ADMINW == 'JAPV')){
+            console.log("estoy en la tercera condicion condicion")
+            _mostrarestado_SAL7411();
+        }else{
+            console.log("estoy en la cuarta condicion")
+            CON851('14', '14', null, 'error', 'error');
+            $_ESTADOW = $_ESTADONUM; 
+            ("#estado_108").val($_ESTADOW);
+            _cambiarestado_SAL7411();
+        }
+    }else if (($_NITUSU == "0844001287") && ($_NOVEDAD == "8")) {
         $_OPERBLOQNUM = "GEBC";
         $("#modificado_108").val($_OPERMODNUM);
-        console.log("estoy en la cuarta condicion")
+        console.log("estoy en la quinta condicion")
         _mostrarestado_SAL7411();
-    } else if (($_NOVEDAD == "8") && ($_ESTADOW == "0") && (($_PREFIJOW == "P") || ($_PREFIJOW == "T"))) {
-        console.log("estoy en la primer condicion condicion")
-        _ventanaipsante();
 
     } else if (($_NOVEDAD == "8") && ($_ESTADONUM == "1") && ($_OPERBLOQNUM != $_ADMINW)) {
-        console.log("estoy en la quinta condicion")
+        console.log("estoy en la sexta condicion")
         $_OPSEGU = "IS41B";
         LLAMADO_DLL({
             dato: [$_ADMINW, $_OPSEGU],
@@ -1171,13 +1174,26 @@ function _evaluarestado_SAL7411() {
         })
     } else if (($_NITUSU == "0900147959") && ($_NOVEDAD == "8") && ($_ESTADONUM == "0") && ($_ESTADOW == "1")) {
         $_FACTURANUMW = $_LLAVENUM;
-
+        $("#factura_108").val($_FACTURANUMW);
+        
         if ($_NRO1NUMW == "9") {
-            console.log("estoy en la sexta condicion")
+            console.log("estoy en la septima condicion")
             _mostrarestado_SAL7411();
         }
         else {
-            console.log("estoy en la septima condicion")
+            console.log("estoy en la octava condicion")
+            CON851('14', '14', null, 'error', 'error');
+            $_ESTADOW = $_ESTADONUM;
+            ("#estado_108").val($_ESTADOW);
+            _cambiarestado_SAL7411();
+        }
+    
+    } else if(( $_NOVEDAD == '8') && ($_ESTADOW == '1') && (($_ESTADONUM == '0') || ($_ESTADONUM == '2'))){
+        if (($_ADMINW == 'GEBC') || ($_ADMINW == 'ADMI') || ($_ADMINW == 'JAPV')){
+            console.log("estoy en la novena condicion")
+            _mostrarestado_SAL7411();
+        }else{
+            console.log("estoy en la decima condicion")
             CON851('14', '14', null, 'error', 'error');
             $_ESTADOW = $_ESTADONUM;
             ("#estado_108").val($_ESTADOW);
@@ -1185,46 +1201,49 @@ function _evaluarestado_SAL7411() {
         }
     } else if (($_NITUSU == "0832002436") && ($_NOVEDAD == "8") && (($_ESTADONUM == "1") || ($_ESTADONUM == "0")) && ($_ESTADOW == "2")) {
         CON851('14', '14', null, 'error', 'error');
-        $_ESTADOW = $_ESTADONUM;
-        ("#estado_108").val($_ESTADOW);
+        // $_ESTADOW = $_ESTADONUM;
+        // ("#estado_108").val($_ESTADOW);
         if (($_ADMINW == "GEBC") || ($_ADMINW == "ADMI")) {
-            console.log("estoy en la octava condicion")
+            console.log("estoy en la once condicion")
             _mostrarestado_SAL7411();
         }
         else {
             _cambiarestado_SAL7411();
         }
-    } else if (($_NOVEDAD == "8") && ($_ESTADOW != $_ESTADONUM) && (parseInt($_AÑOPACI_RET7411) > 0)) {
-        console.log('mensaje de error 91 al cambiar el estado ')
+    } else if (($_NOVEDAD == "8") && ($_ESTADOW != $_ESTADONUM) && ($_AÑOPACI_RET7411 > 0)) {
+        console.log('$_MESLNK ', $_MESLNK )
+        console.log('$_ANOALFA', $_ANOALFA)
+        console.log('$_AÑOPACI_RET7411', $_AÑOPACI_RET7411)
+        console.log('$_MESPACI_RET7411', $_MESPACI_RET7411)
         if (($_ANOALFA != $_AÑOPACI_RET7411) || ($_MESLNK != $_MESPACI_RET7411)) {
+            console.log("estoy en la doce condicion")
+            console.log('mensaje de error 91 al cambiar el estado')
             CON851('91', '91', null, 'error', 'error');
-            _mostrarestado_SAL7411();
+            // _mostrarestado_SAL7411();
             if (($_MESLNK == "01") || ($_ADMINW == "GEBC") || ($_ADMINW == "ADMIN") || (($_ADMINW == "JAPV"))) {
                 _mostrarestado_SAL7411();
-                console.log("estoy en la novena condicion")
+                console.log("estoy en la trece condicion")
             }
             else {
                 $_ESTADOW = $_ESTADONUM;
                 ("#estado_108").val($_ESTADOW);
-                _cambiarestado_SAL7411()
+                setTimeout(_cambiarestado_SAL7411, 300);
+                
             }
         }
-    } else if (($_ESTADOW == "0") || ($_ESTADOW == "1") || ($_ESTADOW == "2") || ($_ESTADOW == "3")) {
-        console.log("estoy en la decima condicion")
-        _mostrarestado_SAL7411();
-    } else if (($_ESTADONUM != "1") && ($_ESTADOW == "1")) {
+    }else if (($_ESTADONUM != "1") && ($_ESTADOW == "1")) {
         CON851('1B', '1B', null, 'error', 'error');
         if (($_ADMINW == "GEBC") || ($_ADMINW == "ADMI") || ($_ADMINW == "JAPV")) {
-            console.log("estoy en la onceaba condicion")
-            _cambiarestado_SAL7411();
+            console.log("estoy en la catorce condicion")
+            _mostrarestado_SAL7411(); 
         }
         else {
             $_ESTADOW = $_ESTADONUM;
             ("#estado_108").val($_ESTADOW);
             _evaluarfactura();
         }
-    } else if (($_ESTADONUM == "1") && ($_ESTADOW != "1")) {
-        console.log("estoy en la doceaba condicion")
+    }  else if (($_ESTADONUM == "1") && ($_ESTADOW != "1")) {
+        console.log("estoy en la quince condicion")
         $_OPSEGU = "IS410";
         LLAMADO_DLL({
             dato: [$_ADMINW, $_OPSEGU],
@@ -1232,13 +1251,22 @@ function _evaluarestado_SAL7411() {
             nombredll: 'CON904',
             carpeta: 'CONTAB'
         })
-    } else {
-        _datoestado();
+    
+    }else if (($_NOVEDAD == "8") && ($_ESTADOW == "0") && (($_PREFIJOW == "P") || ($_PREFIJOW == "T"))) {
+        console.log("estoy en la primer condicion condicion")
+        _ventanaipsante();
+
+
+    }else if (($_ESTADOW == '0') || ($_ESTADOW == '1') || ($_ESTADOW == '2') || ($_ESTADOW == '3')){
+        _mostrarestado_SAL7411();
+    }else{
+        _datoestado(); 
     }
 }
 
+
 function _dataCON904_05(data) {
-    // console.log(data, "CON904_05");
+    
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -1249,7 +1277,7 @@ function _dataCON904_05(data) {
     }
 }
 function _dataCON904_06(data) {
-    // console.log(data, "CON904_06");
+    
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -1347,7 +1375,7 @@ function _dato1p_SAL7411() {
 }
 
 function _evaluarpaciente_SAL7411() {
-    console.log('evaluar paciente')
+    
     validarInputs({
         form: "#PACIENTE_108",
         orden: "1"
@@ -1361,7 +1389,7 @@ function _validarpaciente_SAL7411() {
     $_IDPACW = $_IDPACW.padStart(15, "0");
 
     if (($_PREFIJOW == 'P') || ($_PREFIJOW == 'T')) {
-        console.log('PT')
+        
         if ($_IDPACW == $_IDPACW2) {
             _leerpaciente_SAL7411();
         } else {
@@ -1382,7 +1410,7 @@ function _validarpaciente_SAL7411() {
 }
 
 function _dataSER835MO_01(data) {
-    console.log(data, 'SER835MO');
+
     var date = data.split('|');
     $_NROCOMPW = date[1].trim();
     if ($_NROCOMPW > '0000') {
@@ -1399,9 +1427,8 @@ function _dataSER835MO_01(data) {
 }
 
 function _leerpaciente_SAL7411() {
-    console.log('LEER paciente')
+ 
     if (($_PREFIJOW == "T") && ($_IDPACW == "000000000000001")) {
-        console.log('PREFIJO T ID = 00000')
         if ($_NITUSU == "0830092719") {
 
             LLAMADO_DLL({
@@ -1427,7 +1454,6 @@ function _leerpaciente_SAL7411() {
 }
 
 function _dataSER108_07(data) {
-    // console.log(data, "SER108-07");
     var date = data.split("|");
     var swinvalid = date[0];
     $_DERECHOPACI = date[1];
@@ -1452,7 +1478,6 @@ function _dataSER108_07(data) {
             $_SWPAC = '1';
             _crearpacientenuevo_7411();
             console.log('LLAMA OPC SER110C MAESTRO DE PACIENTES')
-            // _validandoleerpaciente();
         } else {
             CON851('01', '01', null, 'error', 'error');
             _dato1p_SAL7411();
@@ -1463,7 +1488,6 @@ function _dataSER108_07(data) {
 }
 
 function _dataCON904S_02(data) {
-    console.log(data, "CON904S_02");
     var date = data.split("|");
     var swinvalid = date[3];
     if (swinvalid == "00") {
@@ -1520,68 +1544,119 @@ function _buscarfacturarepetida() {
         _datotipof();
     }
     else {
+        $_FECHABUSQORIGINAL = moment().format('YYMMDD');
+        $_MESBUSQORI = $_FECHABUSQORIGINAL.substring(2, 4);
+        $_ANOBUSQORI = $_FECHABUSQORIGINAL.substring(4, 6);
+
         if ((($_NITUSU == "0900471031") || ($_NITUSU == "900004059")) && ($_NOVEDAD == "7") && ($_PREFIJOW == "A")) {
             $_FECHABUSQ = moment().format('YYMMDD');
             $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
             $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
-            if (parseInt($_MESBUSQ) > 1) {
-                $_MESBUSQ = parseInt($_MESBUSQ) - 1;
-                _datotipof();
-            } else if ($_IDPACW != "000000000000001") {
-                LLAMADO_DLL({
-                    dato: [$_IDPACW, $_FECHABUSQ, $_LLAVEW],
-                    callback: _dataSER836_01,
-                    nombredll: 'SER836C',
-                    carpeta: 'SALUD'
-                })
+
+            if ($_MESBUSQORI > 1) {
+                $_MESBUSQw = $_MESBUSQORI - 1;
+
+                $_FECHABUSQ = moment().format('YYMMDD');
+                $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
+                $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+                $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);             
+                $_FECHABUSQENV =  $_DIABUSQ + $_MESBUSQW  +$_ANOBUSQ;
+                if ($_IDPACW != "000000000000001") {
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW],
+                        callback: _dataSER836_01,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
+                }
+                
             } else {
-                if (parseInt($_MESBUSQ) == "01") {
-                    _datotipof();
+                if ($_MESBUSQORI == 01) {
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQ , $_LLAVEW],
+                        callback: _dataSER836_02,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
                 }
                 else {
-                    $_MESBUSQ = "12";
-                    $_ANOBUSQ = parseInt($_ANOBUSQ);
-                    _datotipof();
+                    $_MESBUSQW = 12;
+                    $_ANOBUSQW = $_ANOBUSQORI - 1;
+                    
+                    $_FECHABUSQ = moment().format('YYMMDD');
+                    $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
+                    $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+                    $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
+                    $_FECHABUSQENV = $_DIABUSQ + $_MESBUSQW + $_ANOBUSQW;
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW,],
+                        callback: _dataSER836_02,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
+                    
                 }
             }
         }
         else if (($_NOVEDAD == "7") && (($_PREFIJOW == "P") || ($_PREFIJOW == "T"))) {
 
-            $_FECHABUSQ = moment().format('YYMMDD');
-            $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
-            $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
-            if (parseInt($_MESBUSQ > 1)) {
-                $_MESBUSQ = parseInt($_MESBUSQ) - 1;
-                _datotipof();
+            if ($_MESBUSQORI > 1) {
+                $_MESBUSQW = $_MESBUSQORI - 1;
 
-            } else if ($_IDPACW != "000000000000001") {
-                LLAMADO_DLL({
-                    dato: [$_IDPACW, $_FECHABUSQ, $_LLAVEW],
-                    callback: _dataSER836_02,
-                    nombredll: 'SER836C',
-                    carpeta: 'SALUD'
-                })
-            }
-            else {
-                if ($_MESBUSQ == "01") {
-                    _datotipof();
+                $_FECHABUSQ = moment().format('YYMMDD');
+                $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
+                $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+                $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
+                $_FECHABUSQENV =  $_DIABUSQ + $_MESBUSQW  +$_ANOBUSQ;
+
+                if ($_IDPACW != "000000000000001") {
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW],
+                        callback: _dataSER836_02,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
                 }
-                else {
-                    $_MESBUSQ = "12";
-                    SUSTRAER = $_ANOBUSQ - 1;
-                    _datotipof();
+            } else {
+                if ($_MESBUSQORI == 01) {
+                    if ($_IDPACW != "000000000000001") {
+                        LLAMADO_DLL({
+                            dato: [$_IDPACW, $_FECHABUSQ, $_LLAVEW],
+                            callback: _dataSER836_02,
+                            nombredll: 'SER836C',
+                            carpeta: 'SALUD'
+                        })
+                    }
+                } else {
+                    $_MESBUSQW = 12;
+                    $_ANOBUSQW = $_ANOBUSQORI - 1;
+
+                    $_FECHABUSQ = moment().format('YYMMDD');
+                    $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
+                    $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+                    $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
+
+                    $_FECHABUSQENV = $_DIABUSQ + $_MESBUSQW + $_ANOBUSQW;
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW,],
+                        callback: _dataSER836_02,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
+
                 }
             }
 
         }
         else if (($_NITUSU == "0800251482") && ($_NOVEDAD == "7") && (($_PREFIJOW == "A") || ($_PREFIJOW == "P"))) {
-            // $_FECHABUSQ = moment().format('L');
+
             $_FECHABUSQ = moment().format('YYMMDD');
-            _MESBUSQ = $_FECHABUSQ.substring(2, 4);
-            // $_MESBUSQ = $_FECHABUSQ.substring(3, 5);
-            $_DIABUSQ = "05";
+            $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+            $_ANOBUSQ = $_FECHABUSQ.substring(0, 2);
+            $_DIABUSQ = 05;
+            $_FECHABUSQENV = $_DIABUSQ + $_MESBUSQ + $_ANOBUSQ;
             LLAMADO_DLL({
-                dato: [$_IDPACW, $_FECHABUSQ, $_LLAVEW],
+                dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW],
                 callback: _dataSER836_03,
                 nombredll: 'SER836C',
                 carpeta: 'SALUD'
@@ -1595,13 +1670,11 @@ function _buscarfacturarepetida() {
 }
 
 function _dataSER836_01(data) {
-    console.log(data, "SER836-01");
     var date = data.split("|");
     var swinvalid = date[0];
     $_FACTP = date[1];
     if (swinvalid == "00") {
         if ($_FACTP.trim() == '') {
-            console.log('imprime en pantalla')
             // DISPLAY SPACES LINE 32 POSITION 02
             _datotipof();
         }
@@ -1617,14 +1690,14 @@ function _dataSER836_01(data) {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
+
+
 function _dataSER836_02(data) {
-    // console.log(data, "SER836C-02");
     var date = data.split("|");
     var swinvalid = date[0];
     $_FACTP = date[1];
     if (swinvalid == "00") {
         if ($_FACTP.trim() == '') {
-            console.log('imprime en pantalla')
             // DISPLAY SPACES LINE 32 POSITION 02
             _datotipof();
         }
@@ -1645,30 +1718,26 @@ function _dataSER836_02(data) {
     }
 }
 function _dataSER836_03(data) {
-    // console.log(data, "SER836-03");
     var date = data.split("|");
     var swinvalid = date[0];
     $_FACTP = date[1];
     if (swinvalid == "00") {
         if ($_FACTP.trim() == "") {
             // DISPLAY SPACES LINE 32 POSITION 02
+            _datotipof();
         }
         else {
-            // DISPLAY LINE 32 POSOTION 02 
-            CON851('1K', '1K', null, 'error', 'error');
-            // _dato1p_SAL7411
-            _evaluarpaciente_SAL7411();
+            CON851('1K', '1K', null, '', 'error');
+            _datotipof();
         }
     } else if (swinvalid == "01") {
         _evaluarpaciente_SAL7411()
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
-        // CON851() MIRAR QUE ERROR COLOCAR
     }
 }
 function _dataCON904_07(data) {
-    console.log(data);
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -1686,7 +1755,6 @@ function _dataCON904_07(data) {
 
 
 function _datotipof() {
-    // console.log('datotipofact')
     if ($_NITUSU != "0900004059") {
         _dato2p();
     }
@@ -1766,7 +1834,6 @@ function _validarhabw() {
     }
 }
 function _dataSER108_08(data) {
-    // console.log(data, "SER108-08");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_ESTADOCAM = date[1];
@@ -1866,16 +1933,18 @@ function _evaluarfechasalida_7411() {
 }
 function _validarfechasalida_7411() {
     $_FECHASALNUME = momentMaskfechasalida.unmaskedValue;
-    console.log($_FECHASALNUME, '$_FECHASALNUME');
-    $_FECHASALNUM = 20 + $_FECHASALNUME.substring(0, 6);
-    console.log($_FECHASALNUM, '$_FECHASALNUM')
+    $_FECHASALNUM = $_FECHASALNUME.substring(0, 6);
     $_HORAPACI_RET7411 = $_FECHASALNUME.substring(6, 10);
+    
+    
     if ($_FECHASALNUM.trim() == '') {
         $_FECHASALNUM = '00000000';
-        $_HORASALW = '00:00';
+        $_HORASALW = '0000';
+        $_FECHASALNUME = $_FECHASALNUM + $_HORASALW;
         $("#fechasal_108").val($_FECHASALNUM + ' ' + $_HORASALW);
         _evaluarservicio_SAL7411();
     } else {
+        $_FECHASALNUM = 20 + $_FECHASALNUM;
         _evaluarservicio_SAL7411();
     }
 }
@@ -1923,7 +1992,6 @@ function _validarservicio_SAL7411() {
 
 
 function _dataSER108_09(data) {
-    // console.log(data, "SER108-09");
     var date = data.split("|");
     var swinvalid = date[0];
     $_DESCRIPSERHO = date[1].trim();
@@ -2038,7 +2106,6 @@ function _validarnrocapit() {
     }
 }
 function _dataSER108C_01(data) {
-    // console.log(data, "SER108C-01");
     var date = data.split("|");
     var swinvalid = date[0];
     if (swinvalid == "00") {
@@ -2285,7 +2352,6 @@ function consultacontrolcap_SAL7411() {
     });
 }
 function _dataSER108_12(data) {
-    // console.log(data, "SER108-2");
     var date = data.split("|");
     var swinvalid = date[0];
     var $_ESTADOCNCAP = date[1];
@@ -2380,7 +2446,6 @@ function _dato19() {
 }
 
 function _dataCON904S_03(data) {
-    // console.log(data, "CON904S-03");
     var date = data.split("|");
     var swinvalid = date[1].substring(0, 2);
     if ((swinvalid == "00") && ($_NOVEDAD == "8")) {
@@ -2852,7 +2917,6 @@ function _datopol_SAL7411() {
             .then((data) => {
                 loader("hide");
                 $_RUTA_108 = data;
-                console.log($_RUTA_108)
                 if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                     _ventanaDatos({
                         titulo: "VENTANA DE ZONAS",
@@ -3008,7 +3072,6 @@ function _validarorigenremit() {
     }
 }
 function _dataSER108_13(data) {
-    // console.log(data, "SER108-13");
     var date = data.split("|");
     var swinvalid = date[0];
     if (swinvalid == "00") {
@@ -3171,7 +3234,6 @@ function _validarfuncauto_SAL7411() {
     }
 }
 function _dataSER108_15(data) {
-    // console.log(data, "SER108-15");
     var date = data.split("|");
     var swinvalid = date[0];
     $_DESCRIPAUTORINGW = date[4];
@@ -3217,26 +3279,53 @@ function _validarobservacion_SAL7411() {
         $_FECHABUSQ = moment().format('YYMMDD');
         $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
         $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
-        if (parseInt($_MESBUSQ) > 3) {
-            $_MESBUSQ = parseInt($_MESBUSQ) - 3;
-            _evaluarobservacionaper()
-        } else {
-            if (parseInt($_MESBUSQ) == 01) {
-                _evaluarobservacionaper()
-            } else {
-                $_MESBUSQ == 12;
-                $_ANOBUSQ = parseInt($_ANOBUSQ) - 1;
-                _evaluarobservacionaper()
+
+        if ($_MESBUSQ > 3) {
+            $_MESBUSQW = $_MESBUSQ - 3;
+            if ($_IDPACW != "000000000000001") {
+                $_FACTP = '';
+                $_FECHABUSQ = moment().format('YYMMDD');
+                $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
+                $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+                $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);             
+                $_FECHABUSQENV =  $_DIABUSQ + $_MESBUSQW  +$_ANOBUSQ;
+                LLAMADO_DLL({
+                    dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW, $_NROAUTORIZACIONW],
+                    callback: _dataSER836AU,
+                    nombredll: 'SER836C',
+                    carpeta: 'SALUD'
+                })
             }
-        }
-        if ($_IDPACW != "000000000000001") {
-            $_FACTP = '';
-            LLAMADO_DLL({
-                dato: [$_IDPACW, $_FECHABUSQ, $_LLAVEW, $_NROAUTORIZACIONW],
-                callback: _dataSER836AU,
-                nombredll: 'SER836C',
-                carpeta: 'SALUD'
-            })
+        } else {
+            if ($_MESBUSQ == 01) {
+                if ($_IDPACW != "000000000000001") {
+                    $_FACTP = '';
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQ, $_LLAVEW, $_NROAUTORIZACIONW],
+                        callback: _dataSER836AU,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
+                }
+                
+            } else {
+                $_MESBUSQW == 12;
+                $_ANOBUSQW = $_ANOBUSQ - 1;
+                $_FECHABUSQ = moment().format('YYMMDD');
+                $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
+                $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
+                $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);             
+                $_FECHABUSQENV =  $_DIABUSQ + $_MESBUSQW  +$_ANOBUSQW;   
+                if ($_IDPACW != "000000000000001") {
+                    $_FACTP = '';
+                    LLAMADO_DLL({
+                        dato: [$_IDPACW, $_FECHABUSQENV, $_LLAVEW, $_NROAUTORIZACIONW],
+                        callback: _dataSER836AU,
+                        nombredll: 'SER836C',
+                        carpeta: 'SALUD'
+                    })
+                }
+            }
         }
     } else {
         _evaluarobservacionaper();
@@ -3249,9 +3338,7 @@ function _dataSER836AU(data) {
     $_FACTP = date[1];
     if (swinvalid == '00') {
         if ($_FACTP.trim() == '') {
-            console.log('imprime en pantalla')
-            // DISPLAY SPACES LINE 32 POSITION 02
-            _validarinformacion();
+            _evaluarobservacionaper()
         }
         else {
             CON851('8U', '8U', null, 'error', 'error');
@@ -3334,7 +3421,6 @@ function _grabardatos() {
     });
 }
 function _dataSER108_02(data) {
-    // console.log(data, "SER108-02");
     var date = data.split('|');
     var swinvalid = date[0];
     if (swinvalid == "00") {
@@ -3355,7 +3441,6 @@ function _grabarnumero() {
     var anoenvio = fechacre.substring(0, 2);
     var mesennvio = fechacre.substring(2, 4);
     var diaenvio = fechacre.substring(4, 6);
-    // console.log($_SECUNUM + '|' + $_NROW, 'variable envio')
 
     LLAMADO_DLL({
         dato: [$_SECUNUM, $_NROW, anoenvio + mesennvio + diaenvio],
@@ -3366,7 +3451,6 @@ function _grabarnumero() {
 }
 
 function _dataCON007X(data) {
-    // console.log(data, "CON007X");
     var date = data.split("|");
     var swinvalid = date[0];
     if (swinvalid == "00") {
@@ -3410,7 +3494,7 @@ function _validarimpresion() {
 
 function _imprimirfactura_SAL7411() {
     setTimeout(function () { _cargandoimpresion('imprimiendo') }, 300);
-    console.log('imprimirfactura')
+    
     var datos_envio = datosEnvio();
     datos_envio += $_LLAVEW + '|' + $_NITUSU + '|' + $_NOMBREUSU + '|' + $_ADMINW
     console.debug(datos_envio);
@@ -3427,9 +3511,9 @@ function _imprimirfactura_SAL7411() {
 }
 
 function _impresion_SAL7411() {
-    console.log('impresion', SAL7411.FACTURAS);
+
     SAL7411.NOMBREPDF = SAL7411.FACTURAS.FACTURA;
-    console.log(SAL7411.NOMBREPDF, '$_NOMBREPDF')
+    
     opcinesImpresion_SAL7411 = {
         datos: SAL7411.FACTURAS,
         tipo: 'pdf',
@@ -3440,7 +3524,6 @@ function _impresion_SAL7411() {
 }
 
 function finalizaimpresionSAL7411() {
-
     _cargandoimpresion('termino');
 }
 
@@ -3457,7 +3540,7 @@ function _cargandoimpresion(estado) {
                         callback: function () {
                             ventanaimpresion.off('show.bs.modal');
                             CON851('39', '39', null, 'success', 'Exito'); // MOMENTANEO MIENTRAS SE APLICA LA IMPRESION
-                            _toggleNav();
+                            CON850(_dato_novedad_SAL7411);
                         }
                     }
                 }
@@ -3465,6 +3548,7 @@ function _cargandoimpresion(estado) {
             ventanaimpresion.init($('.modal-footer').hide());
             break;
         case 'termino':
+            
             $('.btn-primary').click();
             break;
     }
@@ -3489,7 +3573,7 @@ function consultamostrardatos_SAL7411() {
 }
 
 function _dataSER108_01(data) {
-    console.log(data, 'SER108_01');
+ 
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_LLAVEW = date[1].trim();
@@ -3707,7 +3791,6 @@ function _grabarcorresponsalia() {
 }
 
 function _dataCON904S_04(data) {
-    console.log(data, "CON904S-04");
     var date = data.split("|");
     var swinvalid = date[2].trim();
     if (swinvalid == "00") {
@@ -3749,6 +3832,7 @@ function _ventanacorresponsalia() {
 }
 
 function _ventanaactualizarcorresponsalia() {
+    CON850(_dato_novedad_SAL7411);
     console.log("VENTANA CORRESPONSALIA PREGUNTAR ESNEIDER COMO FUNCIONAR");
 }
 
@@ -3778,7 +3862,6 @@ function _eliminarregistro() {
 }
 
 function _dataSER108_02_02(data) {
-    console.log(data, "SER108-02_02");
     var date = data.split('|');
     var swinvalid = date[0];
     if (swinvalid == "00") {
@@ -3799,7 +3882,6 @@ function _dataSER108_02_02(data) {
 /////////////////////////////////// VENTANAS O VALIDACIONES APARTE ////////////////////////////
 
 function ventanaclave() {
-    console.log('ventana clave')
     if ($_PREFIJOW == "A") {
         // CLAVE DE ACCESO 1 AMBULATORIO
         clavedeacceso({
@@ -3841,7 +3923,6 @@ function clavedeacceso(parametros) {
                 label: 'Aceptar',
                 callback: function () {
                     $_SWCLAVEING = $("#claveacceso_108").val();
-                    console.log($_SWCLAVEING, 'ver')
                     ventanaacceso.off('show.bs.modal');
                 }
             }
@@ -3853,7 +3934,6 @@ function clavedeacceso(parametros) {
     });
 }
 function evaluarclave() {
-    console.log('evaluarclave')
     _inputControl("disabled");
     validarInputs({
         form: '#clavea_108',
@@ -3864,19 +3944,16 @@ function evaluarclave() {
     )
 }
 function _validarclave() {
-    console.log('validarclave')
     $(".btn-primary").click();
     _validarcambioestado();
 }
 
 function _validarcambioestado() {
-    console.log('validarcambiodeestado')
+    
     if ($_SWCLAVEING.trim() == $_SWCLAVE.trim()) {
-        console.log('$_SWCLAVEING')
         _cambiarestado_SAL7411();
     }
     else {
-        console.log('ERROR')
         _volverventanaclave();
 
     }
