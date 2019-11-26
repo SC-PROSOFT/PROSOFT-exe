@@ -8,8 +8,14 @@ $(document).ready(function () {
     _toggleF8([
         { input: 'nitBomb', app: '11', funct: _ventanatTerceros },
     ]);
+    prueba()
 });
 
+function prueba(){
+    SolicitarDll({datosh: datosEnvio()}, function (data){
+        console.log(data)
+    }, get_url("app/bombas/LISTFACT-EXT.DLL"))
+}
 // $(document).on('click', '#nitBtnBomb11', _ventanatTerceros);
 // $(document).on('keydown', '#nitBomb11', _ventanatTerceros);
 

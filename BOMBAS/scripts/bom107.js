@@ -205,6 +205,7 @@ function _validacionFinal_107() {
 
 function on_segundaConsulta(data){
     var res = data.split('|');
+    console.log(res)
     if (res[0].trim() == '00') {
         if ($_USUA_GLOBAL[0].INVENT.trim() == 'S') {
             var datos_envio = datosEnvio()
