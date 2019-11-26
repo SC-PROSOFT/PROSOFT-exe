@@ -177,19 +177,28 @@ function _infoRm_bat(data) {
         cbl = data.params[0].dll;
 
 
-    var argumentos = `${usuario}-${clave}-${cbl}`;
+    var argumentos = `${usuario}-${cbl}`;
+    
+    switch (cbl){              
+        case 'SALUD\\SER11E':
+        case 'SALUD\\SER115':
+            argumentos = argumentos;            
+            break;
+            
+    }
+    
+       
 
     var batch = `
-    @echo off\r\n
+    ECHO OFF\r\n
     TITLE MAIN_ELECT\r\n
     P:\r\n
-    CD \\${localStorage.Contab}\\${mes}\r\n    
-    set p1=${argumentos.padEnd(100, '*')}\r\n
-    SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\SALUD\\;EXPORT RUNPATH\r\n    
-    runcobol MAIN k c=P:\\rmcobol\\windows.cfg A %p1%\r\n    
-    echo on\r\n
-    exit\r\n    
-    `;
+    CD \\${localStorage.Contab}\\${ mes }\r\n
+    set p1=${ argumentos.padEnd(100, '*') } \r\n
+    SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\SALUD\\;EXPORT RUNPATH\r\n
+    runcobol MAIN k c=P:\\rmcobol\\windows.cfg A %p1%\r\n
+        `;
+
 
     var nombre_bat = "C:\\PROSOFT\\TEMP\\MENU-" + localStorage.Sesion.trim() + ".BAT";
 
