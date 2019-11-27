@@ -29,7 +29,7 @@ var prefijoMask = IMask($('#factura_SAL41')[0], {
         //     CON851('01', '01', null, 'error', 'error');
         // }
         // else {
-            return str.toUpperCase()
+        return str.toUpperCase()
         // }
     },
     commit: function (value, masked) {
@@ -37,9 +37,11 @@ var prefijoMask = IMask($('#factura_SAL41')[0], {
     }
 });
 var clienteMask = IMask($('#cliente_SAL41')[0], { mask: Number, thousandsSeparator: ',', padFractionalZeros: false, normalizeZeros: true, radix: ',', mapToRadix: ['.'] });
+var CopagoMask = new IMask($('#porcentcopago_SAL41')[0], { mask: Number, radix: '.', scale: 2, padFractionalZeros: false });
+var CopagoMask2 = new IMask($('#copagoestimfact_SAL41')[0], { mask: Number, thousandsSeparator: ',' });
 function _MaskDate_41() {
-    var preanofact = "20" + $_ANOFACT;
-    var premesfact = $_MESFACT;
+    var preanofact = "20" + $_ANOACT;
+    var premesfact = $_MESACT;
     var anofact = parseInt(preanofact);
     var mesfact = parseInt(premesfact);
     var fechaMask = IMask($("#fecha_SAL41")[0], {
@@ -175,7 +177,7 @@ function _ventanaClases_41(e) {
         parametros = {
             valoresselect: ['Descripcion', 'Identificacion'],
             f8data: 'PACIENTES',
-            columnas: [{title:'COD'},{title:'NOMBRE'},{title: 'EPS'}],
+            columnas: [{ title: 'COD' }, { title: 'NOMBRE' }, { title: 'EPS' }],
             callback: _evaluarf8cargado,
             cancel: _toggleNav
         };
@@ -278,23 +280,44 @@ function _ventanaFormapago_41(e) {
 
 function _ventanaPacientes_41(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos_lite({
-            titulo: 'VENTANA DE PACIENTES',
-            tablaSql: 'sc_pacie',
-            indice: ['cedula', 'nombre'],
-            mascara: [],
-            minLength: 3,
-            callback_esc: function () {
-                $('#paciente_401').focus();
-            },
-            callback: function (data) {
-                // $('#paciente_401').val(data.cedula);
+        // _ventanaDatos_lite({
+        //     titulo: 'VENTANA DE PACIENTES',
+        //     tablaSql: 'sc_pacie',
+        //     indice: ['cedula', 'nombre'],
+        //     mascara: [],
+        //     minLength: 3,
+        //     callback_esc: function () {
+        //         $('#paciente_401').focus();
+        //     },
+        //     callback: function (data) {
+        //         // $('#paciente_401').val(data.cedula);
+        //         console.debug(data);
+        //         idhistoriafactMask.typedValue = data.cedula;
+        //         $('#paciented_401').val(data.nombre);
+        //         _enterInput('#paciente_401');
+        //     }
+        // });
+        parametros = {
+            valoresselect: ['Descripcion', 'Identificacion'],
+            f8data: 'PACIENTES',
+            columnas: [{
+                title: 'COD'
+            }, {
+                title: 'NOMBRE'
+            }, {
+                title: 'EPS'
+            }],
+            callback: data => {
                 console.debug(data);
-                idhistoriafactMask.typedValue = data.cedula;
-                $('#paciented_401').val(data.nombre);
-                _enterInput('#paciente_401');
+                idhistoriafactMask.typedValue = data.COD;
+                $('#paciented_SAL41').val(data.NOMBRE);
+                _enterInput('#paciente_SAL41');
+            },
+            cancel: () => {
+                $('#paciente_SAL41').focus();
             }
-        });
+        };
+        F8LITE(parametros);
     }
 }
 
@@ -598,9 +621,11 @@ function _Datounidad_41() {
 function _UndServicio_41() {
     $_UNIDSERVICIO_401 = [];
     for (var i in SAL41.UNSERV) {
-        if (SAL41.UNSERV[i].ESTADO.trim() == 'INACTIVA') {
-            $_UNIDSERVICIO_401.push(SAL41.UNSERV[i]);
-            console.debug($_UNIDSERVICIO_401)
+        if (SAL41.UNSERV[i].ESTADO.trim() == '') {
+            if (SAL41.UNSERV[i].COD.trim() != '') {
+                $_UNIDSERVICIO_401.push(SAL41.UNSERV[i]);
+                console.debug($_UNIDSERVICIO_401)
+            }
         }
     }
     loader("hide");
@@ -1170,18 +1195,22 @@ function _Evaluarnit_41() {
 
 function _infoCON007_01_41() {
     $_SECUNUM = $_SECUNUM1 + $_SECUNUM2;
-    let datos_envio = datosEnvio()
-    datos_envio += $_SECUNUM
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _dataCON007_01_41, get_url('APP/CONTAB/CON007.DLL'));
+    let URL = get_url("APP/CONTAB/CON007.DLL");
+    postData({ datosh: datosEnvio() + $_SECUNUM }, URL)
+        .then(data => {
+            console.debug(data);
+            var data = data.split("|");
+            SAL41['ULTFECHANUM'] = data[2].trim();
+            SAL41['NUMEROCTL'] = data[1].substring(3, 9);
+            SAL41['NROFACT'] = SAL41.NUMEROCTL;
+            _dataCON007_01_41();
+        })
+        .catch(err => {
+            console.debug(err);
+        })
 }
 
-function _dataCON007_01_41(data) {
-    console.debug(data, "CON007_01");
-    var data = data.split("|");
-    SAL41['ULTFECHANUM'] = data[2].trim();
-    SAL41['NUMEROCTL'] = data[3].trim();
-    SAL41['NROFACT'] = SAL41.NUMEROCTL;
+function _dataCON007_01_41() {
     if (($_NITUSU == "0900193162") || ($_NITUSU == "0830512772")) {
         _Leernumero_41();
     } else {
@@ -1307,7 +1336,8 @@ function _dataCON007B_01_41(data) {
     }
 }
 function _Encabezar2_41() {
-    $_UNSERVFACT = $_UNSERW
+    $_UNSERVFACT = $_UNSERW;
+    $_SWBONO = '0';
     if (($_NITUSU == "0900541158") || ($_NITUSU == "0900566047") || ($_NITUSU == "0900565371") || ($_NITUSU == "0901120152")) {
         _infoSER865A_41();
         // CALL SER865A
@@ -1453,7 +1483,9 @@ function _Controlfecha_41() {
     $_MESSIGFACT = $_FECHASIGFACT.substring(4, 6);
     $_DIASIGFACT = $_FECHASIGFACT.substring(6, 8);
     var after = moment($_FECHAFACT).isAfter($_FECHAACT);
-    if (($_CLFACT == "4") || ($_CLFACT == "5")) {
+    if ($_FECHAFACT.length < 10) {
+        _Evaluarfecha_41();
+    } else if (($_CLFACT == "4") || ($_CLFACT == "5")) {
         _Validarfechaopago_41();
     }
     else {
@@ -1596,15 +1628,21 @@ function _Evaluarventanaatencion_41() {
         form: '#FECHAATENCION_41',
         orden: "1"
     },
-        function () { $('.btn-danger').click() },
-        _Validarventanaatencion_41
+        () => { $('.btn-danger').click() },
+        () => {
+            $_FECHAINGESTAD = $('#fechaatencion_SAL41').val();
+            console.debug($_FECHAINGESTAD)
+            if ($_FECHAINGESTAD.length > 15) {
+                $_FECHAINGW = $_FECHAINGESTAD;
+                $('.btn-primary').click();
+            } else {
+                CON851('37', '37', null, 'error', 'Error');
+                _Evaluarventanaatencion_41();
+            }
+        }
     )
 }
-function _Validarventanaatencion_41() {
-    $_FECHAINGESTAD = $("#fechaatencion_SAL41").val();
-    $_FECHAINGW = $_FECHAINGESTAD;
-    $('.btn-primary').click();
-}
+
 
 // preguntar como realizar esta operacion ya que no se encuentra el control form usu en fd usuar p
 // function _pago(){
@@ -1803,6 +1841,7 @@ function _dataSAL41_02(data) {
     $_TIPOPACINUM = date[32].trim();
     $_CONTRATONUM = date[33].trim();
     $_REDEXTERNUM = date[34].trim();
+    $_FORMACOPAGNUM = date[35].trim();
     // $_PORCAVISOCNCAP = date[30].trim();
     if (date[0].trim() == "00") {
         _Leercuenta_41();
@@ -2437,6 +2476,7 @@ function _Mostrarcliente_41() {
         _Evaluarcliente_41();
     }
     else {
+        clienteMask.typedValue = $_NITFACT;
         let datos_envio = datosEnvio()
         datos_envio += $_ADMINW
             + '|' + $_NITFACT;
@@ -2705,23 +2745,19 @@ function _Validandocliente2_41() {
 function _Datoordserv_41() {
     if ($_NITUSU == "0800162035") {
         if ((($_UNSERW == "01") || ($_UNSERW == "09")) && ($_REDEXTERNUM != "S")) {
-            console.debug("estoy en el primer si de _dato ordserv")
             $_SWORDSERV = "N";
             SAL41.ORDSERVFACT = "";
             _Datopaciente_41();
-        }
-        else {
+        } else {
             _Ventanaordserv_41();
         }
-    }
-    else {
+    } else {
         if ($_NITUSU == "0900434629") {
             $_SWORDSERV = "S";
             _Ventanaordserv_41();
         }
         else {
             if ((($_UNSERW == "01") || ($_UNSERW == "08") || ($_UNSERW == "09")) || ($_FECHAACT == $_FECHAFACT)) {
-                console.debug("estoy en si no de _Datoordserv_41");
                 $_SWORDSERV == "N";
                 SAL41.ORDSERVFACT = "";
                 _Datopaciente_41();
@@ -2742,7 +2778,7 @@ function _Ventanaordserv_41() {
             '<div class="form-group"> ' +
             '<label class="col-md-6 control-label" for="name">' + "Es un servicion autorizado x red externa?" + '</label> ' +
             '<div class="col-md-6" id="REDEXT_401"> ' +
-            '<input id="redext_SAL41" class="form-control input-md" data-orden="1"> ' +
+            '<input id="redext_SAL41" class="form-control input-md" data-orden="1" maxlength="1"> ' +
             '<span class="help-block">' + "S/N" + '</span> ' +
             '</div> ' +
             '</div> ' +
@@ -2751,14 +2787,14 @@ function _Ventanaordserv_41() {
         buttons: {
             confirm: {
                 label: 'Aceptar',
+                className: 'btn-primary',
                 callback: function () {
                     ventanaOrdserv.off('show.bs.modal');
                     console.debug($_SWORDSERV, $_SWORDSERV.length);
                     if ($_SWORDSERV == 'N') {
                         SAL41.ORDSERVFACT = '';
                         setTimeout(_Datopaciente_41, 200);
-                    }
-                    else {
+                    } else {
                         $_PREFORDSERVFACT = $_PREFIJOUSU;
                         $_CLORDSERVFACT = $_CLFACT;
                         console.debug("hace falta la ventanaordserv2");
@@ -2976,7 +3012,9 @@ function _Datopaciente2_41() {
         $_IDHISTORIAFACT = $_IDPACNUM;
         console.debug($_IDHISTORIAFACT);
         $_IDHISTORIAFACT = parseInt($_IDHISTORIAFACT);
-        idhistoriafactMask.typedValue = $_IDHISTORIAFACT;
+        if ($_PREFIJOFACT != 'A') {
+            idhistoriafactMask.typedValue = $_IDHISTORIAFACT;
+        }
         _Evaluaridhistoriafact_41();
     } else {
         _Evaluaridhistoriafact_41();
@@ -2985,7 +3023,9 @@ function _Datopaciente2_41() {
 
 function _Evaluaridhistoriafact_41() {
     console.debug($_IDHISTORIAFACT, $_IDPACNUM);
-    idhistoriafactMask.typedValue = $_IDHISTORIAFACT;
+    if ($_PREFIJOFACT != 'A') {
+        idhistoriafactMask.typedValue = $_IDHISTORIAFACT;
+    }
     validarInputs({
         form: '#PACIENTE_41',
         orden: "1"
@@ -3005,7 +3045,7 @@ function _Validaridhistoriafact_41() {
     // else if (($_PREFIJOFACT == "P") && ($_SEXOPACI == "M") && ($_IDHISTORIAFACT != $_IDPACNUM)) {
     //     $_IDHISTORIAFACT = $_IDPACNUM;
     // }
-    else if (($_PREFIJOFACT == "P") && ($_IDHISTORIAFACT = !$_IDPACNUM)) {
+    if (($_PREFIJOFACT == "P") && ($_IDHISTORIAFACT != $_IDPACNUM)) {
         CON851('7O', '7O', null, 'error', 'Error');
     }
     // else if (($_PREFIJOFACT == "P") && ($_SEXOPACI == "F") && (($_CLFACT == "0") || ($_CLFACT == "1") || ($_CLFACT == "3") || ($_CLFACT == "4")) && ($_IDHISTORIAFACT != $_IDPACNUM)) {
@@ -3020,8 +3060,7 @@ function _Validaridhistoriafact_41() {
     else if ($_NITUSU == "0800162035") {
         if ((($_PREFIJOUSU == "05") || ($_PREFIJOUSU == "06") || ($_PREFIJOUSU == "08") || ($_PREFIJOUSU == "10") || ($_PREFIJOUSU == "11") || ($_PREFIJOUSU == "12") || ($_PREFIJOUSU == "14") || ($_PREFIJOUSU == "15") || ($_PREFIJOUSU == "17")) && (parseInt($_NROCAPITNUM) > 0) && ($_FACTCAPITNUM == $_LLAVENUM) && ($_IDHISTORIAFACT != "000000000000001")) {
             CON851('1W', '1W', null, 'error', 'Error');
-        }
-        else {
+        } else {
             if ((parseInt($_NROCAPITNUM) > 0) && ($_FACTCAPITNUM == $_LLAVENUM) && ($_IDHISTORIAFACT != "000000000000001")) {
                 CON851('1W', '1W', null, 'error', 'Error');
                 _Datopaciente_41();
@@ -3101,8 +3140,7 @@ function _dataSAL41_05(data) {
     $('#paciented_SAL41').val($_DESCRIPPACI);
     if (date[0].trim() == "00") {
         _Validarpaciente_41();
-    }
-    else if (date[0].trim() == '01') {
+    } else if (date[0].trim() == '01') {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_OPSEGU;
@@ -3125,8 +3163,7 @@ function _dataCON904S_01_41(data) {
             _EventocrearSegventana(vector, _Evaluaridhistoriafact_41);
             vector = ['another', 'SALUD/PAGINAS/SAL7767.html']
             _Seconndwindow({ params: vector });
-        }
-        else {
+        } else {
             CON851('01', '01', null, 'error', 'Error');
             _Datopaciente_41();
         }
@@ -3142,14 +3179,11 @@ function _Validarpaciente_41() {
     if ($_NITUSU == "0900019291") {
         if (($_NITUSU == '0800162035') && ($_SWINVALID == '2B')) {
             // PREFORM GRABAR-CAMBIO-DOCUMENTO
-        }
-        else {
+        } else {
             _Validandocliente3_41();
         }
-    }
-    else {
+    } else {
         if ($_SWCREAR == '0') {
-            console.debug('sw crear = 0');
             if ((($_CLFACT == "3") || ($_CLFACT == "5") || ($_CLFACT == "7")) || (($_NITUSU == "0891855847") || ($_NITUSU == "0900565371"))) {
                 $_OPSEGU = "IS767";
                 LLAMADO_DLL({
@@ -3164,8 +3198,7 @@ function _Validarpaciente_41() {
                 /// SER 810H
                 _Validandocliente3_41();
             }
-        }
-        else {
+        } else {
             _Validandocliente3_41();
         }
     }
@@ -3232,18 +3265,15 @@ function _dataCON904S_03_41(data) {
 function _Validandocliente3_41() {
     if ($_TIPOPACINUM == '*') {
         _Validandocliente4_41();
-    }
-    else {
+    } else {
         if ($_TIPOPACINUM == $_TIPOPACI) {
             _Validandocliente4_41();
-        }
-        else {
+        } else {
             if ($_NITUSU == '0845000038') {
                 if ((($_TIPOPACINUM == 'D') || ($_TIPOPACINUM == 'E') || ($_TIPOPACINUM == 'F')) || (($_TIPOPACINUM == 'D') || ($_TIPOPACINUM == 'E') || ($_TIPOPACINUM == 'F'))) {
                     _Validandocliente4_41();
                 }
-            }
-            else {
+            } else {
                 CON851('3F', '3F', null, 'error', 'Error');
                 _Datopaciente_41();
             }
@@ -3253,13 +3283,11 @@ function _Validandocliente3_41() {
 function _Validandocliente4_41() {
     if (($_NITUSU == '0844003225') || ($_NITUSU == '0800251482') || ($_NITUSU == '0830092718') || ($_NITUSU == '0900193162')) {
         _Validandocliente5_41();
-    }
-    else {
+    } else {
         if ((($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_CONTRATONUM.trim() != '') && ($_CONTRATOPACI.trim() != '') && ($_CONTRATONUM != $_CONTRATOPACI)) {
             CON851('2M', '2M', null, 'error', 'Error');
             _Datopaciente_41();
-        }
-        else {
+        } else {
             _Validandocliente5_41();
         }
     }
@@ -3270,8 +3298,7 @@ function _Validandocliente5_41() {
         $_CONTRATOPACIW = $_CONTRATONUM;
         if ($_CONTRATONUM == $_CONTRATOPACI) {
             _Validandocliente6_41();
-        }
-        else {
+        } else {
             CON851('2M', '2M', null, 'error', 'Error');
             _Datopaciente_41();
         }
@@ -3359,6 +3386,14 @@ function _Validandocliente6_41() {
     else {
         if ((($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && (parseInt($_IDHISTORIAFACT) > 000000000001)) {
             // SER 836C LINEA 3737
+            let datos_envio = datosEnvio() + $_IDHISTORIAFACT + '|' + $_FECHAFACT + '|' + $_LLAVENUM + '|' + $_ADMINW;
+            console.debug(datos_envio);
+            SolicitarDll({ datosh: datos_envio }, data => {
+                console.debug(data);
+                data = data.split('|');
+                if (data[1].trim() != '') { CON851('1K', '1K', null, 'warning', 'Advertencia!') }
+            }, get_url("APP/SALUD/SER836C.DLL"));
+            _Validandocliente7_41();
         }
         else {
             _Validandocliente7_41();
@@ -3420,35 +3455,53 @@ function _Validandocliente82_41() {
                 if (($_RESTDROGPACI == 'N') && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z'))) {
                     CON851('80', '80', null, 'error', 'Error');
                     _Datopaciente_41();
+                } else {
+                    _Validandocliente83_41();
                 }
                 break;
             case '1':
                 if ($_RESTCIRUPACI == 'N') {
                     CON851('80', '80', null, 'error', 'Error');
                     _Datopaciente_41();
+                } else {
+                    _Validandocliente83_41();
                 }
                 break;
             case '2':
                 if ($_RESTLABOPACI == 'N') {
                     CON851('80', '80', null, 'error', 'Error');
                     _Datopaciente_41();
+                } else {
+                    _Validandocliente83_41();
                 }
                 break;
             case '3':
                 if ($_RESTIMAGPACI == 'N') {
                     CON851('80', '80', null, 'error', 'Error');
                     _Datopaciente_41();
+                } else {
+                    _Validandocliente83_41();
                 }
                 break;
             case '7':
                 if ($_RESTPYPPACI == 'N') {
                     CON851('80', '80', null, 'error', 'Error');
                     _Datopaciente_41();
+                } else {
+                    _Validandocliente83_41();
                 }
                 break;
+            default:
+                _Validandocliente83_41();
+                break;
         }
+    } else {
+        _Validandocliente83_41();
     }
-    else if (($_UNDEDADMAXSERV == 'D') && ($_UNIDEDADELAB != 'D')) {
+}
+
+function _Validandocliente83_41() {
+    if (($_UNDEDADMAXSERV == 'D') && ($_UNIDEDADELAB != 'D')) {
         CON851('74', '74', null, 'error', 'Error');
         _Datopaciente_41();
     }
@@ -3471,40 +3524,38 @@ function _Validandocliente82_41() {
     else if (($_UNDEDADMINSERV == 'A') && ($_UNIDEDADELAB == 'A') && ($_VLREDADELAB < parseInt($_VLREDADMINSERV))) {
         CON851('74', '74', null, 'error', 'Error');
         _Datopaciente_41();
+    } else {
+        _Validandocliente84_41();
     }
-    else if ($_ENTIDADTER == 'SIN001') {
+}
+
+function _Validandocliente84_41() {
+    if ($_ENTIDADTER == 'SIN001') {
         _Validandopaciente9_41();
-    }
-    else {
+    } else {
         if (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) {
-            if (($_ENTIDADTER == 'EAR001') && (($_EPSPACI == 'EAR001') || ($_EPSPACI == 'EAR002') || ($_EPSPACI == 'EAR003') || ($_EPSPACI == 'EAR004')($_EPSPACI == 'EAR005'))) {
+            if (($_ENTIDADTER == 'EAR001') && (($_EPSPACI == 'EAR001') || ($_EPSPACI == 'EAR002') || ($_EPSPACI == 'EAR003') || ($_EPSPACI == 'EAR004') || ($_EPSPACI == 'EAR005'))) {
                 _Validandopaciente9_41();
-            }
-            else {
-                if ((($_ENTIDADTER == 'EAR000') || ($_ENTIDADTER == 'PEC004') || ($_ENTIDADTER == 'EAS027')) && (($_EPSPACI == 'EAR000') || ($_EPSPACI == 'PEC004') || ($_EPSPACI == 'EAS027'))) {
+            } else {
+                if ((($_ENTIDADTER == 'EAR000') || ($_ENTIDADTER == 'PEC004') || ($_ENTIDADTER == 'EAS027')) && (($_EPSPACI == 'EAR000') || ($_EPSPACI == 'PEC004') || ($_EPSPACI == 'PEC004'))) {
                     _Validandopaciente9_41();
-                }
-                else {
+                } else {
                     if ($_ENTIDADTER != $_EPSPACI) {
-                        CON851('9S', '9S', null, 'error', 'Error');
-                        if (($_CLFACT == '7') && ($.isNumeric($_VENDEDORTER))) {
+                        CON851('9S', '9S', null, 'warning', 'Advertencia!');
+                        if (($_CLFACT == '7') && (isNumeric($_VENDEDORTER))) {
+                            _Datopaciente_41()
+                        } else if (($_NITUSU == '0900229438') && ($_ENTIDADTER == 'SIN438')) {
                             _Datopaciente_41();
-                        }
-                        else if (($_NITUSU == '0900229438') && ($_ENTIDADTER == 'SIN438')) {
+                        } else if ((($_NITUSU == '0800162035') || ($_NITUSU == '0900405505') || ($_NITUSU == '0900005594') || ($_NITUSU == '0830512772') || ($_NITUSU == '0830511298') || ($_NITUSU == '0822001570') || ($_NITUSU == '0844003225')) && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_NITNUM != '0000009999') && ($_ADMINW != 'GEBC')) {
                             _Datopaciente_41();
+                        } else {
+                            _Validandopaciente10_41();
                         }
-                        else if ((($_NITUSU == '0800162035') || ($_NITUSU == '0900405505') || ($_NITUSU == '0900005594') || ($_NITUSU == '0830512772') || ($_NITUSU == '0830511298')) && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_NITNUM != '0000009999') && ($_ADMINW == 'GEBC')) {
-                            _Datopaciente_41();
-                        }
-                    }
-                    else {
-                        _Validandopaciente9_41();
+                    } else {
+                        _Validandocliente10_41();
                     }
                 }
             }
-        }
-        else {
-            _Validandopaciente9_41();
         }
     }
 }
@@ -3546,42 +3597,75 @@ function _Buscarconsultas_41() {
 }
 
 function SER835() {
-    let datos_envio = datosEnvio();
-    datos_envio += SAL41.ADMINW + '|' + $_IDHISTORIAFACT.padStart(15, '0') + "|" + $_CLFACT;
-    SolicitarDll({ datosh: datos_envio }, _dataSER85_41, get_url("APP/SALUD/SER835.DLL"));
+    _cargandodatos('on');
+    let URL = get_url("APP/SALUD/SER835.DLL");
+    postData({
+        datosh: datosEnvio() + $_IDHISTORIAFACT.padStart(15, '0') + "|" + $_CLFACT + '|' + $_NITUSU
+    }, URL)
+        .then(data => {
+            _cargandodatos('off');
+            $_SER835 = data.FACTURAS;
+            _ventanaSER835_SAL41();
+        })
+        .catch(error => {
+            console.log(error);
+            _evaluarnumeroprefijo_SER109D();
+        });
 }
 
-function _dataSER85_41(data) {
-    console.debug(data);
-    var data = data.split('|');
-    if (data[0].trim() == '00') {
-        let rutaJson = get_url('temp/' + data[1].trim());
-        let json = data[1].trim();
-        SolicitarDatos(
-            null,
-            function (data) {
-                $_SER835 = data.FACTURAS;
-                let arrayEliminar = [];
-                arrayEliminar.push(json);
-                _eliminarJson(arrayEliminar, on_eliminarJsonSER835_SAL41)
-            },
-            rutaJson
-        );
-    } else {
-        CON852(data[0], data[1], data[2], _toggleNav);
+function _cargandodatos(estado) {
+    switch (estado) {
+        case 'on':
+            var ventanaimpresion = bootbox.dialog({
+                message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Cargando datos...</div>',
+                closeButton: false,
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-primary',
+                        callback: function () {
+                        }
+                    }
+                }
+            })
+            ventanaimpresion.init($('.modal-footer').hide());
+            break;
+        case 'off':
+            $('.btn-primary').click();
+            break;
     }
 }
+// function _dataSER85_41(data) {
+//     console.debug(data);
+//     var data = data.split('|');
+//     if (data[0].trim() == '00') {
+//         let rutaJson = get_url('temp/' + data[1].trim());
+//         let json = data[1].trim();
+//         SolicitarDatos(
+//             null,
+//             function (data) {
+//                 $_SER835 = data.FACTURAS;
+//                 let arrayEliminar = [];
+//                 arrayEliminar.push(json);
+//                 _eliminarJson(arrayEliminar, on_eliminarJsonSER835_SAL41)
+//             },
+//             rutaJson
+//         );
+//     } else {
+//         CON852(data[0], data[1], data[2], _toggleNav);
+//     }
+// }
 
-function on_eliminarJsonSER835_SAL41(data) {
-    var data = data.split('|');
-    if (data[0].trim() == '00') {
-        console.debug('json elminado');
-        _ventanaSER835_SAL41();
-    } else {
-        console.error(res[1]);
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
+// function on_eliminarJsonSER835_SAL41(data) {
+//     var data = data.split('|');
+//     if (data[0].trim() == '00') {
+//         console.debug('json elminado');
+//         _ventanaSER835_SAL41();
+//     } else {
+//         console.error(res[1]);
+//         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
+//     }
+// }
 
 function _ventanaSER835_SAL41() {
     _ventanaDatos({
@@ -3971,7 +4055,7 @@ function _Evaluarcodservicio_41() {
     validarInputs({
         form: '#CODSERVICIO_41',
         orden: '1',
-        event_f3: function () { _event_f3({ estado: 'off' }); _Evaluarespeclab_41() }
+        event_f3: function () { _event_f3({ estado: 'off' }); _Datoabono_41() }
     },
         function () {
             _event_f3({ estado: 'off' });
@@ -5153,6 +5237,7 @@ function _Validarcant2_41() {
             CON851('5K', '5K', null, 'warning', 'Advertencia!');
         }
     } else {
+        $_COD1ARTFACT = $_CODARTFACT.substring(0, 1);
         if (($_GRUPOFACT == '93') || ($_GRUPOFACT == 'XX') || (($_GRUPOFACT == '89') && ($_COD1ARTFACT == '3'))) {
             _Validarcant3_41()
         }
@@ -5677,7 +5762,7 @@ function _Datoabono3_41() {
 function _dataCON904S_06_41(data) {
     console.debug(data, 'CON904S_06');
     var date = data.split('|');
-    if (date[1].trim() == '01') {
+    if (date[0].trim() == '01') {
         if (($_NITUSU == '0900405505') && ($_GRUPOFACT == '93')) {
             if (($_SWORDSERV == 'S') && ($_COPAGOESTIMFACT > 0)) {
                 _Datocopago_41();
@@ -5689,8 +5774,7 @@ function _dataCON904S_06_41(data) {
         else {
             _Editarabono_41();
         }
-    }
-    else if (date[1].trim() == '00') {
+    } else if (date[0].trim() == '00') {
         if (($_SWORDSERV == 'S') && ($_COPAGOESTIMFACT > 0)) {
             _Datocopago_41();
         }
@@ -5705,8 +5789,7 @@ function _dataCON904S_06_41(data) {
 function _Datoabono4_41() {
     if (($_NITUSU == '0800162035') && ($_NITFACT == '9999') && ($_CLFACT == '0')) {
         $_PORCENTCOPAGO = 9;
-    }
-    if ($_NITUSU == '0822002688') {
+    } if ($_NITUSU == '0822002688') {
         _Validarcopago_41();
     }
     else {
@@ -5715,7 +5798,7 @@ function _Datoabono4_41() {
 }
 function _Evaluarcopago_41() {
     validarInputs({
-        form: '#COPAGO_41',
+        form: '#PCOPAGO_41',
         orden: '1'
     },
         function () { _Evaluarfecha_41() },
@@ -5726,8 +5809,7 @@ function _Validarcopago_41() {
     $_PORCENTCOPAGO = CopagoMask.unmaskedValue;
     if (($_PORCENTCOPAGO == 0) || ($_PORCENTCOPAGO == 5) || ($_PORCENTCOPAGO == 10) || ($_PORCENTCOPAGO == 15) || ($_PORCENTCOPAGO == 20) || ($_PORCENTCOPAGO == 30) || ($_PORCENTCOPAGO == 11.5) || ($_PORCENTCOPAGO == 17.3) || ($_PORCENTCOPAGO == 23) || ($_PORCENTCOPAGO == 9)) {
         _Validarcopago2_41();
-    }
-    else {
+    } else {
         _Datoabono_41();
     }
 }
@@ -5735,14 +5817,14 @@ function _Validarcopago_41() {
 function _Validarcopago2_41() {
     if ($_PORCENTCOPAGO == 9) {
         CopagoMask.typedValue = ' ';
-    }
-    else {
+    } else {
         $_COPAGOESTIMFACT = Math.round((($_VALORBRUTO + $_VLRIVAFACT - $_VALORDESFACT) * $_PORCENTCOPAGO) / 100);
     }
     _Datocopago_41();
 }
 
 function _Datocopago_41() {
+    console.debug('dato copago 41');
     if (($_NITUSU == '0800162035') && ($_NITFACT == '9999') && ($_CLFACT == '0')) {
         $_COPAGOESTIMFACT = $_VALORTOTAL;
     }
@@ -5756,15 +5838,13 @@ function _Datocopago_41() {
 function _dataCON904S_07_41(data) {
     console.debug(data, 'CON904S_07');
     var date = data.split('|');
-    if (date[1].trim() == '01') {
+    if (date[0].trim() == '01') {
         if ((($_NITUSU == '0900405505') || ($_NITUSU == '0830511298')) && ($_GRUPOFACT == '93')) {
             _Evaluarcopagoestimfact();
-        }
-        else {
+        } else {
             _Editarabono_41();
         }
-    }
-    else if (date[1].trim() == '00') {
+    } else if (date[0].trim() == '00') {
         _Evaluarcopagoestimfact_41();
     }
     else {
@@ -5773,6 +5853,7 @@ function _dataCON904S_07_41(data) {
 }
 
 function _Evaluarcopagoestimfact_41() {
+    CopagoMask2.typedValue = $_COPAGOESTIMFACT;
     validarInputs({
         form: '#COPAGO_41',
         orden: '1'
@@ -7472,7 +7553,7 @@ function _evaluarSER829_41(data) {
     SAL41.TIPOPROCESTAD = data.codigo;
     console.debug(data.codigo, data)
     console.debug(SAL41.TIPOPROCCUP.length, SAL41.TIPOPROCCUP.trim());
-    if ((SAL41.TIPOPROCCUP.trim() == '') || (SAL41.TIPOPROCCUP == '0')) {
+    if ((SAL41.TIPOPROCCUP.trim() == '') || (SAL41.TIPOPROCCUP == '0') || (SAL41.TIPOPROCCUP == ' ')) {
         _Tipoproced2_41();
     } else {
         if (SAL41.TIPOPROCCUP != SAL41.TIPOPROCESTAD) {
@@ -8718,12 +8799,12 @@ function _evaluarSER811_SAL41(data) {
             SAL41.IMRPESION.ATIENDE = $_DESCRIPPROF;
             SAL41.IMPRESION.CCATIENDE = $_MEDOTRFACT;
             SAL41.IMPRESION.
-            opcinesImpresion_INV411 = {
-                data: SAL41.IMPRESION,
-                tipo: 'pdf',
-                formato: 'salud/INV411.html',
-                nombre: SAL41.NOMBREPDF
-            }
+                opcinesImpresion_INV411 = {
+                    data: SAL41.IMPRESION,
+                    tipo: 'pdf',
+                    formato: 'salud/INV411.html',
+                    nombre: SAL41.NOMBREPDF
+                }
             imprimir(opcinesImpresion_INV411, finImpresion_INV411)
             break;
 

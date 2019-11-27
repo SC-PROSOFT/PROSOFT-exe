@@ -3,7 +3,7 @@ var array_rx421w_ventana = []
 var enfermedades_rx421w = [];
 var profesionales_Rx421w = []
 var macroEvoluciones_rx421w = []
-var index
+var index, id_historia_rx421w
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -28,9 +28,13 @@ $(document).ready(function () {
     //         loader("hide")
     //         console.log('errorrrrrrrrrrr')
     //     })
-    obtenerDatosCompletos({ nombreFd: 'PROFESIONALES' }, recibirProfesionales_Rx421w)
+    $('#Boton_email_rx421w').hide()
+    $('#imprimir_rx421w').hide()
+    incio_rx421w()
 });
-
+function incio_rx421w() {
+    obtenerDatosCompletos({ nombreFd: 'PROFESIONALES' }, recibirProfesionales_Rx421w)
+}
 // pendienteeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 // function recibirMacroEvol_rx421w(data){
 //     macroEvoluciones_rx421w = data.MACRO-EVOL
@@ -104,7 +108,7 @@ function _ventanaTecnologo_rx421w(e) {
 function _ventanaEnfermedad_rx421w(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: 'Ventana enfermedad segun tipo',
+            titulo: 'Ventana enfermedades',
             columnas: ["COD_ENF", "NOMBRE_ENF"],
             label: ["codigo", "nombre"],
             data: enfermedades_rx421w,
@@ -155,21 +159,22 @@ function validar_idHistoria_rx421w() {
             var historia = $('.id_historia_rx421w')
             $(historia[1]).val('')
             _toggleNav()
+            console.log('salioooo')
         },
         function () {
             var id = $('.id_historia_rx421w')
-            idHistoria = cerosIzq($(id[1]).val(), 15)
-            $(id[1]).val(idHistoria)
-            console.log(idHistoria)
+            id_historia_rx421w = cerosIzq($(id[1]).val(), 15)
+            $(id[1]).val(id_historia_rx421w)
+            console.log(id_historia_rx421w)
             loader("show")
-            consultaDatos_rx421w(idHistoria)
+            consultaDatos_rx421w()
         }
     )
 }
 
-function consultaDatos_rx421w(idHistoria) {
+function consultaDatos_rx421w() {
     var datos_envio = datosEnvio();
-    datos_envio += localStorage.Usuario + '|' + idHistoria + "|"
+    datos_envio += localStorage.Usuario + '|' + id_historia_rx421w + "|"
     let URL = get_url("APP/SALUD/RX-421W.DLL");
     postData({ datosh: datos_envio }, URL)
         .then(function (data) {
@@ -183,21 +188,10 @@ function consultaDatos_rx421w(idHistoria) {
 }
 
 function asignarDatosArray_rx421w(llegada) {
-    var pagina_rx
     var data = llegada["RESULTADOS-RX"]
     console.log(data)
 
     for (var i in data) {
-        pagina_rx = ''
-
-        // if (data[i].RESULTADO_ADIC != null) {
-        //     pagina_rx = '3'
-        // } else if (data[i].RESULTADO_COMP != null) {
-        //     pagina_rx = '2'
-        // } else if (data[i].RESULTADO_PPAL != null) {
-        //     pagina_rx = '1'
-        // }
-
         array_rx421W.push({
             fecha_fact: moment(data[i].FECHA_FACT).format("YYYY/MM/DD"),
             suc_fact: data[i].SUC_FACT,
@@ -216,6 +210,8 @@ function asignarDatosArray_rx421w(llegada) {
             reg_medico: data[i].REG_MEDICO,
             id_tecnologo: data[i].ID_TECNOLOGO,
             nom_tecnologo: data[i].NOM_TECNOLOGO,
+            edad: data[i].EDAD,
+            sexo: data[i].SEXO,
             sala: data[i].SALA,
             cta_num: data[i].CTA_NUM,
             id_entidad: data[i].ID_ENTIDAD,
@@ -224,10 +220,12 @@ function asignarDatosArray_rx421w(llegada) {
             descrip_dx: data[i].DESCRIP_DX,
             admi_modif: data[i].ADMI_MODIF,
             fecha_modif: moment(data[i].FECHA_MODIF).format("YYYY/MM/DD"),
+            // fecha_transc: moment(data[i].HORA_MODIF).format("HH:mm:ss"),
             hora_modif: data[i].HORA_MODIF,
-            admi_transc: data.ADMI_TRANS,
-            fecha_transc: moment(data.FECHA_TRANS).format("YYYY/MM/DD"),
-            hora_transc: data.HORA_TRANS,
+            admi_transc: data[i].ADMI_TRANS,
+            fecha_transc: moment(data[i].FECHA_TRANS).format("YYYY/MM/DD"),
+            // hora_transc: moment(data.HORA_TRANS).format("HH:mm:ss"),
+            hora_transc: data[i].HORA_TRANS,
             birads: data[i].BIRADS,
             complejidad: data[i].COMPLEJIDAD,
             normalidad: data[i].NORMALIDAD,
@@ -238,7 +236,7 @@ function asignarDatosArray_rx421w(llegada) {
             resultado_ppal: data[i].RESULTADO_PPAL,
             resultado_comp: data[i].RESULTADO_COMP,
             resultado_adic: data[i].RESULTADO_ADIC,
-            pagina: pagina_rx
+            pagina: ''
         })
     }
     array_rx421W.pop()
@@ -261,7 +259,6 @@ function mostrarTabla_rx421w() {
             Llave: array_rx421W[i].nit_usu + array_rx421W[i].suc_fact + array_rx421W[i].cl_fact + array_rx421W[i].nro_fact
         })
     }
-    console.log(array_rx421w_ventana)
 
     _ventanaDatos({
         titulo: 'Consulta estudios facturados',
@@ -289,6 +286,7 @@ function mostrarDatos_rx421w(index) {
     $('#descripPaciente_rx421w').val(array_rx421W[index].descrip_paci)
     $('#sucursal_rx421w').val(array_rx421W[index].suc_fact)
     $('#servicio_rx421w').val(array_rx421W[index].cl_fact)
+    $('#descripServicio_rx421w').val('RX e Imagenologia')
     $('#comprob_rx421w').val(array_rx421W[index].nro_fact)
     $('#cups2_rx421w').val(array_rx421W[index].grupo_fact + array_rx421W[index].cod_art_fact + array_rx421W[index].clase_art_fact)
     $('#cups1_rx421w').val(array_rx421W[index].item_fact)
@@ -371,11 +369,16 @@ function mostrarDatos_rx421w(index) {
     //         $('#textarea_rx421w').val(array_rx421W[index].resultado_adic)
     //         break;
     // }
+    $('#imprimir_rx421w').show()
+    $('#Boton_email_rx421w').show()
+
     loader('hide')
     validarRadiologo_rx421w()
 }
 
 function salir_rx421w() {
+    $('#Boton_email_rx421w').hide()
+    $('#imprimir_rx421w').hide()
     _inputControl('reset');
     _inputControl('disabled');
     array_rx421W = []
@@ -383,6 +386,8 @@ function salir_rx421w() {
     profesionales_Rx421w = []
     enfermedades_rx421w = []
     macroEvoluciones_rx421w = []
+    index = ''
+    id_historia_rx421w = ''
     limpiar_inputs_rx421w()
     _toggleNav()
 }
@@ -425,12 +430,112 @@ function limpiar_inputs_rx421w() {
     $('#archivomsj_rx421w').val('');
 }
 
+$('#Boton_email_rx421w').click(function () {
+    var email_envio_rx
+
+    if (array_rx421W[index].email.trim().length() == 0) {
+        jAlert(
+            { titulo: 'Error', mensaje: 'Paciente no tiene email especificado' },
+            $('#validarRadiologo_rx421w').focus()
+        );
+    } else {
+        switch (array_rx421W[index].suc_fact) {
+            case 'UN':
+                email_envio_rx = '0'
+                break;
+            case '80':
+                email_envio_rx = '1'
+                break;
+            case 'PT':
+                email_envio_rx = '2'
+                break;
+            case 'MD':
+                email_envio_rx = '3'
+                break;
+            case 'CZ':
+                email_envio_rx = '4'
+                break;
+            default:
+                email_envio_rx = '5'
+                break;
+        }
+    }
+
+
+});
+
+
+
+
+$("#imprimir_rx421w").click(function () {
+    pre_impresion_rx421w()
+});
+
+function pre_impresion_rx421w() {
+    loader('show')
+    obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, Impresion_RX_421w)
+}
+
+function Impresion_RX_421w(data) {
+    var terceros = data.TERCEROS
+    terceros.pop()
+
+    if (array_rx421W[index].id_entidad == '          ' || array_rx421W[index].id_entidad.length == 0) {
+        array_rx421W[index].id_entidad = "0900219120"
+    }
+
+    var busqueda = terceros.find(tercero => tercero.COD == array_rx421W[index].id_entidad)
+    console.log(busqueda)
+    moment.locale('es')
+    var envio_rxi02 = [
+        {
+            FECHA_FACTRX: moment(array_rx421W[index].fecha_fact).format('MMM. D/YYYY'),
+            DESCRIP_PACIRX: array_rx421W[index].descrip_paci,
+            COMPROBANTE: array_rx421W[index].suc_fact + array_rx421W[index].cl_fact + array_rx421W[index].nro_fact,
+            IDHIS_FACTRX: id_historia_rx421w,
+            EDAD_RX: array_rx421W[index].edad,
+            REGMED_RX: array_rx421W[index].reg_medico,
+            DESCRIP1_CUPRX: array_rx421W[index].descrip_cup,
+            SEXO_RX: array_rx421W[index].sexo,
+            DESCRIP_TER: busqueda.NOMBRE,
+            IDRADIOLOGO_RX: array_rx421W[index].id_radiologo,
+            NOMMEDICO_RX: array_rx421W[index].nom_medico,
+            HTMLRESULTADOPPAL: array_rx421W[index].resultado_ppal,
+            HTMLCOMPPPAL: array_rx421W[index].resultado_comp,
+            HTMLDICPPAL: array_rx421W[index].resultado_adic,
+            NIT: array_rx421W[index].nit_usu.substring(2, 10),
+            USU: $_USUA_GLOBAL[0].NOMBRE
+        }
+    ]
+
+    var hora_Actual = moment().format('HHmmss')
+    var nombre_pdf = 'RX-' + array_rx421W[index].suc_fact + array_rx421W[index].cl_fact + array_rx421W[index].nro_fact + hora_Actual
+
+    console.log(envio_rxi02)
+    var Impresion_RX_421w = {
+        datos: envio_rxi02[0],
+        tipo: 'pdf',
+        formato: 'rx/RXI02A.html',
+        nombre: nombre_pdf
+    }
+
+    imprimir(Impresion_RX_421w, finImpresion_RX_421w);
+}
+
+function finImpresion_RX_421w() {
+    console.log('termino')
+    loader('hide')
+    $('#Boton_email_rx421w').hide()
+    $('#imprimir_rx421w').hide()
+    volverAinicio_rx421w()
+}
 
 function validarRadiologo_rx421w() {
     validarInputs(
         {
             form: "#validarRadiologo_rx421w",
-            orden: '1'
+            orden: '1',
+            event_f3: function () { pre_impresion_rx421w() }
         },
         function () { salir_rx421w() },
         function () {
@@ -445,6 +550,8 @@ function validarRadiologo_rx421w() {
                 $('#radiologo_rx421w').val(array_rx421W[index].id_radiologo);
                 $('#descrip1Radiologo_rx421w').val(array_rx421W[index].reg_medico);
                 $('#descrip2Radiologo_rx421w').val(array_rx421W[index].nom_medico);
+                $('#Boton_email_rx421w').hide()
+                $('#imprimir_rx421w').hide()
                 validarTecnologo_rx421w()
             } else {
                 CON851('01', '01', null, 'error', 'error');
@@ -461,7 +568,11 @@ function validarTecnologo_rx421w() {
             form: "#validarTecnologo_rx421w",
             orden: '1'
         },
-        function () { validarRadiologo_rx421w() },
+        function () {
+            $('#imprimir_rx421w').show()
+            $('#Boton_email_rx421w').show()
+            validarRadiologo_rx421w()
+        },
         function () {
             var tecnologo = $('#tecnologo_rx421w').val()
 
@@ -586,7 +697,6 @@ function validarDiagPrin_rx421w() {
         function () {
             var enfer = cerosIzq($('#diagPrincipal_rx421w').val(), 4)
 
-            // var busqueda = buscarEnfermedad_rx421w(cerosIzq(enfer, 4))
             var busqueda = enfermedades_rx421w.find(enfermedad => enfermedad.COD_ENF == enfer)
 
             if (busqueda) {
@@ -773,8 +883,8 @@ function _grabardatos(nombre_archivo) {
             loader('hide')
             console.log(data)
             jAlert(
-                { titulo: 'CORRECTO', mensaje: 'Dato modificado exitosamente' },
-                _toggleNav
+                { titulo: 'CORRECTO', mensaje: data },
+                volverAinicio_rx421w
             );
         })
         .catch(error => {
@@ -784,18 +894,16 @@ function _grabardatos(nombre_archivo) {
         });
 }
 
-function llegadaDll_Rx421w(data) {
-    console.log(data)
-    var rdll = data.split('|');
-    if (rdll[0].trim() == '00') {
-        guardadoBaseDatos_rx421w()
-    } else if (rdll[0].trim() == 'SC') {
-        jAlert(
-            { titulo: 'Error ' + rdll[0].trim(), mensaje: '<b>Mensaje: </b>' + rdll[1] + '<br> <b>App:</b> ' + rdll[2] },
-            _toggleNav
-        );
-    } else {
-        loader('hide');
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
+function volverAinicio_rx421w() {
+    limpiar_inputs_rx421w()
+    _inputControl('reset');
+    _inputControl('disabled');
+    array_rx421W = []
+    array_rx421w_ventana = []
+    profesionales_Rx421w = []
+    enfermedades_rx421w = []
+    macroEvoluciones_rx421w = []
+    index = ''
+    id_historia_rx421w = ''
+    incio_rx421w()
 }

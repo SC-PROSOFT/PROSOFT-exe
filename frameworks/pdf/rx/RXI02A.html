@@ -311,7 +311,7 @@
     </div>
     <div class="contenido_rx">
         <div class="detalle1_rx">
-            <a style="font-size:16px; margin:0 auto;" id="detalle3txt_rxi02a"> Primer contenido de RX </a>
+            <a style="font-size:16px; margin:0 auto;" id="detalle3txt_rxi02a"></a>
         </div>
     </div>
     <div class="firmamedico_rx">
@@ -326,7 +326,6 @@
     var RXI02A = [];
     ipcRenderer.on('ping', (e, data) => {
         RXI02A = data.datos;
-
         RXI02A.DESCRIP_PACIRX = "Paciente: " + RXI02A.DESCRIP_PACIRX;
         RXI02A.COMPROBANTE = "COMPROBANTE DE PRESTACION DE SERVICIOS: " + RXI02A.COMPROBANTE;
         RXI02A.IDHIS_FACTRX = "ID: " + RXI02A.IDHIS_FACTRX;
@@ -372,7 +371,7 @@
         } if(RXI02A.HTMLADICPPAL == '0'){
             $('#pagina3').hide();
         } else if (RXI02A.HTMLDICPPAL != '0') {
-            $('#detalle2txt_rxi02a').html(RXI02A.HTMLDICPPAL);
+            $('#detalle3txt_rxi02a').html(RXI02A.HTMLDICPPAL);
         }
 
         var nit = RXI02A.NIT;
