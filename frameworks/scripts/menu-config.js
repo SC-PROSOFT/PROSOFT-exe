@@ -59,7 +59,7 @@ function respuestCargarJson(datos) {
     $('#ssl_conf').val(conf[0]['SSLUSU'].trim());
     $('#ip_datos_conf').val(conf[0]['IPUSU'].trim());
     $('#ip_desc_conf').val(conf[0]['IP-DESCARGA'].trim());
-    $('#timer_conf').val(conf[0]['TIEMPO'].trim());
+    $('#unid_prog_conf').val(conf[0]['UNID-PROG'].trim());
     var cont = conf[0].CONTAB.length;
     $('table tbody').html('');
     if (cont > 0) {
@@ -340,7 +340,7 @@ function bajarDatos() {
     datosEnvio += "|";
     datosEnvio += $('#ip_desc_conf').val();
     datosEnvio += "|";
-    datosEnvio += $('#timer_conf').val();
+    datosEnvio += $('#unid_prog_conf').val();
     datosEnvio += "|";
     console.log(datosEnvio);
     var url = get_url('app/INDEX_CONFIG.DLL');

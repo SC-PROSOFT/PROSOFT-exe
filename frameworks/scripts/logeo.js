@@ -91,8 +91,8 @@ $(document).on('click', '.btn-edit', function () {
 
 function _cargarDatos() {
     var url = get_url('datos/SC-USU-NET.JSON');
-    console.log(url)
     $.getJSON(url, function (data) {
+        localStorage.Unidad = data.Usunet[0]['UNID-PROG'].toString().toUpperCase();
         $_CONTAB = data.Usunet[0].CONTAB;
         $_CONTAB.pop();
 
