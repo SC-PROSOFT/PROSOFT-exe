@@ -23,7 +23,7 @@ $(document).ready(function () {
 });
 
 function _cargarUsuario() {
-    var url = get_url("app/CONTAB/CONUSUA.dll");
+    var url = localStorage.Modulo == 'BOM' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
     var datos_envio = localStorage.Sesion + '|' + localStorage.Contab + '|' + localStorage.Mes + '|' + localStorage.Usuario;
     SolicitarDll({ datosh: datos_envio }, _onCargarUsuario, url);
 }
