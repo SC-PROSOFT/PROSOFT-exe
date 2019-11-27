@@ -10,21 +10,35 @@
 <div class="col-md-12">
     <div class="portlet light no-padding">
         <div class="portlet-body no-padding">
+            <!-- <form class="form-horizontal">
+                <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12"></div>
+                        <label>
+                            <h4>Digite la tarifa a procesar</h4>
+                        </label>
+                    </div>
+                </div>
+            </form> -->
             <form class="form-horizontal">
                 <div class="form-group col-md-7 col-sm-7 col-xs-7 box-center">
                     <div class="col-md-3 col-sm-3 col-xs-3">
                         <label>Digite la tarifa a procesar </label>
                     </div>
-                    <br><br>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
+
+                    <div class="col-md-3 col-sm-4 col-xs-4">
                         <div class="inline-inputs" id="codincrem715">
                             <label class="col-md-6 col-sm-6 col-xs-6">Codigo:</label>
                             <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                <input id="codigo715" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="codigo_715" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
+                            <button type="button" id="codigoBtn_715" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <i class="icon-magnifier"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="col-md-7 col-sm-7 col-xs-7">
+                    <!-- <div class="salto-linea"></div> -->
+                    <div class="col-md-6 col-sm-7 col-xs-7">
                         <div class="inline-inputs">
                             <label class="col-md-5 col-sm-5 col-xs-5">Descripcion:</label>
                             <div class="input-group col-md-9 col-sm-9 col-xs-9">
@@ -32,12 +46,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-1 col-sm-1 col-xs-1" id="opcion715">
+                    <!-- <div class="col-md-2 col-sm-1 col-xs-1" id="opcion715">
                         <input id="opcion1715" type="text" data-orden="1" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12">
-                    </div>
+                    </div> -->
                 </div>
-                <div class="form-group col-md-7 col-sm-7 col-xs-7 box-center" id="porcentaje715">
-                    <div class="col-md-7 col-sm-7 col-xs-7">
+                <div class="form-group col-md-7 col-sm-7 col-xs-7 box-center" >
+                    <div class="col-md-7 col-sm-7 col-xs-7" id="porcentaje715">
                         <div class="inline-inputs">
                             <label class="col-md-9 col-sm-9 col-xs-9">Porcentaje de incremento:</label>
                             <div class="input-group col-md-3 col-sm-3 col-xs-3">
@@ -45,11 +59,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5 col-sm-5 col-xs-5">
+                    <div class="col-md-5 col-sm-5 col-xs-5" id="grupo715">
                         <div class="inline-inputs">
                             <label class="col-md-8 col-sm-8 col-xs-8 text-label">Grupo:</label>
                             <div class="input-group col-md-4 col-sm-4 col-xs-4">
-                                <input id="grupo715" type="text" maxlength="2" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="grupo715" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>

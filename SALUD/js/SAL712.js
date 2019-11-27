@@ -3,7 +3,8 @@
 var $_NovedSer712, arraytarifas;
 
 $(document).ready(function () {
-
+    _inputControl("reset");
+    _inputControl("disabled");
     _toggleF8([
         { input: 'codigo', app: '712', funct: _ventanaGrptar }
     ]);
@@ -48,9 +49,7 @@ function nombreTarf712() {
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
-    _inputControl('reset');
-    _inputControl('disabled');
-    console.debug(novedad)
+    
     $_NovedSer712 = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:

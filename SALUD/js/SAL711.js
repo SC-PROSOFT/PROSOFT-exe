@@ -7,7 +7,8 @@ var ingrterc711_Mask = new IMask(document.getElementById('ingr_terc711'),
 );
 
 $(document).ready(function () {
-
+    _inputControl('reset');
+    _inputControl('disabled');
 
     _toggleF8([
         { input: 'codigo', app: '711', funct: _ventanaGrupo },
@@ -51,7 +52,8 @@ function _ventanaContab(e) {
             },
             callback: function (data) {
                 console.debug(data);
-                $('#contab_711').val(data.CTA_MAY.trim() + data.SUB_CTA.trim() + data.AUX_MAE.trim() + data.TIPO_MAE.trim())
+                $('#contab_711').val(data.CTA_MAY.trim() + data.SUB_CTA.trim() + data.AUX_MAE.trim())
+                // + data.TIPO_MAE.trim()
                 $('#descripContab_711').val(data.NOMBRE_MAE.trim())
                 _enterInput('#contab_711');
             }
@@ -88,8 +90,7 @@ function ctaMayor_711() {
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
-    _inputControl('reset');
-    _inputControl('disabled');
+
     $_NovedSer711 = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
@@ -259,12 +260,15 @@ function conContab_711() {
         function () {
             var valor = $('#contab_711').val()
             var busqueda = buscarCodContb(valor)
+            console.log('busqueda',busqueda); 
             switch (busqueda) {
-                case false || undefined:
+                case false:
+                    console.log('error'); 
                     CON851('01', '01', null, 'error', 'error');
                     conContab_711()
                     break;
                 default:
+                    console.log('pasa'); 
                     envioDat711()
                     break;
             }
@@ -300,7 +304,9 @@ function envioDat711() {
                 mensaje: msj
             },
                 function () {
-                    _toggleNav();
+                    _inputControl('reset');
+                    CON850(_evaluarCON850);
+
                     console.log('fin del programa')
                 });
         })
@@ -324,7 +330,7 @@ function buscarDescrip_711(data) {
 
 function buscarCodContb(data) {
     var retornar = false;
-    console.log(data)
+    console.log(data,'buscar')
     for (var i in arraycontab) {
         var $CUENTA = arraycontab[i].CTA_MAY
         $CUENTA += arraycontab[i].SUB_CTA
@@ -332,6 +338,8 @@ function buscarCodContb(data) {
         if ($CUENTA == data) {
             retornar = arraycontab[i];
             break;
+        }else{
+            // conContab_711(); 
         }
     }
     return retornar;
