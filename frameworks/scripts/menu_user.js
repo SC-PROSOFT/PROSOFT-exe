@@ -563,3 +563,27 @@ require('electron').ipcRenderer.on('closed2', (event, message) => {
     console.debug(message);
     _EventocrearSegventana('off');
 });
+
+function calcular_edad(fecha) {
+    //SC-EDAD
+    var fechaNacimiento = moment(fecha, "YYYY-MM-DD"),
+        dias = moment().diff(fechaNacimiento, 'days');
+    var retornar = {
+        vlr_edad: '',
+        unid_edad: ''
+    };
+
+    if (dias < 30) {
+        retornar.edad = dias;
+        retornar.unid_edad = 'D';
+    } else {
+        if (dias < 365) {
+            retornar.vlr_edad = moment().diff(fechaNacimiento, 'months');
+            retornar.unid_edad = 'M';
+        } else {
+            retornar.vlr_edad = moment().diff(fechaNacimiento, 'years');
+            retornar.unid_edad = 'A';
+        }
+    }
+    return retornar;
+}

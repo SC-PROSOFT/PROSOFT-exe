@@ -1584,10 +1584,10 @@ function _consultar836B() {
     if ((SAL97C11.NOVEDADW == '7') || (SAL97C11.NOVEDADW == '8')) {
         let fechaw = moment(SAL97C11.FECHAW).format('YYYYMMDD')
         let URL = get_url("APP/SALUD/SER836B.DLL");
-        postData({ datosh: datosEnvio() + SAL97C11.PACIW + '|' + fechaw + '|' + SAL97C11.MEDW.padStart(10,'0') + '|' + fechaw.substring(2,4) }, URL)
+        postData({ datosh: datosEnvio() + SAL97C11.PACIW + '|' + fechaw + '|' + SAL97C11.MEDW.padStart(10, '0') + '|' + fechaw.substring(2, 4) }, URL)
             .then(data => {
                 console.debug(data)
-                if(data.CITASMED[0].trim() == ''){
+                if (data.CITASMED[0].trim() == '') {
                     _leercitas_SAL97C11();
                 } else {
                     console.debug('tiene una cita');
@@ -1628,9 +1628,10 @@ function _leercitas_SAL97C11() {
 
 function _leercitas2_SAL97C11() {
     let fechaw = moment(SAL97C11.FECHAW).format('YYYYMMDD');
-    SAL97C11.LLAVEW = $_USUA_GLOBAL[0].PREFIJ + fechaw + SAL97C11.PACIW + SAL97C11.TIPOFACTW + SAL97C11.CUPSW.padEnd(12, ' ');
+    let ano = fechaw.substring(2, 4);
+    SAL97C11.LLAVEW = $_USUA_GLOBAL[0].PREFIJ + fechaw + SAL97C11.MEDW.padStart(10, '0') + SAL97C11.PACIW + SAL97C11.TIPOFACTW + SAL97C11.CUPSW.padEnd(12, ' ');
     let URL = get_url("APP/SALUD/SAL97C11.DLL");
-    postData({ datosh: datosEnvio() + '7|' + SAL97C11.CUPSW + '|' + SAL97C11.CONTRATOW + '|' + SAL97C11.NITFACTPACIW + '|' + SAL97C11.TIPOFACTW + '|' + SAL97C11.SALMINUSU + '|' + SAL97C11.MEDW + '|' + SAL97C11.EPSPACIW + '|' + fechaw + '|' + SAL97C11.LLAVEW }, URL)
+    postData({ datosh: datosEnvio() + '7|' + SAL97C11.CUPSW + '|' + SAL97C11.CONTRATOW + '|' + SAL97C11.NITFACTPACIW + '|' + SAL97C11.TIPOFACTW + '|' + SAL97C11.SALMINUSU + '|' + SAL97C11.MEDW + '|' + SAL97C11.EPSPACIW + '|' + fechaw + '|' + ano + '|' + SAL97C11.LLAVEW }, URL)
         .then(data => {
             console.debug(data)
             if (SAL97C11.NOVEDADW == '8') {
@@ -1663,16 +1664,16 @@ function _mostrarnuevo_SAL97C11() {
     $('#observacion_97C11').val(SAL97C11.NOMBREENTW);
     $('#telefonouno_97C11').val($_REG_PACI[0].TELEFONO);
     $('#telefonodos_97C11').val($_REG_PACI[0].CEL);
-    let horax = moment().format('LT').substring(0,2);
+    let horax = moment().format('LT').substring(0, 2);
     horaMask_SAL97C11.typedValue = horax;
-    if ((($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) && ((SAL97C11.CUPSW == '876801') || (SAL97C11.CUPSW == '0876802'))){
+    if ((($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) && ((SAL97C11.CUPSW == '876801') || (SAL97C11.CUPSW == '0876802'))) {
         _ventanamamografia_SAL97C11();
     } else {
         _evaluarhora_SAL97C11();
     }
 }
 
-function _evaluarhora_SAL97C11(){
+function _evaluarhora_SAL97C11() {
     validarInputs(
         {
             form: "#HORA_97C11",
@@ -1681,12 +1682,12 @@ function _evaluarhora_SAL97C11(){
         () => { _datomedico_7C11() },
         () => {
             SAL97C11.HORAW = horaMask_SAL97C11.value;
-            if ((SAL97C11.NOVEDADW == '7') && (SAL97C11.FECHAW == SAL97C11.FECHAACT)){
-                if (parseInt(SAL97C11.HORAW) < parseInt(SAL97C11.HORAACT)){
-                    CON851('9Q','9Q',null,'error','Error');
-                    if ($_NITUSU == '0900306771'){
+            if ((SAL97C11.NOVEDADW == '7') && (SAL97C11.FECHAW == SAL97C11.FECHAACT)) {
+                if (parseInt(SAL97C11.HORAW) < parseInt(SAL97C11.HORAACT)) {
+                    CON851('9Q', '9Q', null, 'error', 'Error');
+                    if ($_NITUSU == '0900306771') {
                         _buscarcita_SAL97C11();
-                    } else{
+                    } else {
                         _evaluarhora_SAL97C11();
                     }
                 } else {
@@ -1699,23 +1700,98 @@ function _evaluarhora_SAL97C11(){
     )
 }
 
-function _buscarcita_SAL97C11(){
+function _buscarcita_SAL97C11() {
     let fechaw = moment(SAL97C11.FECHAW).format('YYYYMMDD');
-    let horaw = SAL97C11.HORAW.replace(':','');
+    let horaw = SAL97C11.HORAW.replace(':', '');
+    let ano = fechaw.substring(2, 4);
     SAL97C11.LLAVEALTW = SAL97C11.MEDW + fechaw + horaw;
     console.debug(SAL97C11.LLAVEALTW);
     let URL = get_url("APP/SALUD/SAL97C11.DLL");
-    postData({ datosh: datosEnvio() + '8|' + SAL97C11.CUPSW + '|' + SAL97C11.CONTRATOW + '|' + SAL97C11.NITFACTPACIW + '|' + SAL97C11.TIPOFACTW + '|' + SAL97C11.SALMINUSU + '|' + SAL97C11.MEDW + '|' + SAL97C11.EPSPACIW + '|' + fechaw + '|' + SAL97C11.LLAVEW + '|' + SAL97C11.LLAVEALTW  }, URL)
+    postData({ datosh: datosEnvio() + '8|' + SAL97C11.CUPSW + '|' + SAL97C11.CONTRATOW + '|' + SAL97C11.NITFACTPACIW + '|' + SAL97C11.TIPOFACTW + '|' + SAL97C11.SALMINUSU + '|' + SAL97C11.MEDW + '|' + SAL97C11.EPSPACIW + '|' + fechaw + '|' + ano + '|' + SAL97C11.LLAVEW + '|' + SAL97C11.LLAVEALTW }, URL)
         .then(data => {
             console.debug(data)
-           
+            console.debug('LINEA 2188');
+            _evaluartelefono_SAL97C11();
         })
         .catch(err => {
             console.debug(err);
-            
+
         })
 }
 
+function _evaluartelefono_SAL97C11() {
+    validarInputs(
+        {
+            form: "#TELEFONOUNO_97C11",
+            orden: "1"
+        },
+        () => {
+            if (SAL97C11.NOVEDADW == '8') {
+                _evaluarpaciente_SAL97C11();
+            } else {
+                _evaluarhora_SAL97C11();
+            }
+        },
+        () => {
+            SAL97C11.TELW = $('#telefonouno_97C11').val();
+            _evaluarcelular_SAL97C11();
+        }
+    )
+}
+
+function _evaluarcelular_SAL97C11() {
+    validarInputs(
+        {
+            form: "#TELEFONODOS_97C11",
+            orden: "1"
+        },
+        () => { _evaluartelefono_SAL97C11() },
+        () => {
+            SAL97C11.TEL2W = $('#telefonodos_97C11').val();
+            if (SAL97C11.TIPOFACTW != '1') {
+                SAL97C11.TIPOANESTW = '';
+                _datoembarazon_SAL97C11();
+            } else {
+                let TIPOSANES = [
+                    { CODIGO: '1', DESCRIPCION: 'GENERAL' },
+                    { CODIGO: '2', DESCRIPCION: 'EPIDURAL' },
+                    { CODIGO: '3', DESCRIPCION: 'RAQUIDEA' },
+                    { CODIGO: '4', DESCRIPCION: 'SEDACION' },
+                    { CODIGO: '5', DESCRIPCION: 'BLOQUEO' },
+                    { CODIGO: '6', DESCRIPCION: 'LOCAL ASISTIDA' },
+                    { CODIGO: '7', DESCRIPCION: 'LOCAL' },
+                    { CODIGO: '8', DESCRIPCION: 'SIN ANESTECIA' }
+                ];
+                POPUP({
+                    array: TIPOSANES,
+                    titulo: "Tipo Anestesia:",
+                    indices: [
+                        { label: 'DESCRIP' }
+                    ],
+                    callback_f: _evaluarcelular_SAL97C11
+                },
+                    data => {
+                        switch (data.CODIGO) {
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                                _datoembarazon_SAL97C11();
+                                break;
+                        }
+                    });
+            }
+        }
+    )
+}
+
+function _datoembarazon_SAL97C11() {
+if (($_REG_PACI[0].SEXO == 'F') && )
+}
 ///////////////////////////////// MASCARAS //////////////////////////////////////////////////
 
 // var claseMask_SAL7C11 = IMask($('#clase_97C11')[0], { mask: Number, min: 0, max: 7 });
