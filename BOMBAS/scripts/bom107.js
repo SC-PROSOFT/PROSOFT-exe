@@ -1,4 +1,4 @@
-var $_COMPRO_INI, $_COMPRO_FIN, $_CONT_COMPRO,$_SURTIDORES_107, $_DATOS_TABLA_107, $_INFO_COMP_107;
+var $_COMPRO_INI, $_COMPRO_FIN, $_CONT_COMPRO, $_SURTIDORES_107, $_DATOS_TABLA_107, $_INFO_COMP_107, $_CONTADOR = 0;
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -30,40 +30,43 @@ function _ventanaComprobante() {
 
 function validarRangoComprobante(orden) {
     validarInputs(
-            {form: '#rangoComprobantes', orden: orden},
-            function(){
-                _toggleNav();
+        { form: '#rangoComprobantes', orden: orden },
+        function () {
+            _toggleNav();
+            $('[data-bb-handler="main"]').click();
+        },
+        function () {
+            var comp1 = $('.numCompr1');
+            var comp2 = $('.numCompr2');
+            $_COMPRO_INI = $(comp1[1]).val();
+            $_COMPRO_FIN = $(comp2[1]).val();
+            if (parseInt($_COMPRO_FIN) >= parseInt($_COMPRO_INI)) {
+                $('#numComprobante').val($_COMPRO_INI);
+                solicitarComp();
                 $('[data-bb-handler="main"]').click();
-            },
-            function () {
-                var comp1 = $('.numCompr1');
-                var comp2 = $('.numCompr2');
-                $_COMPRO_INI = $(comp1[1]).val();
-                $_COMPRO_FIN = $(comp2[1]).val();
-                if ($_COMPRO_INI <= $_COMPRO_FIN) {
-                    $('#numComprobante').val($_COMPRO_INI);
-                    solicitarComp();
-                    $('[data-bb-handler="main"]').click();
-                } else {
-                    alert('El comprobante final no puede ser menor');
-                }
+            } else {
+                validarRangoComprobante('1')
+                plantillaToast('99', 'El comprobante final no puede ser menor', '', 'warning', 'Advertencia');
             }
+        }
     );
 }
 
 function solicitarComp() {
+    $_CONTADOR++;
     $_CONT_COMPRO = $('#numComprobante').val();
-    if ($_CONT_COMPRO <= $_COMPRO_FIN) {
+
+    if (parseInt($_CONT_COMPRO) <= parseInt($_COMPRO_FIN)) {
         loader('show');
         var datos_envio = datosEnvio() + cerosIzq($_CONT_COMPRO, 6) + "|";
-        console.log(datos_envio)
-        SolicitarDll({datosh: datos_envio}, on_validarComprobante, get_url("app/bombas/BOM105.DLL"));
+        SolicitarDll({ datosh: datos_envio }, on_validarComprobante, get_url("app/bombas/BOM105.DLL"));
     } else {
         _inputControl('reset');
-        plantillaToast('confirmado', '39', '', 'success','Exitoso');
-        _toggleNav();
+        jAlert(
+            { titulo: 'Correcto', mensaje: '<b>Mensaje: </b> Se han reconsolidado los comprobantes' },
+            _toggleNav
+        );
     }
-
 }
 
 function on_validarComprobante(data) {
@@ -85,7 +88,6 @@ function on_validarComprobante(data) {
             rutaJson
         );
     } else {
-        console.log('entra')
         loader('hide');
         plantillaError(res[0], res[1], res[2], on_finalizar);
     }
@@ -181,35 +183,42 @@ function _llenarTablaVales_107() {
 
 function _validacionFinal_107() {
     loader('hide');
-    CON850_P(function (e) {
-        if (e.id == 'S') {
-            setTimeout(function(){
-                CON850_P(function(d){
-                    loader('show');
-                    var datos_envio = datosEnvio()
-                        + cerosIzq($_CONT_COMPRO, 6)+ '|' + d.id + '|' ;
-                    SolicitarDll({ datosh: datos_envio }, on_segundaConsulta, get_url("app/bombas/BOM020.DLL"));
-                },{
-                    msj: 'Permitir refacturar?',
-                    overlay_show: false
-                });
-            },500);
-        } else {
-            on_finalizar();
-        }
-    }, {
+
+    if ($_CONTADOR == 1) {
+        CON850_P(function (e) {
+            if (e.id == 'S') {
+                setTimeout(function () {
+                    CON850_P(function (d) {
+                        loader('show');
+                        var datos_envio = datosEnvio() + cerosIzq($_CONT_COMPRO, 6) + '|' + d.id + '|';
+                        SolicitarDll({ datosh: datos_envio }, on_segundaConsulta, get_url("app/bombas/BOM020.DLL"));
+                    }, {
+                        msj: 'Permitir refacturar?',
+                        overlay_show: false
+                    });
+                }, 500);
+            } else {
+                on_finalizar();
+            }
+        }, {
             msj: '04',
             overlay_show: false
         });
+    } else {
+        setTimeout(function () {
+            loader('show');
+            var datos_envio = datosEnvio() + cerosIzq($_CONT_COMPRO, 6) + '|S|';
+            SolicitarDll({ datosh: datos_envio }, on_segundaConsulta, get_url("app/bombas/BOM020.DLL"));
+        }, 1000)
+    }
 }
 
-function on_segundaConsulta(data){
+function on_segundaConsulta(data) {
     var res = data.split('|');
-    console.log(res)
     if (res[0].trim() == '00') {
         if ($_USUA_GLOBAL[0].INVENT.trim() == 'S') {
             var datos_envio = datosEnvio()
-                + cerosIzq($_CONT_COMPRO, 6)+ '|' ;
+                + cerosIzq($_CONT_COMPRO, 6) + '|';
             SolicitarDll({ datosh: datos_envio }, on_finConsulta, get_url("app/bombas/BOM030.DLL"));
         } else {
             on_finalizar();
@@ -219,7 +228,7 @@ function on_segundaConsulta(data){
     }
 }
 
-function on_finConsulta(data){
+function on_finConsulta(data) {
     loader('hide');
     var res = data.split('|');
     if (res[0].trim() == '00') {
@@ -229,12 +238,12 @@ function on_finConsulta(data){
     }
 }
 
-function on_finalizar(){
+function on_finalizar() {
     _inputControl('reset');
     $('#tablaVenta tbody').html('');
     $('#tablaVales tbody').html('');
-    setTimeout(function(){
-        $('#numComprobante').val(parseInt($_CONT_COMPRO)+1);
+    setTimeout(function () {
+        $('#numComprobante').val(parseInt($_CONT_COMPRO) + 1);
         solicitarComp();
-    },500);
+    }, 500);
 }

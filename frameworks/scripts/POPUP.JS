@@ -12,6 +12,7 @@
         indices: null,
         actual_opciones: [],
         callback_f: null,
+        seleccion: null,
 
         window: function (params, callback) {
             this.array_datos = params.array || false;
@@ -19,6 +20,7 @@
             this.indices = params.indices || null;
             this.callback_f = params.callback_f || false;
             this.callback = callback || false;
+            this.seleccion = params.seleccion || false;
 
             $.popup._import_css();
             if ($.popup._show()) this._llenarLista();
@@ -36,9 +38,14 @@
                 console.error('Los indices enviados no coinciden con el array de datos.')
             } else {
                 for (var i in datos_array) {
+                    var clases = '';
+
+                    var id = datos_array[i][indices.id];
+                    if (this.seleccion == id) clases = 'active-popup';
+
                     let idOpcion = this._parseOpcion(parseInt(i) + 1);
                     this.actual_opciones.push(idOpcion.toString())
-                    $(`<li data-id="${idOpcion}" data-index="${i}"/>`)
+                    $(`<li data-id="${idOpcion}" data-index="${i}" class="${clases}"/>`)
                         .html(`${datos_array[i][indices.id] || idOpcion} - ${datos_array[i][indices.label]}`)
                         .appendTo(`.${$.popup.body_class}_container ol`)
                 }
@@ -84,6 +91,7 @@
                     case 15: return 'G';
                     case 16: return 'H';
                     case 17: return 'I';
+                    case 18: return 'J';
                 }
             } else {
                 return idx;
@@ -280,10 +288,10 @@
 
     POPUP = function (params, callback) {
         console.log(params)
-        if (params.array.length < 1) console.log('error, array indefinido') 
+        if (params.array.length < 1) console.log('error, array indefinido')
         else $.popup.window(params, callback);
         console.log('-> Popup on')
-        
+
     }
 
 })(jQuery);

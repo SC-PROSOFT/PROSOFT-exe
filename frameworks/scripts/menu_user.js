@@ -213,11 +213,13 @@ function _toggleNav() {
     var visible = nav.is(':visible');
     var widthScreen = $(document).width();
     let Window = BrowserWindow.getAllWindows();
+    console.debug(Window);
 
     if (Window.length > 1) {
-        const { ipcRenderer } = require('electron');
+        var { ipcRenderer } = require('electron');
         let vector = ['salir', 'ejemplo']
         ipcRenderer.send('ventana2', { param: vector });
+        _EventocrearSegventana('off');
     }
     else {
         // if (widthScreen > 992) { // Pantalla grande
@@ -586,4 +588,219 @@ function calcular_edad(fecha) {
         }
     }
     return retornar;
+}
+
+function datos_finalidad(nit, sexo, edad) {
+    // SER834-A
+    var datos_finalidad = new Array();
+    if (nit == 844003225) {
+        if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.unid_edad < 51)) {
+            datos_finalidad.push({
+                'codigo': '01',
+                'descripcion': consult_finalidad('1')
+            });
+        }
+
+        if (edad.unid_edad == 'D') {
+            datos_finalidad.push({
+                'codigo': '02',
+                'descripcion': consult_finalidad('2')
+            });
+        }
+
+        if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 61)) {
+            datos_finalidad.push({
+                'codigo': '03',
+                'descripcion': consult_finalidad('3')
+            });
+        }
+
+        if ((edad.unid_edad == 'D' || edad.unid_edad == 'M') || (edad.unid_edad == 'A' && edad.vlr_edad < 10)) {
+            datos_finalidad.push({
+                'codigo': '04',
+                'descripcion': consult_finalidad('4')
+            });
+        }
+
+        if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 30)) {
+            datos_finalidad.push({
+                'codigo': '05',
+                'descripcion': consult_finalidad('5')
+            });
+        }
+
+        if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
+            datos_finalidad.push({
+                'codigo': '06',
+                'descripcion': consult_finalidad('6')
+            });
+        }
+
+        if (edad.unid_edad == 'A' && edad.vlr_edad > 29) {
+            datos_finalidad.push({
+                'codigo': '07',
+                'descripcion': consult_finalidad('7')
+            });
+        }
+
+        datos_finalidad.push({
+            'codigo': '08',
+            'descripcion': consult_finalidad('8')
+        });
+
+        if (edad.unid_edad == 'A' && edad.vlr_edad > 17) {
+            datos_finalidad.push({
+                'codigo': '09',
+                'descripcion': consult_finalidad('9')
+            });
+        }
+
+        datos_finalidad.push({
+            'codigo': '10',
+            'descripcion': consult_finalidad('10')
+        });
+
+        datos_finalidad.push({
+            'codigo': '11',
+            'descripcion': consult_finalidad('11')
+        });
+    } else {
+        if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
+            datos_finalidad.push({
+                'codigo': '01',
+                'descripcion': consult_finalidad('1')
+            });
+        }
+
+        if (edad.unid_edad == 'D') {
+            datos_finalidad.push({
+                'codigo': '02',
+                'descripcion': consult_finalidad('2')
+            });
+        }
+
+        if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 61)) {
+            datos_finalidad.push({
+                'codigo': '03',
+                'descripcion': consult_finalidad('3')
+            });
+        }
+
+        if ((edad.unid_edad == 'D' || edad.unid_edad == 'M') || (edad.unid_edad == 'A' && edad.vlr_edad < 12)) {
+            if ((edad.unid_edad == 'D' || edad.unid_edad == 'M') || (edad.unid_edad == 'A' && edad.vlr_edad < 6)) {
+                datos_finalidad.push({
+                    'codigo': '04',
+                    'descripcion': "PRIMERA INFANCIA"
+                });
+            } else {
+                datos_finalidad.push({
+                    'codigo': '04',
+                    'descripcion': "INFANCIA"
+                });
+            }
+        }
+
+        if ((edad.unid_edad == 'A') && (edad.vlr_edad > 11 && edad.vlr_edad < 29)) {
+            if (edad.vlr_edad > 11 && edad.vlr_edad < 18) {
+                datos_finalidad.push({
+                    'codigo': '05',
+                    'descripcion': "ADOLECENCIA"
+                });
+            } else {
+                datos_finalidad.push({
+                    'codigo': '05',
+                    'descripcion': "JUVENTU"
+                });
+            }
+        }
+
+        if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
+            datos_finalidad.push({
+                'codigo': '06',
+                'descripcion': consult_finalidad('6')
+            });
+        }
+
+        if (edad.unid_edad == 'A') {
+            if (edad.vlr_edad > 28 && edad.vlr_edad < 60) {
+                datos_finalidad.push({
+                    'codigo': '07',
+                    'descripcion': "ADULTEZ"
+                });
+            }
+
+            if (edad.vlr_edad > 59) {
+                datos_finalidad.push({
+                    'codigo': '07',
+                    'descripcion': "VEJEZ"
+                });
+            }
+        }
+
+        datos_finalidad.push({
+            'codigo': '08',
+            'descripcion': consult_finalidad('8')
+        });
+
+        if (edad.unid_edad == 'A' && edad.vlr_edad > 17) {
+            datos_finalidad.push({
+                'codigo': '09',
+                'descripcion': consult_finalidad('9')
+            });
+        }
+
+        datos_finalidad.push({
+            'codigo': '10',
+            'descripcion': consult_finalidad('10')
+        });
+
+        datos_finalidad.push({
+            'codigo': '11',
+            'descripcion': consult_finalidad('11')
+        });
+    }
+    return datos_finalidad;
+}
+
+function consult_finalidad(codigo) {
+    var msj = false;
+    switch (codigo) {
+        case '0':
+            msj = ""
+            break;
+        case '1':
+            msj = "ATENCION PARTO";
+            break;
+        case '2':
+            msj = "ATENCION REC.NACID";
+            break;
+        case '3':
+            msj = "ATENC.PLANIF.FAMIL";
+            break;
+        case '4':
+            msj = "DET.ALT CRECIM <10";
+            break;
+        case '5':
+            msj = "DET.ALT.DESA.JOVEN";
+            break;
+        case '6':
+            msj = "DET.ALT.EMBARAZO";
+            break;
+        case '7':
+            msj = "DET.ALT. ADULTO";
+            break;
+        case '8':
+            msj = "DET.ALT.AGUD.VISUA";
+            break;
+        case '9':
+            msj = "DET.ENFERM.PROFES.";
+            break;
+        case '10':
+            msj = "NO APLICA";
+            break;
+        case '11':
+            msj = "PATOLOGIA CRONICA";
+            break;
+    }
+    return msj;
 }

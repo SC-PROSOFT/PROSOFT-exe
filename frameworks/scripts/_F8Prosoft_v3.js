@@ -82,7 +82,7 @@
                             $.ventanaDatos.data = results;
 
                             console.log(results)
-                            
+
                             if ($.ventanaDatos._addColumnas_head(columnas_table)) {
                                 $.ventanaDatos.data_table = $('#' + $.ventanaDatos.tabla_id).DataTable({
                                     data: results,
@@ -170,7 +170,9 @@
                     })
 
                     // Set focus search
-                    $('#' + $.ventanaDatos.tabla_id + '_filter label input').focus();
+                    setTimeout(() => {
+                        $('#' + $.ventanaDatos.tabla_id + '_filter label input').focus();
+                    }, 500);
 
                     // Init teclas
                     $.ventanaDatos._initControls(true);
@@ -354,6 +356,8 @@
                             color: #FFF;\
                         }")
                 .appendTo("head");
+
+            $('.modal').removeAttr('tabindex')
 
             return true;
         }

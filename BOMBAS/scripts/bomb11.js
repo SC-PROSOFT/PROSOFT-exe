@@ -141,6 +141,7 @@ function validarFechaFinal() {
             if ($_FECHA_FIN < $_FECHA_INI) {
                 fechaFinal();
             } else {
+                $_FECHA_FIN = ano + mes + dia;
                 nitProcesar();
             }
         } else {
@@ -184,6 +185,8 @@ function _validarTercero_11() {
                 datos_envio += "|";
                 datos_envio += $_DATOS_BOMB11[4];
                 datos_envio += "|";
+
+                // SolicitarDatos({ datosh: datos_envio }, resptDllBoomb11, get_url("app/bombas/LISTGENERAR-FACT.DLL"));
                 SolicitarDatos({ datosh: datos_envio }, resptDllBoomb11, get_url("app/bombas/BOMB11_1.DLL"));
             } else {
                 nitProcesar();

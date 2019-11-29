@@ -379,7 +379,7 @@ function _ventanaterceros_SAL7767(e) {
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos_lite_v2({
                     titulo: 'VENTANA DE TERCEROS',
-                    data: $_TERCEROS_7767.TERCEROS,
+            data: $_TERCEROS_7767,
                     indice: ["COD", "NOMBRE", "DIRREC", "TELEF", "CIUDAD", "FACTOR", "ACT"],
                     mascara: [{
                         "COD": 'Identificacion',
