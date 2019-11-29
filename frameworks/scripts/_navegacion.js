@@ -179,12 +179,15 @@ function _infoRm_bat(data) {
 
     var argumentos = `${usuario}-${cbl}`;
     
-    
+    console.log(cbl);
     switch (cbl){              
         case 'SALUD\\SER109H':                
             opc_segu = data.opc_segu.padStart(6,"#");
 
             argumentos = `${argumentos}-${opc_segu}`;
+            break;
+        case 'HICLIN\\HC004':                    
+            argumentos = `${argumentos}-${$_REG_HC.id_paciente}-${$_REG_HC.suc_folio_hc}-${$_REG_HC.nro_folio_hc}-${$_REG_HC.edad_hc.unid_edad}-${$_REG_HC.edad_hc.vlr_edad}-${$_REG_PROF.datos_prof.IDENTIFICACION}`;
             break;
 
     }
@@ -197,7 +200,7 @@ function _infoRm_bat(data) {
     ${localStorage.Unidad}:\r\n
     CD \\${localStorage.Contab}\\${ mes }\r\n
     set p1=${ argumentos.padEnd(100, '*') } \r\n
-    SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\SALUD\\;EXPORT RUNPATH\r\n
+    SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\HICLIN\\;\\NEWCOBOL\\SALUD\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\INVENT\\;EXPORT RUNPATH\r\n
     runcobol MAIN k c=${localStorage.Unidad}:\\rmcobol\\windows.cfg A %p1%\r\n
         `;
 

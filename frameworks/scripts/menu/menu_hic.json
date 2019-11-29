@@ -2,56 +2,84 @@
     "Menu": [
         {
             "Id": "01",
-            "Descripcion": "Identificacion del paciente",
-            "Tipo": "JS",
-            "JS" : "../../HICLIN/scripts/menu-h01.js"
+            "Descripcion": "Actualizar pacientes",
+            "Tipo": "HTML",
+            "Href": "../../SALUD/paginas/SAL7767.html"            
         },
         {
             "Id": "02",
             "Descripcion": "Notas terapia y nutricion",
-            "Opc-segu": "ISH2",
-            "Tipo": "JS",
-            "JS" : "../../HICLIN/scripts/menu-h02.js"
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "HC004",
+                    "dll": "HICLIN\\HC004"
+                }
+            ]
         },
         {
             "Id": "03",
             "Descripcion": "Apertura historia clinica",
             "Opc-segu": "ISH3",
-            "Tipo": "JS",
-            "JS": "../../HICLIN/scripts/menu-h03.js"
+            "Tipo": "RM",
+            "Params": [
+                {
+                    "formulario": "MENU-H03",
+                    "dll": "HICLIN\\MENU-H03"
+                }
+            ]
         },
         {
             "Id": "04",
             "Descripcion": "Evolucion Med. / Control",
-            "Opc-segu": "ISH4",
             "Sub": [
                 {
                     "Id": "041",
                     "Descripcion": "Evolucion medica",
                     "Opc-segu": "ISH41",
-                    "Tipo": "JS",
-                    "JS": "../../HICLIN/scripts/menu-h041.js"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC002",
+                            "dll": "HICLIN\\HC002"
+                        }
+                    ]
                 },
                 {
                     "Id": "042",
                     "Descripcion": "Interpretacion de resultados",
                     "Opc-segu": "ISH42",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/HC012.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC012",
+                            "dll": "HICLIN\\HC012"
+                        }
+                    ]
                 },
                 {
                     "Id": "043",
                     "Descripcion": "Solo formulacion",
                     "Opc-segu": "ISH44",
-                    "Tipo": "JS",
-                    "JS": "../../HICLIN/scripts/menu-h043.js"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC002F",
+                            "dll": "HICLIN\\HC002F"
+                        }
+                    ]
                 },
                 {
                     "Id": "044",
                     "Descripcion": "Nota sin atencion",
                     "Opc-segu": "ISH41",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/HC044.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC044",
+                            "dll": "HICLIN\\HC044"
+                        }
+                    ]
                 }
             ]
         },
@@ -64,108 +92,176 @@
                     "Id": "051",
                     "Descripcion": "Notas enfermeria y signos",
                     "Opc-segu": "ISH51",
-                    "Tipo": "JS",
-                    "JS": "../../HICLIN/scripts/menu-h051.js"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC003",
+                            "dll": "HICLIN\\HC003"
+                        }
+                    ]
                 },
                 {
                     "Id": "052",
                     "Descripcion": "Registro de enfermeria",
                     "Opc-segu": "ISH52",
-                    "Tipo": "VALIDAR-OPC",
-                    "JS" : "../../HICLIN/scripts/menu-h052.js",
                     "Sub": [
                         {
                             "Id": "0521",
                             "Descripcion": "Administracion de medicamentos",
                             "Opc-segu": "ISH42",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC003A.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC003A",
+                                    "dll": "HICLIN\\HC003A"
+                                }
+                            ]
                         },
                         {
                             "Id": "0522",
                             "Descripcion": "Registro signos vitales",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC522.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC522",
+                                    "dll": "HICLIN\\HC522"
+                                }
+                            ]
                         },
                         {
                             "Id": "0523",
                             "Descripcion": "Registro glucometrias",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC523.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC523",
+                                    "dll": "HICLIN\\HC523"
+                                }
+                            ]
                         },
                         {
                             "Id": "0524",
                             "Descripcion": "Registro de oxigeno",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC524.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC524",
+                                    "dll": "HICLIN\\HC524"
+                                }
+                            ]
                         },
                         {
                             "Id": "0525",
                             "Descripcion": "Control neurologico",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC525.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC525",
+                                    "dll": "HICLIN\\HC525"
+                                }
+                            ]
                         },
                         {
                             "Id": "0526",
                             "Descripcion": "Control de liquidos",
                             "Opc-segu": "IS46",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC526.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC526",
+                                    "dll": "HICLIN\\HC526"
+                                }
+                            ]
                         },
                         {
                             "Id": "0527",
                             "Descripcion": "Devolucion medicamentos",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC527.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC527",
+                                    "dll": "HICLIN\\HC527"
+                                }
+                            ]
                         },
                         {
                             "Id": "0528",
                             "Descripcion": "Test de aldrede",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC528.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC528",
+                                    "dll": "HICLIN\\HC528"
+                                }
+                            ]
                         },
                         {
                             "Id": "0529",
                             "Descripcion": "Hoja de gastos",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC529.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC529",
+                                    "dll": "HICLIN\\HC529"
+                                }
+                            ]
                         },
                         {
                             "Id": "052A",
                             "Descripcion": "Control de transfusion",
                             "Opc-segu": "IS45",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC52A.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC52A",
+                                    "dll": "HICLIN\\HC52A"
+                                }
+                            ]
                         }
-                    ]    
+                    ]
                 },
                 {
                     "Id": "053",
                     "Descripcion": "Resumen facturacion X paci",
                     "Opc-segu": "IS45",
-                    "Tipo": "HTML",
-                    "Href": "../../SALUD/paginas/SER120.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "SER120",
+                            "dll": "SALUD\\SER120"
+                        }
+                    ]
                 },
                 {
                     "Id": "054",
                     "Descripcion": "Resumen facturacion X tipo",
                     "Opc-segu": "IS44",
-                    "Tipo": "HTML",
-                    "Href": "../../SALUD/paginas/SER604.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "SER604",
+                            "dll": "SALUD\\SER604"
+                        }
+                    ]
                 },
                 {
                     "Id": "055",
                     "Descripcion": "AIEPI nidos",
                     "Opc-segu": "ISH55",
-                    "Tipo": "JS",
-                    "JS": "../../HICLIN/scripts/menu-h055.js"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "AIEPI000",
+                            "dll": "HICLIN\\AIEPI000"
+                        }
+                    ]
                 },
                 {
                     "Id": "056",
@@ -176,50 +272,77 @@
                             "Id": "0561",
                             "Descripcion": "Registro de vacunacion",
                             "Opc-segu": "ISH51",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/VACUNAS.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "VACUNAS",
+                                    "dll": "HICLIN\\VACUNAS"
+                                }
+                            ]
                         },
                         {
                             "Id": "0562",
                             "Descripcion": "Reimpresion de vacunacion",
                             "Opc-segu": "ISH51",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/VACUNASI.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "VACUNASI",
+                                    "dll": "HICLIN\\VACUNASI"
+                                }
+                            ]
                         }
                     ]
-            
                 },
                 {
                     "Id": "057",
                     "Descripcion": "Control de desarrollo",
                     "Opc-segu": "ISH57",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/PYP1.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "PYP1",
+                            "dll": "HICLIN\\PYP1"
+                        }
+                    ]
                 },
                 {
                     "Id": "058",
                     "Descripcion": "Reimprime control de desarrollo",
                     "Opc-segu": "ISH58",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/PYP1I.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "PYP1I",
+                            "dll": "HICLIN\\PYP1I"
+                        }
+                    ]
                 },
                 {
                     "Id": "059",
                     "Descripcion": "Interpretacion citologia",
                     "Opc-segu": "ISH59",
-                    "Tipo": "JS",
-                    "JS": "../../HICLIN/scripts/menu-h059.js"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC003C",
+                            "dll": "HICLIN\\HC003C"
+                        }
+                    ]
                 },
                 {
                     "Id": "05A",
                     "Descripcion": "Interpretacion patologia",
                     "Opc-segu": "ISH5A",
-                    "Tipo": "JS",
-                    "JS": "../../HICLIN/scripts/menu-h05A.js"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC003D",
+                            "dll": "HICLIN\\HC003D"
+                        }
+                    ]
                 }
-
             ]
-            
         },
         {
             "Id": "06",
@@ -230,29 +353,49 @@
                     "Id": "061",
                     "Descripcion": "Asignar cama o factura",
                     "Opc-segu": "ISH61",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/HC601.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC601",
+                            "dll": "HICLIN\\HC601"
+                        }
+                    ]
                 },
                 {
                     "Id": "062",
                     "Descripcion": "Elaborar pedidos farmacia",
                     "Opc-segu": "ISH62",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/HC602.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC602",
+                            "dll": "HICLIN\\HC602"
+                        }
+                    ]
                 },
                 {
                     "Id": "063",
                     "Descripcion": "Reimprimir pedidos farmacia",
                     "Opc-segu": "ISH63",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/HC603.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC603",
+                            "dll": "HICLIN\\HC603"
+                        }
+                    ]
                 },
                 {
                     "Id": "064",
                     "Descripcion": "Habilitar historia blanco",
                     "Opc-segu": "ISH64",
-                    "Tipo": "HTML",
-                    "Href": "../../HICLIN/paginas/HC604.html"
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC604",
+                            "dll": "HICLIN\\HC604"
+                        }
+                    ]
                 },
                 {
                     "Id": "065",
@@ -263,15 +406,25 @@
                             "Id": "0651",
                             "Descripcion": "Cierre historia clinica",
                             "Opc-segu": "ISH651",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC605.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC605",
+                                    "dll": "HICLIN\\HC605"
+                                }
+                            ]
                         },
                         {
                             "Id": "0652",
                             "Descripcion": "Reapertura historica clinica",
                             "Opc-segu": "ISH652",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC605B.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC605B",
+                                    "dll": "HICLIN\\HC605B"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -283,14 +436,24 @@
                             "Id": "0661",
                             "Descripcion": "Diligenciar APACHE",
                             "Opc-segu": "ISH66",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC606.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC606",
+                                    "dll": "HICLIN\\HC606"
+                                }
+                            ]
                         },
                         {
                             "Id": "0662",
                             "Descripcion": "Reimprimir APACHE",
-                            "Tipo": "HTML",
-                            "Href": "../../HICLIN/paginas/HC6062.html"
+                            "Tipo": "RM",
+                            "Params": [
+                                {
+                                    "formulario": "HC602",
+                                    "dll": "HICLIN\\HC602"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -302,7 +465,7 @@
                     "Params": [
                         {
                             "formulario": "HC607",
-                            "dll": "HICLIN\\HC607.dll"
+                            "dll": "HICLIN\\HC607"
                         }
                     ]
                 },
@@ -314,7 +477,7 @@
                     "Params": [
                         {
                             "formulario": "HC608",
-                            "dll": "HICLIN\\HC608.dll"
+                            "dll": "HICLIN\\HC608"
                         }
                     ]
                 },
@@ -326,7 +489,7 @@
                     "Params": [
                         {
                             "formulario": "HC609",
-                            "dll": "HICLIN\\HC609.dll"
+                            "dll": "HICLIN\\HC609"
                         }
                     ]
                 },
@@ -338,7 +501,7 @@
                     "Params": [
                         {
                             "formulario": "HC610",
-                            "dll": "HICLIN\\HC610.dll"
+                            "dll": "HICLIN\\HC610"
                         }
                     ]
                 },
@@ -350,7 +513,7 @@
                     "Params": [
                         {
                             "formulario": "HC611",
-                            "dll": "HICLIN\\HC611.dll"
+                            "dll": "HICLIN\\HC611"
                         }
                     ]
                 },
@@ -361,19 +524,227 @@
                     "Params": [
                         {
                             "formulario": "HC612",
-                            "dll": "HICLIN\\HC612.dll"
+                            "dll": "HICLIN\\HC612"
                         }
                     ]
                 }
-
-
-
             ]
         },
         {
             "Id": "07",
             "Descripcion": "Submenu impresion historia",
-            "Href": ""
+            "Tipo": "RM",
+            "Sub": [
+                {
+                    "Id": "071",
+                    "Descripcion": "Imprime historia clinica",
+                    "Opc-segu": "ISH42",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC701",
+                            "dll": "HICLIN\\HC701"
+                        }
+                    ]
+                },
+                {
+                    "Id": "072",
+                    "Descripcion": "Imprime Epicrisis, remision",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC702",
+                            "dll": "HICLIN\\HC702"
+                        }
+                    ]
+                },
+                {
+                    "Id": "073",
+                    "Descripcion": "Imprime resultados lab",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "LAB122",
+                            "dll": "HICLIN\\LAB122"
+                        }
+                    ]
+                },
+                {
+                    "Id": "074",
+                    "Descripcion": "Imprime resultados rx",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC704",
+                            "dll": "HICLIN\\HC704"
+                        }
+                    ]
+                },
+                {
+                    "Id": "075",
+                    "Descripcion": "Reimprime evolucion medica",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC705",
+                            "dll": "HICLIN\\HC705"
+                        }
+                    ]
+                },
+                {
+                    "Id": "076",
+                    "Descripcion": "Reimprime evolucion enferm",
+                    "Opc-segu": "IS46",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC706",
+                            "dll": "HICLIN\\HC706"
+                        }
+                    ]
+                },
+                {
+                    "Id": "077",
+                    "Descripcion": "Reimprime nota terapeutas",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC707",
+                            "dll": "HICLIN\\HC706"
+                        }
+                    ]
+                },
+                {
+                    "Id": "078",
+                    "Descripcion": "Reimprime Ordenes NOPOS",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC708",
+                            "dll": "HICLIN\\HC708"
+                        }
+                    ]
+                },
+                {
+                    "Id": "079",
+                    "Descripcion": "Imprime todos los folios",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC709",
+                            "dll": "HICLIN\\HC709"
+                        }
+                    ]
+                },
+                {
+                    "Id": "07A",
+                    "Descripcion": "Informe de signos vitales",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Sub": [
+                        {
+                            "Id": "07A1",
+                            "Descripcion": "Grafico signos seriado seman",
+                            "Opc-segu": "IS45",
+                            "Params": [
+                                {
+                                    "formulario": "HC710",
+                                    "dll": "HICLIN\\HC710"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "07A2",
+                            "Descripcion": "Grafico signos seriado x hor",
+                            "Opc-segu": "IS45",
+                            "Params": [
+                                {
+                                    "formulario": "HC711",
+                                    "dll": "HICLIN\\HC711"
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "07A3",
+                            "Descripcion": "Informe detallado x signo",
+                            "Opc-segu": "IS45",
+                            "Params": [
+                                {
+                                    "formulario": "HC7A3",
+                                    "dll": "HICLIN\\HC7A3"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "07B",
+                    "Descripcion": "Informe Ordenes Medicas",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC712",
+                            "dll": "HICLIN\\HC712"
+                        }
+                    ]
+                },
+                {
+                    "Id": "07C",
+                    "Descripcion": "Informe Procesos Enfermeria",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "HC713",
+                            "dll": "SALUD\\HC713"
+                        }
+                    ]
+                },
+                {
+                    "Id": "07D",
+                    "Descripcion": "Reimprime autorizacion urg.",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "SER4B3",
+                            "dll": "HICLIN\\SER4B3"
+                        }
+                    ]
+                },
+                {
+                    "Id": "07E",
+                    "Descripcion": "Imprime Tablas crecimiento",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "GRAF-DESA",
+                            "dll": "HICLIN\\GRAF-DESA"
+                        }
+                    ]
+                },
+                {
+                    "Id": "07G",
+                    "Descripcion": "Imprime Graficos maternas",
+                    "Opc-segu": "IS45",
+                    "Tipo": "RM",
+                    "Params": [
+                        {
+                            "formulario": "GRAF-EMBA",
+                            "dll": "HICLIN\\GRAF-EMBA"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "Id": "08",
