@@ -6149,14 +6149,14 @@
                 },
                 {
                   "Id": "0971H",
-                  "Descripcion": "Actualiza comunidad",
+                  "Descripcion": "Actualiza comunidades",
                   "Opc-segu": "IS1H",
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL71H.html"
                 },
                 {
                   "Id": "0971I",
-                  "Descripcion": "Actualiza reguardo",
+                  "Descripcion": "Actualiza resguardos",
                   "Opc-segu": "IS1I",
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL71I.html"
@@ -6303,7 +6303,7 @@
                   "Params": [
                     {
                       "formulario": "SER105C",
-                      "dll": "SALUD\\SER105C.dll"
+                      "dll": "SALUD\\SER105C"
                     }
                   ]
                 },
@@ -6383,7 +6383,7 @@
                           "Params": [
                             {
                               "formulario": "SER108A",
-                              "dll": "SALUD\\SER108A.dll"
+                              "dll": "SALUD\\SER108A"
                             }
                           ]
                         },
@@ -6395,7 +6395,7 @@
                           "Params": [
                             {
                               "formulario": "SER108B",
-                              "dll": "SALUD\\SER108B.dll"
+                              "dll": "SALUD\\SER108B"
                             }
                           ]
                         },
@@ -6407,7 +6407,7 @@
                           "Params": [
                             {
                               "formulario": "SER108D",
-                              "dll": "SALUD\\SER108D.dll"
+                              "dll": "SALUD\\SER108D"
                             }
                           ]
                         },
@@ -6419,7 +6419,7 @@
                           "Params": [
                             {
                               "formulario": "SER108G",
-                              "dll": "SALUD\\SER108G.dll"
+                              "dll": "SALUD\\SER108G"
                             }
                           ]
                         }
@@ -6433,7 +6433,7 @@
                       "Params": [
                         {
                           "formulario": "SER108R",
-                          "dll": "SALUD\\SER108R.dll"
+                          "dll": "SALUD\\SER108R"
                         }
                       ]
                     },
@@ -6445,7 +6445,7 @@
                       "Params": [
                         {
                           "formulario": "SER108S",
-                          "dll": "SALUD\\SER108S.dll"
+                          "dll": "SALUD\\SER108S"
                         }
                       ]
                     },
@@ -6457,7 +6457,7 @@
                       "Params": [
                         {
                           "formulario": "SER108T",
-                          "dll": "SALUD\\SER108T.dll"
+                          "dll": "SALUD\\SER108T"
                         }
                       ]
                     }
@@ -6476,7 +6476,7 @@
                       "Params": [
                         {
                           "formulario": "SER110",
-                          "dll": "SALUD\\SER110.dll"
+                          "dll": "SALUD\\SER110"
                         }
                       ]
                     },
@@ -6488,7 +6488,7 @@
                       "Params": [
                         {
                           "formulario": "SER422",
-                          "dll": "SALUD\\SER422.dll"
+                          "dll": "SALUD\\SER422"
                         }
                       ]
                     },
@@ -6500,7 +6500,7 @@
                       "Params": [
                         {
                           "formulario": "SER423",
-                          "dll": "SALUD\\SER423.dll"
+                          "dll": "SALUD\\SER423"
                         }
                       ]
                     },
@@ -6512,19 +6512,19 @@
                       "Params": [
                         {
                           "formulario": "SER424",
-                          "dll": "SALUD\\SER424.dll"
+                          "dll": "SALUD\\SER424"
                         }
                       ]
                     },
                     {
                       "Id": "097425",
-                      "Descripcion": "Marcar capacitacion",
+                      "Descripcion": "Marcar capitacion",
                       "Opc-segu": "IS425",
                       "Tipo": "RM",
                       "Params": [
                         {
                           "formulario": "SER425",
-                          "dll": "SALUD\\SER425.dll"
+                          "dll": "SALUD\\SER425"
                         }
                       ]
                     },
@@ -6536,7 +6536,7 @@
                       "Params": [
                         {
                           "formulario": "SER426",
-                          "dll": "SALUD\\SER426.dll"
+                          "dll": "SALUD\\SER426"
                         }
                       ]
                     },
@@ -6548,7 +6548,7 @@
                       "Params": [
                         {
                           "formulario": "SER427",
-                          "dll": "SALUD\\SER427.dll"
+                          "dll": "SALUD\\SER427"
                         }
                       ]
                     },
@@ -6560,7 +6560,7 @@
                       "Params": [
                         {
                           "formulario": "SER428",
-                          "dll": "SALUD\\SER428.dll"
+                          "dll": "SALUD\\SER428"
                         }
                       ]
                     }
@@ -6579,7 +6579,7 @@
                       "Params": [
                         {
                           "formulario": "SER109",
-                          "dll": "SALUD\\SER109.dll"
+                          "dll": "SALUD\\SER109"
                         }
                       ]
                     },
@@ -6591,7 +6591,7 @@
                       "Params": [
                         {
                           "formulario": "SER109B",
-                          "dll": "SALUD\\SER109B.dll"
+                          "dll": "SALUD\\SER109B"
                         }
                       ]
                     },
@@ -6603,7 +6603,7 @@
                       "Params": [
                         {
                           "formulario": "SER109F",
-                          "dll": "SALUD\\SER109F.dll"
+                          "dll": "SALUD\\SER109F"
                         }
                       ]
                     },
@@ -6615,8 +6615,7 @@
                       "Params": [
                         {
                           "formulario": "SER109H",
-                          "dll": "SALUD\\SER109H.dll",
-                          "opc-segu-lnk" : "IS434"
+                          "dll": "SALUD\\SER109H"
                         }
                       ]
                     },
@@ -6635,7 +6634,7 @@
                       "Params": [
                         {
                           "formulario": "SER109J",
-                          "dll": "SALUD\\SER109J.dll"
+                          "dll": "SALUD\\SER109J"
                         }
                       ]
                     },
@@ -6652,7 +6651,7 @@
                           "Params": [
                             {
                               "formulario": "SER109S",
-                              "dll": "SALUD\\SER109S.dll"
+                              "dll": "SALUD\\SER109S"
                             }
                           ]
                         },
@@ -6664,7 +6663,7 @@
                           "Params": [
                             {
                               "formulario": "SER4C2",
-                              "dll": "SALUD\\SER4C2.dll"
+                              "dll": "SALUD\\SER4C2"
                             }
                           ]
                         },
@@ -6676,7 +6675,7 @@
                           "Params": [
                             {
                               "formulario": "SER4C3",
-                              "dll": "SALUD\\SER4C3.dll"
+                              "dll": "SALUD\\SER4C3"
                             }
                           ]
                         },
@@ -6688,7 +6687,7 @@
                           "Params": [
                             {
                               "formulario": "SER4C4",
-                              "dll": "SALUD\\SER4C4.dll"
+                              "dll": "SALUD\\SER4C4"
                             }
                           ]
                         },
@@ -6700,7 +6699,7 @@
                           "Params": [
                             {
                               "formulario": "SER4C5",
-                              "dll": "SALUD\\SER4C5.dll"
+                              "dll": "SALUD\\SER4C5"
                             }
                           ]
                         },
@@ -6712,7 +6711,7 @@
                           "Params": [
                             {
                               "formulario": "SER4C6",
-                              "dll": "SALUD\\SER4C6.dll"
+                              "dll": "SALUD\\SER4C6"
                             }
                           ]
                         },
@@ -6723,7 +6722,7 @@
                           "Params": [
                             {
                               "formulario": "SER4C7",
-                              "dll": "SALUD\\SER4C7.dll"
+                              "dll": "SALUD\\SER4C7"
                             }
                           ]
                         }
@@ -6737,7 +6736,7 @@
                       "Params": [
                         {
                           "formulario": "SER109L",
-                          "dll": "SALUD\\SER109L.dll"
+                          "dll": "SALUD\\SER109L"
                         }
                       ]
                     },
@@ -6749,7 +6748,7 @@
                       "Params": [
                         {
                           "formulario": "SER109O",
-                          "dll": "SALUD\\SER109O.dll"
+                          "dll": "SALUD\\SER109O"
                         }
                       ]
                     },
@@ -6761,7 +6760,7 @@
                       "Params": [
                         {
                           "formulario": "SER109Q",
-                          "dll": "SALUD\\SER109Q.dll"
+                          "dll": "SALUD\\SER109Q"
                         }
                       ]
                     },
@@ -6773,7 +6772,7 @@
                       "Params": [
                         {
                           "formulario": "SER109V",
-                          "dll": "SALUD\\SER109V.dll"
+                          "dll": "SALUD\\SER109V"
                         }
                       ]
                     },
@@ -6785,7 +6784,7 @@
                       "Params": [
                         {
                           "formulario": "SER109U",
-                          "dll": "SALUD\\SER109U.dll"
+                          "dll": "SALUD\\SER109U"
                         }
                       ]
                     },
@@ -6797,7 +6796,7 @@
                       "Params": [
                         {
                           "formulario": "SER109W",
-                          "dll": "SALUD\\SER109W.dll"
+                          "dll": "SALUD\\SER109W"
                         }
                       ]
                     },
@@ -6809,7 +6808,7 @@
                       "Params": [
                         {
                           "formulario": "SER109N",
-                          "dll": "SALUD\\SER109N.dll"
+                          "dll": "SALUD\\SER109N"
                         }
                       ]
                     },
@@ -6821,7 +6820,7 @@
                       "Params": [
                         {
                           "formulario": "SER109B1",
-                          "dll": "SALUD\\SER109B1.dll"
+                          "dll": "SALUD\\SER109B1"
                         }
                       ]
                     },
@@ -6833,8 +6832,7 @@
                       "Params": [
                         {
                           "formulario": "SER109H",
-                          "dll": "SALUD\\SER109H.dll",
-                          "opc-segu-lnk" : "IS43H"
+                          "dll": "SALUD\\SER109H"                          
                         }
                       ]
                     },
@@ -6846,8 +6844,7 @@
                       "Params": [
                         {
                           "formulario": "SER109H",
-                          "dll": "SALUD\\SER109H.dll",
-                          "opc-segu-lnk" : "IS43I"
+                          "dll": "SALUD\\SER109H"
                         }
                       ]
                     },
@@ -6859,7 +6856,7 @@
                       "Params": [
                         {
                           "formulario": "SER109J8",
-                          "dll": "SALUD\\SER109J8.dll"
+                          "dll": "SALUD\\SER109J8"
                         }
                       ]
                     },
@@ -6871,7 +6868,7 @@
                       "Params": [
                         {
                           "formulario": "SER109AB",
-                          "dll": "SALUD\\SER109AB.dll"
+                          "dll": "SALUD\\SER109AB"
                         }
                       ]
                     },
@@ -6888,7 +6885,7 @@
                           "Params": [
                             {
                               "formulario": "SER457A",
-                              "dll": "SALUD\\SER457A.dll"
+                              "dll": "SALUD\\SER457A"
                             }
                           ]
                         },
@@ -6900,21 +6897,21 @@
                           "Params": [
                             {
                               "formulario": "SER458I",
-                              "dll": "SALUD\\SER458I.dll"
+                              "dll": "SALUD\\SER458I"
                             }
                           ]
                         }
                       ]
                     },
                     {
-                      "Id": "09743K",
-                      "Descripcion": "Impresuib resumen x paciente",
+                      "Id": "09743M",
+                      "Descripcion": "Impresion resumen x paciente",
                       "Opc-segu": "IS43AI",
                       "Tipo": "RM",
                       "Params": [
                         {
                           "formulario": "SER10A9",
-                          "dll": "SALUD\\SER10A9.dll"
+                          "dll": "SALUD\\SER10A9"
                         }
                       ]
                     }
@@ -6928,7 +6925,7 @@
                   "Params": [
                     {
                       "formulario": "SER604",
-                      "dll": "SALUD\\SER604.dll",
+                      "dll": "SALUD\\SER604",
                       "admin-w": ""
                     }
                   ]
@@ -6946,7 +6943,7 @@
                       "Params": [
                         {
                           "formulario": "SER120",
-                          "dll": "SALUD\\SER120.dll"
+                          "dll": "SALUD\\SER120"
                         }
                       ]
                     },
@@ -6958,7 +6955,7 @@
                       "Params": [
                         {
                           "formulario": "SER125",
-                          "dll": "SALUD\\SER125.dll"
+                          "dll": "SALUD\\SER125"
                         }
                       ]
                     }
@@ -6972,7 +6969,7 @@
                   "Params": [
                     {
                       "formulario": "SER121",
-                      "dll": "SALUD\\SER121.dll"
+                      "dll": "SALUD\\SER121"
                     }
                   ]
                 },
@@ -6984,7 +6981,7 @@
                   "Params": [
                     {
                       "formulario": "SER113",
-                      "dll": "SALUD\\SER113.dll"
+                      "dll": "SALUD\\SER113"
                     }
                   ]
                 },
@@ -6996,19 +6993,19 @@
                   "Params": [
                     {
                       "formulario": "SER114",
-                      "dll": "SALUD\\SER114.dll"
+                      "dll": "SALUD\\SER114"
                     }
                   ]
                 },
                 {
                   "Id": "09749",
-                  "Descripcion": "Anexo a factura de capacitacion",
+                  "Descripcion": "Anexo a factura de capitacion",
                   "Opc-segu": "IS49",
                   "Tipo": "RM",
                   "Params": [
                     {
                       "formulario": "SER109Y",
-                      "dll": "SALUD\\SER109Y.dll"
+                      "dll": "SALUD\\SER109Y"
                     }
                   ]
                 },
@@ -7024,8 +7021,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER109Y",
-                          "dll": "SALUD\\SER109Y.dll"
+                          "formulario": "SER419",
+                          "dll": "SALUD\\SER419"
                         }
                       ]
                     },
@@ -7037,7 +7034,7 @@
                       "Params": [
                         {
                           "formulario": "SER4A2",
-                          "dll": "SALUD\\SER4A2.dll"
+                          "dll": "SALUD\\SER4A2"
                         }
                       ]
                     },
@@ -7049,7 +7046,7 @@
                       "Params": [
                         {
                           "formulario": "SER4A3",
-                          "dll": "SALUD\\SER4A3.dll"
+                          "dll": "SALUD\\SER4A3"
                         }
                       ]
                     },
@@ -7061,7 +7058,7 @@
                       "Params": [
                         {
                           "formulario": "SER420",
-                          "dll": "SALUD\\SER420.dll"
+                          "dll": "SALUD\\SER420"
                         }
                       ]
                     }
@@ -7080,7 +7077,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B1",
-                          "dll": "SALUD\\SER4B1.dll"
+                          "dll": "SALUD\\SER4B1"
                         }
                       ]
                     },
@@ -7092,7 +7089,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B2",
-                          "dll": "SALUD\\SER4B2.dll"
+                          "dll": "SALUD\\SER4B2"
                         }
                       ]
                     },
@@ -7104,7 +7101,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B3",
-                          "dll": "SALUD\\SER4B3.dll"
+                          "dll": "SALUD\\SER4B3"
                         }
                       ]
                     },
@@ -7116,7 +7113,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B4",
-                          "dll": "SALUD\\SER4B4.dll"
+                          "dll": "SALUD\\SER4B4"
                         }
                       ]
                     },
@@ -7128,7 +7125,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B6",
-                          "dll": "SALUD\\SER4B6.dll"
+                          "dll": "SALUD\\SER4B6"
                         }
                       ]
                     },
@@ -7139,7 +7136,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B8",
-                          "dll": "SALUD\\SER4B8.dll"
+                          "dll": "SALUD\\SER4B8"
                         }
                       ]
                     },
@@ -7150,7 +7147,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B8I",
-                          "dll": "SALUD\\SER4B8I.dll"
+                          "dll": "SALUD\\SER4B8I"
                         }
                       ]
                     },
@@ -7162,7 +7159,7 @@
                       "Params": [
                         {
                           "formulario": "SER4B0A",
-                          "dll": "SALUD\\SER4B0A.dll"
+                          "dll": "SALUD\\SER4B0A"
                         }
                       ]
                     }
@@ -7188,7 +7185,7 @@
                       "Params": [
                         {
                           "formulario": "SER451",
-                          "dll": "SALUD\\SER451.dll"
+                          "dll": "SALUD\\SER451"
                         }
                       ]
                     },
@@ -7200,7 +7197,7 @@
                       "Params": [
                         {
                           "formulario": "SER509",
-                          "dll": "SALUD\\SER509.dll"
+                          "dll": "SALUD\\SER509"
                         }
                       ]
                     },
@@ -7221,7 +7218,7 @@
                       "Params": [
                         {
                           "formulario": "SER513",
-                          "dll": "SALUD\\SER513.dll"
+                          "dll": "SALUD\\SER513"
                         }
                       ]
                     },
@@ -7233,7 +7230,7 @@
                       "Params": [
                         {
                           "formulario": "SER514",
-                          "dll": "SALUD\\SER514.dll"
+                          "dll": "SALUD\\SER514"
                         }
                       ]
                     },
@@ -7250,7 +7247,7 @@
                           "Params": [
                             {
                               "formulario": "SER515",
-                              "dll": "SALUD\\SER515.dll"
+                              "dll": "SALUD\\SER515"
                             }
                           ]
                         },
@@ -7262,7 +7259,7 @@
                           "Params": [
                             {
                               "formulario": "SER515B",
-                              "dll": "SALUD\\SER515B.dll"
+                              "dll": "SALUD\\SER515B"
                             }
                           ]
                         },
@@ -7274,7 +7271,7 @@
                           "Params": [
                             {
                               "formulario": "SER515C",
-                              "dll": "SALUD\\SER515C.dll"
+                              "dll": "SALUD\\SER515C"
                             }
                           ]
                         },
@@ -7286,7 +7283,7 @@
                           "Params": [
                             {
                               "formulario": "SER515D",
-                              "dll": "SALUD\\SER515D.dll"
+                              "dll": "SALUD\\SER515D"
                             }
                           ]
                         }
@@ -7300,7 +7297,7 @@
                       "Params": [
                         {
                           "formulario": "SER4516",
-                          "dll": "SALUD\\SER4516.dll"
+                          "dll": "SALUD\\SER4516"
                         }
                       ]
                     }
@@ -7314,7 +7311,7 @@
                   "Params": [
                     {
                       "formulario": "SER504",
-                      "dll": "SALUD\\SER504.dll"
+                      "dll": "SALUD\\SER504"
                     }
                   ]
                 },
@@ -7326,19 +7323,19 @@
                   "Params": [
                     {
                       "formulario": "SER505",
-                      "dll": "SALUD\\SER505.dll"
+                      "dll": "SALUD\\SER505"
                     }
                   ]
                 },
                 {
                   "Id": "09754",
-                  "Descripcion": "Listado intereses cartera",
+                  "Descripcion": "Listado intereses de cartera",
                   "Opc-segu": "IS54",
                   "Tipo": "RM",
                   "Params": [
                     {
                       "formulario": "SER506",
-                      "dll": "SALUD\\SER506.dll"
+                      "dll": "SALUD\\SER506"
                     }
                   ]
                 },
@@ -7350,7 +7347,7 @@
                   "Params": [
                     {
                       "formulario": "SER165",
-                      "dll": "SALUD\\SER165.dll"
+                      "dll": "SALUD\\SER165"
                     }
                   ]
                 },
@@ -7362,7 +7359,7 @@
                   "Params": [
                     {
                       "formulario": "SER301",
-                      "dll": "SALUD\\SER301.dll"
+                      "dll": "SALUD\\SER301"
                     }
                   ]
                 },
@@ -7374,7 +7371,7 @@
                   "Params": [
                     {
                       "formulario": "SER508",
-                      "dll": "SALUD\\SER508.dll"
+                      "dll": "SALUD\\SER508"
                     }
                   ]
                 },
@@ -7386,7 +7383,7 @@
                   "Params": [
                     {
                       "formulario": "SER511",
-                      "dll": "SALUD\\SER511.dll"
+                      "dll": "SALUD\\SER511"
                     }
                   ]
                 },
@@ -7398,7 +7395,7 @@
                   "Params": [
                     {
                       "formulario": "SER512",
-                      "dll": "SALUD\\SER512.dll"
+                      "dll": "SALUD\\SER512"
                     }
                   ]
                 },
@@ -7410,7 +7407,7 @@
                   "Params": [
                     {
                       "formulario": "SER516",
-                      "dll": "SALUD\\SER516.dll"
+                      "dll": "SALUD\\SER516"
                     }
                   ]
                 },
@@ -7422,7 +7419,7 @@
                   "Params": [
                     {
                       "formulario": "SER517",
-                      "dll": "SALUD\\SER517.dll"
+                      "dll": "SALUD\\SER517"
                     }
                   ]
                 },
@@ -7434,7 +7431,7 @@
                   "Params": [
                     {
                       "formulario": "SER518",
-                      "dll": "SALUD\\SER518.dll"
+                      "dll": "SALUD\\SER518"
                     }
                   ]
                 },
@@ -7451,7 +7448,7 @@
                       "Params": [
                         {
                           "formulario": "SER519",
-                          "dll": "SALUD\\SER519.dll"
+                          "dll": "SALUD\\SER519"
                         }
                       ]
                     },
@@ -7463,7 +7460,7 @@
                       "Params": [
                         {
                           "formulario": "SER5D2",
-                          "dll": "SALUD\\SER5D2.dll"
+                          "dll": "SALUD\\SER5D2"
                         }
                       ]
                     },
@@ -7475,7 +7472,7 @@
                       "Params": [
                         {
                           "formulario": "SER5410B",
-                          "dll": "SALUD\\SER5410B.dll"
+                          "dll": "SALUD\\SER5410B"
                         }
                       ]
                     }
@@ -7489,7 +7486,7 @@
                   "Params": [
                     {
                       "formulario": "SER520",
-                      "dll": "SALUD\\SER520.dll"
+                      "dll": "SALUD\\SER520"
                     }
                   ]
                 },
@@ -7501,7 +7498,7 @@
                   "Params": [
                     {
                       "formulario": "SER522",
-                      "dll": "SALUD\\SER522.dll"
+                      "dll": "SALUD\\SER522"
                     }
                   ]
                 },
@@ -7518,7 +7515,7 @@
                       "Params": [
                         {
                           "formulario": "SER508H",
-                          "dll": "SALUD\\SER508H.dll"
+                          "dll": "SALUD\\SER508H"
                         }
                       ]
                     },
@@ -7530,7 +7527,7 @@
                       "Params": [
                         {
                           "formulario": "SER504H",
-                          "dll": "SALUD\\SER504H.dll"
+                          "dll": "SALUD\\SER504H"
                         }
                       ]
                     },
@@ -7542,7 +7539,7 @@
                       "Params": [
                         {
                           "formulario": "SER522H",
-                          "dll": "SALUD\\SER522H.dll"
+                          "dll": "SALUD\\SER522H"
                         }
                       ]
                     },
@@ -7554,7 +7551,7 @@
                       "Params": [
                         {
                           "formulario": "SER506",
-                          "dll": "SALUD\\SER506.dll"
+                          "dll": "SALUD\\SER506"
                         }
                       ]
                     },
@@ -7565,7 +7562,7 @@
                       "Params": [
                         {
                           "formulario": "SER549A",
-                          "dll": "SALUD\\SER549A.dll"
+                          "dll": "SALUD\\SER549A"
                         }
                       ]
                     },
@@ -7577,7 +7574,7 @@
                       "Params": [
                         {
                           "formulario": "SER5086",
-                          "dll": "SALUD\\SER5086.dll"
+                          "dll": "SALUD\\SER5086"
                         }
                       ]
                     }
@@ -7606,7 +7603,7 @@
                   "Params": [
                     {
                       "formulario": "SER601",
-                      "dll": "SALUD\\SER601.dll"
+                      "dll": "SALUD\\SER601"
                     }
                   ]
                 },
@@ -7626,7 +7623,7 @@
                   "Params": [
                     {
                       "formulario": "SER601A",
-                      "dll": "SALUD\\SER601A.dll"
+                      "dll": "SALUD\\SER601A"
                     }
                   ]
                 },
@@ -7646,7 +7643,7 @@
                   "Params": [
                     {
                       "formulario": "SER601B",
-                      "dll": "SALUD\\SER601B.dll"
+                      "dll": "SALUD\\SER601B"
                     }
                   ]
                 },
@@ -7658,7 +7655,7 @@
                   "Params": [
                     {
                       "formulario": "SER602",
-                      "dll": "SALUD\\SER602.dll"
+                      "dll": "SALUD\\SER602"
                     }
                   ]
                 },
@@ -7670,7 +7667,7 @@
                   "Params": [
                     {
                       "formulario": "SER168",
-                      "dll": "SALUD\\SER168.dll"
+                      "dll": "SALUD\\SER168"
                     }
                   ]
                 },
@@ -7682,7 +7679,7 @@
                   "Params": [
                     {
                       "formulario": "SER169",
-                      "dll": "SALUD\\SER169.dll"
+                      "dll": "SALUD\\SER169"
                     }
                   ]
                 },
@@ -7694,7 +7691,7 @@
                   "Params": [
                     {
                       "formulario": "SER610",
-                      "dll": "SALUD\\SER610.dll"
+                      "dll": "SALUD\\SER610"
                     }
                   ]
                 },
@@ -7728,7 +7725,7 @@
                       "Params": [
                         {
                           "formulario": "SER611",
-                          "dll": "SALUD\\SER611.dll"
+                          "dll": "SALUD\\SER611"
                         }
                       ]
                     },
@@ -7748,7 +7745,7 @@
                       "Params": [
                         {
                           "formulario": "INV450R",
-                          "dll": "SALUD\\INV450R.dll"
+                          "dll": "SALUD\\INV450R"
                         }
                       ]
                     }
@@ -7774,7 +7771,7 @@
                   "Params": [
                     {
                       "formulario": "SER613",
-                      "dll": "SALUD\\SER613.dll"
+                      "dll": "SALUD\\SER613"
                     }
                   ]
                 },
@@ -7794,7 +7791,7 @@
                   "Params": [
                     {
                       "formulario": "SER614",
-                      "dll": "SALUD\\SER614.dll"
+                      "dll": "SALUD\\SER614"
                     }
                   ]
                 },
@@ -7806,7 +7803,7 @@
                   "Params": [
                     {
                       "formulario": "SER609",
-                      "dll": "SALUD\\SER609.dll"
+                      "dll": "SALUD\\SER609"
                     }
                   ]
                 },
@@ -7818,7 +7815,7 @@
                   "Params": [
                     {
                       "formulario": "SER612D",
-                      "dll": "SALUD\\SER612D.dll"
+                      "dll": "SALUD\\SER612D"
                     }
                   ]
                 }
@@ -7842,7 +7839,7 @@
                       "Params": [
                         {
                           "formulario": "SER201",
-                          "dll": "SALUD\\SER201.dll"
+                          "dll": "SALUD\\SER201"
                         }
                       ]
                     },
@@ -7854,7 +7851,7 @@
                       "Params": [
                         {
                           "formulario": "SER202",
-                          "dll": "SALUD\\SER202.dll"
+                          "dll": "SALUD\\SER202"
                         }
                       ]
                     },
@@ -7865,7 +7862,7 @@
                       "Params": [
                         {
                           "formulario": "SER203",
-                          "dll": "SALUD\\SER203.dll"
+                          "dll": "SALUD\\SER203"
                         }
                       ]
                     },
@@ -7876,7 +7873,7 @@
                       "Params": [
                         {
                           "formulario": "SER204",
-                          "dll": "SALUD\\SER204.dll"
+                          "dll": "SALUD\\SER204"
                         }
                       ]
                     },
@@ -7892,7 +7889,7 @@
                           "Params": [
                             {
                               "formulario": "SER202",
-                              "dll": "SALUD\\SER202.dll"
+                              "dll": "SALUD\\SER202"
                             }
                           ]
                         },
@@ -7903,7 +7900,7 @@
                           "Params": [
                             {
                               "formulario": "HC102",
-                              "dll": "HICLIN\\HC102.dll"
+                              "dll": "HICLIN\\HC102"
                             }
                           ]
                         },
@@ -7914,7 +7911,7 @@
                           "Params": [
                             {
                               "formulario": "HC103",
-                              "dll": "HICLIN\\HC103.dll"
+                              "dll": "HICLIN\\HC103"
                             }
                           ]
                         },
@@ -7925,7 +7922,7 @@
                           "Params": [
                             {
                               "formulario": "HC104",
-                              "dll": "HICLIN\\HC104.dll"
+                              "dll": "HICLIN\\HC104"
                             }
                           ]
                         },
@@ -7936,7 +7933,7 @@
                           "Params": [
                             {
                               "formulario": "HC105",
-                              "dll": "HICLIN\\HC105.dll"
+                              "dll": "HICLIN\\HC105"
                             }
                           ]
                         },
@@ -7947,7 +7944,7 @@
                           "Params": [
                             {
                               "formulario": "HC106",
-                              "dll": "HICLIN\\HC106.dll"
+                              "dll": "HICLIN\\HC106"
                             }
                           ]
                         },
@@ -7958,7 +7955,7 @@
                           "Params": [
                             {
                               "formulario": "HC107",
-                              "dll": "HICLIN\\HC107.dll"
+                              "dll": "HICLIN\\HC107"
                             }
                           ]
                         },
@@ -7969,7 +7966,7 @@
                           "Params": [
                             {
                               "formulario": "HC108",
-                              "dll": "HICLIN\\HC108.dll"
+                              "dll": "HICLIN\\HC108"
                             }
                           ]
                         }
@@ -7982,7 +7979,7 @@
                       "Params": [
                         {
                           "formulario": "SER206",
-                          "dll": "SALUD\\SER206.dll"
+                          "dll": "SALUD\\SER206"
                         }
                       ]
                     },
@@ -7993,7 +7990,7 @@
                       "Params": [
                         {
                           "formulario": "SER207",
-                          "dll": "SALUD\\SER207.dll"
+                          "dll": "SALUD\\SER207"
                         }
                       ]
                     },
@@ -8004,7 +8001,7 @@
                       "Params": [
                         {
                           "formulario": "SER205",
-                          "dll": "SALUD\\SER205.dll"
+                          "dll": "SALUD\\SER205"
                         }
                       ]
                     },
@@ -8015,7 +8012,7 @@
                       "Params": [
                         {
                           "formulario": "SER210",
-                          "dll": "SALUD\\SER210.dll"
+                          "dll": "SALUD\\SER210"
                         }
                       ]
                     },
@@ -8026,7 +8023,7 @@
                       "Params": [
                         {
                           "formulario": "SER211",
-                          "dll": "SALUD\\SER211.dll"
+                          "dll": "SALUD\\SER211"
                         }
                       ]
                     },
@@ -8043,7 +8040,7 @@
                     },
                     {
                       "Id": "09771C",
-                      "Descripcion": "Tabla de signos triagew",
+                      "Descripcion": "Tabla de signos triage",
                       "Tipo": "RM",
                       "Params": [
                         {
@@ -8059,7 +8056,7 @@
                       "Params": [
                         {
                           "formulario": "SER214",
-                          "dll": "SALUD\\SER214.dll"
+                          "dll": "SALUD\\SER214"
                         }
                       ]
                     },
@@ -8071,7 +8068,7 @@
                       "Params": [
                         {
                           "formulario": "SER215",
-                          "dll": "SALUD\\SER215.dll"
+                          "dll": "SALUD\\SER215"
                         }
                       ]
                     },
@@ -8088,7 +8085,7 @@
                           "Params": [
                             {
                               "formulario": "SER7G1",
-                              "dll": "SALUD\\SER7G1.dll"
+                              "dll": "SALUD\\SER7G1"
                             }
                           ]
                         },
@@ -8100,7 +8097,7 @@
                           "Params": [
                             {
                               "formulario": "SER7G2",
-                              "dll": "SALUD\\SER7G2.dll"
+                              "dll": "SALUD\\SER7G2"
                             }
                           ]
                         },
@@ -8112,7 +8109,7 @@
                           "Params": [
                             {
                               "formulario": "SER7G3",
-                              "dll": "SALUD\\SER7G3.dll"
+                              "dll": "SALUD\\SER7G3"
                             }
                           ]
                         },
@@ -8124,7 +8121,7 @@
                           "Params": [
                             {
                               "formulario": "SER7G4",
-                              "dll": "SALUD\\SER7G4.dll"
+                              "dll": "SALUD\\SER7G4"
                             }
                           ]
                         },
@@ -8136,7 +8133,7 @@
                           "Params": [
                             {
                               "formulario": "SER7G5",
-                              "dll": "SALUD\\SER7G5.dll"
+                              "dll": "SALUD\\SER7G5"
                             }
                           ]
                         }
@@ -8150,7 +8147,7 @@
                       "Params": [
                         {
                           "formulario": "HC108",
-                          "dll": "HICLIN\\HC108.dll"
+                          "dll": "HICLIN\\HC108"
                         }
                       ]
                     }
@@ -8164,7 +8161,7 @@
                   "Params": [
                     {
                       "formulario": "SER421",
-                      "dll": "SALUD\\SER421.dll"
+                      "dll": "SALUD\\SER421"
                     }
                   ]
                 },
@@ -8180,7 +8177,7 @@
                       "Params": [
                         {
                           "formulario": "SER431",
-                          "dll": "SALUD\\SER431.dll"
+                          "dll": "SALUD\\SER431"
                         }
                       ]
                     },
@@ -8191,7 +8188,7 @@
                       "Params": [
                         {
                           "formulario": "SER432",
-                          "dll": "SALUD\\SER432.dll"
+                          "dll": "SALUD\\SER432"
                         }
                       ]
                     },
@@ -8202,7 +8199,7 @@
                       "Params": [
                         {
                           "formulario": "SER433",
-                          "dll": "SALUD\\SER433.dll"
+                          "dll": "SALUD\\SER433"
                         }
                       ]
                     },
@@ -8213,7 +8210,7 @@
                       "Params": [
                         {
                           "formulario": "SER434",
-                          "dll": "SALUD\\SER434.dll"
+                          "dll": "SALUD\\SER434"
                         }
                       ]
                     },
@@ -8224,18 +8221,18 @@
                       "Params": [
                         {
                           "formulario": "SER435",
-                          "dll": "SALUD\\SER435.dll"
+                          "dll": "SALUD\\SER435"
                         }
                       ]
                     },
                     {
                       "Id": "097736",
-                      "Descripcion": "Busqueda rips nacimientod",
+                      "Descripcion": "Busqueda rips nacimiento",
                       "Tipo": "RM",
                       "Params": [
                         {
                           "formulario": "SER436",
-                          "dll": "SALUD\\SER436.dll"
+                          "dll": "SALUD\\SER436"
                         }
                       ]
                     },
@@ -8246,7 +8243,7 @@
                       "Params": [
                         {
                           "formulario": "SER437",
-                          "dll": "SALUD\\SER437.dll"
+                          "dll": "SALUD\\SER437"
                         }
                       ]
                     },
@@ -8257,7 +8254,7 @@
                       "Params": [
                         {
                           "formulario": "SER438",
-                          "dll": "SALUD\\SER438.dll"
+                          "dll": "SALUD\\SER438"
                         }
                       ]
                     },
@@ -8268,7 +8265,7 @@
                       "Params": [
                         {
                           "formulario": "SER439",
-                          "dll": "SALUD\\SER439.dll"
+                          "dll": "SALUD\\SER439"
                         }
                       ]
                     },
@@ -8279,7 +8276,7 @@
                       "Params": [
                         {
                           "formulario": "SER43A",
-                          "dll": "SALUD\\SER43A.dll"
+                          "dll": "SALUD\\SER43A"
                         }
                       ]
                     },
@@ -8290,7 +8287,7 @@
                       "Params": [
                         {
                           "formulario": "SER43B",
-                          "dll": "SALUD\\SER43B.dll"
+                          "dll": "SALUD\\SER43B"
                         }
                       ]
                     },
@@ -8301,7 +8298,7 @@
                       "Params": [
                         {
                           "formulario": "SER43C",
-                          "dll": "SALUD\\SER43C.dll"
+                          "dll": "SALUD\\SER43C"
                         }
                       ]
                     }
@@ -8319,7 +8316,7 @@
                       "Params": [
                         {
                           "formulario": "SER441",
-                          "dll": "SALUD\\SER441.dll"
+                          "dll": "SALUD\\SER441"
                         }
                       ]
                     },
@@ -8335,7 +8332,7 @@
                           "Params": [
                             {
                               "formulario": "SER442",
-                              "dll": "SALUD\\SER442.dll"
+                              "dll": "SALUD\\SER442"
                             }
                           ]
                         },
@@ -8346,7 +8343,7 @@
                           "Params": [
                             {
                               "formulario": "SER4424",
-                              "dll": "SALUD\\SER4424.dll"
+                              "dll": "SALUD\\SER4424"
                             }
                           ]
                         },
@@ -8357,7 +8354,7 @@
                           "Params": [
                             {
                               "formulario": "SER4425",
-                              "dll": "SALUD\\SER4425.dll"
+                              "dll": "SALUD\\SER4425"
                             }
                           ]
                         },
@@ -8368,7 +8365,7 @@
                           "Params": [
                             {
                               "formulario": "SER4426",
-                              "dll": "SALUD\\SER4426.dll"
+                              "dll": "SALUD\\SER4426"
                             }
                           ]
                         }
@@ -8381,7 +8378,7 @@
                       "Params": [
                         {
                           "formulario": "SER443",
-                          "dll": "SALUD\\SER443.dll"
+                          "dll": "SALUD\\SER443"
                         }
                       ]
                     },
@@ -8392,7 +8389,7 @@
                       "Params": [
                         {
                           "formulario": "SER444",
-                          "dll": "SALUD\\SER444.dll"
+                          "dll": "SALUD\\SER444"
                         }
                       ]
                     },
@@ -8403,7 +8400,7 @@
                       "Params": [
                         {
                           "formulario": "SER445",
-                          "dll": "SALUD\\SER445.dll"
+                          "dll": "SALUD\\SER445"
                         }
                       ]
                     },
@@ -8414,7 +8411,7 @@
                       "Params": [
                         {
                           "formulario": "SER446",
-                          "dll": "SALUD\\SER446.dll"
+                          "dll": "SALUD\\SER446"
                         }
                       ]
                     },
@@ -8425,7 +8422,7 @@
                       "Params": [
                         {
                           "formulario": "SER447",
-                          "dll": "SALUD\\SER447.dll"
+                          "dll": "SALUD\\SER447"
                         }
                       ]
                     },
@@ -8436,7 +8433,7 @@
                       "Params": [
                         {
                           "formulario": "SER448",
-                          "dll": "SALUD\\SER448.dll"
+                          "dll": "SALUD\\SER448"
                         }
                       ]
                     },
@@ -8447,7 +8444,7 @@
                       "Params": [
                         {
                           "formulario": "SER449",
-                          "dll": "SALUD\\SER449.dll"
+                          "dll": "SALUD\\SER449"
                         }
                       ]
                     },
@@ -8458,7 +8455,7 @@
                       "Params": [
                         {
                           "formulario": "SER44A",
-                          "dll": "SALUD\\SER44A.dll"
+                          "dll": "SALUD\\SER44A"
                         }
                       ]
                     },
@@ -8469,7 +8466,7 @@
                       "Params": [
                         {
                           "formulario": "SER44B",
-                          "dll": "SALUD\\SER44B.dll"
+                          "dll": "SALUD\\SER44B"
                         }
                       ]
                     },
@@ -8480,7 +8477,7 @@
                       "Params": [
                         {
                           "formulario": "SER44C",
-                          "dll": "SALUD\\SER44C.dll"
+                          "dll": "SALUD\\SER44C"
                         }
                       ]
                     },
@@ -8491,7 +8488,7 @@
                       "Params": [
                         {
                           "formulario": "SER44D",
-                          "dll": "SALUD\\SER44D.dll"
+                          "dll": "SALUD\\SER44D"
                         }
                       ]
                     },
@@ -8506,7 +8503,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E",
-                              "dll": "SALUD\\SER44E.dll"
+                              "dll": "SALUD\\SER44E"
                             }
                           ]
                         },
@@ -8517,7 +8514,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E2",
-                              "dll": "SALUD\\SER44E2.dll"
+                              "dll": "SALUD\\SER44E2"
                             }
                           ]
                         },
@@ -8528,7 +8525,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E3",
-                              "dll": "SALUD\\SER44E3.dll"
+                              "dll": "SALUD\\SER44E3"
                             }
                           ]
                         },
@@ -8539,7 +8536,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E4",
-                              "dll": "SALUD\\SER44E4.dll"
+                              "dll": "SALUD\\SER44E4"
                             }
                           ]
                         },
@@ -8550,7 +8547,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E5",
-                              "dll": "SALUD\\SER44E5.dll"
+                              "dll": "SALUD\\SER44E5"
                             }
                           ]
                         },
@@ -8561,7 +8558,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E6",
-                              "dll": "SALUD\\SER44E6.dll"
+                              "dll": "SALUD\\SER44E6"
                             }
                           ]
                         },
@@ -8572,7 +8569,7 @@
                           "Params": [
                             {
                               "formulario": "SER44E7",
-                              "dll": "SALUD\\SER44E7.dll"
+                              "dll": "SALUD\\SER44E7"
                             }
                           ]
                         }
@@ -8585,7 +8582,7 @@
                       "Params": [
                         {
                           "formulario": "SER44G",
-                          "dll": "SALUD\\SER44G.dll"
+                          "dll": "SALUD\\SER44G"
                         }
                       ]
                     },
@@ -8596,7 +8593,7 @@
                       "Params": [
                         {
                           "formulario": "SER44H",
-                          "dll": "SALUD\\SER44H.dll"
+                          "dll": "SALUD\\SER44H"
                         }
                       ]
                     },
@@ -8607,7 +8604,7 @@
                       "Params": [
                         {
                           "formulario": "SER44I",
-                          "dll": "SALUD\\SER44I.dll"
+                          "dll": "SALUD\\SER44I"
                         }
                       ]
                     },
@@ -8618,7 +8615,7 @@
                       "Params": [
                         {
                           "formulario": "SER44K",
-                          "dll": "SALUD\\SER44K.dll"
+                          "dll": "SALUD\\SER44K"
                         }
                       ]
                     },
@@ -8629,7 +8626,7 @@
                       "Params": [
                         {
                           "formulario": "SER44L",
-                          "dll": "SALUD\\SER44L.dll"
+                          "dll": "SALUD\\SER44L"
                         }
                       ]
                     },
@@ -8640,7 +8637,7 @@
                       "Params": [
                         {
                           "formulario": "SER447L",
-                          "dll": "SALUD\\SER447L.dll"
+                          "dll": "SALUD\\SER447L"
                         }
                       ]
                     }
@@ -8673,7 +8670,7 @@
                           "Params": [
                             {
                               "formulario": "SER752",
-                              "dll": "SALUD\\SER752.dll"
+                              "dll": "SALUD\\SER752"
                             }
                           ]
                         },
@@ -8684,7 +8681,7 @@
                           "Params": [
                             {
                               "formulario": "SER753",
-                              "dll": "SALUD\\SER753.dll"
+                              "dll": "SALUD\\SER753"
                             }
                           ]
                         },
@@ -8695,7 +8692,7 @@
                           "Params": [
                             {
                               "formulario": "SER754",
-                              "dll": "SALUD\\SER754.dll"
+                              "dll": "SALUD\\SER754"
                             }
                           ]
                         },
@@ -8706,7 +8703,7 @@
                           "Params": [
                             {
                               "formulario": "SER75A",
-                              "dll": "SALUD\\SER75A.dll"
+                              "dll": "SALUD\\SER75A"
                             }
                           ]
                         },
@@ -8756,7 +8753,7 @@
                           "Params": [
                             {
                               "formulario": "SER757",
-                              "dll": "SALUD\\SER757.dll"
+                              "dll": "SALUD\\SER757"
                             }
                           ]
                         },
@@ -8766,8 +8763,8 @@
                           "Tipo": "RM",
                           "Params": [
                             {
-                              "formulario": "SER757",
-                              "dll": "SALUD\\SER757.dll"
+                              "formulario": "SER75D",
+                              "dll": "SALUD\\SER75D"
                             }
                           ]
                         }
@@ -8784,7 +8781,7 @@
                           "Params": [
                             {
                               "formulario": "SER758",
-                              "dll": "SALUD\\SER758.dll"
+                              "dll": "SALUD\\SER758"
                             }
                           ]
                         },
@@ -8795,7 +8792,7 @@
                           "Params": [
                             {
                               "formulario": "SER75B",
-                              "dll": "SALUD\\SER75B.dll"
+                              "dll": "SALUD\\SER75B"
                             }
                           ]
                         },
@@ -8806,7 +8803,7 @@
                           "Params": [
                             {
                               "formulario": "SER75C",
-                              "dll": "SALUD\\SER75C.dll"
+                              "dll": "SALUD\\SER75C"
                             }
                           ]
                         }
@@ -8823,7 +8820,7 @@
                           "Params": [
                             {
                               "formulario": "SER755",
-                              "dll": "SALUD\\SER755.dll"
+                              "dll": "SALUD\\SER755"
                             }
                           ]
                         },
@@ -8834,7 +8831,7 @@
                           "Params": [
                             {
                               "formulario": "SER756",
-                              "dll": "SALUD\\SER756.dll"
+                              "dll": "SALUD\\SER756"
                             }
                           ]
                         },
@@ -8845,7 +8842,7 @@
                           "Params": [
                             {
                               "formulario": "SER759",
-                              "dll": "SALUD\\SER759.dll"
+                              "dll": "SALUD\\SER759"
                             }
                           ]
                         }
@@ -8862,7 +8859,7 @@
                           "Params": [
                             {
                               "formulario": "SER755F",
-                              "dll": "SALUD\\SER755F.dll"
+                              "dll": "SALUD\\SER755F"
                             }
                           ]
                         },
@@ -8873,7 +8870,7 @@
                           "Params": [
                             {
                               "formulario": "SER755FS",
-                              "dll": "SALUD\\SER755FS.dll"
+                              "dll": "SALUD\\SER755FS"
                             }
                           ]
                         }
@@ -8890,7 +8887,7 @@
                           "Params": [
                             {
                               "formulario": "SER7561",
-                              "dll": "SALUD\\SER7561.dll"
+                              "dll": "SALUD\\SER7561"
                             }
                           ]
                         },
@@ -8901,7 +8898,7 @@
                           "Params": [
                             {
                               "formulario": "SER7562",
-                              "dll": "SALUD\\SER7562.dll"
+                              "dll": "SALUD\\SER7562"
                             }
                           ]
                         },
@@ -8912,7 +8909,7 @@
                           "Params": [
                             {
                               "formulario": "SER7563",
-                              "dll": "SALUD\\SER7563.dll"
+                              "dll": "SALUD\\SER7563"
                             }
                           ]
                         },
@@ -8923,7 +8920,7 @@
                           "Params": [
                             {
                               "formulario": "SER7564",
-                              "dll": "SALUD\\SER7564.dll"
+                              "dll": "SALUD\\SER7564"
                             }
                           ]
                         },
@@ -8981,7 +8978,7 @@
                           "Params": [
                             {
                               "formulario": "SER7611",
-                              "dll": "SALUD\\SER7611.dll"
+                              "dll": "SALUD\\SER7611"
                             }
                           ]
                         },
@@ -8992,7 +8989,7 @@
                           "Params": [
                             {
                               "formulario": "SER7612",
-                              "dll": "SALUD\\SER7612.dll"
+                              "dll": "SALUD\\SER7612"
                             }
                           ]
                         },
@@ -9003,7 +9000,7 @@
                           "Params": [
                             {
                               "formulario": "SER7613",
-                              "dll": "SALUD\\SER7613.dll"
+                              "dll": "SALUD\\SER7613"
                             }
                           ]
                         },
@@ -9014,7 +9011,7 @@
                           "Params": [
                             {
                               "formulario": "SER7614",
-                              "dll": "SALUD\\SER7614.dll"
+                              "dll": "SALUD\\SER7614"
                             }
                           ]
                         },
@@ -9025,7 +9022,7 @@
                           "Params": [
                             {
                               "formulario": "SER7615",
-                              "dll": "SALUD\\SER7615.dll"
+                              "dll": "SALUD\\SER7615"
                             }
                           ]
                         },
@@ -9036,7 +9033,7 @@
                           "Params": [
                             {
                               "formulario": "SER7616",
-                              "dll": "SALUD\\SER7616.dll"
+                              "dll": "SALUD\\SER7616"
                             }
                           ]
                         },
@@ -9047,7 +9044,7 @@
                           "Params": [
                             {
                               "formulario": "SER7617",
-                              "dll": "SALUD\\SER7617.dll"
+                              "dll": "SALUD\\SER7617"
                             }
                           ]
                         }
@@ -9066,7 +9063,7 @@
                           "Params": [
                             {
                               "formulario": "SER7621",
-                              "dll": "SALUD\\SER7621.dll"
+                              "dll": "SALUD\\SER7621"
                             }
                           ]
                         },
@@ -9078,7 +9075,7 @@
                           "Params": [
                             {
                               "formulario": "SER7622",
-                              "dll": "SALUD\\SER7622.dll"
+                              "dll": "SALUD\\SER7622"
                             }
                           ]
                         },
@@ -9090,7 +9087,7 @@
                           "Params": [
                             {
                               "formulario": "SER7623",
-                              "dll": "SALUD\\SER7623.dll"
+                              "dll": "SALUD\\SER7623"
                             }
                           ]
                         },
@@ -9102,7 +9099,7 @@
                           "Params": [
                             {
                               "formulario": "SER7624",
-                              "dll": "SALUD\\SER7624.dll"
+                              "dll": "SALUD\\SER7624"
                             }
                           ]
                         },
@@ -9114,7 +9111,7 @@
                           "Params": [
                             {
                               "formulario": "SER7625",
-                              "dll": "SALUD\\SER7625.dll"
+                              "dll": "SALUD\\SER7625"
                             }
                           ]
                         }
@@ -9133,7 +9130,7 @@
                           "Params": [
                             {
                               "formulario": "SER7631",
-                              "dll": "SALUD\\SER7631.dll"
+                              "dll": "SALUD\\SER7631"
                             }
                           ]
                         },
@@ -9145,7 +9142,7 @@
                           "Params": [
                             {
                               "formulario": "SER7652",
-                              "dll": "SALUD\\SER7652.dll"
+                              "dll": "SALUD\\SER7652"
                             }
                           ]
                         },
@@ -9157,7 +9154,7 @@
                           "Params": [
                             {
                               "formulario": "SER7633",
-                              "dll": "SALUD\\SER7633.dll"
+                              "dll": "SALUD\\SER7633"
                             }
                           ]
                         },
@@ -9169,7 +9166,7 @@
                           "Params": [
                             {
                               "formulario": "SER7634",
-                              "dll": "SALUD\\SER7634.dll"
+                              "dll": "SALUD\\SER7634"
                             }
                           ]
                         }
@@ -9183,7 +9180,7 @@
                       "Params": [
                         {
                           "formulario": "SER76V",
-                          "dll": "SALUD\\SER76V.dll"
+                          "dll": "SALUD\\SER76V"
                         }
                       ]
                     },
@@ -9195,7 +9192,7 @@
                       "Params": [
                         {
                           "formulario": "SER765",
-                          "dll": "SALUD\\SER765.dll"
+                          "dll": "SALUD\\SER765"
                         }
                       ]
                     },
@@ -9207,7 +9204,7 @@
                       "Params": [
                         {
                           "formulario": "SER768",
-                          "dll": "SALUD\\SER768.dll"
+                          "dll": "SALUD\\SER768"
                         }
                       ]
                     },
@@ -9225,8 +9222,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER768",
-                          "dll": "SALUD\\SER768.dll"
+                          "formulario": "SER11G",
+                          "dll": "SALUD\\SER11G"
                         }
                       ]
                     },
@@ -9238,7 +9235,7 @@
                       "Params": [
                         {
                           "formulario": "SER11P",
-                          "dll": "SALUD\\SER11P.dll"
+                          "dll": "SALUD\\SER11P"
                         }
                       ]
                     },
@@ -9250,7 +9247,7 @@
                       "Params": [
                         {
                           "formulario": "SER76A",
-                          "dll": "SALUD\\SER76A.dll"
+                          "dll": "SALUD\\SER76A"
                         }
                       ]
                     },
@@ -9262,7 +9259,7 @@
                       "Params": [
                         {
                           "formulario": "SER76B",
-                          "dll": "SALUD\\SER76B.dll"
+                          "dll": "SALUD\\SER76B"
                         }
                       ]
                     },
@@ -9274,7 +9271,7 @@
                       "Params": [
                         {
                           "formulario": "SER76C",
-                          "dll": "SALUD\\SER76C.dll"
+                          "dll": "SALUD\\SER76C"
                         }
                       ]
                     },
@@ -9291,7 +9288,7 @@
                           "Params": [
                             {
                               "formulario": "SERS76D",
-                              "dll": "SALUD\\SERS76D.dll"
+                              "dll": "SALUD\\SERS76D"
                             }
                           ]
                         },
@@ -9303,7 +9300,7 @@
                           "Params": [
                             {
                               "formulario": "SERS76E",
-                              "dll": "SALUD\\SERS76E.dll"
+                              "dll": "SALUD\\SERS76E"
                             }
                           ]
                         },
@@ -9315,7 +9312,7 @@
                           "Params": [
                             {
                               "formulario": "SERS76F",
-                              "dll": "SALUD\\SERS76F.dll"
+                              "dll": "SALUD\\SERS76F"
                             }
                           ]
                         }
@@ -9331,7 +9328,7 @@
                   "Params": [
                     {
                       "formulario": "SER895",
-                      "dll": "SALUD\\SER895.DLL"
+                      "dll": "SALUD\\SER895"
                     }
                   ]
                 },
@@ -9343,7 +9340,7 @@
                   "Params": [
                     {
                       "formulario": "LAB122",
-                      "dll": "SALUD\\LAB122.dll"
+                      "dll": "SALUD\\LAB122"
                     }
                   ]
                 },
@@ -9355,7 +9352,7 @@
                   "Params": [
                     {
                       "formulario": "RX-422",
-                      "dll": "SALUD\\RX-422.dll"
+                      "dll": "SALUD\\RX-422"
                     }
                   ]
                 },
@@ -9367,7 +9364,7 @@
                   "Params": [
                     {
                       "formulario": "EXPORTAR-LAB",
-                      "dll": "HICLIN\\EXPORTAR-LAB.dll"
+                      "dll": "HICLIN\\EXPORTAR-LAB"
                     }
                   ]
                 }
@@ -9386,7 +9383,7 @@
                   "Params": [
                     {
                       "formulario": "SER208",
-                      "dll": "SALUD\\SER208.dll"
+                      "dll": "SALUD\\SER208"
                     }
                   ]
                 },
@@ -9398,7 +9395,7 @@
                   "Params": [
                     {
                       "formulario": "SER209",
-                      "dll": "SALUD\\SER209.dll"
+                      "dll": "SALUD\\SER209"
                     }
                   ]
                 },
@@ -9410,7 +9407,7 @@
                   "Params": [
                     {
                       "formulario": "SER710",
-                      "dll": "SALUD\\SER710.dll"
+                      "dll": "SALUD\\SER710"
                     }
                   ]
                 }
@@ -9441,7 +9438,7 @@
                   "Params": [
                     {
                       "formulario": "SER592",
-                      "dll": "SALUD\\SER592.dll"
+                      "dll": "SALUD\\SER592"
                     }
                   ]
                 },
@@ -9453,7 +9450,7 @@
                   "Params": [
                     {
                       "formulario": "SER593",
-                      "dll": "SALUD\\SER593.dll"
+                      "dll": "SALUD\\SER593"
                     }
                   ]
                 },
@@ -9465,7 +9462,7 @@
                   "Params": [
                     {
                       "formulario": "SER594",
-                      "dll": "SALUD\\SER594.dll"
+                      "dll": "SALUD\\SER594"
                     }
                   ]
                 }
@@ -9489,7 +9486,7 @@
                       "Params": [
                         {
                           "formulario": "SER-A01",
-                          "dll": "SALUD\\SER-A01.dll"
+                          "dll": "SALUD\\SER-A01"
                         }
                       ]
                     },
@@ -9501,7 +9498,7 @@
                       "Params": [
                         {
                           "formulario": "SER-A01C",
-                          "dll": "SALUD\\SER-A01C.dll"
+                          "dll": "SALUD\\SER-A01C"
                         }
                       ]
                     }
@@ -9515,7 +9512,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A02",
-                      "dll": "SALUD\\SER-A02.dll"
+                      "dll": "SALUD\\SER-A02"
                     }
                   ]
                 },
@@ -9535,7 +9532,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A03",
-                      "dll": "SALUD\\SER-A03.dll"
+                      "dll": "SALUD\\SER-A03"
                     }
                   ]
                 },
@@ -9547,7 +9544,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A04",
-                      "dll": "SALUD\\SER-A04.dll"
+                      "dll": "SALUD\\SER-A04"
                     }
                   ]
                 },
@@ -9559,7 +9556,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A05",
-                      "dll": "SALUD\\SER-A05.dll"
+                      "dll": "SALUD\\SER-A05"
                     }
                   ]
                 },
@@ -9571,7 +9568,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A06",
-                      "dll": "SALUD\\SER-A06.dll"
+                      "dll": "SALUD\\SER-A06"
                     }
                   ]
                 },
@@ -9583,7 +9580,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A07",
-                      "dll": "SALUD\\SER-A07.dll"
+                      "dll": "SALUD\\SER-A07"
                     }
                   ]
                 },
@@ -9595,7 +9592,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A08",
-                      "dll": "SALUD\\SER-A08.dll"
+                      "dll": "SALUD\\SER-A08"
                     }
                   ]
                 },
@@ -9607,7 +9604,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A09",
-                      "dll": "SALUD\\SER-A09.dll"
+                      "dll": "SALUD\\SER-A09"
                     }
                   ]
                 },
@@ -9619,7 +9616,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A0A",
-                      "dll": "SALUD\\SER-A0A.dll"
+                      "dll": "SALUD\\SER-A0A"
                     }
                   ]
                 },
@@ -9631,7 +9628,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A0B",
-                      "dll": "SALUD\\SER-A0B.dll"
+                      "dll": "SALUD\\SER-A0B"
                     }
                   ]
                 },
@@ -9643,7 +9640,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A0C",
-                      "dll": "SALUD\\SER-A0C.dll"
+                      "dll": "SALUD\\SER-A0C"
                     }
                   ]
                 },
@@ -9655,7 +9652,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A0D",
-                      "dll": "SALUD\\SER-A0D.dll"
+                      "dll": "SALUD\\SER-A0D"
                     }
                   ]
                 },
@@ -9667,7 +9664,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A0E",
-                      "dll": "SALUD\\SER-A0E.dll"
+                      "dll": "SALUD\\SER-A0E"
                     }
                   ]
                 },
@@ -9679,7 +9676,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A06F",
-                      "dll": "SALUD\\SER-A06F.dll"
+                      "dll": "SALUD\\SER-A06F"
                     }
                   ]
                 },
@@ -9691,7 +9688,7 @@
                   "Params": [
                     {
                       "formulario": "SER-A0H",
-                      "dll": "SALUD\\SER-A0H.dll"
+                      "dll": "SALUD\\SER-A0H"
                     }
                   ]
                 },
@@ -9702,7 +9699,7 @@
                   "Sub": [
                     {
                       "Id": "097AI1",
-                      "Descripcion": "Subir plano carge inicial",
+                      "Descripcion": "Subir plano cargue inicial",
                       "Opc-segu": "ISA3",
                       "Seg-w": [
                         "1",
@@ -9716,13 +9713,13 @@
                       "Params": [
                         {
                           "formulario": "SER-A0I1",
-                          "dll": "SALUD\\SER-A0I1.dll"
+                          "dll": "SALUD\\SER-A0I1"
                         }
                       ]
                     },
                     {
                       "Id": "097AI2",
-                      "Descripcion": "Subir plano carge contesta",
+                      "Descripcion": "Subir plano cargue contesta",
                       "Opc-segu": "ISA3",
                       "Seg-w": [
                         "1",
@@ -9736,7 +9733,7 @@
                       "Params": [
                         {
                           "formulario": "SER-A0I2",
-                          "dll": "SALUD\\SER-A0I2.dll"
+                          "dll": "SALUD\\SER-A0I2"
                         }
                       ]
                     },
@@ -9756,7 +9753,7 @@
                       "Params": [
                         {
                           "formulario": "SER-A0I",
-                          "dll": "SALUD\\SER-A0I.dll"
+                          "dll": "SALUD\\SER-A0I"
                         }
                       ]
                     },
@@ -9776,7 +9773,7 @@
                       "Params": [
                         {
                           "formulario": "SER-A0I3",
-                          "dll": "SALUD\\SER-A0I3.dll"
+                          "dll": "SALUD\\SER-A0I3"
                         }
                       ]
                     }
@@ -9803,7 +9800,7 @@
                       "Params": [
                         {
                           "formulario": "SER515D",
-                          "dll": "SALUD\\SER515D.dll"
+                          "dll": "SALUD\\SER515D"
                         }
                       ]
                     },
@@ -9823,7 +9820,7 @@
                       "Params": [
                         {
                           "formulario": "SER515J",
-                          "dll": "SALUD\\SER515J.dll"
+                          "dll": "SALUD\\SER515J"
                         }
                       ]
                     },
@@ -9843,7 +9840,7 @@
                       "Params": [
                         {
                           "formulario": "SER515INJ",
-                          "dll": "SALUD\\SER515INJ.dll"
+                          "dll": "SALUD\\SER515INJ"
                         }
                       ]
                     }
@@ -9864,7 +9861,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B01",
-                      "dll": "SALUD\\SER-B01.dll"
+                      "dll": "SALUD\\SER-B01"
                     }
                   ]
                 },
@@ -9876,7 +9873,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B02",
-                      "dll": "SALUD\\SER-B02.dll"
+                      "dll": "SALUD\\SER-B02"
                     }
                   ]
                 },
@@ -9888,7 +9885,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B03",
-                      "dll": "SALUD\\SER-B03.dll"
+                      "dll": "SALUD\\SER-B03"
                     }
                   ]
                 },
@@ -9900,7 +9897,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B04",
-                      "dll": "SALUD\\SER-B04.dll"
+                      "dll": "SALUD\\SER-B04"
                     }
                   ]
                 },
@@ -9912,7 +9909,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B05",
-                      "dll": "SALUD\\SER-B05.dll"
+                      "dll": "SALUD\\SER-B05"
                     }
                   ]
                 },
@@ -9924,7 +9921,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B06",
-                      "dll": "SALUD\\SER-B06.dll"
+                      "dll": "SALUD\\SER-B06"
                     }
                   ]
                 },
@@ -9936,7 +9933,7 @@
                   "Params": [
                     {
                       "formulario": "SER-B07",
-                      "dll": "SALUD\\SER-B07.dll"
+                      "dll": "SALUD\\SER-B07"
                     }
                   ]
                 },
@@ -9952,7 +9949,7 @@
                       "Params": [
                         {
                           "formulario": "SERB101",
-                          "dll": "SALUD\\SERB101.dll"
+                          "dll": "SALUD\\SERB101"
                         }
                       ]
                     },
@@ -9963,7 +9960,7 @@
                       "Params": [
                         {
                           "formulario": "SERB102",
-                          "dll": "SALUD\\SERB102.dll"
+                          "dll": "SALUD\\SERB102"
                         }
                       ]
                     },
@@ -9974,18 +9971,18 @@
                       "Params": [
                         {
                           "formulario": "SERB103",
-                          "dll": "SALUD\\SERB103.dll"
+                          "dll": "SALUD\\SERB103"
                         }
                       ]
                     },
                     {
                       "Id": "097B84",
-                      "Descripcion": "Resultadps de la encuesta",
+                      "Descripcion": "Resultados de la encuesta",
                       "Tipo": "RM",
                       "Params": [
                         {
                           "formulario": "SERB104",
-                          "dll": "SALUD\\SERB104.dll"
+                          "dll": "SALUD\\SERB104"
                         }
                       ]
                     },
@@ -9996,7 +9993,7 @@
                       "Params": [
                         {
                           "formulario": "SERB105",
-                          "dll": "SALUD\\SERB105.dll"
+                          "dll": "SALUD\\SERB105"
                         }
                       ]
                     }
@@ -10029,7 +10026,7 @@
                       "Params": [
                         {
                           "formulario": "SER890IM",
-                          "dll": "SALUD\\SER890IM.dll"
+                          "dll": "SALUD\\SER890IM"
                         }
                       ]
                     },
@@ -10041,7 +10038,7 @@
                       "Params": [
                         {
                           "formulario": "SER890CA",
-                          "dll": "SALUD\\SER890CA.dll"
+                          "dll": "SALUD\\SER890CA"
                         }
                       ]
                     },
@@ -10053,7 +10050,7 @@
                       "Params": [
                         {
                           "formulario": "SER890AA",
-                          "dll": "SALUD\\SER890AA.dll"
+                          "dll": "SALUD\\SER890AA"
                         }
                       ]
                     },
@@ -10065,7 +10062,7 @@
                       "Params": [
                         {
                           "formulario": "SER769",
-                          "dll": "SALUD\\SER769.dll"
+                          "dll": "SALUD\\SER769"
                         }
                       ]
                     },
@@ -10077,7 +10074,7 @@
                       "Params": [
                         {
                           "formulario": "SER890P",
-                          "dll": "SALUD\\SER890P.dll"
+                          "dll": "SALUD\\SER890P"
                         }
                       ]
                     },
@@ -10094,7 +10091,7 @@
                           "Params": [
                             {
                               "formulario": "SER771",
-                              "dll": "SALUD\\SER771.dll"
+                              "dll": "SALUD\\SER771"
                             }
                           ]
                         },
@@ -10106,7 +10103,7 @@
                           "Params": [
                             {
                               "formulario": "SER772",
-                              "dll": "SALUD\\SER772.dll"
+                              "dll": "SALUD\\SER772"
                             }
                           ]
                         }
@@ -10120,7 +10117,7 @@
                       "Params": [
                         {
                           "formulario": "SER8908",
-                          "dll": "SALUD\\SER8908.dll"
+                          "dll": "SALUD\\SER8908"
                         }
                       ]
                     }
@@ -10138,7 +10135,7 @@
                       "Params": [
                         {
                           "formulario": "SER7C21",
-                          "dll": "SALUD\\SER7C21.dll"
+                          "dll": "SALUD\\SER7C21"
                         }
                       ]
                     },
@@ -10149,7 +10146,7 @@
                       "Params": [
                         {
                           "formulario": "SER7C22",
-                          "dll": "SALUD\\SER7C22.dll"
+                          "dll": "SALUD\\SER7C22"
                         }
                       ]
                     }
@@ -10163,7 +10160,7 @@
                   "Params": [
                     {
                       "formulario": "SER767",
-                      "dll": "SALUD\\SER767.dll"
+                      "dll": "SALUD\\SER767"
                     }
                   ]
                 },
@@ -10175,7 +10172,7 @@
                   "Params": [
                     {
                       "formulario": "SER769",
-                      "dll": "SALUD\\SER769.dll"
+                      "dll": "SALUD\\SER769"
                     }
                   ]
                 },
@@ -10187,7 +10184,7 @@
                   "Params": [
                     {
                       "formulario": "SER893",
-                      "dll": "SALUD\\SER893.dll"
+                      "dll": "SALUD\\SER893"
                     }
                   ]
                 },
@@ -10203,7 +10200,7 @@
                       "Params": [
                         {
                           "formulario": "SER7C61",
-                          "dll": "SALUD\\SER7C61.dll"
+                          "dll": "SALUD\\SER7C61"
                         }
                       ]
                     },
@@ -10214,7 +10211,7 @@
                       "Params": [
                         {
                           "formulario": "SER7C62",
-                          "dll": "SALUD\\SER7C62.dll"
+                          "dll": "SALUD\\SER7C62"
                         }
                       ]
                     },
@@ -10225,7 +10222,7 @@
                       "Params": [
                         {
                           "formulario": "SER766",
-                          "dll": "SALUD\\SER766.dll"
+                          "dll": "SALUD\\SER766"
                         }
                       ]
                     },
@@ -10236,7 +10233,7 @@
                       "Params": [
                         {
                           "formulario": "SER767A",
-                          "dll": "SALUD\\SER767A.dll"
+                          "dll": "SALUD\\SER767A"
                         }
                       ]
                     },
@@ -10247,7 +10244,7 @@
                       "Params": [
                         {
                           "formulario": "SER7C65",
-                          "dll": "SALUD\\SER7C65.dll"
+                          "dll": "SALUD\\SER7C65"
                         }
                       ]
                     }
@@ -10261,7 +10258,7 @@
                   "Params": [
                     {
                       "formulario": "SER7C7",
-                      "dll": "SALUD\\SER7C7.dll"
+                      "dll": "SALUD\\SER7C7"
                     }
                   ]
                 },
@@ -10277,7 +10274,7 @@
                       "Params": [
                         {
                           "formulario": "SER7C8",
-                          "dll": "SALUD\\SER7C8.dll"
+                          "dll": "SALUD\\SER7C8"
                         }
                       ]
                     },
@@ -10299,7 +10296,7 @@
                       "Params": [
                         {
                           "formulario": "SER7CH2",
-                          "dll": "SALUD\\SER7CH2.dll"
+                          "dll": "SALUD\\SER7CH2"
                         }
                       ]
                     }
@@ -10313,7 +10310,7 @@
                   "Params": [
                     {
                       "formulario": "EXPO-CIT",
-                      "dll": "SALUD\\EXPO-CIT.dll"
+                      "dll": "SALUD\\EXPO-CIT"
                     }
                   ]
                 },
@@ -10325,7 +10322,7 @@
                   "Params": [
                     {
                       "formulario": "IMPO-CIT",
-                      "dll": "SALUD\\IMPO-CIT.dll"
+                      "dll": "SALUD\\IMPO-CIT"
                     }
                   ]
                 },
@@ -10337,7 +10334,7 @@
                   "Params": [
                     {
                       "formulario": "SER891C",
-                      "dll": "SALUD\\SER891C.dll"
+                      "dll": "SALUD\\SER891C"
                     }
                   ]
                 },
@@ -10349,7 +10346,7 @@
                   "Params": [
                     {
                       "formulario": "SER119D",
-                      "dll": "SALUD\\SER119D.dll"
+                      "dll": "SALUD\\SER119D"
                     }
                   ]
                 },
@@ -10361,7 +10358,7 @@
                   "Params": [
                     {
                       "formulario": "SER890Z",
-                      "dll": "SALUD\\SER890Z.dll"
+                      "dll": "SALUD\\SER890Z"
                     }
                   ]
                 }
@@ -10388,7 +10385,7 @@
                   "Params": [
                     {
                       "formulario": "SER452",
-                      "dll": "SALUD\\SER452.dll"
+                      "dll": "SALUD\\SER452"
                     }
                   ]
                 },
@@ -10408,7 +10405,7 @@
                   "Params": [
                     {
                       "formulario": "SER453",
-                      "dll": "SALUD\\SER453.dll"
+                      "dll": "SALUD\\SER453"
                     }
                   ]
                 },
@@ -10428,7 +10425,7 @@
                   "Params": [
                     {
                       "formulario": "SER454",
-                      "dll": "SALUD\\SER454.dll"
+                      "dll": "SALUD\\SER454"
                     }
                   ]
                 },
@@ -10448,7 +10445,7 @@
                   "Params": [
                     {
                       "formulario": "SER455",
-                      "dll": "SALUD\\SER455.dll"
+                      "dll": "SALUD\\SER455"
                     }
                   ]
                 },
@@ -10468,7 +10465,7 @@
                   "Params": [
                     {
                       "formulario": "SER456",
-                      "dll": "SALUD\\SER456.dll"
+                      "dll": "SALUD\\SER456"
                     }
                   ]
                 }
@@ -10495,7 +10492,7 @@
                   "Params": [
                     {
                       "formulario": "SER7E1",
-                      "dll": "SALUD\\SER7E1.dll"
+                      "dll": "SALUD\\SER7E1"
                     }
                   ]
                 }

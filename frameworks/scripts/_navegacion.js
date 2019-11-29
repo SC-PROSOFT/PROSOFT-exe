@@ -1,4 +1,3 @@
-const { ipcRenderer } = require('electron');
 const exe = require('child_process').execFile,
     fs = require('fs');
 
@@ -175,16 +174,19 @@ function _infoRm_bat(data) {
         usuario = espaciosDer(localStorage.Usuario, 4),
         clave = localStorage.Clave ? espaciosDer(localStorage.Clave, 8) : '########',
         cbl = data.params[0].dll;
+        
 
 
     var argumentos = `${usuario}-${cbl}`;
     
+    
     switch (cbl){              
-        case 'SALUD\\SER11E':
-        case 'SALUD\\SER115':
-            argumentos = argumentos;            
+        case 'SALUD\\SER109H':                
+            opc_segu = data.opc_segu.padStart(6,"#");
+
+            argumentos = `${argumentos}-${opc_segu}`;
             break;
-            
+
     }
     
        
@@ -192,11 +194,11 @@ function _infoRm_bat(data) {
     var batch = `
     ECHO OFF\r\n
     TITLE MAIN_ELECT\r\n
-    P:\r\n
+    ${localStorage.Unidad}:\r\n
     CD \\${localStorage.Contab}\\${ mes }\r\n
     set p1=${ argumentos.padEnd(100, '*') } \r\n
     SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\SALUD\\;EXPORT RUNPATH\r\n
-    runcobol MAIN k c=P:\\rmcobol\\windows.cfg A %p1%\r\n
+    runcobol MAIN k c=${localStorage.Unidad}:\\rmcobol\\windows.cfg A %p1%\r\n
         `;
 
 
@@ -266,19 +268,19 @@ function _validarScript_bat(data) {
     switch (modulo) {
         case 'NOM':
             batch = "ECHO OFF\r\n"
-                + "P:\r\n"
+                + localStorage.Unidad +":\r\n"
                 + "CD\\" + contab + "\\NOMINA\\" + localStorage.Nomina + "\r\n"
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
         case 'PRS':
             batch = "ECHO OFF\r\n"
-                + "P:\r\n"
+                + localStorage.Unidad +":\r\n"
                 + "CD\\" + contab + "\\PRE" + "\r\n"
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
         default:
             batch = "ECHO OFF\r\n"
-                + "P:\r\n"
+                + localStorage.Unidad +":\r\n"
                 + "CD\\" + contab + "\\" + mes + "\r\n"
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
@@ -322,6 +324,13 @@ function _eventoTeclas(e) {
     else if (key == "69") opcion = "E";
     else if (key == "71") opcion = "G";
     else if (key == "72") opcion = "H";
+    else if (key == "73") opcion = "I";
+    else if (key == "74") opcion = "J";
+    else if (key == "75") opcion = "K";
+    else if (key == "76") opcion = "L";
+    else if (key == "77") opcion = "M";
+    else if (key == "78") opcion = "N";
+    
     else if (key == "70" || key == "27") opcion = "regresar";
     else if (key == "83" || key == "87") salir_modulo()
     else { opcion = null; console.error('Tecla no definida'); }
@@ -388,6 +397,11 @@ function mostrar_menu(list, idOpcion) {
             else if (index == 15) index = 'G';
             else if (index == 16) index = 'H';
             else if (index == 17) index = 'I';
+            else if (index == 18) index = 'J';
+            else if (index == 19) index = 'K';
+            else if (index == 20) index = 'L';
+            else if (index == 21) index = 'M';
+            else if (index == 22) index = 'N';
 
             let id = this.Id.substring(1, this.Id.length);
             let temp = this.Id.substr(this.Id.length - 1, this.Id.length);
@@ -436,5 +450,6 @@ function loadScript(script, callback) {
 
 
 function salir_modulo() {
+    var { ipcRenderer } = require('electron');
     ipcRenderer.send('ping', { param: 'salir' })
 }
