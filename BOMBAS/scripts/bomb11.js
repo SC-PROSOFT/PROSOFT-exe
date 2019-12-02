@@ -11,8 +11,8 @@ $(document).ready(function () {
     prueba()
 });
 
-function prueba(){
-    SolicitarDll({datosh: datosEnvio()}, function (data){
+function prueba() {
+    SolicitarDll({ datosh: datosEnvio() }, function (data) {
         console.log(data)
     }, get_url("app/bombas/LISTFACT-EXT.DLL"))
 }
@@ -73,21 +73,21 @@ function on_validarFecha_envio_bomb11(data) {
         $_DATOS_BOMB11 = res;
         $_FECHA_INI = res[1];
         $_FECHA_NUM = res[5];
-        fechaInicial();
+        fechaInicial('1');
     } else {
         plantillaError(res[0], res[1], res[2]);
     }
 
 }
 
-function fechaInicial() {
+function fechaInicial(orden) {
     $('#añoInicial').val($_FECHA_INI.toString().substr(0, 2));
     $('#mesInicial').val($_FECHA_INI.toString().substr(2, 2));
     $('#diaInicial').val($_FECHA_INI.toString().substr(4, 2));
     validarInputs(
         {
             form: '#validarFechas',
-            orden: '1'
+            orden: orden
         },
         _toggleNav,
         validarFechaInicial
@@ -99,7 +99,7 @@ function validarFechaInicial() {
     mes = $('#mesInicial').val();
     dia = $('#diaInicial').val();
     if (mes < 1 || mes > 12 || dia < 1 || dia > 31) {
-        fechaInicial();
+        fechaInicial('2');
     } else {
         $_FECHA_INI = ano + mes + dia;
 
@@ -124,7 +124,7 @@ function fechaFinal() {
             form: '#fase1',
             orden: '1'
         },
-        _toggleNav,
+        () => { fechaInicial('2') },
         validarFechaFinal
     );
 }
@@ -137,11 +137,11 @@ function validarFechaFinal() {
         fechaFinal();
     } else {
         mes_ini = $_FECHA_INI.toString().substr(2, 2);
+        $_FECHA_FIN = ano + mes + dia;
         if (mes == mes_ini || mes == (mes_ini + 1)) {
             if ($_FECHA_FIN < $_FECHA_INI) {
                 fechaFinal();
             } else {
-                $_FECHA_FIN = ano + mes + dia;
                 nitProcesar();
             }
         } else {
@@ -204,7 +204,7 @@ function resptDllBoomb11(data) {
         loader('hide');
         _inputControl('reset');
         _inputControl('disabled');
-        fechaInicial();
+        fechaInicial('1');
     } else {
         plantillaError(res[0], res[1], res[2]);
     }
