@@ -3,42 +3,50 @@
 var $_NovedSer71H;
 
 $(document).ready(function () {
-
+    _inputControl('reset');
+    _inputControl('disabled');
     _toggleF8([
         { input: 'codigo', app: '71H', funct: _ventanaGrptar }
     ]);
-
-    loader('hide');
     CON850(_evaluarCON850);
 
 });
 
 function _ventanaGrptar(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "NOMBRES DE COMUNIDADES",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_grupocomu',
-            callback_esc: function () {
-                _validarDato71H()
-            },
-            callback: function (data) {
-                console.debug(data);
-                $('#codigo_71H').val(data.codigo)
-                $('#descripSer71H').val(data.descripcion)
-                _enterInput('#codigo_71H');
+    var $_COMUNIDADES_71I = [];
+    let URL = get_url("APP/" + "SALUD/SER116A" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_COMUNIDADES_71I = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE COMUNIDADES',
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_COMUNIDADES_71I.COMUNIDADES,
+                    callback_esc: function () {
+                        $("#codigo_71H").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('codigo_71H').value = data.COD;
+                        document.getElementById('descripSer71H').value = data.DESCRIP;
+                        _enterInput('#codigo_71H');
+
+                    }
+                });
             }
+
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
-    _inputControl('reset');
-    _inputControl('disabled');
-    console.debug(novedad)
     $_NovedSer71H = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
@@ -60,49 +68,73 @@ function _validarDato71H() {
             orden: '1'
         },
         function () { CON850(_evaluarCON850); },
-        function () {
-            $_COD71H = $('#codigo_71H').val();
-
-            let datos_envio = datosEnvio()
-            datos_envio += '|'
-            datos_envio += $_COD71H
-
-            SolicitarDll({ datosh: datos_envio }, on_grupoComu71H, get_url('/APP/SALUD/SAL71H-01.DLL'));
-        }
+        _validacionescod_71H
     )
 }
 
-function on_grupoComu71H(data) {
-    console.debug(data);
-    var date = data.split('|');
-    $_CODCOMU = date[1].trim();
-    $_NOMCOMU = date[2].trim();
-
-    if (date[0].trim() == '00') {
-        if ($_NovedSer71H == '7') {
-            CON851('00', '00', null, 'error', 'Error');
-            _validarDato71H()
-        }
-        else {
-            _llenarDatSer71H()
-        }
-    }
-    else if (date[0].trim() == '01') {
-        if ($_NovedSer71H == '7') {
-            detalle71H();
-        }
-        else {
-            CON851('01', '01', null, 'error', 'Error');
-            _validarDato71H();
-        }
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
+function _validacionescod_71H(){
+    $_COD71H = $('#codigo_71H').val();
+    LLAMADO_DLL({
+        dato: [$_COD71H],
+        callback: _dataSAL71H_comu,
+        nombredll: 'SAL71H-01',
+        carpeta: 'SALUD'
+    });
 }
 
+function _dataSAL71H_comu(data){
+    
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_CODCOMU = date[1].trim();
+    $_NOMCOMU = date[2].trim();
+    if (($_NovedSer71H == '7') && (swinvalid == '01')) {
+        
+        detalle71H()
+    }
+    else if (($_NovedSer71H == '7') && (swinvalid == '00')) {
+        
+        CON851('00', '00', null, 'error', 'Error');
+        CON850(_evaluarCON850);
+    }
+    else if (($_NovedSer71H == '8') && (swinvalid == '00')) {
+       
+        _llenarDatSer71H(); 
+
+    }
+    else if (($_NovedSer71H == '8') && (swinvalid == '01')) {
+        
+        CON851('01', '01', null, 'error', 'Error');
+        CON850(_evaluarCON850);
+
+    }
+    else if (($_NovedSer71H == '9') && (swinvalid == '00')) {
+      
+        _llenarDatSer71H(); 
+
+    }
+    else if (($_NovedSer71H == '9') && (swinvalid == '01')) {
+       
+        CON851('01', '01', null, 'error', 'Error');
+        CON850(_evaluarCON850);
+    }   
+}
+
+/// NOVEDAD 7 ////
+function detalle71H() {
+    
+    validarInputs(
+        {
+            form: '#descrp',
+            orden: '1'
+        },
+        function () { _validarDato71H(); },
+        function () { envioDatSer71H() }
+    )
+}
+////// NOVEDAD 8 Y 9 //////////////////
 function _llenarDatSer71H() {
-    $('#codigo_71H').val($_CODCOMU);
+    // $('#codigo_71H').val($_CODCOMU);
     $('#descripSer71H').val($_NOMCOMU);
 
     switch (parseInt($_NovedSer71H)) {
@@ -115,133 +147,51 @@ function _llenarDatSer71H() {
     }
 }
 
-
-// ELIMINAR REGISTRO
+///////// ELIMINAR REGISTRO ////////////////////
 function _envDatos71H() {
 
     LLAMADO_DLL({
         dato: [$_NovedSer71H, $_COD71H],
-        callback: function (data) {
-            validarResp_71H(data, $_COD71H)
-        },
+        callback: _data71H_02,
         nombredll: 'SAL71H-02',
         carpeta: 'SALUD'
     })
 }
 
-
-/// NOVEDAD 7 ////
-function detalle71H() {
-    console.debug('detalle')
-    validarInputs(
-        {
-            form: '#descrp',
-            orden: '1'
-        },
-        function () { _validarDato71H(); },
-        function () { envioDatSer71H() }
-    )
-}
-
+///////////////GRABAR DATOS////////////////
 
 function envioDatSer71H() {
-    var novd71H = $_NovedSer71H
-    var desc71H = espaciosDer($('#descripSer71H').val(), 25)
+    desc71H = $('#descripSer71H').val();
 
     LLAMADO_DLL({
-        dato: [novd71H, $_COD71H, desc71H],
-        callback: function (data) {
-            validarResp_71H(data, $_COD71H, desc71H)
-        },
+        dato: [$_NovedSer71H, $_COD71H, desc71H],
+        callback: _data71H_02,
         nombredll: 'SAL71H-02',
         carpeta: 'SALUD'
     })
 }
 
-
-function validarResp_71H(data, $_COD71H, desc71H) {
-    loader('hide');
-    var rdll = data.split('|');
-    console.log(rdll[0])
-    if (rdll[0].trim() == '00') {
-        switch (parseInt($_NovedSer71H)) {
-            case 7:
-                _consultaSql({
-                    sql: `INSERT INTO sc_grupocomu VALUES ('${$_COD71H}', '${desc71H}');`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas71H();
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas71H();
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 8:
-                _consultaSql({
-                    sql: `UPDATE sc_grupocomu SET descripcion='${desc71H}' WHERE codigo = '${$_COD71H}' `,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas71H()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas71H();
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 9:
-                _consultaSql({
-                    sql: `DELETE FROM sc_grupocomu WHERE codigo = '${$_COD71H}'`,
-                    db: $CONTROL,
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCajas71H()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-                                    function () {
-                                        limpiarCajas71H()
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
+function _data71H_02(data) {
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == "00") {
+        if ($_NovedSer71H == '9') {
+            toastr.success('Se ha retirado', 'MAESTRO COMUNIDADES');
+            _inputControl('reset');
+            _inputControl('disabled');
+            CON850(_evaluarCON850);
+        } else {
+            toastr.success('Se ha guardado', 'MAESTRO COMUNIDADES');
+            _inputControl('reset');
+            _inputControl('disabled');
+            CON850(_evaluarCON850);
         }
+    } else if (swinvalid == "01") {
+        CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
+
     } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+        CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
-function limpiarCajas71H() {
-    _toggleNav();
-    _inputControl('reset');
-    _inputControl('disabled');
 
-}

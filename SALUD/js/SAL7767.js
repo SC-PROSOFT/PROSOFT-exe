@@ -1,8 +1,9 @@
 var $_CODLINK, $_CEDLNK, $_RHLNK, $_NITW, $_REGBASE09, $_EMBALTOPACIW, $_TIPOIDLNK, $_DESCRIPCEDLNK,
-    $_SEXOLNK, $_FECHANACLNK, $_HEMOCLASLNK, EPSPACI, $_NITENT, $_ENTIFACTPACIW, $_NITFACTPACIW,
-    $_TUTELAPACIW = '', $_PADREPACIW = '', $_MADREPACIW = '', $_PAISPACIW = '', $_FECHADEMPACIW = '', $_DEMANINDPACIW = '', $_CERTESTUDPACIW = '', $_PERIESTUDPACIW = '',
-    $_ULTMAMOPACIW = '', $_CERTECONOPACIW = '', $_PERIECOPACIW = '', $_PARENTPACIW = '', $_COMUNIPACW = '', $_RESGUARPACIW = '', $_FICHAPACIW = '', $_CARNETPACIW = '',
-    $_EMPRESAPACIW = '', $_FECHANITPACIW = '', $_OBSERVPACIW = '', $_ANTCANCERPACIW = '';
+    $_SEXOLNK, $_FECHANACLNK, $_HEMOCLASLNK, EPSPACI, $_NITENT, $_ENTIFACTPACIW, $_NITFACTPACIW, $_TIPOAFILPACIW = '', $_NIVESTUPACIW = '',
+    $_TUTELAPACIW = '', $_PADREPACIW = '', $_MADREPACIW = '', $_PAISPACIW = '', $_FECHADEMPACIW = '', $_DEMANINDPACIW = '', $_DERECHOPACIW = '',
+    $_CERTESTUDPACIW = '', $_PERIESTUDPACIW = '', $_ULTMAMOPACIW = '', $_CERTECONOPACIW = '', $_PERIECOPACIW = '', $_PARENTPACIW = '', $_DISCAPPACIW = '',
+    $_COMUNIPACW = '', $_RESGUARPACIW = '', $_FICHAPACIW = '', $_CARNETPACIW = '', $_EMPRESAPACIW = '', $_FECHANITPACIW = '', $_OBSERVPACIW = '',
+    $_ANTCANCERPACIW = '', $_TIPOPACIW = '', $_ESTCIVILPACIW = '', $_REGIMENPACIW = '', $_ESTRATOPACIW, $_ETNIAPACIW = '';
 
 var $_ENTIDADES_7767 = [];
 var $_CIUDAD_7767 = [];
@@ -18,25 +19,18 @@ var $_REG_PACI = [];
 var $_ETNIAS = [];
 var $_COMUNIDADES = [];
 var $_RESGUARDOS = [];
-// var pdfMask = IMask($('#pdf_rx424')[0], {
-//     mask: 'a',
-//     prepare: function (str) {
-//         str = str.toUpperCase();
-//         console.debug(str);
-//         if ((str == 'S') || (str == 'N')) {
-//             return str
-//         }
-//     },
-//     commit: function (value, masked) {
-//         masked._value = value.toLowerCase()
-//     }
-// });
+var $_COLEGIO_PACI = [];
+
 /////////////////////// MASCARAS /////////////////////////////
-var PriceUnitMask_7767 = new IMask($('#numero_110c')[0], { mask: Number, thousandsSeparator: ',' });
+// var PriceUnitMask_7767 = new IMask($('#numero_110c')[0], {
+//     mask: Number,
+//     thousandsSeparator: ','
+// });
 
 $(document).ready(function () {
     _inputControl("reset");
     _inputControl("disabled");
+
     $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;
     $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
     $_FECHA_LNK = $_USUA_GLOBAL[0].FECHALNK;
@@ -59,89 +53,51 @@ $(document).ready(function () {
     $_DPTCIUUSU = $_CODCIUUSU.substring(0, 1);
     $_CIUCIUUSU = $_CODCIUUSU.substring(1, 5);
 
-    _toggleF8([{
-        input: "numero",
-        app: "110c",
-        funct: _ventanaPacientes
-    },
-    {
-        input: 'ciudad',
-        app: '110c',
-        funct: _ventanaciudad_SAL7767
-    },
-    {
-        input: 'lugar',
-        app: '110c',
-        funct: _ventanalugar_SAL7767
-    },
-    {
-        input: 'ocupacion',
-        app: '110c',
-        funct: _ventanaocupaciones_SAL7767
-    },
-    {
-        input: 'colegio',
-        app: '110c',
-        funct: _ventanacolegios_SAL7767
-    },
-    {
-        input: 'ciudadaseg',
-        app: '110c',
-        funct: _ventanaportabilidad_SAL7767
-    },
-    {
-        input: 'eps',
-        app: '110c',
-        funct: _ventanaentidades_SAL7767
-    },
-    {
-        input: 'cotizante',
-        app: '110c',
-        funct: _ventanamaestrodospaci_SAL7767
-    },
-    {
-        input: 'patologiacronica',
-        app: '110c',
-        funct: _ventanapatologias_SAL7767
-    },
-    {
-        input: 'clasif',
-        app: '110c',
-        funct: _ventanaclasificacion_SAL7767
-    },
-    {
-        input: 'entidad',
-        app: '110c',
-        funct: _ventanaterceros_SAL7767
-    },
-    {
-        input: 'medicofam',
-        app: '110c',
-        funct: _ventanaprofesionales_SAL7767
-    },
+    _toggleF8([
+        { input: "numero", app: "110c", funct: _ventanaPacientes },
+        { input: 'ciudad', app: '110c', funct: _ventanaciudad_SAL7767 },
+        { input: 'lugar', app: '110c', funct: _ventanalugar_SAL7767 },
+        { input: 'ocupacion', app: '110c', funct: _ventanaocupaciones_SAL7767 },
+        { input: 'colegio', app: '110c', funct: _ventanacolegios_SAL7767 },
+        { input: 'ciudadportab', app: '7767', funct: _ventanaportabilidad_SAL7767 },
+        { input: 'eps', app: '110c', funct: _ventanaentidades_SAL7767 },
+        { input: 'cotizante', app: '110c', funct: _ventanamaestrodospaci_SAL7767 },
+        { input: 'patologiacronica', app: '110c', funct: _ventanapatologias_SAL7767 },
+        { input: 'clasif', app: '110c', funct: _ventanaclasificacion_SAL7767 },
+        { input: 'entidad', app: '110c', funct: _ventanaterceros_SAL7767 },
+        { input: 'medicofam', app: '110c', funct: _ventanaprofesionales_SAL7767 },
     ]);
     obtenerDatosCompletos({
-        nombreFd: 'CIUDADES'
-    }, _f8ciudadpaciente)
-    // cargarDatosPaci(); 
-});
+        nombreFd: 'TERCEROS'
+    }, function (data) {
+        $_TERCEROS_7767 = data.TERCEROS;
+        obtenerDatosCompletos({
+            nombreFd: 'ENTIDADES'
+        }, function (data) {
+            $_ENTIDADES_7767 = data.ENTIDADES
+            obtenerDatosCompletos({
+                nombreFd: 'CIUDADES'
+            }, function (data) {
+                $_CIUDAD_7767 = data.CIUDAD
+                obtenerDatosCompletos({
+                    nombreFd: 'COLEGIOS'
+                }, _f8colegios_108)
+            })
+        })
+    })
+})
 
-function _f8ciudadpaciente(data) {
-    console.log(data)
-    $_CIUDAD_7767 = data.CIUDAD
-    $_CIUDAD_7767.pop()
+function _f8colegios_108(data) {
+    $_COLEGIOS_7767 = data.COLEGIOS;
+    $_COLEGIOS_7767.pop()
     _buscarrestriccion_7767()
-    // obtenerDatosCompletos({ nombreFd: 'ENTIDADES' }, _f8entidadafiliacion)
 }
-
-
-
 
 //////// VENTANAS F8////////////////////////
 
 
 function _ventanaPacientes(e) {
-    var $PACIENTES = [];
+
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 
         parametros = {
@@ -149,17 +105,15 @@ function _ventanaPacientes(e) {
             f8data: 'PACIENTES',
             columnas: [{
                 title: 'COD'
-            }, {
-                title: 'NOMBRE'
-            }, {
-                title: 'EPS'
-            }],
+            }, { title: 'NOMBRE' }, { title: 'EPS' }],
             callback: (data) => {
+                // document.querySelector("#numero_110c").focus();
                 document.querySelector("#numero_110c").value = data.COD;
-                document.querySelector("#numero_110c").focus();
+                _enterInput('#numero_110c');
             },
             cancel: () => {
-                document.querySelector("#numero_110c").focus()
+                _enterInput('#numero_110c');
+                // document.querySelector("#numero_110c").focus()
             }
         };
         F8LITE(parametros);
@@ -195,8 +149,8 @@ function _ventanalugar_SAL7767(e) {
                 $("#lugar_110c").focus();
             },
             callback: function (data) {
-                // document.getElementById('lugar_110c').value = data.COD.trim();
-                document.getElementById('lugar_110c').value = data.COD.trim() + "-" + data.NOMBRE.trim();
+
+                document.getElementById('lugar_110c').value = data.COD.trim();
                 _enterInput('#lugar_110c');
             }
         });
@@ -210,11 +164,11 @@ function _ventanaportabilidad_SAL7767(e) {
             columnas: ["COD", "NOMBRE", "PAIS", "NOM_PAIS", "DEPART"],
             data: $_CIUDAD_7767,
             callback_esc: function () {
-                $("#ciudadaseg_110c").focus();
+                $("#ciudadportab_7767").focus();
             },
             callback: function (data) {
-                document.getElementById('ciudadaseg_110c').value = data.COD.trim() + "-" + data.NOMBRE.trim();
-                _enterInput('#ciudadaseg_110c');
+                document.getElementById('ciudadportab_7767').value = data.COD.trim();
+                _enterInput('#ciudadportab_7767');
             }
         });
     }
@@ -239,43 +193,48 @@ function _ventanapais_SAL7767(e) {
 }
 
 function _ventanaocupaciones_SAL7767(e) {
-
-    obtenerDatosCompletos({
-        nombreFd: 'OCUPACIONES'
-    }, function (data) {
-        $_OCUPACIONES_7767 = data.OCUPACIONES;
-        $_OCUPACIONES_7767.pop()
-        console.log($_OCUPACIONES_7767);
-        if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-            _ventanaDatos({
-                titulo: "VENTANA DE OCUPACIONES",
-                columnas: ["CODOCU", "NOMBREOCU"],
-                data: $_OCUPACIONES_7767,
-                callback_esc: function () {
-                    $("#ocupacion_110c").focus();
-                },
-                callback: function (data) {
-                    document.getElementById('ocupacion_110c').value = data.CODOCU.trim();
-                    document.getElementById('ocupaciond_110c').value = data.NOMBREOCU;
-                    _enterInput('#ocupacion_110c');
-                }
-            });
-        }
-    })
+    let URL = get_url("APP/" + "SALUD/SER854" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_OCUPACIONES_7767 = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE OCUPACIONES",
+                    columnas: ["CODOCU", "NOMBREOCU"],
+                    data: $_OCUPACIONES_7767.OCUPACIONES,
+                    callback_esc: function () {
+                        $("#ocupacion_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('ocupacion_110c').value = data.CODOCU.trim();
+                        document.getElementById('ocupaciond_110c').value = data.NOMBREOCU;
+                        _enterInput('#ocupacion_110c');
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
 
 function _ventanacolegios_SAL7767(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'VENTANA DE INSTITUCIONES',
-            columnas: ["CODIGO", "DESCRIP", "CIUDAD"],
+            columnas: ["TIPO", "CIUDAD", "SECU", "DESCRIP"],
             data: $_COLEGIOS_7767,
             callback_esc: function () {
                 $("#colegio_110c").focus();
             },
             callback: function (data) {
-                document.getElementById('colegio_110c').value = data.CODIGO.trim();
-                document.getElementById('colegiod_110c').value = data.DESCRIP;
+                $_INSTITUTOPACIW = data.TIPO.trim() + data.CIUDAD.trim() + data.SECU.trim();
+                $("#colegio_110c").val($_INSTITUTOPACIW);
+                // document.getElementById('colegiod_110c').value = data.DESCRIP;
+                // $_COLEGIO_PACI = data;
                 _enterInput('#colegio_110c');
             }
         });
@@ -283,7 +242,6 @@ function _ventanacolegios_SAL7767(e) {
 }
 
 function _ventanaentidades_SAL7767(e) {
-
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'VENTANA DE ENTIDADES',
@@ -304,7 +262,7 @@ function _ventanaentidades_SAL7767(e) {
 }
 
 function _ventanamaestrodospaci_SAL7767(e) {
-    var $PACIENTES = [];
+
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 
         parametros = {
@@ -331,72 +289,24 @@ function _ventanamaestrodospaci_SAL7767(e) {
 
 
 function _ventanapatologias_SAL7767(e) {
-
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE PATOLOGIAS CRONICAS',
-            columnas: ["COD", "DESCRIP"],
-            data: $_PATOLOGIAS_108,
-            callback_esc: function () {
-                $("#patologiacronica_110c").focus();
-            },
-            callback: function (data) {
-                document.getElementById('patologiacronica_110c').value(data.COD.trim());
-                _enterInput('#patologiacronica_110c');
-            }
-        });
-    }
-
-}
-
-function _ventanaclasificacion_SAL7767(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE CLASIFICACION PACI',
-            columnas: ["COD", "NOMBRE"],
-            data: $_CLASIPACI_108,
-            callback_esc: function () {
-                $("#clasif_110c").focus();
-            },
-            callback: function (data) {
-                console.log(data)
-                $('#clasif_110c').val(data.COD.trim());
-                $('#clasifd_110c').val(data.NOMBRE.trim());
-                _enterInput('#clasif_110c');
-            }
-        });
-    }
-}
-
-function _ventanaterceros_SAL7767(e) {
-    let URL = get_url("APP/" + "CONTAB/CON802" + ".DLL");
+    let URL = get_url("APP/" + "SALUD/SER858" + ".DLL");
     postData({
         datosh: datosEnvio() + localStorage['Usuario'] + "|"
     }, URL)
         .then((data) => {
             loader("hide");
-            $_TERCEROS_7767 = data;
+            $_PATOLOGIAS_108.data;
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-                _ventanaDatos_lite_v2({
-                    titulo: 'VENTANA DE TERCEROS',
-            data: $_TERCEROS_7767,
-                    indice: ["COD", "NOMBRE", "DIRREC", "TELEF", "CIUDAD", "FACTOR", "ACT"],
-                    mascara: [{
-                        "COD": 'Identificacion',
-                        "NOMBRE": 'Nombre',
-                        "DIRREC": "direccion",
-                        "TELEF": "telefono"
-                    }],
-                    minLength: 3,
-                    callback: function () {
-                        $("#entidad_110c").focus();
+                _ventanaDatos({
+                    titulo: 'VENTANA DE PATOLOGIAS CRONICAS',
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_PATOLOGIAS_108.PATOLOGIAS,
+                    callback_esc: function () {
+                        $("#patologiacronica_110c").focus();
                     },
                     callback: function (data) {
-                        console.log(data, 'data.COD;')
-                        document.getElementById("entidad_110c").value = data.COD;
-                        document.getElementById("entidadd_110c").value = data.NOMBRE;
-
-                        _enterInput('#entidad_110c');
+                        document.getElementById('patologiacronica_110c').value(data.COD.trim());
+                        _enterInput('#patologiacronica_110c');
                     }
                 });
             }
@@ -404,6 +314,63 @@ function _ventanaterceros_SAL7767(e) {
         .catch((error) => {
             console.log(error)
         });
+
+}
+
+function _ventanaclasificacion_SAL7767(e) {
+    let URL = get_url("APP/" + "SALUD/SER868" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_CLASIPACI_108.data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE CLASIFICACION PACI',
+                    columnas: ["COD", "NOMBRE"],
+                    data: $_CLASIPACI_108.CLASIFICACION,
+                    callback_esc: function () {
+                        $("#clasif_110c").focus();
+                    },
+                    callback: function (data) {
+                        $('#clasif_110c').val(data.COD.trim());
+                        $('#clasifd_110c').val(data.NOMBRE.trim());
+                        _enterInput('#clasif_110c');
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+}
+
+function _ventanaterceros_SAL7767(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos_lite_v2({
+            titulo: 'VENTANA DE TERCEROS',
+            data: $_TERCEROS_7767,
+            indice: ["COD", "NOMBRE", "DIRREC", "TELEF", "CIUDAD", "FACTOR", "ACT"],
+            mascara: [{
+                "COD": 'Identificacion',
+                "NOMBRE": 'Nombre',
+                "DIRREC": "direccion",
+                "TELEF": "telefono"
+            }],
+            minLength: 3,
+            callback: function () {
+                $("#entidad_110c").focus();
+            },
+            callback: function (data) {
+                $_ENTIFACTPACIW = data.COD.trim();
+                $_ENTIFACTPACIW = $_ENTIFACTPACIW.padStart(10, '0');
+                $("#entidad_110c").val($_ENTIFACTPACIW);
+
+                _enterInput('#entidad_110c');
+            }
+        });
+    }
 }
 
 
@@ -418,13 +385,16 @@ function _ventanaprofesionales_SAL7767(e) {
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: 'VENTANA DE PROFESIONALES',
-                    data: $_PROFESIONALES_7767.PROFESIONALES,
+                    data: $_PROFESIONALES_7767.ARCHPROF,
                     columnas: ["NOMBRE", "IDENTIFICACION", "ATIENDE_PROF", "LU", "MA", "MI", "JU", "VI", "SA"],
                     callback_esc: function () {
                         $("#medicofam_110c").focus();
                     },
                     callback: function (data) {
-                        $('#medicofam_110c').val(data.IDENTIFICACION);
+                        // $('#medicofam_110c').val(data.IDENTIFICACION);
+                        $_MEDFAMIPACIW = data.IDENTIFICACION;
+                        $_MEDFAMIPACIW = $_MEDFAMIPACIW.padStart(10, '0');
+                        $("#medicofam_110c").val($_MEDFAMIPACIW);
                         $('#medicofamd_110c').val(data.NOMBRE.trim());
                         _enterInput('#medicofam_110c');
                     }
@@ -447,7 +417,7 @@ var momentMask = IMask($("#nacimiento_110c")[0], {
     pattern: momentFormat,
     lazy: true,
     min: new Date(1920, 0, 1),
-    max: new Date(2020, 0, 1),
+    max: new Date(2022, 0, 1),
 
     format: function (date) {
         return moment(date).format(momentFormat);
@@ -460,7 +430,7 @@ var momentMask = IMask($("#nacimiento_110c")[0], {
         YYYY: {
             mask: IMask.MaskedRange,
             from: 1920,
-            to: 2020
+            to: 2022
         },
         MM: {
             mask: IMask.MaskedRange,
@@ -678,7 +648,6 @@ function _buscarrestriccion_7767() {
 }
 
 function _dataCON904_01(data) {
-    console.debug(data, "CON904-01");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -686,7 +655,7 @@ function _dataCON904_01(data) {
         _comenzar_7767();
     } else {
         CON851('15', '15', null, 'error', 'error');
-        _toogleNav();
+        _toggleNav();
     }
 }
 
@@ -737,7 +706,6 @@ function _validacionnovedad_7767() {
 }
 
 function _dataSAL7767_01(data) {
-
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -784,7 +752,6 @@ function _infosal7767() {
 }
 
 function _dataCON904_02(data) {
-    // console.debug(data, "CON904-02");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -793,7 +760,6 @@ function _dataCON904_02(data) {
     } else {
         CON851('01', '01', null, 'error', 'error');
         CON850(_dato_novedad_7767);
-        // _dato_novedad_7767()
     }
 }
 
@@ -809,7 +775,6 @@ function _permisonovedad_7767() {
 }
 
 function _dataCON904_03(data) {
-    // console.debug(data, "CON904-03");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -831,12 +796,12 @@ function _dato3_7767() {
     if (($_SW9 == "0") && ($_NITW.trim() != "") && ($_NITW != "000000000000000")) {
         $_SW9 = "1";
         $_CODPACIW = $_NITW;
-        _editarpaci_7767();
+        _evaluarpaciente_7767();
 
     } else if (($_SWCAMBIOW == "0") && ($_NITUSU == "0845000038")) {
         $_CODPACIW.trim() = ' ';
         $_SWCAMBIOW = "1";
-        // _editarpaci();
+        _evaluarpaciente_7767()
     } else {
 
         _evaluarpaciente_7767();
@@ -857,9 +822,10 @@ function _evaluarpaciente_7767() {
 }
 
 function _editarpaci_7767() {
-    $_CODPACIW = PriceUnitMask_7767.unmaskedValue;
-    // $_CODPACIW = $('#numero_110c').val();
-    $_CODPACIW = $_CODPACIW.padStart(15, "0");
+    // $_CODPACIW = PriceUnitMask_7767.unmaskedValue;
+    // $_CODPACIW = PriceUnitMask_7767.unmaskedValue;
+    $_CODPACIW = $('#numero_110c').val();
+    $_CODPACIW = $_CODPACIW.padStart(15, '0')
     $('#numero_110c').val($_CODPACIW);
 
     if ($_CODPACIW == "000000000000000") {
@@ -877,8 +843,6 @@ function _editarpaci_7767() {
 }
 
 function _dataSAL7767_02(data) {
-    console.log("_dataSAL7767_02", data)
-
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (($_NOVEDAD7767 == '7') && (swinvalid == '01')) {
@@ -901,7 +865,7 @@ function _dataSAL7767_02(data) {
     } else if (($_NOVEDAD7767 == '8') && (swinvalid == '00')) {
 
         setTimeout(_consultademostrarinf_7767, 100);
-        _dato4_7767();
+        // _dato4_7767();
 
     } else if (($_NOVEDAD7767 == '8') && (swinvalid == '01')) {
         _error_7767();
@@ -927,7 +891,6 @@ function _error_7767() {
         setTimeout(function () {
             CON850(_dato_novedad_7767)
         }, 100)
-        // setTimeout(_dato_novedad_7767, 100);
     }
 }
 
@@ -1012,7 +975,7 @@ function _dato4_7767() {
 
     if (($_NOVEDAD7767 == '7') && (Number.isNaN($_CODPACIW)) && ($_TIPOPACIW == ' ')) {
         $_TIPOPACIW = "RC";
-        $("identif_110c").val($_TIPOPACIW);
+        $("#identif_110c").val($_TIPOPACIW);
         _validartipopac_7767();
 
     } else if (($_NOVEDAD7767 == '8') && ($_ADMINW == "ADMI") || ($_ADMINW == "GEBC")) {
@@ -1034,55 +997,18 @@ function _dato4_7767() {
 }
 
 function _validartipopac_7767() {
-    var documento = [{
-        "COD": "CC",
-        "DESCRIP": "1- CEDULA CIUDADANIA"
-    },
-    {
-        "COD": "CE",
-        "DESCRIP": "2- CEDULA EXTRANJERIA"
-    },
-    {
-        "COD": "PA",
-        "DESCRIP": "3- NUMERO PASAPORTE"
-    },
-    {
-        "COD": "RC",
-        "DESCRIP": "4- REGISTRO CIVIL"
-    },
-    {
-        "COD": "TI",
-        "DESCRIP": "5- TARJETA IDENTIDAD"
-    },
-    {
-        "COD": "ASI",
-        "DESCRIP": "6- ADULTO SIN IDENT"
-    },
-    {
-        "COD": "MSI",
-        "DESCRIP": "7- MENOR SIN IDENT"
-    },
-    {
-        "COD": "NUI",
-        "DESCRIP": "8- NUM UNICO IDENT. NUID"
-    },
-    {
-        "COD": "CD",
-        "DESCRIP": "9- CARNET DIPLOMA"
-    },
-    {
-        "COD": "SC",
-        "DESCRIP": "A- SALVO CONDUCTO"
-    },
-    {
-        "COD": "PE",
-        "DESCRIP": "B- PERMISO ESPECIAL PERM"
-    },
-    {
-        "COD": "CN",
-        "DESCRIP": "C- CERTIFICADO NACIDO VIVO"
-    }
-    ]
+    var documento = [{ "COD": "CC", "DESCRIP": "1- CEDULA CIUDADANIA" },
+    { "COD": "CE", "DESCRIP": "2- CEDULA EXTRANJERIA" },
+    { "COD": "PA", "DESCRIP": "3- NUMERO PASAPORTE" },
+    { "COD": "RC", "DESCRIP": "4- REGISTRO CIVIL" },
+    { "COD": "TI", "DESCRIP": "5- TARJETA IDENTIDAD" },
+    { "COD": "ASI", "DESCRIP": "6- ADULTO SIN IDENT" },
+    { "COD": "MSI", "DESCRIP": "7- MENOR SIN IDENT" },
+    { "COD": "NUI", "DESCRIP": "8- NUM UNICO IDENT. NUID" },
+    { "COD": "CD", "DESCRIP": "9- CARNET DIPLOMA" },
+    { "COD": "SC", "DESCRIP": "A- SALVO CONDUCTO" },
+    { "COD": "PE", "DESCRIP": "B- PERMISO ESPECIAL PERM" },
+    { "COD": "CN", "DESCRIP": "C- CERTIFICADO NACIDO VIVO" }]
     POPUP({
         array: documento,
         titulo: 'TIPO IDENTIFICACION',
@@ -1090,6 +1016,7 @@ function _validartipopac_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
+        seleccion: $_TIPOPACIW,
         callback_f: _evaluarpaciente_7767
     },
         _evaluartipodoc_7767);
@@ -1122,7 +1049,7 @@ function _evaluartipodoc_7767(documento) {
 function validacionestipodoc_7767() {
     if (parseInt($_TIPOPACIW) == 888) {
         $_TIPOPACIW = '';
-        $("identif_110c").val($_TIPOPACIW);
+        $("#identif_110c").val($_TIPOPACIW);
         _dato3_7767();
 
     } else if (($_TIPOPACIW == "CC") || ($_TIPOPACIW == "CE") || ($_TIPOPACIW == "PA") || ($_TIPOPACIW == "RC") || ($_TIPOPACIW == "TI") || ($_TIPOPACIW == "ASI") || ($_TIPOPACIW == "MSI") || ($_TIPOPACIW == "NUI") || ($_TIPOPACIW == "CD") || ($_TIPOPACIW == "SC") || ($_TIPOPACIW == "PE") || ($_TIPOPACIW == "CN")) {
@@ -1136,7 +1063,6 @@ function validacionestipodoc_7767() {
 function _validacionestipopac2_7767() {
 
     if ((($_TIPOPACIW == "CC") || ($_TIPOPACIW == "TI")) && (Number.isNaN($_CODPACIW))) {
-
         CON851('57', '57', null, 'error', 'error');
         _dato4_7767();
     } else if ($_TIPOPACIW == "CC") {
@@ -1147,127 +1073,157 @@ function _validacionestipopac2_7767() {
             if ($_NOVEDAD7767 == '7') {
                 _dato4_7767();
             }
-        } else {
-            console.debug('comente las lineas para pruebas de funcionamiento ATT : CAMILO')
-            _lugaridentificacion_7767();
+        }else {
+            _evaluarlugarnac_7767(); 
         }
-    } else {
-        _lugaridentificacion_7767();
+    }else {
+        _evaluarlugarnac_7767(); 
     }
 }
 
-function _lugaridentificacion_7767() {
-    console.log("ventana lugaridentifi")
-    var ventanaidentif = bootbox.dialog({
-        size: 'medium',
-        onEscape: false,
-        title: 'LUGAR IDENTIFICACION',
-        message: '<div class="row"> ' +
-            '<div class="col-md-12 col-sm-12 col-xs-12">' +
-            '<div class="inline-inputs">' +
-            '<label class="col-md-4 col-sm-4 col-xs-12">Lugar:</label>' +
-            '<div class="input-group col-md-4 col-sm-4 col-xs-12" id="LUGAR_110C">' +
-            '<input id="lugar_110c" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" maxlength="5">' +
-            '</div>' +
-            '<button type="button" id="lugatBtn_110c" class="btn btn-default col-md-1 col-sm-1 col-xs-1">' +
-            '<i class="icon-magnifier"></i>' +
-            '</button>' +
-            '</div>' +
-            '</div>',
-        buttons: {
-            confirm: {
-                label: 'Aceptar',
-                className: 'btn-primary',
-                callback: function () {
-                    console.log("aceptar")
-                    // $_LUGARIDPACIW = $('#lugar_110c').val();
-                    // if (($_LUGARIDPACIW == '00000') || ($_LUGARIDPACIW.trim() == '')) {
-                    //     $('.btn-primary').click();
-                    //     setTimeout(_evaluarapellido_7767, 500); 
-                    //     ventanaidentif.off('show.bs.modal');
-                    // }
-                }
-            },
-            cancelar: {
-                label: 'Cancelar',
-                className: 'btn-danger',
-                callback: function () {
-                    console.log("cancelar")
-                    ventanaidentif.off('show.bs.modal');
-                    _validartipopac_7767();
-                }
-            }
-        }
-    });
-    ventanaidentif.init($('.modal-footer').hide());
-    ventanaidentif.on('shown.bs.modal', function () {
-        $("#lugar_110c").focus();
-        console.log('focus');
-    });
-    ventanaidentif.init(_evaluarlugar_7767());
-    ventanaidentif.init(_toggleF8([{
-        input: 'lugar',
-        app: '110c',
-        funct: _ventanalugar_SAL7767
-    },]));
-}
-
-function _evaluarlugar_7767() {
-    console.log('evaluarlugar');
+function _evaluarlugarnac_7767(){
     validarInputs({
-        form: "#LUGAR_110C",
-        orden: '1'
+        form: '#LUGARNAM_110C',
+        orden: "1"
     },
-        function () {
-            $('.btn-danger').click();
-        },
-        _leerlugarnacimiento_7767
+        function () {_evaluarpaciente_7767();},
+        _validarlugarnaci_7767
     )
 }
 
-function _leerlugarnacimiento_7767() {
-    console.log('leerlugar');
+function _validarlugarnaci_7767(){
     $_LUGARIDPACIW = $('#lugar_110c').val();
-    $('#lugar1_110c').val($_LUGARIDPACIW);
-    
     if (($_LUGARIDPACIW == '00000') || ($_LUGARIDPACIW.trim() == '')) {
-        console.log('va en limpio')
-        $('.btn-primary').click();
         _evaluarapellido_7767();
-
     } else {
-        console.log('consulta dll')
         LLAMADO_DLL({
             dato: [$_LUGARIDPACIW],
-            callback: _dataSAL7767_044,
+            callback: _dataSAL7767_047,
             nombredll: 'SAL7767_04',
             carpeta: 'SALUD'
         });
     }
-
 }
 
-function _dataSAL7767_044(data) {
+function _dataSAL7767_047(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCIUDNACIW = date[1].trim();
     if (swinvalid == "00") {
-        // $("#ciudadnaci_110C").val($_DESCRIPCIUDNACIW);
-        // setTimeout(_evaluarapellido_7767, 500);
-        $('.btn-primary').click();
         _evaluarapellido_7767();
     } else if (swinvalid == "01") {
-        $('.btn-primary').click();
-        setTimeout(_lugaridentificacion_7767, 500);
+        CON851('01', '01', null, 'error', 'Error');
+        _evaluarlugarnac_7767();
 
     } else {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
 
+// function _lugaridentificacion_7767() {
+
+//     var ventanaidentif = bootbox.dialog({
+//         size: 'medium',
+//         onEscape: false,
+//         title: 'LUGAR IDENTIFICACION',
+//         message: '<div class="row"> ' +
+//             '<div class="col-md-12 col-sm-12 col-xs-12">' +
+//             '<div class="inline-inputs">' +
+//             '<label class="col-md-4 col-sm-4 col-xs-12">Lugar:</label>' +
+//             '<div class="input-group col-md-4 col-sm-4 col-xs-12" id="LUGAR_110C">' +
+//             '<input id="lugar_110c" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" maxlength="5">' +
+//             '</div>' +
+//             '<button type="button" id="lugatBtn_110c" class="btn btn-default col-md-1 col-sm-1 col-xs-1">' +
+//             '<i class="icon-magnifier"></i>' +
+//             '</button>' +
+//             '</div>' +
+//             '</div>',
+//         buttons: {
+//             confirm: {
+//                 label: 'Aceptar',
+//                 className: 'btn-primary',
+//                 callback: function () {
+//                     // $_LUGARIDPACIW = $('#lugar_110c').val();
+//                     // if (($_LUGARIDPACIW == '00000') || ($_LUGARIDPACIW.trim() == '')) {
+//                     //     $('.btn-primary').click();
+//                     //     setTimeout(_evaluarapellido_7767, 500); 
+//                     //     ventanaidentif.off('show.bs.modal');
+//                     // }
+//                 }
+//             },
+//             cancelar: {
+//                 label: 'Cancelar',
+//                 className: 'btn-danger',
+//                 callback: function () {
+//                     ventanaidentif.off('show.bs.modal');
+//                     _validartipopac_7767();
+//                 }
+//             }
+//         }
+//     });
+//     ventanaidentif.init($('.modal-footer').hide());
+//     ventanaidentif.on('shown.bs.modal', function () {
+//         $("#lugar_110c").focus();
+//     });
+//     ventanaidentif.init(_evaluarlugar_7767());
+//     ventanaidentif.init(_toggleF8([{
+//         input: 'lugar',
+//         app: '110c',
+//         funct: _ventanalugar_SAL7767
+//     },]));
+// }
+
+// function _evaluarlugar_7767() {
+//     validarInputs({
+//         form: "#LUGAR_110C",
+//         orden: '1'
+//     },
+//         function () {
+//             $('.btn-danger').click();
+//         },
+//         _leerlugarnacimiento_7767
+//     )
+// }
+
+// function _leerlugarnacimiento_7767() {
+//     $_LUGARIDPACIW = $('#lugar_110c').val();
+//     $('#lugar1_110c').val($_LUGARIDPACIW);
+
+//     if (($_LUGARIDPACIW == '00000') || ($_LUGARIDPACIW.trim() == '')) {
+//         $('.btn-primary').click();
+//         _evaluarapellido_7767();
+
+//     } else {
+
+//         LLAMADO_DLL({
+//             dato: [$_LUGARIDPACIW],
+//             callback: _dataSAL7767_044,
+//             nombredll: 'SAL7767_04',
+//             carpeta: 'SALUD'
+//         });
+//     }
+
+// }
+
+// function _dataSAL7767_044(data) {
+//     var date = data.split('|');
+//     var swinvalid = date[0].trim();
+//     $_DESCRIPCIUDNACIW = date[1].trim();
+//     if (swinvalid == "00") {
+//         // $("#ciudadnaci_110C").val($_DESCRIPCIUDNACIW);
+//         // setTimeout(_evaluarapellido_7767, 500);
+//         $('.btn-primary').click();
+//         _evaluarapellido_7767();
+//     } else if (swinvalid == "01") {
+//         $('.btn-primary').click();
+//         setTimeout(_lugaridentificacion_7767, 500);
+
+//     } else {
+//         CON852(date[0], date[1], date[2], _toggleNav);
+//     }
+// }
+
 function _evaluarapellido_7767() {
-    // $('.btn-primary').click();
-    console.log('evaluarapellido')
     validarInputs({
         form: '#APELLIDO1_110C',
         orden: "1"
@@ -1306,7 +1262,6 @@ function _datoapellido_7767() {
 }
 
 function _evaluarsegundoapellido_7767() {
-    console.log('SEUNGO evaluarapellido')
     validarInputs({
         form: '#APELLIDO2_110C',
         orden: "1"
@@ -1542,7 +1497,7 @@ function mostrarDuplicados_7767($_BUSQ) {
 }
 
 function reprocesarDatosPaci_7767() {
-  
+
     var vtnMsj = bootbox.dialog({
         title: 'Documento ya existe',
         message: '<span>¿desea reprocesar?</span>',
@@ -1560,18 +1515,19 @@ function reprocesarDatosPaci_7767() {
                         nombredll: 'SAL7767_03',
                         carpeta: 'SALUD'
                     });
-                }},
-                
-                Cancelar: {
-                    //No desea reprocesar
-                    span: 'No',
-                    className: 'btn-danger',
-                    callback: function () {
-                        _evaluarpaciente_7767(); 
-                        vtnMsj.off('show.bs.modal');
+                }
+            },
 
-                    }
-                }           
+            Cancelar: {
+                //No desea reprocesar
+                span: 'No',
+                className: 'btn-danger',
+                callback: function () {
+                    _evaluarpaciente_7767();
+                    vtnMsj.off('show.bs.modal');
+
+                }
+            }
         }
     })
 }
@@ -1606,7 +1562,7 @@ function _datogrpsang_7767() {
         $("#rh_110c").val($_RHPACIW);
         _evaluarsexo_7767();
 
-    } else if (($_GRPSANGPACIW == 'A') || ($_GRPSANGPACIW == 'a') || ($_GRPSANGPACIW == 'B') || ($_GRPSANGPACIW == 'b') || ($_GRPSANGPACIW == 'AB') || ($_GRPSANGPACIW == 'ab') || ($_GRPSANGPACIW == 'O') || ($_GRPSANGPACIW == 'o')) {
+    } else if (($_GRPSANGPACIW == 'A') || ($_GRPSANGPACIW == 'B') || ($_GRPSANGPACIW == 'AB') || ($_GRPSANGPACIW == 'O')) {
         ////NEXT SENTENCE
         _evaluarrh_7767();
     } else {
@@ -1628,17 +1584,18 @@ function _evaluarrh_7767() {
 }
 
 function _datorh_7767() {
-    $_RHPACIW = $("#rh_110c").val();
-
-    if (($_RHPACIW == '+') || ($_RHPACIW == '-')) {
+    if ($("#rh_110c").val().trim() == '+' || $("#rh_110c").val().trim() == '-') {
         /// NEXT SENTENCE
+        $_RHPACIW = $("#rh_110c").val();
         _evaluarsexo_7767();
     } else {
         CON851('03', '03', null, 'error', 'error');
+        $_RHPACIW = $("#rh_110c").val();
         _evaluarrh_7767();
     }
     if (($.isNumeric($_CEDLNK)) && ($_RHLNK != ' ') && ($_RHLNK != $_RHPACIW)) {
         CON851('2D', '2D', null, 'error', 'error');
+        $_RHPACIW = $("#rh_110c").val();
         _evaluarrh_7767();
     }
 
@@ -1659,7 +1616,7 @@ function _evaluarsexo_7767() {
 function _dato10_7767() {
     $_SEXOPACIW = $("#sexo_110c").val();
     /////SER810K
-    if (($_SEXOPACIW == 'M') || ($_SEXOPACIW == 'm') || ($_SEXOPACIW == 'F') || ($_SEXOPACIW == 'f')) {
+    if (($_SEXOPACIW == 'M') || ($_SEXOPACIW == 'F')) {
         datoestadocivil();
     } else {
         _evaluarsexo_7767();
@@ -1682,6 +1639,8 @@ function datoestadocivil() {
         _evaluarocupacion();
     } else if ((($_UNIDEDADW == 'D') || ($_UNIDEDADW == 'M')) || ($ - $_VLREDADW < 16)) {
         $_ESTCIVILPACIW = 'S';
+        $("#civil_110c").val('S - SOLTERO')
+        validacionestudio_7767();
 
     } else {
         // $_OPCION1 = $_ESTCIVILPACIW;
@@ -1697,29 +1656,25 @@ function datoestadocivil() {
 }
 
 function _validarcivilpac_7767() {
-    var estado = '[{"codigo": "S","descripcion": "SOLTERO"},{"codigo": "C", "descripcion": "CASADO"},{"codigo": "U","descripcion": "UNION LIBRE"},{"codigo": "V","descripcion": "VIUDO"}, { "codigo": "D", "descripcion": "SEPARADA" }]'
+    var estado = '[{"COD": "S","DESCRIP": "SOLTERO"},{"COD": "C", "DESCRIP": "CASADO"},{"COD": "U","DESCRIP": "UNION LIBRE"},{"COD": "V","DESCRIP": "VIUDO"}, { "COD": "D", "DESCRIP": "SEPARADA" }]'
     var civil = JSON.parse(estado);
-    // var civil = [
-    //     { "COD": "S", "DESCRIP": "SOLTERO" },
-    //     { "COD": "C", "DESCRIP": "CASADO" },
-    //     { "COD": "U", "DESCRIP": "UNION LIBRE" },
-    //     { "COD": "V", "DESCRIP": "VIUDO" },
-    //     { "COD": "D", "DESCRIP": "SEPARADA" }
-    // ]
-    SER808({
+    var titulo = 'ESTADO CIVIL';
+    POPUP({
         array: civil,
-        titulo: 'ESTADO CIVIL'
-        // indices: [
-        //     { id: 'COD', label: 'DESCRIP' }
-        // ],
-        // callback_f: _evaluarsexo_7767
+        titulo: titulo,
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        seleccion: $_ESTCIVILPACIW,
+        callback_f: _evaluarsexo_7767,
+        teclaAlterna: true
     },
         _evaluarestadocivil_7767);
 }
 
-function _evaluarestadocivil_7767(civil) {
-    $_ESTCIVILPACIW = civil.id;
-    switch (civil.id) {
+function _evaluarestadocivil_7767(data) {
+    $_ESTCIVILPACIW = data.COD;
+    switch (data.COD) {
         case 'S':
         case 'C':
         case 'U':
@@ -1731,64 +1686,24 @@ function _evaluarestadocivil_7767(civil) {
             _evaluarsexo_7767();
             break;
     }
-    $("#civil_110c").val(civil.id + " - " + civil.descripcion);
+    $("#civil_110c").val(data.COD + " - " + data.DESCRIP);
 }
 
 
 function validacionestudio_7767() {
-    var nivelest = [{
-        "COD": "1",
-        "DESCRIP": "NINGUNO"
-    },
-    {
-        "COD": "2",
-        "DESCRIP": "PRE-ESCOL"
-    },
-    {
-        "COD": "3",
-        "DESCRIP": "PRIMARIA"
-    },
-    {
-        "COD": "4",
-        "DESCRIP": "SECUNDARIA"
-    },
-    {
-        "COD": "5",
-        "DESCRIP": "BACH. BASIC"
-    },
-    {
-        "COD": "6",
-        "DESCRIP": "BACH. TECN"
-    },
-    {
-        "COD": "7",
-        "DESCRIP": "NORMALIST"
-    },
-    {
-        "COD": "8",
-        "DESCRIP": "TECN. PROFE"
-    },
-    {
-        "COD": "9",
-        "DESCRIP": "TECNOLOGI"
-    },
-    {
-        "COD": "A",
-        "DESCRIP": "PROFESION"
-    },
-    {
-        "COD": "B",
-        "DESCRIP": "ESPECIALI"
-    },
-    {
-        "COD": "C",
-        "DESCRIP": "MAESTRIA"
-    },
-    {
-        "COD": "D",
-        "DESCRIP": "DOCTORADO"
-    }
-    ]
+    var nivelest = [{ "COD": "1", "DESCRIP": "NINGUNO" },
+    { "COD": "2", "DESCRIP": "PRE-ESCOL" },
+    { "COD": "3", "DESCRIP": "PRIMARIA" },
+    { "COD": "4", "DESCRIP": "SECUNDARIA" },
+    { "COD": "5", "DESCRIP": "BACH. BASIC" },
+    { "COD": "6", "DESCRIP": "BACH. TECN" },
+    { "COD": "7", "DESCRIP": "NORMALIST" },
+    { "COD": "8", "DESCRIP": "TECN. PROFE" },
+    { "COD": "9", "DESCRIP": "TECNOLOGI" },
+    { "COD": "A", "DESCRIP": "PROFESION" },
+    { "COD": "B", "DESCRIP": "ESPECIALI" },
+    { "COD": "C", "DESCRIP": "MAESTRIA" },
+    { "COD": "D", "DESCRIP": "DOCTORADO" }]
     POPUP({
         array: nivelest,
         titulo: 'NIVEL ESTUDIO',
@@ -1796,6 +1711,7 @@ function validacionestudio_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
+        seleccion: $_NIVESTUPACIW,
         callback_f: _evaluarsexo_7767
     },
         _validarcalificacion_con110c);
@@ -2201,32 +2117,33 @@ function _dataSAL7767_06(data) {
 
 
 function _evaluarestrato_7767() {
-    var nivel = '[{"codigo": "0","descripcion": "NIVEL 0"},{"codigo": "1", "descripcion": "NIVEL 1"},{"codigo": "2","descripcion": "NIVEL 2"},{"codigo": "3","descripcion": "NIVEL 3"},{"codigo": "4","descripcion": "NIVEL 4"},{"codigo": "5","descripcion": "NIVEL 5"},{"codigo": "6","descripcion": "NIVEL 6"}]'
-    var estrato = JSON.parse(nivel);
-    // var estrato = [
-    //     { "COD": "0", "DESCRIP": "NIVEL 0" },
-    //     { "COD": "1", "DESCRIP": "NIVEL 1" },
-    //     { "COD": "2", "DESCRIP": "NIVEL 2" },
-    //     { "COD": "3", "DESCRIP": "NIVEL 3" },
-    //     { "COD": "4", "DESCRIP": "NIVEL 4" },
-    //     { "COD": "5", "DESCRIP": "NIVEL 5" },
-    //     { "COD": "6", "DESCRIP": "NIVEL 6" }
-    // ]
-    SER808({
+
+    var estrato = [
+        { "COD": "0", "DESCRIP": "NIVEL 0" },
+        { "COD": "1", "DESCRIP": "NIVEL 1" },
+        { "COD": "2", "DESCRIP": "NIVEL 2" },
+        { "COD": "3", "DESCRIP": "NIVEL 3" },
+        { "COD": "4", "DESCRIP": "NIVEL 4" },
+        { "COD": "5", "DESCRIP": "NIVEL 5" },
+        { "COD": "6", "DESCRIP": "NIVEL 6" }
+    ]
+    POPUP({
         array: estrato,
-        titulo: 'NIVEL(Estrato)'
-        // indices: [
-        //     { id: 'COD', label: 'DESCRIP' }
-        // ],
-        // callback_f: _evaluarocupacion_7767
+        titulo: 'NIVEL(Estrato)',
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        seleccion: $_ESTRATOPACIW,
+        callback_f: _evaluarocupacion_7767,
+        teclaAlterna: true
     },
         _datoestrato_7767);
 }
 
 function _datoestrato_7767(estrato) {
 
-    $_ESTRATOPACIW = estrato.id;
-    switch (estrato.id) {
+    $_ESTRATOPACIW = estrato.COD;
+    switch (estrato.COD) {
         case '0':
         case '1':
         case '2':
@@ -2240,7 +2157,7 @@ function _datoestrato_7767(estrato) {
             _evaluarocupacion_7767();
             break;
     }
-    $("#nivel_110c").val(estrato.id + " - " + estrato.descripcion);
+    $("#nivel_110c").val(estrato.COD + " - " + estrato.DESCRIP);
 }
 
 function _evaluarcopago_7767() {
@@ -2294,32 +2211,33 @@ function _datoregimen_7767() {
 }
 
 function _evaluarregimen_7767() {
-    var usuario = '[{"codigo": "C","descripcion": "CONTRIBUTIVO"},{"codigo": "S", "descripcion": "SUBSIDIADO"},{"codigo": "V","descripcion": "VINCULADO"},{"codigo": "P","descripcion": "PARTICULAR"},{"codigo": "O","descripcion": "OTRO TIPO"},{"codigo": "D","descripcion": "DESPLAZ CONT"},{"codigo": "E","descripcion": "DESPLAZ SUBS"},{"codigo": "G","descripcion": "DESPLAZ VINC"}]'
-    var tipousuario = JSON.parse(usuario);
-    // var tipousuario = [
-    //     { "COD": "C", "DESCRIP": "CONTRIBUTIVO" },
-    //     { "COD": "S", "DESCRIP": "SUBSIDIADO" },
-    //     { "COD": "V", "DESCRIP": "VINCULADO" },
-    //     { "COD": "P", "DESCRIP": "PARTICULAR" },
-    //     { "COD": "O", "DESCRIP": "OTRO TIPO" },
-    //     { "COD": "D", "DESCRIP": "DESPLAZ CONT" },
-    //     { "COD": "E", "DESCRIP": "DESPLAZ SUBS" },
-    //     { "COD": "G", "DESCRIP": "DESPLAZ VINC" }
-    // ]
-    SER808({
+    // var usuario = '[{"codigo": "C","descripcion": "CONTRIBUTIVO"},{"codigo": "S", "descripcion": "SUBSIDIADO"},{"codigo": "V","descripcion": "VINCULADO"},{"codigo": "P","descripcion": "PARTICULAR"},{"codigo": "O","descripcion": "OTRO TIPO"},{"codigo": "D","descripcion": "DESPLAZ CONT"},{"codigo": "E","descripcion": "DESPLAZ SUBS"},{"codigo": "G","descripcion": "DESPLAZ VINC"}]'
+    // var tipousuario = JSON.parse(usuario);
+    var tipousuario = [
+        { "COD": "C", "DESCRIP": "CONTRIBUTIVO" },
+        { "COD": "S", "DESCRIP": "SUBSIDIADO" },
+        { "COD": "V", "DESCRIP": "VINCULADO" },
+        { "COD": "P", "DESCRIP": "PARTICULAR" },
+        { "COD": "O", "DESCRIP": "OTRO TIPO" },
+        { "COD": "D", "DESCRIP": "DESPLAZ CONT" },
+        { "COD": "E", "DESCRIP": "DESPLAZ SUBS" },
+        { "COD": "G", "DESCRIP": "DESPLAZ VINC" }]
+    POPUP({
         array: tipousuario,
         titulo: 'TIPO USUARIO',
-        // indices: [
-        //     { id: 'COD', label: 'DESCRIP' }
-        // ],
-        // callback_f: _evaluarcopago_7767
+        indices: [
+            { id: 'COD', label: 'DESCRIP' }
+        ],
+        seleccion: $_REGIMENPACIW,
+        callback_f: _evaluarcopago_7767,
+        teclaAlterna: true
     },
         _datoregimen2_7767);
 }
 
 function _datoregimen2_7767(tipousuario) {
-    $_REGIMENPACIW = tipousuario.id;
-    switch (tipousuario.id) {
+    $_REGIMENPACIW = tipousuario.COD;
+    switch (tipousuario.COD) {
         case 'C':
         case 'S':
         case 'V':
@@ -2335,7 +2253,7 @@ function _datoregimen2_7767(tipousuario) {
             _evaluarcopago_7767();
             break;
     }
-    $("#regimen_110c").val(tipousuario.id + " - " + tipousuario.descripcion);
+    $("#regimen_110c").val(tipousuario.COD + " - " + tipousuario.DESCRIP);
 }
 
 function _mostrarregimen_7767() {
@@ -2344,25 +2262,11 @@ function _mostrarregimen_7767() {
             CON851('03', '03', null, 'error', 'error');
             _datoregimen_7767();
         } else {
-            obtenerDatosCompletos({
-                nombreFd: 'COLEGIOS'
-            }, _f8colegiospaci)
-            _evaluarcolegio_7767();
+            _evaluarcolegio_7767()
         }
     } else {
-        obtenerDatosCompletos({
-            nombreFd: 'COLEGIOS'
-        }, _f8colegiospaci)
-
+        _evaluarcolegio_7767()
     }
-}
-
-function _f8colegiospaci(data) {
-    console.log(data)
-    $_COLEGIOS_7767 = data.COLEGIOS;
-    $_COLEGIOS_7767.pop()
-    _evaluarcolegio_7767();
-
 }
 
 function _evaluarcolegio_7767() {
@@ -2378,6 +2282,7 @@ function _evaluarcolegio_7767() {
 }
 
 function _datoeducacion_7767() {
+
     $_INSTITUTOPACIW = $("#colegio_110c").val();
 
     if ($_INSTITUTOPACIW.trim() == '') {
@@ -2387,6 +2292,7 @@ function _datoeducacion_7767() {
         $("#colegiod_110c").val($_DESCRIPCOLEGIOW);
         _evaluaretnia_7767();
     } else {
+
         LLAMADO_DLL({
             dato: [$_INSTITUTOPACIW],
             callback: _dataSAL7767_07,
@@ -2399,7 +2305,6 @@ function _datoeducacion_7767() {
 
 
 function _dataSAL7767_07(data) {
-    console.debug(data, 'SAL7767_07');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCOLEGIOW = date[1].trim();
@@ -2415,7 +2320,6 @@ function _dataSAL7767_07(data) {
 }
 
 function _evaluaretnia_7767() {
-    console.log('evaluaretnia')
     validarInputs({
         form: "#ETNIA_110C",
         orden: "1"
@@ -2439,25 +2343,24 @@ function _datoetnia_7767() {
 }
 
 function _evaluaretnia_7767() {
-    var etnias = '[{"codigo": "1","descripcion": "INDIGE"},{"codigo": "2", "descripcion": "RAIZAL"},{"codigo": "3","descripcion": "GITANO"},{"codigo": "4","descripcion": "AFROCO"},{ "codigo": "5", "descripcion": "ROM" },{ "codigo": "6", "descripcion": "MESTIZO" },{ "codigo": "9", "descripcion": "NO APLICA" }]'
+    var etnias = '[{"COD": "1","DESCRIP": "INDIGE"},{"COD": "2", "DESCRIP": "RAIZAL"},{"COD": "3","DESCRIP": "GITANO"},{"COD": "4","DESCRIP": "AFROCO"},{ "COD": "5", "DESCRIP": "ROM" },{ "COD": "6", "DESCRIP": "MESTIZO" },{ "COD": "9", "DESCRIP": "NO APLICA" }]'
     var etnia = JSON.parse(etnias);
-    
-    SER808({
+    POPUP({
         array: etnia,
         titulo: 'GRUPO ETNICO',
-        // indices: [{
-        //     id: 'COD',
-        //     label: 'DESCRIP'
-        // }],
-        // callback_f: _evaluarestrato_7767
+        indices: [{
+            id: 'COD', label: 'DESCRIP'
+        }],
+        seleccion: $_ETNIAPACIW,
+        callback_f: _evaluarcolegio_7767,
+        teclaAlterna: true
     },
         _seleccionaretnia_7767);
 }
 
 function _seleccionaretnia_7767(etnia) {
-    console.log('seleccionaretnias')
-    $_ETNIAPACIW = etnia.id;
-    switch (etnia.id) {
+    $_ETNIAPACIW = etnia.COD;
+    switch (etnia.COD) {
         case '1':
         case '2':
         case '3':
@@ -2468,10 +2371,10 @@ function _seleccionaretnia_7767(etnia) {
             _validacionesetnia_7767();
             break;
         default:
-            _evaluarestrato_7767();
+        _evaluarcolegio_7767;
             break;
     }
-    $("#etnia_110c").val(etnia.id + " - " + etnia.descripcion);
+    $("#etnia_110c").val(etnia.COD + " - " + etnia.DESCRIP);
 }
 
 function _validacionesetnia_7767() {
@@ -2483,18 +2386,17 @@ function _validacionesetnia_7767() {
             .then((data) => {
                 loader("hide");
                 $_ETNIAS = data;
-                console.log($_ETNIAS)
                 if ($_ETNIAS.ETNIAS[0].COD.trim() == '') {
                     CON851('4J', '4J', null, 'error', 'error');
                     setTimeout(_evaluaretnia_7767, 300);
                 } else {
-                    // if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                     _ventanaDatos({
                         titulo: 'VENTANA DE ETNIAS PACIENTES',
                         columnas: ["COD", "DESCRIP"],
                         data: $_ETNIAS.ETNIAS,
                         callback_esc: function () {
-                            $("#colegiod_110c").focus();
+                            setTimeout(_evaluarcopago_7767, 500);
+                            // $("#copago_110c").focus();
                         },
                         callback: function (data) {
                             document.getElementById('indigena_110c').val(data.COD.trim());
@@ -2502,7 +2404,6 @@ function _validacionesetnia_7767() {
 
                         }
                     });
-                    // }
                 }
             })
             .catch((error) => {
@@ -2518,18 +2419,16 @@ function _validacionesetnia_7767() {
                 loader("hide");
                 $_COMUNIDADES = data;
                 if ($_COMUNIDADES.COMUNIDADES[0].COD.trim() == '') {
-                    console.log('comunidades en blanco')
                     CON851('4X', '4X', null, 'error', 'error');
                     setTimeout(_evaluaretnia_7767, 300);
                 } else {
-                    console.log($_COMUNIDADES, 'f8')
                     // if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                     _ventanaDatos({
                         titulo: 'VENTANA DE COMUNIDADES PACIENTES',
                         columnas: ["COD", "DESCRIP"],
                         data: $_COMUNIDADES.COMUNIDADES,
                         callback_esc: function () {
-                            $("#colegiod_110c").focus();
+                            setTimeout(_evaluaretnia_7767, 500);
                         },
                         callback: function (data) {
                             document.getElementById('comunidades_110c').value = data.COD;
@@ -2549,7 +2448,6 @@ function _validacionesetnia_7767() {
 }
 
 function _validarresguardos_SAL7767() {
-    console.log('resguardos')
     if ((($_ETNIAPACIW == '1') || ($_ETNIAPACIW == '2')) && ($_NITUSU != '0845000038')) {
         let URL = get_url("APP/" + "SALUD/SER117A" + ".DLL");
         postData({
@@ -2558,18 +2456,16 @@ function _validarresguardos_SAL7767() {
             .then((data) => {
                 loader("hide");
                 $_RESGUARDOS = data;
-                console.log($_RESGUARDOS)
                 if ($_RESGUARDOS.RESGUARDOS[0].COD.trim() == '') {
                     CON851('4Y', '4Y', null, 'error', 'error');
                     setTimeout(_evaluaretnia_7767, 300);
                 } else {
-                    // if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                     _ventanaDatos({
                         titulo: 'VENTANA DE RESGUARDOS PACIENTES',
                         columnas: ["COD", "DESCRIP"],
                         data: $_RESGUARDOS.RESGUARDOS,
                         callback_esc: function () {
-                            $("#colegiod_110c").focus();
+                            setTimeout(_evaluaretnia_7767, 500);
                         },
                         callback: function (data) {
                             document.getElementById('resguardos_110c').value = data.COD;
@@ -2577,7 +2473,6 @@ function _validarresguardos_SAL7767() {
 
                         }
                     });
-                    // }
                 }
             })
             .catch((error) => {
@@ -2591,35 +2486,13 @@ function _validarresguardos_SAL7767() {
 
 
 function _evaluartipoafiliado_7767() {
-    var afiliado = [{
-        "COD": "1",
-        "DESCRIP": "COTIZANTE"
-    },
-    {
-        "COD": "2",
-        "DESCRIP": "BENEFICIARIO"
-    },
-    {
-        "COD": "3",
-        "DESCRIP": "COT. PENSIONADO"
-    },
-    {
-        "COD": "4",
-        "DESCRIP": "UPC ADICIONAL"
-    },
-    {
-        "COD": "5",
-        "DESCRIP": "CABEZA FAMILIA"
-    },
-    {
-        "COD": "6",
-        "DESCRIP": "GRUPO FAMILIAR"
-    },
-    {
-        "COD": "0",
-        "DESCRIP": "SIN DETERMINAR"
-    }
-    ]
+    var afiliado = [{ "COD": "1", "DESCRIP": "COTIZANTE" },
+    { "COD": "2", "DESCRIP": "BENEFICIARIO" },
+    { "COD": "3", "DESCRIP": "COT. PENSIONADO" },
+    { "COD": "4", "DESCRIP": "UPC ADICIONAL" },
+    { "COD": "5", "DESCRIP": "CABEZA FAMILIA" },
+    { "COD": "6", "DESCRIP": "GRUPO FAMILIAR" },
+    { "COD": "0", "DESCRIP": "SIN DETERMINAR" }]
     POPUP({
         array: afiliado,
         titulo: 'TIPO AFILIADO',
@@ -2627,7 +2500,9 @@ function _evaluartipoafiliado_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
-        callback_f: _evaluarestrato_7767
+        seleccion: $_TIPOAFILPACIW,
+        callback_f: _evaluarestrato_7767,
+        teclaAlterna: true
     },
         _seleccionartipoafiliado_7767);
 }
@@ -2642,9 +2517,7 @@ function _seleccionartipoafiliado_7767(afiliado) {
         case '5':
         case '6':
         case '0':
-            obtenerDatosCompletos({
-                nombreFd: 'ENTIDADES'
-            }, _f8entidadafiliacion)
+            _validacionestipoafiliado_7767();
             break;
         default:
             _evaluarestrato_7767();
@@ -2653,15 +2526,7 @@ function _seleccionartipoafiliado_7767(afiliado) {
     $("#tipoafil_110c").val(afiliado.COD + " - " + afiliado.DESCRIP);
 }
 
-function _f8entidadafiliacion(data) {
-    console.log(data)
-    $_ENTIDADES_7767 = data.ENTIDADES
-    $_ENTIDADES_7767.pop()
-    _validacionestipoafiliado_7767();
-}
-
 function _validacionestipoafiliado_7767() {
-    console.log('evaluaciones tipo de afiliado')
     if (($_NITUSU == '0900405505') && ($_REGIMENPACIW != 'O')) {
         if (($_REGIMENPACIW != 'S') && (($_TIPOAFILPACIW == '5') || ($_TIPOAFILPACIW == '6'))) {
             ////CONTINUE 
@@ -2680,53 +2545,31 @@ function _validacionestipoafiliado_7767() {
 }
 
 function _evaluarportabilidad_7767() {
-    console.log('ventana de portabilidad')
-    fuente = '<div class="col-md-12" id="PORTABILIDAD_110C"> ' +
-        '<input id="portabilidad_110c" type="text" class="form-control input-md" data-orden="1" maxlength="1"> ' +
-        '</div>';
-    // fuente = '<div class="col-md-12 col-sm-12 col-xs-12"' +
-    // '<div class="inline-inputs">' +
-    // '<label class="col-md-4 col-sm-4 col-xs-4">PORTABILIDAD:</label>' +
-    // '<div class="input-group col-md-8 col-sm-8 col-xs-8" id="PORTABILIDAD_110C">' +
-    // '<input id="portabilidad_110c" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">' +
-    // '</div>' +
-    // '</div>' +
-    // '<div class="salto-linea"></div>' +
-    // '<div class="col-md-12 col-sm-12 col-xs-12"' +
-    // '<div class="inline-inputs">' +
-    // '<label class="col-md-4 col-sm-4 col-xs-4">CIUDAD:</label>' +
-    // '<div class="input-group col-md-8 col-sm-8 col-xs-8" id="PORTABILIDAD_110C">' +
-    // '<input id="ciudadorig_110C" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="5" data-orden="2">' +
-    // '</div>' +
-    // '</div>';
-
-    _ventana({
-        source: fuente,
-        title: 'PORTABILIDAD PACIENTE',
-        size: 'small',
-        espace: false,
-        focus: '#portabilidad_110c',
-        form: '#PORTABILIDAD_110C',
-        order: '1',
-        global1: '$_PORTABPACIW',
-        inputglobal1: '#portabilidad_110c',
-    }, validar_portabilidad_7767, _evaluartipoafiliado_7767);
+    validarInputs({
+        form: "#PORTABILI_110C",
+        orden: "1"
+    },
+        function () { _evaluaretnia_7767(); },
+        _validarportabilidad_7767
+    )
 }
 
-function validar_portabilidad_7767() {
+function _validarportabilidad_7767() {
+    $_PORTABPACIW = $("#portabilidad_7767").val();
 
     if ($_PORTABPACIW.trim() == '') {
         $_PORTABPACIW = 'N';
-        $_CIUDASEGPACIW = $_CIUPACIW; 
+        $("#portabilidad_7767").val($_PORTABPACIW);
+        $_CIUDASEGPACIW = $_CIUPACIW;
+        $("#ciudadportab_7767").val($_CIUDASEGPACIW);
+
         datodesplazado_7767();
-    } else if (($_PORTABPACIW == 'S') || ($_PORTABPACIW == 's')) {
+    } else if ($_PORTABPACIW == 'S') {
+        _evaluarciudadaseg_7767();
 
-        _ventanaciudadaseg_7767();
-
-    } else if (($_PORTABPACIW == 'N') || ($_PORTABPACIW == 'n')) {
-        $_CIUDASEGPACIW = '50689'
-        $("#ciudadaseg_110c").val($_CIUDASEGPACIW);
-
+    } else if ($_PORTABPACIW == 'N') {
+        $_CIUDASEGPACIW = $_CIUPACIW;
+        $("#ciudadportab_7767").val($_CIUDASEGPACIW);
         datodesplazado_7767();
     } else {
         CON851('02', '02', null, 'error', 'error');
@@ -2734,93 +2577,23 @@ function validar_portabilidad_7767() {
     }
 }
 
-
-function _ventanaciudadaseg_7767() {
-    console.log("ciudad")
-    var ventanaciudad = bootbox.dialog({
-        size: 'medium',
-        onEscape: false,
-        title: 'CIUDAD DE ASEGURAMIENTO',
-        message: '<div class="row"> ' +
-            '<div class="col-md-12 col-sm-12 col-xs-12">' +
-            '<div class="inline-inputs">' +
-            '<label class="col-md-4 col-sm-4 col-xs-12">CIUDAD PORTABILIDAD:</label>' +
-            '<div class="input-group col-md-4 col-sm-4 col-xs-12" id="CIUDADASEG_110C">' +
-            '<input id="ciudadaseg_110c" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" maxlength="5">' +
-            '</div>' +
-            '<button type="button" id="ciudadasegBtn_110c" class="btn btn-default col-md-1 col-sm-1 col-xs-1">' +
-            '<i class="icon-magnifier"></i>' +
-            '</button>' +
-            '</div>' +
-            '</div>',
-        buttons: {
-            confirm: {
-                label: 'Aceptar',
-                className: 'btn-primary',
-                callback: function () {
-                    console.log("aceptar")
-                    // $_CIUDASEGPACIW = $('#ciudadaseg').val();
-                    // if (($_CIUDASEGPACIW == '00000') || ($_CIUDASEGPACIW.trim() == '')) {
-                    //     $('.btn-primary').click();
-                    //     datodesplazado_7767();
-                    //     ventanaciudad.off('show.bs.modal');
-                    // }else {
-                    //     LLAMADO_DLL({
-                    //         dato: [$_CIUDASEGPACIW],
-                    //         callback: _dataSAL7767_045,
-                    //         nombredll: 'SAL7767_04',
-                    //         carpeta: 'SALUD'
-                    //     });
-                    // }
-                }
-            },
-            cancelar: {
-                label: 'Cancelar',
-                className: 'btn-danger',
-                callback: function () {
-                    console.log("cancelar")
-                    ventanaciudad.off('show.bs.modal');
-                    setTimeout(_validacionestipoafiliado_7767, 500);
-                }
-            }
-        }
-    });
-    ventanaciudad.init($('.modal-footer').hide());
-    ventanaciudad.on('shown.bs.modal', function () {
-        $("#ciudadaseg_110c").focus();
-        console.log('focus');
-    });
-    ventanaciudad.init(_evaluarciudadaseg_7767());
-    ventanaciudad.init(_toggleF8([{
-        input: 'ciudadaseg',
-        app: '110c',
-        funct: _ventanaportabilidad_SAL7767
-    },]));
-}
-
 function _evaluarciudadaseg_7767() {
-    console.log('evaluarCIUDAASEG');
     validarInputs({
-        form: "#CIUDADASEG_110C",
+        form: "#CIUDADPORTA_110C",
         orden: '1'
     },
-        function () {
-            $('.btn-danger').click();
-        },
+        function () { _evaluarportabilidad_7767(); },
         _validarciudadaseg_7767
     )
 }
 
 function _validarciudadaseg_7767() {
-    console.log('ciudadaseg');
-    $_CIUDASEGPACIW = $('#ciudadaseg_110c').val();
-
+    $_CIUDASEGPACIW = $('#ciudadportab_7767').val();
     if (($_CIUDASEGPACIW == '00000') || ($_CIUDASEGPACIW.trim() == '')) {
-        console.log('va en limpio')
-        $('.btn-primary').click();
+        $_CIUDASEGPACIW = $_CIUPACIW;
+        $("#ciudadportab_7767").val($_CIUDASEGPACIW);
         datodesplazado_7767();
     } else {
-        console.log('consulta dll')
         LLAMADO_DLL({
             dato: [$_CIUDASEGPACIW],
             callback: _dataSAL7767_045,
@@ -2831,15 +2604,14 @@ function _validarciudadaseg_7767() {
 }
 
 function _dataSAL7767_045(data) {
-    // console.debug(data, 'SAL7767_045');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCIUDASEGW = date[1].trim();
     if (swinvalid == "00") {
-        $('.btn-primary').click();
         datodesplazado_7767();
     } else if (swinvalid == "01") {
-        setTimeout(_validacionestipoafiliado_7767, 500);
+        // setTimeout(_validacionestipoafiliado_7767, 500);
+        _validarciudadaseg_7767();
     } else {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
@@ -2916,7 +2688,6 @@ function _datoentidadafiliado_7767() {
 }
 
 function _dataSAL7767_08(data) {
-    // console.debug(data, 'SAL7767_08');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPENTIPACIW = date[1].trim();
@@ -2930,34 +2701,6 @@ function _dataSAL7767_08(data) {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-
-// function _consultaentidades_SAL7767(error, results, fileds) {
-//     console.debug(results);
-//     if (error) throw error;
-//     else {
-//         console.debug(results, results.length);
-//         for (var i in results) {
-//             if (results[i].cod_ent.trim() == $_EPSPACIW) {
-//                 console.log('encuentra eps');
-//                 $_DESCRIPENTIPACIW = results[i].nombre_ent;
-//                 $("#epsd_110c").val($_DESCRIPENTIPACIW);
-//                 _validacionesentidadpaci_7767();
-
-
-//             } else if (i == results.length - 1) {
-//                 console.log('no encuentra eps');
-//                 CON851('01', '01', null, 'error', 'error');
-//                 _evaluarentidadafiliada_7767();
-//             }
-//         }
-//         if (results.length == 0) {
-//             console.log('1 no encuentra eps');
-//             CON851('01', '01', null, 'error', 'error');
-//             _evaluarentidadafiliada_7767();
-//         }
-//     }
-// }
-
 
 function _validacionesentidadpaci_7767() {
     if (($_ADMINW == 'ADMIN') || ($_ADMINW == 'GEBC')) {
@@ -3089,7 +2832,6 @@ function _datovencerestriccion_7767() {
 }
 
 function _dataCON904_04(data) {
-    // console.debug(data, "CON904-04");
     var date = data.split("|");
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -3182,7 +2924,7 @@ function _evaluarcotizante_7767() {
 
 function _mostrarcotizante_7767() {
     $_IDCOTIPACIW = $("#cotizante_110c").val();
-    $_IDCOTIPACIW = $_IDCOTIPACIW.padStart(15, "0");
+    $_IDCOTIPACIW = cerosIzq($_IDCOTIPACIW, 15);
 
     if ((($_TIPOAFILPACIW == '2') || ($_TIPOAFILPACIW == '4')) && ($_IDCOTIPACIW == $_CODPACIW)) {
         CON851('03', '03', null, 'error', 'error');
@@ -3243,32 +2985,22 @@ function consultarcotizante_7767() {
 }
 
 function _dataSER810C(data) {
-    console.debug(data, 'SER810C');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCOTIPACW = date[1];
     $_PARENTPACIW = date[2].trim();
-    console.log($_PARENTPACIW);
     if (swinvalid == "00") {
         if (($_PARENTPACIW == '1') || ($_PARENTPACIW == '3')) {
             $("#cotizanted_110c").val($_DESCRIPCOTIPACW);
             _validatipocotizante_7767()
 
         } else {
-            console.log('primer error')
             CON851('03', '03', null, 'error', 'error');
             _datocotizante_7767();
         }
     } else if (swinvalid == "01") {
-        CON851P('08', '08', null, 'error', 'error');
-        $_SWORK = 'S';
-        if ($_SWORK = 'S') {
-            //// CALL SER110CA
-            ///// llama nuevamente el maestro de pacientes 
-            //// GO TO MOSTRAR COTIZANTE 
-        } else {
-            _evaluarcotizante_7767();
-        }
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarcotizante_7767()
 
     } else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -3276,7 +3008,6 @@ function _dataSER810C(data) {
 }
 
 function _validatipocotizante_7767() {
-    console.log('validacotizante')
     if (($_TIPOAFILPACIW == '0') || ($_TIPOAFILPACIW == '1') || ($_TIPOAFILPACIW == '3')) {
         $_PARENTPACIW = '0';
         $("#parentezco_110c").val($_PARENTPACIW);
@@ -3288,44 +3019,15 @@ function _validatipocotizante_7767() {
 
 
 function _evaluarparentezcopaci_7767() {
-    console.log('POPUP')
-    var parentezco = [{
-        "COD": "1",
-        "DESCRIP": "CONYUGUE"
-    },
-    {
-        "COD": "2",
-        "DESCRIP": "HIJO"
-    },
-    {
-        "COD": "3",
-        "DESCRIP": "PADRES"
-    },
-    {
-        "COD": "4",
-        "DESCRIP": "2 GRADO"
-    },
-    {
-        "COD": "5",
-        "DESCRIP": "3 GRADO"
-    },
-    {
-        "COD": "6",
-        "DESCRIP": "< 12"
-    },
-    {
-        "COD": "7",
-        "DESCRIP": "SUEGRO"
-    },
-    {
-        "COD": "8",
-        "DESCRIP": "OTR-BE"
-    },
-    {
-        "COD": "0",
-        "DESCRIP": "COTIZANTE"
-    }
-    ]
+    var parentezco = [{ "COD": "1", "DESCRIP": "CONYUGUE" },
+    { "COD": "2", "DESCRIP": "HIJO" },
+    { "COD": "3", "DESCRIP": "PADRES" },
+    { "COD": "4", "DESCRIP": "2 GRADO" },
+    { "COD": "5", "DESCRIP": "3 GRADO" },
+    { "COD": "6", "DESCRIP": "< 12" },
+    { "COD": "7", "DESCRIP": "SUEGRO" },
+    { "COD": "8", "DESCRIP": "OTR-BE" },
+    { "COD": "0", "DESCRIP": "COTIZANTE" }]
     POPUP({
         array: parentezco,
         titulo: 'RELACION CON EL COTIZ',
@@ -3333,13 +3035,14 @@ function _evaluarparentezcopaci_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
-        callback_f: _evaluarcotizante_7767
+        seleccion: $_PARENTPACIW,
+        callback_f: _evaluarcotizante_7767,
+        teclaAlterna: true
     },
         _seleccionrelacioncotiz_7767);
 }
 
 function _seleccionrelacioncotiz_7767(parentezco) {
-    console.log('SWITH')
     $_PARENTPACIW = parentezco.COD;
     switch (parentezco.COD) {
         case '1':
@@ -3350,16 +3053,14 @@ function _seleccionrelacioncotiz_7767(parentezco) {
         case '6':
         case '7':
         case '8':
-            console.log('sale')
+
             _evaluarempresa_7767();
             break;
         case '0':
             if ($_TIPOAFILPACIW == '2') {
                 CON851('03', '03', null, 'error', 'error');
-                console.log('segundo error')
                 setTimeout(_evaluarparentezcopaci_7767, 300);
             } else {
-                console.log('Pasa')
                 _evaluarempresa_7767();
             }
             break;
@@ -3477,9 +3178,7 @@ function _evaluarcronico_7767() {
         form: "#CRONIC_110C",
         orden: "1"
     },
-        function () {
-            _evaluaraltocosto_7767();
-        },
+        function () { _evaluaraltocosto_7767(); },
         _datocronico_7767
     )
 }
@@ -3497,22 +3196,12 @@ function _datocronico_7767() {
             $("#patologiacronica_110c").val($_PATOLCRONICPACIW);
             _evaluartutela_7767();
         } else {
-            obtenerDatosCompletos({
-                nombreFd: 'PATOLOGIAS'
-            }, _f8patologiascronicapaci)
+            _evaluarpatologia_7767()
         }
     } else {
         _evaluarcronico_7767();
     }
 }
-
-function _f8patologiascronicapaci(data) {
-    console.log(data)
-    $_PATOLOGIAS_108 = data.PATOLOGIAS;
-    $_PATOLOGIAS_108.pop()
-    _evaluarpatologia_7767();
-}
-
 function _evaluarpatologia_7767() {
     validarInputs({
         form: "#PATOLOGIA_110C",
@@ -3549,7 +3238,6 @@ function _datopatolcronic_7767() {
 
 
 function _dataSAL7767_09(data) {
-    // console.debug(data, 'SAL7767_09');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -3579,27 +3267,13 @@ function _datotutela_7767() {
     if ($_TUTELAPACIW.trim() == '') {
         $_TUTELAPACIW = 'N';
         $("#pacitutela_110c").val($_TUTELAPACIW);
-        // _evaluarclasificacion_7767();
-        obtenerDatosCompletos({
-            nombreFd: 'CLASIPACI'
-        }, _f8clasificacionpaci)
+        _evaluarclasificacion_7767();
 
     } else if (($_TUTELAPACIW == 'S') || ($_TUTELAPACIW == 'N')) {
-        // _evaluarclasificacion_7767();
-        obtenerDatosCompletos({
-            nombreFd: 'CLASIPACI'
-        }, _f8clasificacionpaci)
-
+        _evaluarclasificacion_7767();
     } else {
         _evaluartutela_7767();
     }
-}
-
-function _f8clasificacionpaci(data) {
-    console.log(data)
-    $_CLASIPACI_108 = data.CLASIFICACION;
-    $_CLASIPACI_108.pop()
-    _evaluarclasificacion_7767();
 }
 
 function _evaluarclasificacion_7767() {
@@ -3791,6 +3465,7 @@ function peridocerticado_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
+        seleccion: $_PARENTPACIW,
         callback_f: peridocerticado_7767
     },
         _seleccionarperiodo_7767);
@@ -3876,6 +3551,7 @@ function peridocerticado_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
+        seleccion: $_PERIECOPACIW,
         callback_f: _evaluarcerteco_7767()
     },
         _seleccionarperiodoeco_7767);
@@ -4256,7 +3932,7 @@ function _datorestriccionestancia_7767() {
 
     } else if (($_RESTESTAPACIW == 'S') || ($_RESTESTAPACIW == 'N')) {
         _evaluarvcm_7767();
-    
+
     } else {
         _evaluarrestriestancia();
     }
@@ -4287,7 +3963,6 @@ function _datovcm_7767() {
             $("#basedatos_110c").val($_DERECHOPACIW);
             _evaluarobservaciones_7767();
         } else {
-            // _evaluarestado_7767();
             _datoestado_7767();
         }
 
@@ -4322,51 +3997,17 @@ function _evaluarestado_7767() {
 function _datoestado_7767() {
 
     if ($_NOVEDAD7767 == '8') {
-        var derecho = [{
-            "COD": "1",
-            "DESCRIP": "En base de datos, ACTIVO"
-        },
-        {
-            "COD": "2",
-            "DESCRIP": "En base de datos, INACTIVO"
-        },
-        {
-            "COD": "3",
-            "DESCRIP": "Creado por el  usuario"
-        },
-        {
-            "COD": "4",
-            "DESCRIP": "Pendiente por determinar"
-        },
-        {
-            "COD": "5",
-            "DESCRIP": "En base de datos, SIN CARNET"
-        },
-        {
-            "COD": "6",
-            "DESCRIP": "SUSPENDIDO, requiere autoriz"
-        },
-        {
-            "COD": "7",
-            "DESCRIP": "Afiliado Fallecido"
-        },
-        {
-            "COD": "8",
-            "DESCRIP": "Retiro X Multiafiliado"
-        },
-        {
-            "COD": "9",
-            "DESCRIP": "Ingreso X Traslado"
-        },
-        {
-            "COD": "A",
-            "DESCRIP": "Retiro  X Traslado"
-        },
-        {
-            "COD": "B",
-            "DESCRIP": "Periodo integral"
-        }
-        ]
+        var derecho = [{ "COD": "1", "DESCRIP": "En base de datos, ACTIVO" },
+        { "COD": "2", "DESCRIP": "En base de datos, INACTIVO" },
+        { "COD": "3", "DESCRIP": "Creado por el  usuario" },
+        { "COD": "4", "DESCRIP": "Pendiente por determinar" },
+        { "COD": "5", "DESCRIP": "En base de datos, SIN CARNET" },
+        { "COD": "6", "DESCRIP": "SUSPENDIDO, requiere autoriz" },
+        { "COD": "7", "DESCRIP": "Afiliado Fallecido" },
+        { "COD": "8", "DESCRIP": "Retiro X Multiafiliado" },
+        { "COD": "9", "DESCRIP": "Ingreso X Traslado" },
+        { "COD": "A", "DESCRIP": "Retiro  X Traslado" },
+        { "COD": "B", "DESCRIP": "Periodo integral" }]
         POPUP({
             array: derecho,
             titulo: 'COMPROBACION DE DERECHOS',
@@ -4374,6 +4015,7 @@ function _datoestado_7767() {
                 id: 'COD',
                 label: 'DESCRIP'
             }],
+            seleccion: $_DERECHOPACIW,
             callback_f: consultarocupacion_7767
         },
             _seleccionderecho_7767);
@@ -4423,31 +4065,12 @@ function _datoobservaciones_7767() {
 
 function _datodiscapacidad_7767() {
 
-    var discapacidad = [{
-        "COD": "1",
-        "DESCRIP": "SIN DISCAPACI"
-    },
-    {
-        "COD": "2",
-        "DESCRIP": "DISC.FISICA"
-    },
-    {
-        "COD": "3",
-        "DESCRIP": "DISC.AUDITIVA"
-    },
-    {
-        "COD": "4",
-        "DESCRIP": "DISC.VISUAL"
-    },
-    {
-        "COD": "5",
-        "DESCRIP": "DISC.MENTAL"
-    },
-    {
-        "COD": "6",
-        "DESCRIP": "DISC.COGNITIV"
-    }
-    ]
+    var discapacidad = [{ "COD": "1", "DESCRIP": "SIN DISCAPACI" },
+    { "COD": "2", "DESCRIP": "DISC.FISICA" },
+    { "COD": "3", "DESCRIP": "DISC.AUDITIVA" },
+    { "COD": "4", "DESCRIP": "DISC.VISUAL" },
+    { "COD": "5", "DESCRIP": "DISC.MENTAL" },
+    { "COD": "6", "DESCRIP": "DISC.COGNITIV" }]
     POPUP({
         array: discapacidad,
         titulo: 'TIPO DE DISCAPACIDAD',
@@ -4455,6 +4078,7 @@ function _datodiscapacidad_7767() {
             id: 'COD',
             label: 'DESCRIP'
         }],
+        seleccion: $_DISCAPPACIW,
         callback_f: _evaluarobservaciones_7767
     },
         _seleccionardiscapacidad_7767);
@@ -4514,7 +4138,10 @@ function _validacionentidadfact_7767() {
         }
     } else {
 
-        $_ENTIFACTPACIW = $('#entidad_110c').val();
+        // $_ENTIFACTPACIW = cerosIzq($('#entidad_110c').val(),10).trim();
+        $_ENTIFACTPACIW = $("#entidad_110c").val();
+        $_ENTIFACTPACIW = $_ENTIFACTPACIW.padStart(10, "0");
+        $("#entidad_110c").val($_ENTIFACTPACIW);
 
         if ($_ENTIFACTPACIW == '0') {
             $_DESCRIPENTIPACIW = '';
@@ -4540,7 +4167,6 @@ function _validacionentidadfact_7767() {
 }
 
 function _dataSAL7767_11(data) {
-    // console.log(data, "SAL7767-11");
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPENTIPACIW = date[1].trim();
@@ -4611,12 +4237,17 @@ function _evaluarmedicofami_7767() {
 function _datomedicofami_7767() {
 
     $_MEDFAMIPACIW = $("#medicofam_110c").val();
+
     if (($_MEDFAMIPACIW == '0') || ($_MEDFAMIPACIW.trim() == '')) {
+        $_MEDFAMIPACIW = '';
         $_DESCRIPMEDPACIW = '';
         $("#medicofamd_110c").val($_DESCRIPMEDPACIW);
         _evaluaremail_7767();
     } else {
+        $_MEDFAMIPACIW = $_MEDFAMIPACIW.padStart(10, "0");
+        $("#medicofam_110c").val($_MEDFAMIPACIW);
         LLAMADO_DLL({
+            // cerosIzq($_MEDFAMIPACIW, 10).trim()
             dato: [$_MEDFAMIPACIW],
             callback: _dataSAL7767_12,
             nombredll: 'SAL7767_12',
@@ -4675,33 +4306,9 @@ function _datoemail_7767() {
 }
 
 function confirmar_7767() {
-    bootbox.confirm({
-        size: "small",
-        onEscape: false,
-        message: "DESEA GRABAR LOS DATOS?",
-        buttons: {
-            confirm: {
-                label: 'Si',
-                className: 'btn-success'
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-danger'
-            }
 
-        },
-        callback: function (result) {
-            if (result == true) {
-                _grabarcorresponsalia();
-
-            } else {
-                _evaluarentidadfact_7767();
-            }
-        }
-    })
+    CON851P('01', _evaluarentidadfact_7767, _grabarcorresponsalia)
 }
-
-
 
 //////////////////////////////// NOVEDAD 8  Y 9//////////////////////////////
 function _cambioregistro_7767() {
@@ -4730,7 +4337,7 @@ function _consultademostrarinf_7767() {
 }
 
 function _dataSAL7767_03(data) {
-    // console.log(data, 'SAL7767_03');
+
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODPACIW = date[1].trim();
@@ -4845,12 +4452,12 @@ function _dataSAL7767_03(data) {
             carpeta: 'SALUD'
         });
     } else {
-        CON852(date[1], date[2], date[3], _toogleNav);
+        CON852(date[1], date[2], date[3], _toggleNav);
     }
 }
 
 function _dataSAL7767_03_1(data) {
-    // console.debug(data, 'SAL7767_03_01');
+
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODPACIW = date[1].trim();
@@ -4867,7 +4474,7 @@ function _dataSAL7767_03_1(data) {
     if (swinvalid == '00') {
         _mostrardatos_7767();
     } else {
-        CON852(date[1], date[2], date[3], _toogleNav);
+        CON852(date[1], date[2], date[3], _toggleNav);
     }
 }
 
@@ -4876,7 +4483,7 @@ function _mostrardatos_7767() {
 
     $('#numero_110c').val($_CODPACIW);
     $('#identif_110c').val($_TIPOPACIW);
-    $('#lugar1_110c').val($_LUGARIDPACIW);
+    $('#lugar_110c').val($_LUGARIDPACIW);
     $('#apellido1_110c').val($_APELLIDO1PACW);
     $('#apellido2_110c').val($_APELLIDO2PACW);
     $('#nombre1_110c').val($_NOMBRE1PACW);
@@ -4913,8 +4520,8 @@ function _mostrardatos_7767() {
     $('#comunidades_110c').val($_COMUNIPACW);
     $('#resguardos_110c').val($_RESGUARPACIW);
     $('#tipoafil_110c').val($_TIPOAFILPACIW);
-    $('#portabilidad_110c').val($_PORTABPACIW);
-    $('#ciudadorig_110C').val($_CIUDASEGPACIW);
+    $('#portabilidad_7767').val($_PORTABPACIW);
+    $('#ciudadportab_7767').val($_CIUDASEGPACIW);
     $('#eps_110c').val($_EPSPACIW);
     $('#epsd_110c').val($_NOMEPSPACIW);
     $('#contrato_110c').val($_CONTRATOPACIW);
@@ -4977,7 +4584,14 @@ function _mostrardatos_7767() {
     $('#entidad_110c').val($_ENTIFACTPACIW);
     $('#entidadd_110c').val($_DESCRIPENTIPACIW);
     $('#fechasistd_110c').val($_FECHANITPACIW);
-    $('#medicofam_110c').val($_MEDFAMIPACIW);
+
+    if($_MEDFAMIPACIW == '0000000000'){
+        $_MEDFAMIPACIW = ' ';
+        $('#medicofam_110c').val($_MEDFAMIPACIW);
+    }else{
+        $('#medicofam_110c').val($_MEDFAMIPACIW);
+    }
+    
     $('#medicofamd_110c').val($_DESCRIPMEDPACIW);
     $('#correopacie_110c').val($_EMAILPACIW);
     $('#fact_110c').val($_OPERCREAPACIW);
@@ -4989,6 +4603,8 @@ function _mostrardatos_7767() {
 
     if ($_NOVEDAD7767 == '9') {
         _retiroregistro_7767();
+    } else {
+        _dato4_7767();
     }
 }
 
@@ -4997,30 +4613,7 @@ function _retirar() {
 }
 
 function _retiroregistro_7767() {
-    bootbox.confirm({
-        size: "small",
-        onEscape: false,
-        message: "DESEA RETIRAR ESTOS DATOS?",
-        buttons: {
-            confirm: {
-                label: 'Si',
-                className: 'btn-success'
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-danger'
-            }
-
-        },
-        callback: function (result) {
-            if (result == true) {
-                _grabarcorresponsalia();
-            } else {
-                CON850(_dato_novedad_7767);
-            }
-        }
-    });
-
+    CON851P('54', _evaluarpaciente_7767, _grabarcorresponsalia)
 }
 
 function _grabarcorresponsalia() {
@@ -5034,50 +4627,39 @@ function _grabarcorresponsalia() {
 }
 
 function _dataCON904S_04(data) {
-    // console.log(data, "CON904S-04");
+
     var date = data.split("|");
     var swinvalid = date[2].trim();
     if (swinvalid == "00") {
-        setTimeout(_ventanacorresponsalia_7767, 500);
+        if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
+            setTimeout(_ventanacorresponsalia_7767, 500);
+        } else {
+            setTimeout(_ventanacorresponsalia_7767ret, 500);
+        }
+
     } else {
         CON851(swinvalid, swinvalid, null, 'error', 'error');
-        // NO TIENE PERMISOS
+
         _toggleNav();
     }
 }
 
-function _ventanacorresponsalia_7767() {
-    bootbox.confirm({
-        size: "small",
-        onEscape: false,
-        message: "ACTUALIZAR CORRESPONSALIA?",
-        buttons: {
-            confirm: {
-                label: 'Si',
-                className: 'btn-success'
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-danger'
-            }
+function _ventanacorresponsalia_7767ret() {
+    CON851P('24', _eliminarregistro, _ventanaactualizarcorresponsalia)
+}
 
-        },
-        callback: function (result) {
-            if (result == true) {
-                _ventanaactualizarcorresponsalia();
-            } else {
-                if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
-                    _grabardatos_7767();
-                } else {
-                    _eliminarregistro();
-                }
-            }
-        }
-    });
+function _ventanacorresponsalia_7767() {
+    CON851P('24', _grabardatos_7767, _ventanaactualizarcorresponsalia)
 }
 
 function _ventanaactualizarcorresponsalia() {
     console.log("VENTANA CORRESPONSALIA PREGUNTAR ESNEIDER COMO FUNCIONAR");
+    if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
+        _grabardatos_7767()
+    } else {
+        _eliminarregistro()
+    }
+
 }
 
 function _grabardatos_7767() {
@@ -5095,7 +4677,6 @@ function _grabardatos_7767() {
         $_FECHAMODIFPACIW = '';
         $_HORAMODIFPACIW = '';
     }
-
 
     $_HEMOCLASPAC = $_GRPSANGPACIW + $_RHPACIW;
     $_RESTRICCIONPACIW = $_RESTAPLIPACIW + $_RESTDROGPACIW + $_RESTCIRUPACIW + $_RESTLABOPACIW + $_RESTIMAGPACIW + $_RESTESTAPACIW + $_RESTCONSPACIW + $_RESTTERFPACIW + $_RESTTEROPACIW + $_RESTADONPACIW + $_RESTPYPPACIW;
@@ -5138,7 +4719,6 @@ function _eliminarregistro() {
 
 
 function _dataSAL7767_13(data) {
-    console.debug(data, 'SAL7767_13');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -5158,11 +4738,8 @@ function _dataSAL7767_13(data) {
 }
 
 function limpiarCajas_7767() {
-    // _toggleNav();
     _inputControl('reset');
     CON850(_dato_novedad_7767);
-
-    // _inputControl('disabled');
 }
 
 
@@ -5198,10 +4775,9 @@ function _validacionantecedentes_7767() {
 
 
 function _calcularedad_7767() {
-    // $_UNIDEDADW = 'A';
-    // $_VLREDADW
+
     $_NACIMPACIW = momentMask.unmaskedValue;
-    
+
     $_FECHAINIW = $_NACIMPACIW;
     $_FECHASISTEMA = moment().format('YYYYMMDD');
     $_FECHAACTW = $_FECHASISTEMA;
@@ -5211,34 +4787,28 @@ function _calcularedad_7767() {
     $_ANOACTW = parseInt($_FECHAACTW.substring(0, 4));
     $_MESACTW = parseInt($_FECHAACTW.substring(4, 6));
     $_DIAACTW = parseInt($_FECHAACTW.substring(6, 8));
-    // console.debug($_MESACTW, $_MESINIW);
 
     if (($_MESACTW == $_MESINIW) && ($_DIAACTW == $_DIAACTW) && ($_ANOACTW > $_ANOINIW)) {
         $_UNIDEDADW = 'A';
-        $_VLREDADW = $_ANOACT - $_ANOINIW;
+        $_VLREDADW = $_ANOACTW - $_ANOINIW;
         $_VLREDADW = Math.round($_VLREDADW);
         $_EDADPACW = $_UNIDEDADW + $_VLREDADW;
     }
 
-    // console.debug($_MESACTW, $_MESINIW);
-    // console.debug($_FECHAACTW, $_FECHAINIW);
     var mesesdias = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     var mesesmes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     for (var i = 0; i < mesesmes.length; i++) {
         if ($_MESACTW == mesesmes[i]) {
             $_NROMESW = mesesdias[i];
-            // console.debug($_MESACTW, mesesdias[i]);
             break;
         }
     }
 
-    // console.debug($_MESACTW, $_NROMESW);
-
     if (($_MESACTW > 2) && (($_ANOACTW == 1996) || ($_ANOACTW == 2000) || ($_ANOACTW == 2004) || ($_ANOACTW == 2008) || ($_ANOACTW == 2012) || ($_ANOACTW == 2016) || ($_ANOACTW == 2020) || ($_ANOACTW == 2024) || ($_ANOACTW == 2028) || ($_ANOACTW == 2032))) {
         $_NROMESW++;
     }
-    // console.debug($_MESACTW, $_NROMESW);
+
     $_NRODIASACT = ($_ANOACTW * 365.25) + $_NROMESW + $_DIAACTW;
     $_NRODIASACT = Math.round($_NRODIASACT);
 
@@ -5246,7 +4816,6 @@ function _calcularedad_7767() {
     for (var i = 0; i < mesesmes.length; i++) {
         if ($_MESINIW == mesesmes[i]) {
             $_NROMESW = mesesdias[i];
-            // console.debug($_MESINIW, mesesdias[i]);
             break;
         }
     }
@@ -5257,8 +4826,6 @@ function _calcularedad_7767() {
 
     $_NRODIASINI = ($_ANOINIW * 365.25) + $_NROMESW + $_DIAINIW;
     $_NRODIASINI = Math.round($_NRODIASINI);
-
-    // console.debug($_NRODIASACT, $_NRODIASINI);
 
     $_NRODIASEDAD = $_NRODIASACT - $_NRODIASINI;
 

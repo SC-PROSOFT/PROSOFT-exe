@@ -56,7 +56,7 @@ function _validarCodigo715() {
             form: "#codincrem715",
             orden: '1'
         },
-        function () { _toggleNav },
+        function () { _toggleNav()},
         _validacionescodigotarifa
     )
 }
@@ -159,7 +159,7 @@ function _validargrupotar(){
         envioDatos715(); 
     }else{
         LLAMADO_DLL({
-            dato: [$codigo715],
+            dato: [$grupo715],
             callback: _dataCONSULTAGRUPO_715,
             nombredll: 'SAL715_02',
             carpeta: 'SALUD'
@@ -177,6 +177,7 @@ function _dataCONSULTAGRUPO_715(data){
     if (swinvalid == "00") {
         envioDatos715(); 
     } else if (swinvalid == "01") {
+        CON851('01', '01', null, 'error', 'error');
         grupo715(); 
     } else {
         CON852(date[0], date[1], date[2], _toggleNav);
