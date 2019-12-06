@@ -546,7 +546,7 @@ function validarPrograma9714() {
     ]
     POPUP({
         array: datoProgr,
-        titulo: 'Incrementar Tarifa',
+        titulo: 'SELECCIONAR PROGRAMA',
         indices: [{
             id: 'COD',
             label: 'DESCRIP'
@@ -604,7 +604,7 @@ function consultarTablasSisvan9714() {
             let tablacontrol = data.TABLA;
             let controlSisvan = [];
             tablacontrol.forEach(function (val, index, array) {
-                    controlSisvan.push(array[index])
+                controlSisvan.push(array[index])
             });
             $('#TABLASISVA_9714').DataTable({
                 ajax: {
@@ -765,10 +765,8 @@ function on_actualizarSisvan9714(parametros, novedad, respuesta) {
     }, get_url("APP/SALUD/SAL714-02.DLL"))
         .then((data) => {
             if (data[0] == "00") {
-                setTimeout(() => {
-                    toastr.success(respuesta, 'MAESTRO ACT. FICHA SISVAN');
-                }, 100);
-                limpiarCajas_9714();
+                Alert({ titulo: 'Notificacion', mensaje: respuesta })
+                limpiarCajas_9714()
             } else {
                 CON851('ERROR', 'ERROR AL ACTUALIZAR', limpiarCajas_9714(), 'error', 'error');
             };
@@ -777,7 +775,7 @@ function on_actualizarSisvan9714(parametros, novedad, respuesta) {
         .catch((error) => {
             console.log(error)
         })
-    
+
 }
 
 function limpiarCajas_9714() {
