@@ -8,29 +8,56 @@ _validarOpcion_0A = function () {
         mostrar_menu(tmp);
         set_titulo("0A");
     } else if (SUCU == '1') {
-        _consultaSql({
-            sql: 'SELECT * FROM sc_archpref',
-            db: $CONTROL,
-            callback: function (error, results, fields) {
-                if (error) throw error;
-                else {
-                    _toggleNav();
-                    POPUP({
-                        array: results,
-                        titulo: 'Menu por prefijos',
-                        indices: [
-                            // { id: 'id', label: 'descripcion' }
-                            { label: 'descripcion' }
-                        ],
-                        callback_f: _toggleNav
-                    }, function (data) {
-                        setTimeout(function () {
-                            _CON855A(data.id, '1')
-                        }, 300)
+        obtenerDatosCompletos({ nombreFd: 'PREFIJOS' }, (data) => {
+            var prefijosFiltrados = []
+            var prefijosLlegada = data.PREFIJOS[0].TABLA
+            prefijosLlegada.pop()
+
+            for (var i in prefijosLlegada) {
+                var nro = prefijosLlegada[i].NRO.slice(-2)
+                if (nro < '09' || nro == '09') {
+                    prefijosFiltrados.push({
+                        "COD": nro.slice(-1), "PREFIJO": prefijosLlegada[i].DESC_PREF
                     })
                 }
             }
+            _toggleNav()
+            POPUP({
+                array: prefijosFiltrados,
+                titulo: 'Menu por prefijos',
+                indices: [
+                    { id: 'COD', label: 'PREFIJO' }
+                ],
+                callback_f: _toggleNav
+            }, function (data) {
+                setTimeout(function () {
+                    _CON855A(data.COD, '1')
+                }, 300)
+            })
         })
+        // _consultaSql({
+        //     sql: 'SELECT * FROM sc_archpref',
+        //     db: $CONTROL,
+        //     callback: function (error, results, fields) {
+        //         if (error) throw error;
+        //         else {
+        //             _toggleNav();
+        //             POPUP({
+        //                 array: results,
+        //                 titulo: 'Menu por prefijos',
+        //                 indices: [
+        //                     // { id: 'id', label: 'descripcion' }
+        //                     { label: 'descripcion' }
+        //                 ],
+        //                 callback_f: _toggleNav
+        //             }, function (data) {
+        //                 setTimeout(function () {
+        //                     _CON855A(data.id, '1')
+        //                 }, 300)
+        //             })
+        //         }
+        //     }
+        // })
     } else if (SUCU == '3') {
         _consultaSql({
             sql: 'SELECT * FROM sc_sucur',
@@ -80,55 +107,119 @@ _validarOpcion_0A = function () {
 }
 
 _CON855A = function (prefijo, acceso) {
-    var sql_temp = '';
+    obtenerDatosCompletos({ nombreFd: 'LOTES' }, (data) => {
+        var lotesFiltrados = []
+        var lotesLlegada = data.LOTES
+        lotesLlegada.pop()
 
-    if (acceso == '1') sql_temp = `SELECT * FROM sc_archlote WHERE codigo LIKE '${prefijo}%'`
-    else if (acceso == '2') sql_temp = `SELECT * FROM sc_archlote WHERE codigo LIKE '%${prefijo}'`
-    _consultaSql({
-        sql: sql_temp,
-        db: 'datos_pros',
-        callback: function (error, results, fields) {
-            var temp = [];
-            console.log(results)
-            if (results.length > 0) {
-                results.forEach(function (el, idx) {
-                    let codigo = el.codigo,
-                        cod1 = codigo[0],
-                        descripcion = el.nombre.substring(0, 6);
-                    if (descripcion != 'COMPRA' && (codigo != "6C" || codigo != "60" || codigo != "6A")) {
-                        if (cod1 == "0" || cod1 == "1" || cod1 == "I" || cod1 == "E" || cod1 == "C") {
+        for (var i in lotesLlegada) {
+            var lote = lotesLlegada[i].LOTE
+            var nombreLote = lotesLlegada[i].NOMBRE.substring(0, 6)
+            var y
 
-                        } else {
-                            temp.push(el)
-                        }
+            if (y > 19) {
+                break;
+            }
+
+            if (nombreLote != 'COMPRA' && (lote != "6C" || lote != "60" || lote != "6A")) {
+                if (lote[0] == "0" || lote[0] == "1" || lote[0] == "I" || lote[0] == "E" || lote[0] == "C") {
+
+                } else {
+                    switch (acceso) {
+                        case '1':
+                            if (lote[0] == prefijo) {
+                                y = parseInt(y + 1)
+                                lotesFiltrados.push({ "LOTE": lote, "NOMBRE": lotesLlegada[i].NOMBRE })
+                            }
+                            break;
+                        case '2':
+                            if (lote[1] == prefijo) {
+                                y = parseInt(y + 1)
+                                lotesFiltrados.push({ "LOTES": lote })
+                            }
+                            break;
                     }
-                });
-                POPUP({
-                    array: temp,
-                    titulo: 'Lotes por documento',
-                    indices: [
-                        { id: 'codigo', label: 'nombre' }
-                    ],
-                    callback_f: _toggleNav
-                }, function (data) {
-                    _toggleNav();
-
-                    var codigo = data.codigo.trim(),
-                        lote1 = codigo.substring(0, 1),
-                        lote2 = codigo.substring(codigo.length - 1, codigo.length);
-
-                    if (lote2 == 'B') {
-                        var nuevaLista = buscar_opcion('0941B');
-                        mostrar_menu(nuevaLista);
-                        set_titulo('0941B');
-                    } else {
-                        var nuevaLista = buscar_opcion('0A1');
-                        mostrar_menu(nuevaLista);
-                        set_titulo('0A1');
-                        $_LOTE_MENUCHECK = { lote1: lote1, lote2: lote2 };
-                    }
-                })
+                }
             }
         }
+        POPUP({
+            array: lotesFiltrados,
+            titulo: 'Lotes por documento',
+            indices: [
+                { id: 'LOTE', label: 'NOMBRE' }
+            ],
+            callback_f: _toggleNav
+        }, function (data) {
+            _toggleNav();
+
+            var codigo = data.LOTE.trim(),
+                lote1 = codigo.substring(0, 1),
+                lote2 = codigo.substring(codigo.length - 1, codigo.length);
+
+            if (lote2 == 'B') {
+                var nuevaLista = buscar_opcion('0941B');
+                mostrar_menu(nuevaLista);
+                set_titulo('0941B');
+            } else {
+                var nuevaLista = buscar_opcion('0A1');
+                mostrar_menu(nuevaLista);
+                set_titulo('0A1');
+                $_LOTE_MENUCHECK = { lote1: lote1, lote2: lote2 };
+            }
+        })
     })
 }
+
+
+//     var sql_temp = '';
+
+//     if (acceso == '1') sql_temp = `SELECT * FROM sc_archlote WHERE codigo LIKE '${prefijo}%'`
+//     else if (acceso == '2') sql_temp = `SELECT * FROM sc_archlote WHERE codigo LIKE '%${prefijo}'`
+//     _consultaSql({
+//         sql: sql_temp,
+//         db: 'datos_pros',
+//         callback: function (error, results, fields) {
+//             var temp = [];
+//             console.log(results)
+//             if (results.length > 0) {
+//                 results.forEach(function (el, idx) {
+//                     let codigo = el.codigo,
+//                         cod1 = codigo[0],
+//                         descripcion = el.nombre.substring(0, 6);
+//                     if (descripcion != 'COMPRA' && (codigo != "6C" || codigo != "60" || codigo != "6A")) {
+//                         if (cod1 == "0" || cod1 == "1" || cod1 == "I" || cod1 == "E" || cod1 == "C") {
+
+//                         } else {
+//                             temp.push(el)
+//                         }
+//                     }
+//                 });
+//                 POPUP({
+//                     array: temp,
+//                     titulo: 'Lotes por documento',
+//                     indices: [
+//                         { id: 'codigo', label: 'nombre' }
+//                     ],
+//                     callback_f: _toggleNav
+//                 }, function (data) {
+//                     _toggleNav();
+
+//                     var codigo = data.codigo.trim(),
+//                         lote1 = codigo.substring(0, 1),
+//                         lote2 = codigo.substring(codigo.length - 1, codigo.length);
+
+//                     if (lote2 == 'B') {
+//                         var nuevaLista = buscar_opcion('0941B');
+//                         mostrar_menu(nuevaLista);
+//                         set_titulo('0941B');
+//                     } else {
+//                         var nuevaLista = buscar_opcion('0A1');
+//                         mostrar_menu(nuevaLista);
+//                         set_titulo('0A1');
+//                         $_LOTE_MENUCHECK = { lote1: lote1, lote2: lote2 };
+//                     }
+//                 })
+//             }
+//         }
+//     })
+// }

@@ -481,7 +481,7 @@ function Impresion_RX_421w(data) {
     terceros.pop()
 
     if (array_rx421W[index].id_entidad == '          ' || array_rx421W[index].id_entidad.length == 0) {
-        array_rx421W[index].id_entidad = "0900219120"
+        array_rx421W[index].id_entidad = " 900219120"
     }
 
     var busqueda = terceros.find(tercero => tercero.COD == array_rx421W[index].id_entidad)

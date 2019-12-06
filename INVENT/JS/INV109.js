@@ -72,16 +72,15 @@ $(document).ready(function () {
 function _ventanaCentroCosto_109(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: 'Ventana Centros De Costos',
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archcos',
+            titulo: 'Ventana centro de costos',
+            columnas: ["COD", "NOMBRE"],
+            data: arrayLote_110I,
             callback_esc: function () {
                 $('#centroCosto_109').focus()
             },
             callback: function (data) {
                 console.log(data)
-                $('#centroCosto_109').val(data.cod_costo);
+                $('#centroCosto_109').val(data.COD);
                 _enterInput('#centroCosto_109');
             }
         });
@@ -92,15 +91,14 @@ function _ventanaAlmacen_109(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'Ventana de Almacenes',
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_almac',
+            columnas: ["CODIGO", "DESCRIPCION", "RESPONSABLE"],
+            data: arrayLote_110I,
             callback_esc: function () {
                 $('#almacen_109').focus()
             },
             callback: function (data) {
                 console.log(data)
-                $('#almacen_109').val(data.llave_loc + data.cod_local);
+                $('#almacen_109').val(data.CODIGO);
                 _enterInput('#almacen_109');
             }
         });
@@ -108,47 +106,29 @@ function _ventanaAlmacen_109(e) {
 }
 
 function json_Prefijos_inv109() {
-    LLAMADO_DLL({
-        dato: [],
-        callback: on_json_Prefijos_inv109,
-        nombredll: 'INV109-01',
-        carpeta: 'INVENT'
-    })
+    obtenerDatosCompletos({ nombreFd: 'PREFIJOS' }, recibirPrefijos_109)
 }
 
-function on_json_Prefijos_inv109(data) {
-    var rdll = data.split('|');
-    if (rdll[0].trim() == '00') {
-        var rutaJson = rdll[1].trim()
-        console.log(get_url("temp/" + rutaJson))
-        SolicitarDatos(
-            null,
-            function (data) {
-                console.log(data)
-                arrayPrefijos_109 = data.PREFIJOS
-                arrayPrefijos_109[0].TABLA.pop()
-                var arrayEliminar = [];
-                arrayEliminar.push(rutaJson)
-                _eliminarJson(arrayEliminar, on_eliminarJson_109);
-            },
-            get_url("temp/" + rutaJson)
-        );
-    } else {
-        loader('hide');
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
+function recibirPrefijos_109(data) {
+    console.log(data)
+    arrayPrefijos_109 = data.PREFIJOS
+    arrayPrefijos_109[0].TABLA.pop()
+    obtenerDatosCompletos({ nombreFd: 'COSTOS' }, recibirCostos_109)
 }
 
-function on_eliminarJson_109(data) {
-    loader('hide');
-    var rdll = data.split('|');
-    if (rdll[0].trim() == '00') {
-        mostrarDatos_tabla_109()
+function recibirCostos_109(data) {
+    arrayCostos_109 = data.COSTO
+    arrayCostos_109.pop()
+    obtenerDatosCompletos({ nombreFd: 'LOCALIZACION' }, recibirAlmacenes_109)
+}
+
+function recibirAlmacenes_109(data) {
+    arrayAlmacenes_109 = data.LOCALIZACION
+    arrayAlmacenes_109.pop()
+    mostrarDatos_tabla_109()
+    setTimeout(() => {
         validar_NroPrefijo_109()
-        // _validacionTablaPrefijos_109('0');
-    } else {
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
+    }, 200);
 }
 
 function buscarProv_fact(proveedor) {
@@ -179,15 +159,22 @@ function mostrarDatos_tabla_109() {
 
     var masked = IMask.createMask({ mask: Date, pattern: 'Y/`m/`dd' });
 
+
     for (var i in tabla) {
-        if (tabla[i].ESTADO == '1' || tabla[i].ESTADO == '7' || tabla[i].ESTADO == '8') {
+        if (tabla[i].ESTADO == '1') {
+            var fechaLlegada = tabla[i].FECHA
+            if (fechaLlegada == "00000000") {
+                fechaLlegada = ''
+            } else {
+                fechaLlegada = masked.resolve(tabla[i].FECHA.trim().toString())
+            }
             $('#tablaPrefijos_109 tbody').append(''
                 + '<tr>'
                 + '   <td>' + tabla[i].NRO.trim().slice(-2) + '</td>'
                 + '   <td>' + tabla[i].PREFIJO.trim() + '</td>'
                 + '   <td>' + tabla[i].DESC_PREF.trim() + '</td>'
                 + '   <td>' + tabla[i].AUT_DIAN.trim() + '</td>'
-                + '   <td>' + masked.resolve(tabla[i].FECHA.trim().toString()) + '</td>'
+                + '   <td>' + fechaLlegada + '</td>'
                 + '   <td>' + tabla[i].DESDE_NRO.trim() + '</td>'
                 + '   <td>' + tabla[i].HASTA_NRO.trim() + '</td>'
                 + '   <td>' + tabla[i].VIGENCIA.trim() + '</td>'
@@ -210,6 +197,7 @@ function on_salir_109() {
     _inputControl('reset');
     _inputControl('disabled');
     limpiarTodo_109()
+    _toggleNav()
 }
 
 function _validacionTablaPrefijos_109(orden) {
@@ -237,29 +225,16 @@ function tabla_proceso_2(datos) {
     validar_NroPrefijo_109()
 }
 
-// function mostrarFilaPrefijo_109(datos) {
-//     tabladatos = datos;
-//     $('#nroPrefijo_109').val(datos.cells[0].textContent);
-//     $('#prefijo_109').val(datos.cells[1].textContent);
-//     $('#descripPref_109').val(datos.cells[2].textContent);
-//     $('#autDian_109').val(datos.cells[3].textContent);
-//     // $('#fechaPrefijo_109').val(datos.cells[4].textContent);
-//     momentMaskFecha.typedValue = datos.cells[4].textContent;
-//     $('#nroDesde_109').val(datos.cells[5].textContent);
-//     $('#nroHasta_109').val(datos.cells[6].textContent);
-//     $('#vigencia_109').val(datos.cells[7].textContent);
-//     $('#suc_109').val(datos.cells[8].textContent);
-//     $('#centroCosto_109').val(datos.cells[9].textContent);
-//     $('#almacen_109').val(datos.cells[10].textContent);
-//     $('#listaEnvio_109').val(datos.cells[11].textContent);
-// }
-
 function mostrarFilaPrefijo_109(datos) {
     $('#nroPrefijo_109').val(datos.NRO.trim().slice(-2));
     $('#prefijo_109').val(datos.PREFIJO.trim());
     $('#descripPref_109').val(datos.DESC_PREF.trim());
     $('#autDian_109').val(datos.AUT_DIAN.trim());
-    momentMaskFecha.typedValue = datos.FECHA.trim()
+    if (datos.FECHA.trim() != '00000000'){
+        momentMaskFecha.typedValue = datos.FECHA.trim()
+    } else {
+        $('#fechaPrefijo_109').val('')
+    }
     $('#nroDesde_109').val(datos.DESDE_NRO.trim());
     $('#nroHasta_109').val(datos.HASTA_NRO.trim());
     $('#vigencia_109').val(datos.VIGENCIA.trim());
@@ -356,6 +331,7 @@ function limpiarInputs() {
     $('#centroCosto_109').val('');
     $('#almacen_109').val('');
     $('#listaEnvio_109').val('');
+    validarChecked('#POS_109', 'N')
 }
 
 function validar_Descripcion_109() {
@@ -392,7 +368,14 @@ function validar_Fecha_109() {
         },
         function () { validar_AutDian_109() },
         function () {
-            validar_DesdeNro_109()
+            var fechaDig = $('#fechaPrefijo_109').val()
+
+            if (fechaDig.trim().length < 1) {
+                $('#fechaPrefijo_109').val('')
+                validar_DesdeNro_109()
+            } else {
+                validar_DesdeNro_109()
+            }
         }
     )
 }
@@ -498,38 +481,22 @@ function validar_Costo_109() {
             var C_costo = $('#centroCosto_109').val()
 
             if (C_costo.length < 1) {
-                console.log('entro a cc')
                 validar_Almacen_109()
             } else {
-                busquedaCosto_109(cerosIzq(C_costo, 4))
-            }
-        }
-    )
-}
-
-function busquedaCosto_109(costo) {
-    _consultaSql({
-        sql: `SELECT * FROM sc_archcos WHERE cod_costo LIKE '${costo}%'`,
-        db: $CONTROL,
-        callback: function (error, results, fields) {
-            console.log(results)
-            if (error) {
-                CON852('BD', 'BD', 'INV109', _toggleNav);
-                throw error;
-            } else {
-                var datos = results[0]
-                console.log(datos)
-                if (results.length > 0) {
-                    $('#centroCosto_109').val(datos.cod_costo.trim())
-                    $('#descrip_global_109').val(datos.nombre_costo.trim())
+                var busqueda = arrayCostos_109.find(costo => costo.COD == cerosIzq(C_costo, 4))
+                console.log(busqueda)
+                if (busqueda) {
+                    $('#centroCosto_109').val(busqueda.COD)
+                    $('#descrip_global_109').val(busqueda.NOMBRE)
                     validar_Almacen_109()
                 } else {
+                    CON851('01', '01', null, 'error', 'error');
                     $('#descrip_global_109').val('***************')
                     validar_Costo_109()
                 }
             }
         }
-    })
+    )
 }
 
 function validar_Almacen_109() {
@@ -540,42 +507,26 @@ function validar_Almacen_109() {
         },
         function () { validar_Costo_109() },
         function () {
-            var almacen = $('#almacen_109').val()
+            var almacenDig = $('#almacen_109').val()
 
-            if (almacen == "XXXXX") {
+            if (almacenDig == "XXXXX") {
                 $('#descrip_global_109').val('       ')
-                console.log('almacen normal')
                 validar_lista_109()
             } else {
-                busquedaAlmacen_109(almacen)
+                var busqueda = arrayAlmacenes_109.find(almacen => almacen.CODIGO == almacenDig)
+
+                if (busqueda) {
+                    $('#descrip_global_109').val(busqueda.DESCRIPCION)
+                    validar_lista_109()
+                } else {
+                    CON851('01', '01', null, 'error', 'error');
+                    $('#descrip_global_109').val('***************')
+                    validar_Almacen_109()
+                }
             }
 
         }
     )
-}
-
-
-function busquedaAlmacen_109(almacen) {
-    _consultaSql({
-        sql: `SELECT * FROM sc_almac WHERE CONCAT(llave_loc, cod_local) LIKE '${almacen}%'`,
-        db: $CONTROL,
-        callback: function (error, results, fields) {
-            if (error) {
-                CON852('BD', 'BD', 'INV109', _toggleNav);
-                throw error;
-            } else {
-                var datos = results[0]
-                if (results.length > 0) {
-                    $('#descrip_global_109').val(datos.nombre_local.trim())
-                    console.log('almacen bd')
-                    validar_lista_109()
-                } else {
-                    CON851('01', '01', null, 'error', 'error');
-                    validar_Almacen_109()
-                }
-            }
-        }
-    })
 }
 
 function validar_lista_109() {
@@ -637,11 +588,12 @@ function agregarFilaTabla() {
     var prefijo = espaciosDer($('#prefijo_109').val().trim(), 4)
     var descripcion = espaciosDer($('#descripPref_109').val().trim(), 15)
     var autDian = espaciosDer($('#autDian_109').val().trim(), 15)
-    var fecha = $maskFecha_109
-
-    if (fecha == undefined || fecha == "undefinedundefined") {
-        fecha = '00000000';
+    var fecha
+    var fechaDig = $('#fechaPrefijo_109').val().trim()
+    if (fechaDig.length < 1) {
+        fecha = ''
     } else {
+        fecha = $maskFecha_109
         fecha = fecha.split('/');
         fecha = fecha[0] + fecha[1] + fecha[2];
     }
@@ -674,7 +626,7 @@ function agregarFilaTabla() {
             ALMACEN: almacen,
             LISTA_SUC: lista,
             POS: pos,
-            ESTADO: '8'
+            ESTADO: '1'
         }
     } else {
         arrayPrefijos_109[0].TABLA.push({
@@ -691,7 +643,7 @@ function agregarFilaTabla() {
             ALMACEN: almacen,
             LISTA_SUC: lista,
             POS: pos,
-            ESTADO: '7'
+            ESTADO: '1'
         });
     }
 
@@ -844,7 +796,7 @@ function validar_Acceso_109() {
             var acceso = $('.acceso_token_109')
             $_Token_Acceso_109 = espaciosDer($(acceso[1]).val(), 80)
             var token_prueba = $('.token_prueba_109')
-            if ($(token_prueba[1]).prop('checked')) { $prueba_token  = 'S' } else { $prueba_token = 'N' } 
+            if ($(token_prueba[1]).prop('checked')) { $prueba_token = 'S' } else { $prueba_token = 'N' }
             console.log($_Token_Acceso_109)
             $('[data-bb-handler="main"]').click();
             _tablatxt_109()
@@ -861,6 +813,9 @@ function _tablatxt_109() {
         var descripcion_prefijo = tabla.DESC_PREF
         var autorizacion_Dian = tabla.AUT_DIAN
         var fecha = tabla.FECHA
+        if (fecha == '') {
+            fecha = '00000000'
+        }
         var desde_Nro = tabla.DESDE_NRO
         var hasta_Nro = tabla.HASTA_NRO
         var vigencia = tabla.VIGENCIA
@@ -871,7 +826,7 @@ function _tablatxt_109() {
         var pos = tabla.POS
         var estado = tabla.ESTADO
 
-        if (estado == '1' || estado == '7' || estado == '8') {
+        if (estado == '1') {
             tablaTXT += nro + '|'
                 + prefijo + ';'
                 + descripcion_prefijo + ';'
@@ -888,20 +843,20 @@ function _tablatxt_109() {
                 + '\r\n';
         }
 
-        var nro_sql = nro.trim().slice(-2)
-        console.log(estado)
-        if (estado == '7') {
+        // var nro_sql = nro.trim().slice(-2)
+        // console.log(estado)
+        // if (estado == '7') {
 
-            SQL_INSERT += `('${nro_sql}', '${prefijo}', '${descripcion_prefijo}')` + ","
+        //     SQL_INSERT += `('${nro_sql}', '${prefijo}', '${descripcion_prefijo}')` + ","
 
-        } else if (estado == '8') {
+        // } else if (estado == '8') {
 
-            SQL_UPDATE += `UPDATE sc_archpref SET cod_pref='${prefijo}',descrip_pref='${descripcion_prefijo}' WHERE id = '${nro_sql}' ;`
+        //     SQL_UPDATE += `UPDATE sc_archpref SET cod_pref='${prefijo}',descrip_pref='${descripcion_prefijo}' WHERE id = '${nro_sql}' ;`
 
-        } else if (estado == '9') {
+        // } else if (estado == '9') {
 
-            SQL_DELETE += `${nro_sql},`
-        }
+        //     SQL_DELETE += `${nro_sql},`
+        // }
     });
 
     var $_NOMBRE = localStorage.Usuario + '_' + moment().format('YYYYMMDDhhmmssSS');
@@ -923,109 +878,60 @@ function _grabardatos(txt_nombre) {
     var sucFactPref = $('#sucPrefNro_109').val()
     var factElect = $('#factElect_109').val()
 
-    LLAMADO_DLL({
-        dato: [sucFactPref, factElect, txt_nombre, $_Token_Cliente_109, $_Token_Acceso_109, $prueba_token],
-        callback: sql_check_109,
-        nombredll: 'INV109-02',
-        carpeta: 'INVENT'
-    });
-}
+    var envio_Datos_109 = datosEnvio()
+    envio_Datos_109 += sucFactPref
+    envio_Datos_109 += '|'
+    envio_Datos_109 += factElect
+    envio_Datos_109 += '|'
+    envio_Datos_109 += txt_nombre
+    envio_Datos_109 += '|'
+    envio_Datos_109 += $_Token_Cliente_109
+    envio_Datos_109 += '|'
+    envio_Datos_109 += $_Token_Acceso_109
+    envio_Datos_109 += '|'
+    envio_Datos_109 += $prueba_token
+    envio_Datos_109 += '|'
 
-function buscarEstadoArray_109(estado) {
-    var retornar = false
-    for (var i in arrayPrefijos_109[0].TABLA) {
-        if (arrayPrefijos_109[0].TABLA[i].ESTADO == estado) {
-            retornar = true
-        }
-    }
-    return retornar;
-}
+    let URL = get_url("APP/INVENT/INV109-02.DLL");
 
-function sql_check_109(data) {
-    console.log(data)
-    var rdll = data.split('|');
-    if (rdll[0].trim() == '00') {
-        var estadoNuevo = buscarEstadoArray_109('7')
-        console.log(estadoNuevo)
-        var estadoCambio = buscarEstadoArray_109('8')
-        console.log(estadoCambio)
-        var estadoRetiro = buscarEstadoArray_109('9')
-        console.log(estadoRetiro)
-
-        var crear = true
-        var modificar = true
-        var eliminar = true
-
-        if (estadoNuevo) {
-            crear = baseDatos_109(SQL_INSERT, '7')
-        }
-
-        if (estadoCambio) {
-            modificar = baseDatos_109(SQL_UPDATE, '8')
-        }
-
-        if (estadoRetiro) {
-            eliminar = baseDatos_109(SQL_DELETE, '9')
-        }
-
-
-        if (crear == false || modificar == false || eliminar == false) {
-            loader('hide');
-            error_sql_109()
-        } else {
-            jAlert({ titulo: 'Notificacion', mensaje: 'LA OPERACION FUE EXITOSA !' },
-                function () {
-                    loader('hide');
-                    limpiarTodo_109();
-                    console.log('fin del programa')
-                });
-        }
-    } else {
-        loader('hide');
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
-}
-
-function error_sql_109() {
-    jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR GUARDANDO LOS CAMBIOS' },
-        function () {
-            limpiarTodo_109();
+    postData({
+        datosh: envio_Datos_109
+    }, URL)
+        .then((data) => {
+            console.log(data)
+            jAlert(
+                { titulo: 'INV109-02', mensaje: data },
+                reInicio_109
+            );
+        })
+        .catch(error => {
+            console.error(error)
+            _toggleNav()
         });
+
+    // LLAMADO_DLL({
+    //     dato: [sucFactPref, factElect, txt_nombre, $_Token_Cliente_109, $_Token_Acceso_109, $prueba_token],
+    //     callback: limpiarTodo_109,
+    //     nombredll: 'INV109-02',
+    //     carpeta: 'INVENT'
+    // });
+}
+
+function reInicio_109() {
+    limpiarTodo_109()
+    json_Prefijos_inv109()
 }
 
 function limpiarTodo_109() {
+    loader('hide')
     limpiarInputs()
     $("#tablaPrefijos_109 tbody").empty();
-    _toggleNav()
-}
-
-function baseDatos_109(sql, estado) {
-    var retornar
-    if (estado == '9') {
-        sql = sql.slice(0, -1)
-        sql += ')'
-    } else if (estado == '7') {
-        sql = sql.slice(0, -1)
-    }
-    console.log(sql)
-    _consultaSql({
-        sql: sql,
-        db: $CONTROL,
-        callback: function (error, results, fields) {
-            if (error) {
-                CON852('BD', 'BD', 'INV109', _toggleNav);
-                throw error;
-            } else {
-                console.log(results)
-                if (results.affectedRows > 0) {
-                    retornar = true
-                } else {
-                    retornar = false
-                }
-            }
-        }
-    })
-    return retornar
+    arrayAlmacenes_109 = []
+    arrayCostos_109 = []
+    arrayPrefijos_109 = []
+    $_Token_Cliente_109 = ''
+    $_Token_Acceso_109 = ''
+    $prueba_token = ''
 }
 
 function _organizarTabla() {

@@ -542,7 +542,7 @@
                 },
                 {
                   "Id": "02712",
-                  "Descripcion": "Actualizar recalificaciones",
+                  "Descripcion": "Actualizar reclasificaciones",
                   "Opc-segu": "C272",
                   "Tipo": "POWER",
                   "Params": [
@@ -9351,8 +9351,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "RX-422",
-                      "dll": "SALUD\\RX-422"
+                      "formulario": "RX422",
+                      "dll": "SALUD\\RX422"
                     }
                   ]
                 },
@@ -9363,8 +9363,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "EXPORTAR-LAB",
-                      "dll": "HICLIN\\EXPORTAR-LAB"
+                      "formulario": "EXPORTARLAB",
+                      "dll": "HICLIN\\EXPORTARLAB"
                     }
                   ]
                 }
@@ -9485,8 +9485,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER-A01",
-                          "dll": "SALUD\\SER-A01"
+                          "formulario": "SERA01",
+                          "dll": "SALUD\\SERA01"
                         }
                       ]
                     },
@@ -9497,8 +9497,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER-A01C",
-                          "dll": "SALUD\\SER-A01C"
+                          "formulario": "SERA01C",
+                          "dll": "SALUD\\SERA01C"
                         }
                       ]
                     }
@@ -9511,8 +9511,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A02",
-                      "dll": "SALUD\\SER-A02"
+                      "formulario": "SERA02",
+                      "dll": "SALUD\\SERA02"
                     }
                   ]
                 },
@@ -9531,8 +9531,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A03",
-                      "dll": "SALUD\\SER-A03"
+                      "formulario": "SERA03",
+                      "dll": "SALUD\\SERA03"
                     }
                   ]
                 },
@@ -9543,8 +9543,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A04",
-                      "dll": "SALUD\\SER-A04"
+                      "formulario": "SERA04",
+                      "dll": "SALUD\\SERA04"
                     }
                   ]
                 },
@@ -9555,8 +9555,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A05",
-                      "dll": "SALUD\\SER-A05"
+                      "formulario": "SERA05",
+                      "dll": "SALUD\\SERA05"
                     }
                   ]
                 },
@@ -9567,8 +9567,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A06",
-                      "dll": "SALUD\\SER-A06"
+                      "formulario": "SERA06",
+                      "dll": "SALUD\\SERA06"
                     }
                   ]
                 },
@@ -9579,8 +9579,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A07",
-                      "dll": "SALUD\\SER-A07"
+                      "formulario": "SERA07",
+                      "dll": "SALUD\\SERA07"
                     }
                   ]
                 },
@@ -9591,8 +9591,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A08",
-                      "dll": "SALUD\\SER-A08"
+                      "formulario": "SERA08",
+                      "dll": "SALUD\\SERA08"
                     }
                   ]
                 },
@@ -9603,8 +9603,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A09",
-                      "dll": "SALUD\\SER-A09"
+                      "formulario": "SERA09",
+                      "dll": "SALUD\\SERA09"
                     }
                   ]
                 },
@@ -9615,8 +9615,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A0A",
-                      "dll": "SALUD\\SER-A0A"
+                      "formulario": "SERA0A",
+                      "dll": "SALUD\\SERA0A"
                     }
                   ]
                 },
@@ -9627,8 +9627,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A0B",
-                      "dll": "SALUD\\SER-A0B"
+                      "formulario": "SERA0B",
+                      "dll": "SALUD\\SERA0B"
                     }
                   ]
                 },
@@ -9639,8 +9639,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A0C",
-                      "dll": "SALUD\\SER-A0C"
+                      "formulario": "SERA0C",
+                      "dll": "SALUD\\SERA0C"
                     }
                   ]
                 },
@@ -9651,8 +9651,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A0D",
-                      "dll": "SALUD\\SER-A0D"
+                      "formulario": "SERA0D",
+                      "dll": "SALUD\\SERA0D"
                     }
                   ]
                 },
@@ -9663,8 +9663,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A0E",
-                      "dll": "SALUD\\SER-A0E"
+                      "formulario": "SERA0E",
+                      "dll": "SALUD\\SERA0E"
                     }
                   ]
                 },
@@ -9675,8 +9675,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A06F",
-                      "dll": "SALUD\\SER-A06F"
+                      "formulario": "SERA06F",
+                      "dll": "SALUD\\SERA06F"
                     }
                   ]
                 },
@@ -9687,8 +9687,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-A0H",
-                      "dll": "SALUD\\SER-A0H"
+                      "formulario": "SERA0H",
+                      "dll": "SALUD\\SERA0H"
                     }
                   ]
                 },
@@ -9712,8 +9712,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER-A0I1",
-                          "dll": "SALUD\\SER-A0I1"
+                          "formulario": "SERA0I1",
+                          "dll": "SALUD\\SERA0I1"
                         }
                       ]
                     },
@@ -9732,8 +9732,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER-A0I2",
-                          "dll": "SALUD\\SER-A0I2"
+                          "formulario": "SERA0I2",
+                          "dll": "SALUD\\SERA0I2"
                         }
                       ]
                     },
@@ -9752,8 +9752,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER-A0I",
-                          "dll": "SALUD\\SER-A0I"
+                          "formulario": "SERA0I",
+                          "dll": "SALUD\\SERA0I"
                         }
                       ]
                     },
@@ -9772,8 +9772,8 @@
                       "Tipo": "RM",
                       "Params": [
                         {
-                          "formulario": "SER-A0I3",
-                          "dll": "SALUD\\SER-A0I3"
+                          "formulario": "SERA0I3",
+                          "dll": "SALUD\\SERA0I3"
                         }
                       ]
                     }
@@ -9860,8 +9860,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B01",
-                      "dll": "SALUD\\SER-B01"
+                      "formulario": "SERB01",
+                      "dll": "SALUD\\SERB01"
                     }
                   ]
                 },
@@ -9872,8 +9872,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B02",
-                      "dll": "SALUD\\SER-B02"
+                      "formulario": "SERB02",
+                      "dll": "SALUD\\SERB02"
                     }
                   ]
                 },
@@ -9884,8 +9884,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B03",
-                      "dll": "SALUD\\SER-B03"
+                      "formulario": "SERB03",
+                      "dll": "SALUD\\SERB03"
                     }
                   ]
                 },
@@ -9896,8 +9896,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B04",
-                      "dll": "SALUD\\SER-B04"
+                      "formulario": "SERB04",
+                      "dll": "SALUD\\SERB04"
                     }
                   ]
                 },
@@ -9908,8 +9908,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B05",
-                      "dll": "SALUD\\SER-B05"
+                      "formulario": "SERB05",
+                      "dll": "SALUD\\SERB05"
                     }
                   ]
                 },
@@ -9920,8 +9920,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B06",
-                      "dll": "SALUD\\SER-B06"
+                      "formulario": "SERB06",
+                      "dll": "SALUD\\SERB06"
                     }
                   ]
                 },
@@ -9932,8 +9932,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "SER-B07",
-                      "dll": "SALUD\\SER-B07"
+                      "formulario": "SERB07",
+                      "dll": "SALUD\\SERB07"
                     }
                   ]
                 },
@@ -10019,7 +10019,7 @@
                       "Href": "../../SALUD/PAGINAS/SAL7C11.html"
                     },
                     {
-                      "Id": "097C12,",
+                      "Id": "097C12",
                       "Descripcion": "Reimprime citas",
                       "Opc-segu": "ISC12",
                       "Tipo": "RM",
@@ -10309,8 +10309,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "EXPO-CIT",
-                      "dll": "SALUD\\EXPO-CIT"
+                      "formulario": "EXPOCIT",
+                      "dll": "SALUD\\EXPOCIT"
                     }
                   ]
                 },
@@ -10321,8 +10321,8 @@
                   "Tipo": "RM",
                   "Params": [
                     {
-                      "formulario": "IMPO-CIT",
-                      "dll": "SALUD\\IMPO-CIT"
+                      "formulario": "IMPOCIT",
+                      "dll": "SALUD\\IMPOCIT"
                     }
                   ]
                 },
