@@ -1,817 +1,787 @@
 /* NOMBRE RM --> SER134 // NOMBRE ELECTR --> SAL714 */
+var SAL9714 = [];
+var $FECHAACT = new Date(),
+    $ANOACT = parseInt($FECHAACT.getFullYear()),
+    $MESACT = parseInt($FECHAACT.getMonth() + 1),
+    $DIAACT = parseInt($FECHAACT.getDate()),
+    $DIAMAX_APER, fechaAperMask;
 
-var $_NovedSer714, $_COD_PACI, $_COD_MAESTROS;
-var $fechareg, fechaActual714, $cedula, $_DATOSW, $_fechacrea, $fchmodf, $FECHAPERT714, $fecrea, $fechaper;
-var arrayDatos714, arrayPrograma;
+/////////////////// MASCARAS //////////////////////
+// var phoneMask = IMask($('#TELF_PACIW'), {
+//     mask: '+{7}(000)000-00-00',
+//     lazy: false, // make placeholder always visible
+//     placeholderChar: '#' // defaults to '_'
+// });
+// d.getMonth() + false
+function _MaskDate_9714() {
+    fechaAperMask = IMask($("#FECHAPER_9714")[0], {
+        mask: Date,
+        pattern: 'YYYY/MM/DD',
+        lazy: true,
+        blocks: {
+            YYYY: {
+                mask: IMask.MaskedRange,
+                placeholderChar: 'y',
+                from: 2000,
+                to: 2030,
+                maxLength: 4
+            },
+            MM: {
+                mask: IMask.MaskedRange,
+                placeholderChar: 'M',
+                from: 01,
+                to: 12,
+                maxLength: 2,
+            },
+            DD: {
+                mask: IMask.MaskedRange,
+                placeholderChar: 'd',
+                from: 01,
+                to: 31,
+                maxLength: 2,
+            },
+        },
+        format: function (date) {
+            return moment(date).format("YYYY/MM/DD");
+        },
+        parse: function (str) {
+            return str
+        }
+    });
+}
 
 $(document).ready(function () {
-
-    _toggleF8([
-        { input: 'cedula', app: '714', funct: _ventanaTercr }
-    ]);
-
-    $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;
     loader('hide');
-    CON850(_evaluarCON850);
+    _toggleF8([{
+        input: 'CODPACI',
+        app: '9714',
+        funct: _ventanaPacientes_9714
+    }, {
+        input: 'PROGRAMA',
+        app: '9714',
+        funct: validarPrograma9714
+    }]);
+    CON850(_evaluarCON850_SAL9714);
 });
 
 // F8 PACIENTES
-function _ventanaTercr(e) {
+function _ventanaPacientes_9714(e) {
     loader('hide');
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'Ventana Pacientes',
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_pacie',
-            callback_esc: function () {
-                validarIdentif714()
+        parametros = {
+            valoresselect: ['Descripcion', 'Identificacion'],
+            f8data: 'PACIENTES',
+            columnas: [{
+                title: 'COD'
+            }, {
+                title: 'NOMBRE'
+            }, {
+                title: 'EPS'
+            }],
+            callback: (data) => {
+                document.querySelector("#CODPACI_9714").value = cerosIzq(data.COD, 15)
+                _enterInput('#CODPACI_9714');
+
+
             },
-            callback: function (data) {
-                $('#cedula_714').val(data.cod_paci);
-                $('#nombreSer714').val(data.descrip_paci);
-                _enterInput('#cedula_714');
+            cancel: () => {
+                document.querySelector("#CODPACI_9714").focus()
             }
-        });
+        };
+        F8LITE(parametros);
     }
 }
 
-function _evaluarCON850(novedad) {
+function _evaluarCON850_SAL9714(novedad) {
     _inputControl('reset');
     _inputControl('disabled');
-    $_NovedSer714 = novedad.id;
+    SAL9714['NOVEDADW'] = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
-            _validarFechAper();
+            validarCodPaciente9714();
             break;
         case 8:
         case 9:
-            validarIdentif714();
+            validarCodPaciente9714();
             break;
         default:
             _toggleNav();
             break;
     }
-    $('#novSer714').val(novedad.id + ' - ' + novedad.descripcion)
+    $('#NOVSER_9714').val(novedad.id + ' - ' + novedad.descripcion)
 }
 
 
-function _validarFechAper() {
-    var aa = new Date();
-    var mm = aa.getMonth() + 1;
-    var dd = aa.getDate();
-
-   
-    $_fechacr = aa.getFullYear() + (mm < 10 ? '0' : '') + mm + (dd < 10 ? '0' : '') + dd;
-    $('#fechaCrea714').val($_fechacr);
-  
-    $_feccrea = $_fechacr;
-
-    $_ANOREG = $_feccrea.substring(2, 4)
-    $_MESREG = $_feccrea.substring(4, 6)
-    $_DIAREG = $_feccrea.substring(6, 8)
-
-    $fchcreacion = $_ANOREG + $_MESREG + $_DIAREG
-
-    $fechaper = aa.getFullYear() + '/' + (mm < 10 ? '0' : '') + mm + '/' + (dd < 10 ? '0' : '') + dd;
-    $('#fechAper714').val($fechaper);
-    
-
-    validarNroFicha714()
-}
-
-function validarNroFicha714() {
-    validarInputs(
-        {
-            form: "#nroficha",
-            orden: '1'
-        },
-        function () { CON850(_evaluarCON850); },
-        // function () { validarIdentif714(); }
-        validarIdentif714
-    )
-}
-
-function validarIdentif714() {
-    validarInputs(
-        {
-            form: "#tercero",
-            orden: '1'
-        },
-        function () { CON850(_evaluarCON850); },
+function validarCodPaciente9714() {
+    validarInputs({
+        form: "#codpaciente",
+        orden: '1'
+    },
         function () {
-            $_CEDUPAC = $('#cedula_714').val();
-            let datos_envio = datosEnvio()
-            datos_envio += '|'
-            datos_envio += $_CEDUPAC
-            SolicitarDll({ datosh: datos_envio }, on_datoSisvan714, get_url('/APP/SALUD/SAL714-01.DLL'));
+            CON850(_evaluarCON850_SAL9714);
+        },
+        evaluarPaciente9714
+    )
+}
+
+
+function evaluarPaciente9714() {
+
+    SAL9714.COD_SISVAN = $('#CODPACI_9714').val();
+    datos_envio = datosEnvio() + cerosIzq(SAL9714.COD_SISVAN, 15);
+    postData({
+        datosh: datos_envio
+    }, get_url("APP/SALUD/SAL714-01.DLL"))
+        .then((data) => {
+            let res = data.split('|');
+            console.debug('respuesta sal714-01', res)
+            switch (parseInt(SAL9714['NOVEDADW'])) {
+                case 7:
+                    // Existe el paciente
+                    if (res[0] == 00) {
+                        if (res[1] == 01) validarEdadPaciente9714(res);
+                        else CON851('00', '00', validarCodPaciente9714(), 'error', 'error');
+                        break;
+                    } else {
+                        // No existe el paciente
+                        if (res[1] == 01) CON851('01', '01', validarCodPaciente9714(), 'error', 'error');
+                        else CON851('00', '00', validarCodPaciente9714(), 'error', 'error');
+                        break;
+                    }
+
+                case 8:
+                case 9:
+                    if (res[1] == '00' && res[0] == '00') validarEdadPaciente9714(res);
+                    else CON851('01', '01', validarCodPaciente9714(), 'error', 'error');
+                    break;
+                default:
+                    _toggleNav();
+                    break;
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+}
+
+function validarEdadPaciente9714(data) {
+    var res = data;
+    var fechaInicio = moment().format('YYYY-MM-DD');
+    var nacimiento = moment(res[6].trim()).format('YYYY-MM-DD');
+    var meses = moment(fechaInicio).diff(moment(nacimiento), 'months');
+    var edad = calcular_edad(parseInt(res[6]));
+    console.log(meses, "EDAD")
+    SAL9714.EDAD_PACI = edad.vlr_edad + ' ' + edad.unid_edad;
+    SAL9714.EDADMES_PACI = meses;
+    if (SAL9714.NOVEDADW == '7') {
+        if (SAL9714.EDADMES_PACI > 216 && (res[7].trim() == 'M' || res[7].trim() == 'm')) {
+            CON851('74', '74', (CON850(_evaluarCON850_SAL9714), 'error', 'error'))
+        } else {
+            on_datoSisvan9714(res)
+        }
+    } else {
+        on_datoSisvan9714(res)
+    }
+}
+
+function on_datoSisvan9714(data) {
+    console.log("data", data)
+    var camposSisvan = ['SWINVALID_PACI', 'SWINVALID_SISVAN', 'COD_SISVAN', 'NOMBRE_SISVAN',
+        'FICHA_SISVAN', 'FECHA_SISVAN', 'FECHANACI_PACI', 'SEXO_PACI', 'DIRECCION_PACI', 'CIUDAD_PACI', 'TELEFONO_PACI', 'ZONA_PACI', 'REGIMEN_PACI', 'ETNIA_PACI',
+        'CNTSALUD_SISVAN', 'BARRIO_SISVAN', 'PROGRAM_SISVAN', 'LACT_SISVAN', 'EXCLUSIV_SISVAN', 'MESLACT_SISVAN', 'OPERCREA_SISVAN', 'FECHACREA_SISVAN', 'OPERMODIF_SISVAN',
+        'FECHAMODIF_SISVAN'
+    ];
+    for (campo in camposSisvan) {
+        if (data[campo].trim() == null || typeof data[campo].trim() == "undefined" || data[campo].trim() == void 0) SAL9714[camposSisvan[campo]] = " ";
+        else SAL9714[camposSisvan[campo]] = data[campo].trim();
+    };
+    //llenar campos sisvan
+    if (SAL9714.NOVEDADW == '8' || SAL9714.NOVEDADW == '9') {
+        document.getElementById('CODPACI_9714').value = SAL9714.COD_SISVAN;
+        document.getElementById('NOMBRE_9714').value = SAL9714.NOMBRE_SISVAN;
+        document.getElementById('NUMEROFIC_9714').value = SAL9714.FICHA_SISVAN
+        document.getElementById('FECHAPER_9714').value = SAL9714.FECHA_SISVAN
+        document.getElementById('EDADSER_9714').value = SAL9714.EDAD_PACI;
+        document.getElementById('EDADMES_9714').value = SAL9714.EDADMES_PACI
+        document.getElementById('SEXOSER_9714').value = _validarSexo9714(SAL9714.SEXO_PACI)
+        document.getElementById('DIRECCSER_9714').value = SAL9714.DIRECCION_PACI
+        document.getElementById('CIUDADSER_9714').value = SAL9714.CIUDAD_PACI
+        document.getElementById('TELEFSER_9714').value = SAL9714.TELEFONO_PACI
+        document.getElementById('ZONASER_9714').value = _validarZona9714(SAL9714.ZONA_PACI)
+        document.getElementById('REGMNSER_9714').value = _validarRegimen9714(SAL9714.REGIMEN_PACI)
+        document.getElementById('ETNIASER_9714').value = _validarEtnia9714(SAL9714.ETNIA_PACI)
+        document.getElementById('CENTROSER_9714').value = SAL9714.CNTSALUD_SISVAN
+        document.getElementById('BARRIOSER_9714').value = SAL9714.BARRIO_SISVAN
+        document.getElementById('PROGRAMA_9714').value = SAL9714.PROGRAM_SISVAN
+        document.getElementById('LACTASER_9714').value = SAL9714.LACT_SISVAN
+        document.getElementById('EXCLSER_9714').value = SAL9714.EXCLUSIV_SISVAN
+        document.getElementById('MESLACTASER_9714').value = SAL9714.MESLACT_SISVAN
+        document.getElementById('OPERDCREA_9714').value = SAL9714.OPERCREA_SISVAN
+        document.getElementById('FECHACREA_9714').value = moment(SAL9714.FECHACREA_SISVAN, "YYYYMMDD").format("YYYY/MM/DD");
+        document.getElementById('OPERMODF_9714').value = SAL9714.OPERMODIF_SISVAN
+        document.getElementById('FECHAMODF_9714').value = SAL9714.FECHAMODIF_SISVAN
+        if (SAL9714.NOVEDADW == '9') {
+            actualizarSisvan9714()
+        } else {
+            consultarTablasSisvan9714();
+        }
+    } else {
+        document.getElementById('NOMBRE_9714').value = SAL9714.NOMBRE_SISVAN;
+        document.getElementById('EDADSER_9714').value = SAL9714.EDAD_PACI;
+        document.getElementById('EDADMES_9714').value = SAL9714.EDADMES_PACI
+        document.getElementById('SEXOSER_9714').value = _validarSexo9714(SAL9714.SEXO_PACI)
+        document.getElementById('DIRECCSER_9714').value = SAL9714.DIRECCION_PACI
+        document.getElementById('CIUDADSER_9714').value = SAL9714.CIUDAD_PACI
+        document.getElementById('TELEFSER_9714').value = SAL9714.TELEFONO_PACI
+        document.getElementById('ZONASER_9714').value = _validarZona9714(SAL9714.ZONA_PACI)
+        document.getElementById('REGMNSER_9714').value = _validarRegimen9714(SAL9714.REGIMEN_PACI)
+        document.getElementById('ETNIASER_9714').value = _validarEtnia9714(SAL9714.ETNIA_PACI)
+        document.getElementById('OPERDCREA_9714').value = localStorage['Usuario'] + ' ' + localStorage['Nombre'];
+        document.getElementById('FECHACREA_9714').value = moment().format('YYYY/MM/DD');
+
+        _validarFechAper9714();
+    }
+
+}
+
+
+function _validarFechAper9714() {
+    _MaskDate_9714();
+
+    validarInputs({
+        form: "#fechaapertura",
+        orden: '1'
+    },
+        function () {
+            validarCodPaciente9714()
+        },
+        function () {
+            if ($('#FECHAPER_9714').val().length == 0) {
+                document.getElementById('FECHAPER_9714').value = moment().format('YYYY/MM/DD');
+            }
+
+            evaluarFechAper9714();
         }
     )
 }
 
-function on_datoSisvan714(data) {
-    console.debug(data);
-    var date = data.split('|');
-
-    $_CODSIS = date[3].trim();
-    $_NOMSIS = date[4].trim();
-    $_FICHASIS = date[5].trim();
-    $_FECHASIS = date[6].trim();
-    $_NACIPACI = date[7].trim();
-    $_SEXOPACI = date[8].trim();
-    $_DIRECPACI = date[9].trim();
-    $_CIUDPACI = date[10].trim();
-    $_TELFPACI = date[11].trim();
-    $_ZONAPACI = date[12].trim();
-    $_REGMPACI = date[13].trim();
-    $_ETNPACI = date[14].trim();
-    $_SALUDSIS = date[15].trim();
-    $_BRRSIS = date[16].trim();
-    $_PROGSIS = date[17].trim();
-    $_LACTSIS = date[18].trim();
-    $_EXCLSIS = date[19].trim();
-    $_MESESSIS = date[20].trim();
-    $_OPERCSIS = date[21].trim();
-    $_FECHCSIS = date[22].trim();
-    $_OPERMSIS = date[23].trim();
-    $_FECHMSIS = date[24].trim();
-
-    if (date[0].trim() == '00') {
-        if ($_NovedSer714 == '7') {
-            CON851('00', '00', null, 'error', 'Error');
-            validarIdentif714();
-        }
-        else {
-            _datosPaci714()
-        }
-    }
-    else if (date[0].trim() == '01') {
-        if ($_NovedSer714 == '7') {
-            edadPacinte714();
-        }
-        else {
-            CON851('01', '01', null, 'error', 'Error');
-            validarIdentif714();
-        }
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function _datosPaci714() {
-    $("#numeroFic714").val($_FICHASIS)
-
-    $fechareg = $_FECHASIS;
-    $_ANOREG = $fechareg.substring(0, 4)
-    $_MESREG = $fechareg.substring(4, 6)
-    $_DIAREG = $fechareg.substring(6, 8)
-
-    var fechfn = $_ANOREG + '/' + $_MESREG + '/' + $_DIAREG
-
-    $FECHAPERT714 = $_ANOREG + $_MESREG + $_DIAREG
-
-    $("#fechAper714").val($fechaper)
-    $("#cedula_714").val($_CODSIS);
-    $('#nombreSer714').val($_NOMSIS);
-    $('#sexoSer714').val($_SEXOPACI);
-    $('#direccSer714').val($_DIRECPACI);
-    $('#ciudadSer714').val($_CIUDPACI);
-    $('#telefSer714').val($_TELFPACI);
-    $('#zonaSer714').val($_ZONAPACI);
-    $('#regmnSer714').val($_REGMPACI);
-    $('#etniaSer714').val($_ETNPACI);
-    $('#barrioSer714').val($_BRRSIS);
-    $('#centroSer714').val($_SALUDSIS);
-
-    // VALIDA EDAD EN AÑOS Y MESES
-    var edadpaci = $_NACIPACI;
-    $_ANOPACI = edadpaci.substring(0, 4);
-    $_MESPACI = edadpaci.substring(4, 6);
-    $_DIAPACI = edadpaci.substring(6, 8);
-    var edadpaciente = moment($_ANOPACI + $_MESPACI + $_DIAPACI, "YYYYMMDD").fromNow();
-    console.log(edadpaciente); 
-    $_EDADPACIE = edadpaciente.substring(5, 7);
-    if ($_EDADPACIE == 2019 - $_ANOPACI && $_EDADPACIE > 28) {
-        $('#edadSer714').val($_EDADPACIE + ' Años');
-        CON851('74', '74', null, 'error', 'error');
-        CON850(_evaluarCON850);
+function evaluarFechAper9714() {
+    let $fecha = fechaAperMask._value;
+    $fecha = $fecha.split('/')[0] + $fecha.split('/')[1] + $fecha.split('/')[2];
+    if ($fecha.length < 8) {
+        CON851('03', '03', _validarFechAper9714(), 'error', 'error')
     } else {
-        if ($_EDADPACIE == 2019 - $_ANOPACI) {
-            $('#edadSer714').val($_EDADPACIE + ' Años');
-            sgtePaso()
-        } else {
-            $('#edadSer714').val($_EDADPACIE + ' Meses');
-            sgtePaso()
-        }
-    }
-    $('#progrSer714').val($_PROGSIS);
-    $('#LactaSer714').val($_LACTSIS);
-    $('#exclSer714').val($_EXCLSIS);
-    $('#mesLactaSer714').val($_MESESSIS);
-    $('#operdCrea714').val($_OPERCSIS);
-    $('#fechaCrea714').val($_FECHCSIS);
-    $('#operModf714').val($_OPERMSIS);
-    $('#fechaModf714').val($_FECHMSIS);
-}
-
-
-function sgtePaso() {
-    switch (parseInt($_NovedSer714)) {
-        case 8:
-            _validarZona714()
-            break;
-        case 9:
-            CON851P('54', validarIdentif714, eliminarReg_714)
-            break;
-    }
-
-}
-
-function eliminarReg_714() {
-
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSer714
-    datos_envio += '|'
-    datos_envio += $_CEDUPAC
-
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _elimRegis714, get_url('/APP/SALUD/SAL714-02.DLL'));
-}
-
-function _elimRegis714(data) {
-    _inputControl('reset');
-    _toggleNav();
-    var temp = data.split('|')
-    console.log(temp)
-    if (temp[0].trim() == '00') {
-        var mensaje
-        switch (parseInt($_NovedSer714)) {
-            case 9:
-                mensaje = "Eliminado correctamente"
+        let $FECHA_CREAW = $fecha;
+        var $ANOCREACW = $FECHA_CREAW.substring(0, 4);
+        var $MESCREACW = cerosIzq($FECHA_CREAW.substring(4, 6), 2);
+        var $DIACREACW = cerosIzq($FECHA_CREAW.substring(6, 8), 2);
+        var $DIAMAX_APER;
+        switch (parseInt($MESCREACW)) {
+            case 01:
+            case 03:
+            case 05:
+            case 07:
+            case 08:
+            case 10:
+            case 12:
+                $DIAMAX_APER = 31
+                break;
+            case 04:
+            case 06:
+            case 09:
+            case 11:
+                $DIAMAX_APER = 30
+                break;
+            case 02:
+                (() => ['2012', '2016', '2020', '2024', '2028', '2032', '2036', '2040', '2044', '2048'].find($ANOCREACW)) == true ? $DIAMAX_APER = 29 : $DIAMAX_APER = 28;
                 break;
         }
-        jAlert({ titulo: 'Notificacion', mensaje: mensaje })
-    } else {
-        CON852(temp[0], temp[1], temp[2]);
-    }
-}
-
-
-// NOVEDAD 7 //
-
-function edadPacinte714() {
-    $('#nombreSer714').val($_NOMSIS);
-    $('#sexoSer714').val($_SEXOPACI);
-    $('#direccSer714').val($_DIRECPACI);
-    $('#ciudadSer714').val($_CIUDPACI);
-    $('#telefSer714').val($_TELFPACI);
-    $('#zonaSer714').val($_ZONAPACI);
-    $('#regmnSer714').val($_REGMPACI);
-    $('#etniaSer714').val($_ETNPACI);
-
-    // VALIDA EDAD EN AÑOS Y MESES
-    var edadpaci = $_NACIPACI;
-    $_ANOPACI = edadpaci.substring(0, 4);
-    $_MESPACI = edadpaci.substring(4, 6);
-    $_DIAPACI = edadpaci.substring(6, 8);
-    var edadpaciente = moment($_ANOPACI + $_MESPACI + $_DIAPACI, "YYYYMMDD").fromNow();
-    $_EDADPACIE = edadpaciente.substring(5, 7);
-    $_EDADPACIE == 2019 - $_ANOPACI
-    if ($_EDADPACIE > 28) {
-        $('#edadSer714').val($_EDADPACIE + ' Años');
-        CON851('74', '74', null, 'error', 'error');
-        CON850(_evaluarCON850)
-    } else {
-        console.debug('edad años y meses')
-        if ($_EDADPACIE > 10) {
-            console.debug('años')
-            $('#edadSer714').val($_EDADPACIE + ' Años');
-            fechaCrea714()
+        if ($DIACREACW > $DIAMAX_APER) {
+            CON851('37', '37', _validarFechAper9714(), 'error', 'error')
         } else {
-            console.debug('meses')
-            $('#edadSer714').val($_EDADPACIE + ' Meses');
-            fechaCrea714()
+            SAL9714.FECHA_SISVAN = $fecha;
+            validarFicha9714()
         }
     }
-    
+
 }
 
-function fechaCrea714() {
-    var d = new Date();
-    var mes = d.getMonth() + 1;
-    var dia = d.getDate();
-
-    var fchactual = d.getFullYear() + (mes < 10 ? '0' : '') + mes + (dia < 10 ? '0' : '') + dia;
-
- 
-    $('#fechaCrea714').val(fchactual.trim());
-
-    operdCrea714()
+function validarFicha9714() {
+    validarInputs({
+        form: "#numficha",
+        orden: '1'
+    },
+        function () {
+            _validarFechAper9714();
+        },
+        validarBarrio9714
+    )
 }
 
-
-function operdCrea714() {
-    $('#operdCrea714').val($_ADMINW.trim());
-    validaOperd714()
-}
-
-
-function validaOperd714() {
-    $('#operModf714').val($_ADMINW.trim());
-    fechaModf714()
-}
-
-function fechaModf714() {
-    var d = new Date();
-    var mes = d.getMonth() + 1;
-    var dia = d.getDate();
-    var fechamodf = d.getFullYear() + '/' + (mes < 10 ? '0' : '') + mes + '/' + (dia < 10 ? '0' : '') + dia;
-
-    $_fecmodf = d.getFullYear() + (mes < 10 ? '0' : '') + mes + (dia < 10 ? '0' : '') + dia;
-    $('#fechaModf714').val($_fecmodf.trim());
-
-    $modfec = $_fecmodf;
-
-    $_ANOREG = $modfec.substring(2, 4)
-    $_MESREG = $modfec.substring(4, 6)
-    $_DIAREG = $modfec.substring(6, 8)
-
-    $fchmodf = $_ANOREG + $_MESREG + $_DIAREG
-
-    _validarZona714()
-}
-
-function _validarZona714() {
-    $_ZONA = $('#zonaSer714').val();
-    var evaluarzona = $_ZONA.trim();
-    switch (evaluarzona) {
+function _validarZona9714(zona) {
+    var msj;
+    switch (zona) {
         case "U":
-            $('#zonaSer714').val("U - URBANA");
-            _validarSexo714();
+            msj = "U - URBANA"
             break;
         case "R":
-            $('#zonaSer714').val("R - RURAL");
-            _validarSexo714();
+            msj = "R - RURAL"
             break;
         default:
-            $('#zonaSer714').val("NO REGISTRA");
-            _validarSexo714();
+            msj = "NO REGISTRA"
             break;
     }
+    return msj;
 }
 
-function _validarSexo714() {
-    $_SEXO = $_SEXOPACI;
-    var evaluarzona = $_SEXO.trim();
-    switch (evaluarzona) {
+function _validarSexo9714(sexo) {
+    var msj;
+    switch (sexo) {
         case "F":
-            $('#sexoSer714').val("F - FEMENINO");
-            _validaRegimen714();
+            msj = "F - FEMENINO"
             break;
         case "M":
-            $('#sexoSer714').val("M - MASCULINO");
-            _validaRegimen714();
+            msj = "M - MASCULINO";
             break;
         default:
-            $('#sexoSer714').val("NO REGISTRA");
-            _validaRegimen714();
+            msj = "NO REGISTRA"
             break;
     }
+    return msj;
 }
 
-function _validaRegimen714() {
-    $_TIPOPACI = $_REGMPACI
-    var evaluar = $_TIPOPACI.trim();
-    switch (evaluar) {
+function _validarRegimen9714(regimen) {
+    var msj;
+    switch (regimen) {
         case "C":
-            $('#regmnSer714').val("C - CONTRIBUTIVO");
+            msj = "C - CONTRIBUTIVO"
             break;
         case "S":
-            $('#regmnSer714').val("S - SUBSIDIADO");
-            _validaEtnia714();
+            msj = "S - SUBSIDIADO"
             break;
         case "V":
-            $('#regmnSer714').val("V - VINCULADO");
-            _validaEtnia714();
+            msj = "V - VINCULADO"
             break;
         case "P":
-            $('#regmnSer714').val("P - PARTICULAR");
-            _validaEtnia714();
+            msj = "P - PARTICULAR"
             break;
         case "O":
-            $('#regmnSer714').val("O - OTRO TIPO");
-            _validaEtnia714();
+            msj = "O - OTRO TIPO"
             break;
         case "D":
-            $('#regmnSer714').val("D - DESPLAZ CONT");
-            _validaEtnia714();
+            msj = "D - DESPLAZ CONT"
             break;
         case "E":
-            $('#regmnSer714').val("E - DESPLAZ SUBS");
-            _validaEtnia714();
+            msj = "E - DESPLAZ SUBS"
             break;
         case "F":
-            $('#regmnSer714').val("F - DESPLAZ VINC");
-            _validaEtnia714();
+            msj = "F - DESPLAZ VINC"
             break;
         default:
-            $('#regmnSer714').val("NO REGISTRA");
-            _validaEtnia714();
+            msj = "NO REGISTRA"
             break;
     }
+    return msj;
 }
 
-function _validaEtnia714() {
-    $_ETNIA = $_ETNPACI
-    var evalua = $_ETNIA.trim();
-    switch (evalua) {
+function _validarEtnia9714(etnia) {
+    var msj;
+    switch (etnia) {
         case "1":
-            $('#etniaSer714').val("1 - INDIGENA");
-            validarBarrio714();
+            msj = "1 - INDIGENA"
             break;
         case "2":
-            $('#etniaSer714').val("2 - RAIZAL");
-            validarBarrio714();
+            msj = "2 - RAIZAL"
             break;
         case "3":
-            $('#etniaSer714').val("3 - GITANO");
-            validarBarrio714();
+            msj = "3 - GITANO"
             break;
         case "4":
-            $('#etniaSer714').val("4 - AFROCOL");
-            validarBarrio714();
+            msj = "4 - AFROCOL"
             break;
         case "5":
-            $('#etniaSer714').val("5 - ROM");
-            validarBarrio714();
+            msj = "5 - ROM"
             break;
         case "6":
-            $('#etniaSer714').val("6 - MESTIZO");
-            validarBarrio714();
+            msj = "6 - MESTIZO"
             break;
         case "9":
-            $('#etniaSer714').val("9 - NO APLICA");
-            validarBarrio714();
+            msj = "9 - NO APLICA"
             break;
         default:
-            $('#etniaSer714').val("NO REGISTRA");
-            validarBarrio714();
+            msj = "NO REGISTRA"
             break;
     }
+    return msj
 }
 
-function validarBarrio714() {
-    console.debug('validar barrio')
-    validarInputs(
-        {
-            form: "#barrio",
-            orden: '1'
-        },
-        function () { validarIdentif714(); },
-        _validarCntrSalud714
-    )
-}
-
-function _validarCntrSalud714() {
-    console.debug('centro de salud');
-    validarInputs(
-        {
-            form: "#centrosalud",
-            orden: '1'
-        },
-        function () { validarBarrio714(); },
-        _datoLact714
-    )
-}
-
-
-function _datoLact714() {
-
-    var datosLacta = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-
-    POPUP({
-        array: datosLacta,
-        titulo: 'Lactancia Actual?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: _validarCntrSalud714
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#LactaSer714').val(data.DESCRIP.trim())
-                $_LACTA = data.DESCRIP.trim()
-                setTimeout(validarExcluLactan714, 300);
-                break;
-        }
-    })
-}
-
-
-function validarExcluLactan714() {
-
-    var datosExclus = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-
-    POPUP({
-        array: datosExclus,
-        titulo: 'Lactancia Exclusiva?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: _datoLact714
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-                $('#exclSer714').val(data.DESCRIP.trim())
-                $_EXCL = data.DESCRIP.trim()
-                setTimeout(validarMeses714, 300);
-                break;
-            case '2':
-                $('#exclSer714').val(data.DESCRIP.trim())
-                $_EXCL = data.DESCRIP.trim()
-                setTimeout(validarProgra714, 300);
-                break;
-        }
-    })
-}
-
-function validarMeses714() {
-    validarInputs(
-        {
-            form: "#meses",
-            orden: '1'
-        },
-        function () { validarExcluLactan714(); },
+function validarBarrio9714() {
+    validarInputs({
+        form: "#barrio",
+        orden: '1'
+    },
         function () {
-            validarMesLac714();
+            validarFicha9714();
+        },
+        _validarCntrSalud9714
+    )
+}
+
+function _validarCntrSalud9714() {
+    SAL9714.BARRIO_SISVAN = $('#BARRIOSER_9714').val();
+    validarInputs({
+        form: "#centrosalud",
+        orden: '1'
+    },
+        validarBarrio9714,
+        () => {
+            SAL9714.CNTSALUD_SISVAN = $('#CENTROSER_9714').val();
+            validarLactan9714()
+        }
+
+    )
+}
+
+function validarLactan9714() {
+    validarInputs({
+        form: "#lactsisvan",
+        orden: '1'
+    },
+        _validarCntrSalud9714,
+        function () {
+            SAL9714.LACT_SISVAN = (document.getElementById('LACTASER_9714').value).toUpperCase();
+            if (SAL9714.LACT_SISVAN == 'S' || SAL9714.LACT_SISVAN == 'N') {
+                validarExclusiva9714();
+            } else {
+                CON851('03', '03', null, 'error', 'error');
+                validarLactan9714();
+            }
         }
     )
 }
 
-function validarMesLac714() {
-    $_meses = $('#mesLactaSer714').val();
-
-    if ($_meses > 9) {
-        CON851('03', '03', null, 'error', 'error');
-        validarMeses714()
-    } else {
-        validarProgra714();
-    }
+function validarExclusiva9714() {
+    validarInputs({
+        form: "#exclusivasisvan",
+        orden: '1'
+    },
+        validarLactan9714,
+        () => {
+            SAL9714.EXCLUSIV_SISVAN = (document.getElementById('EXCLSER_9714').value).toUpperCase();
+            if (SAL9714.EXCLUSIV_SISVAN.length == 0) {
+                CON851('03', '03', validarExclusiva9714(), 'error', 'error');
+            } else if (SAL9714.EXCLUSIV_SISVAN == 'S') {
+                validarMesLac9714()
+            } else {
+                validarPrograma9714();
+            }
+        }
+    )
 }
-function validarProgra714() {
 
-    var datoProgr = [
-        { "COD": "1", "DESCRIP": "DESAYUNO INFANTIL" },
-        { "COD": "2", "DESCRIP": "RESTAURANTE ESCOLAR" },
-        { "COD": "3", "DESCRIP": "RECUPERACION NUTRICIONAL" },
-        { "COD": "4", "DESCRIP": "REFRIGERIOS" },
-        { "COD": "5", "DESCRIP": "FAMILIAS EN ACCION" },
-        { "COD": "6", "DESCRIP": "HOGAR INFANTIL" },
-        { "COD": "7", "DESCRIP": "RED UNIDOS" },
-        { "COD": "8", "DESCRIP": "NO SABE" },
-        { "COD": "9", "DESCRIP": "NINGUNO" }
+function validarMesLac9714() {
+    validarInputs({
+        form: "#meslactancia",
+        orden: '1'
+    },
+        validarExclusiva9714,
+        () => {
+            SAL9714.MESLACT_SISVAN = parseInt(document.getElementById('MESLACTASER_9714').value);
+            SAL9714.MESLACT_SISVAN.length == 0 ? document.getElementById('MESLACTASER_9714').value = 0 : false;
+            validarPrograma9714()
+        }
+    )
+}
+
+function validarPrograma9714() {
+    validarInputs({
+        form: "#programasisvan",
+        orden: '1'
+    },
+        validarMesLac9714,
+        () => {
+            SAL9714.PROGRAM_SISVAN = (document.getElementById('PROGRAMA_9714').value).toUpperCase();
+        }
+    )
+}
+
+function validarPrograma9714() {
+
+    var datoProgr = [{
+        "COD": "1",
+        "DESCRIP": "DESAYUNO INFANTIL"
+    },
+    {
+        "COD": "2",
+        "DESCRIP": "RESTAURANTE ESCOLAR"
+    },
+    {
+        "COD": "3",
+        "DESCRIP": "RECUPERACION NUTRICIONAL"
+    },
+    {
+        "COD": "4",
+        "DESCRIP": "REFRIGERIOS"
+    },
+    {
+        "COD": "5",
+        "DESCRIP": "FAMILIAS EN ACCION"
+    },
+    {
+        "COD": "6",
+        "DESCRIP": "HOGAR INFANTIL"
+    },
+    {
+        "COD": "7",
+        "DESCRIP": "RED UNIDOS"
+    },
+    {
+        "COD": "8",
+        "DESCRIP": "NO SABE"
+    },
+    {
+        "COD": "9",
+        "DESCRIP": "NINGUNO"
+    }
     ]
     POPUP({
         array: datoProgr,
         titulo: 'Incrementar Tarifa',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: _datoLact714
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-                $_PROGRM = "DI"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '2':
-                $_PROGRM = "RE"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '3':
-                $_PROGRM = "RN"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '4':
-                $_PROGRM = "RF"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '5':
-                $_PROGRM = "FA"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '6':
-                $_PROGRM = "HI"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '7':
-                $_PROGRM = "RU"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '8':
-                $_PROGRM = "NS"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-            case '9':
-                $_PROGRM = "NI"
-                $('#progrSer714').val($_PROGRM)
-                $("#descrProgr714").val(data.DESCRIP.trim());
-                $_PROGRM = data.COD.trim()
-                datosCompletos714();
-                break;
-        }
-    })
-}
-
-
-function datosCompletos714() {
-    var cedula = cerosIzq($_CEDUPAC.trim(), 15)
-    var ficha = cerosIzq($("#numeroFic714").val(), 6)
-    var barrio = espaciosDer($("#barrioSer714").val(), 20)
-    var centsald = espaciosDer($("#centroSer714").val(), 20)
-    var lactactu = $_LACTA.substring(0, 1);
-    var lactexc = $_EXCL.substring(0, 1);
-    var meseslac = cerosIzq($("#mesLactaSer714").val(), 2)
-
-    $operCre = $_ADMINW
-    $operMdfc = $_ADMINW
-
-    let datos_envio = datosEnvio();
-    datos_envio += '|'
-    datos_envio += $_NovedSer714
-    datos_envio += '|'
-    datos_envio += cedula
-    datos_envio += '|'
-    datos_envio += ficha
-    datos_envio += '|'
-    datos_envio += $fechaper
-    datos_envio += '|'
-    datos_envio += centsald
-    datos_envio += '|'
-    datos_envio += barrio
-    datos_envio += '|'
-    datos_envio += $_PROGRM
-    datos_envio += '|'
-    datos_envio += lactactu
-    datos_envio += '|'
-    datos_envio += lactexc
-    datos_envio += '|'
-    datos_envio += meseslac
-    datos_envio += '|'
-    datos_envio += $operCre
-    datos_envio += '|'
-    datos_envio += $fchcreacion
-    datos_envio += '|'
-    datos_envio += $operMdfc
-    datos_envio += '|'
-    datos_envio += $fchmodf
-
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, validarElimi714, get_url('/APP/SALUD/SAL714-02.DLL'));
+        indices: [{
+            id: 'COD',
+            label: 'DESCRIP'
+        }],
+        seleccion: SAL9714.PROGRAM_SISVAN,
+        callback_f: validarExclusiva9714
+    }, evaluarPrograma9714)
 
 }
 
+function evaluarPrograma9714(programa) {
+    switch (programa.COD.trim()) {
+        case '1':
 
-function validarElimi714(data) {
-    console.debug(data)
-    loader('hide');
-    var rdll = data.split('|');
+            $("#PROGRAMA_9714").val('DI' + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '2':
+            $("#PROGRAMA_9714").val("RE" + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '3':
+            $("#PROGRAMA_9714").val("RN" + ' - ' + programa.DESCRIP.trim());
 
-    if (rdll[0].trim() == '00') {
-        var msj
-        switch ($_NovedSer714) {
-            case '7': msj = 'Creado correctamente'
-                break;
-            case '8': msj = 'Modificado correctamente'
-
-        }
-        jAlert({ titulo: 'Notificacion', mensaje: msj },
-            function () {
-                _toggleNav();
-                console.log('fin del programa')
-            });
-    } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
+            break;
+        case '4':
+            $("#PROGRAMA_9714").val("RF" + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '5':
+            $("#PROGRAMA_9714").val("FA" + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '6':
+            $("#PROGRAMA_9714").val("HI" + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '7':
+            $("#PROGRAMA_9714").val("RU" + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '8':
+            $("#PROGRAMA_9714").val("NS" + ' - ' + programa.DESCRIP.trim());
+            break;
+        case '9':
+            $("#PROGRAMA_9714").val("NI" + ' - ' + programa.DESCRIP.trim());
+            break;
     }
+    SAL9714.PROGRAM_SISVAN = programa.COD;
+    // Escoger Paso-W segun NOVEDADW
+    actualizarSisvan9714()
 }
 
-// function validarBdSql714(data, cedula, ficha, $_FECHAPERT714, centsald, barrio, $_PROGRM, lactactu, lactexc, meseslac, $_FCREA, $_FMODF) {
-//     loader('hide');
-//     var rdll = data.split('|');
-//     console.log(rdll[0])
-//     if (rdll[0].trim() == '00') {
-//         switch (parseInt($_NovedSer714)) {
-//             case 7:
-//                 _consultaSql({
-//                     sql: `INSERT INTO sc_pacie VALUES ('${cedula}');`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas714();
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas714();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 8:
-//                 _consultaSql({
-//                     sql: `
-//                     UPDATE sc_pacie 
-//                     WHERE cedula = '${cedula}' `,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas714()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas714();
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//             case 9:
-//                 _consultaSql({
-//                     sql: `DELETE FROM sc_pacie WHERE codigo = '${cedula}'`,
-//                     callback: function (error, results, fields) {
-//                         if (error) throw error;
-//                         else {
-//                             console.log(results)
-//                             if (results.affectedRows > 0) {
-//                                 jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-//                                     function () {
-//                                         limpiarCajas714()
-//                                     });
-//                             } else {
-//                                 jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-//                                     function () {
-//                                         limpiarCajas714()
-//                                     });
-//                             }
-//                         }
-//                     }
-//                 })
-//                 break;
-//         }
-//     } else {
-//         CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-//     }
-// }
+function consultarTablasSisvan9714() {
+    let datos_envio = datosEnvio() + SAL9714.COD_SISVAN.padStart(15, '0')
+    postData({
+        datosh: datos_envio
+    }, get_url("APP/SALUD/SAL714-03.DLL"))
+        .then((data) => {
+            $('#contenedortabla1').removeClass('hide')
+            let tablacontrol = data.TABLA;
+            let controlSisvan = [];
+            tablacontrol.forEach(function (val, index, array) {
+                    controlSisvan.push(array[index])
+            });
+            $('#TABLASISVA_9714').DataTable({
+                ajax: {
+                    dataType: "JSON",
+                    data: controlSisvan,
+                    error: function (xhr, error, code) {
+                        console.debug(xhr)
+                        console.debug(code)
+                    }
+                },
+                columns: [
+                    { title: "FECHA" },
+                    { title: "EDADMES" },
+                    { title: "MESES" },
+                    { title: "PESO" },
+                    { title: "TALLA" },
+                    { title: "IMC" },
+                    { title: "PERCEF" },
+                    { title: "FINALIDAD" },
+                ]
+            })
 
+            if (SAL9714.SEXO_PACI == 'F' || SAL9714.SEXO_PACI == 'f') {
+                if (tablacontrol.CONTROL_MATERNO !== null || typeof tablacontrol.CONTROL_MATERNO != 'undefined') {
+                    $('#contenedortabla2').removeClass('hide')
 
-// function limpiarCajas714() {
-//     loader('hide');
-//     _toggleNav();
-//     _inputControl('reset');
-//     _inputControl('disabled');
+                    $('#TABLASISVA2_9714').DataTable({
+                        ajax: {
+                            dataType: "JSON",
+                            data: tablacontrol['CONTROL_MATERNO'],
+                            error: function (xhr, error, code) {
+                                console.debug(xhr)
+                                console.debug(code)
+                            }
+                        },
+                        columns: [
+                            { title: "FECHA" },
+                            { title: "PESO" },
+                            { title: "IMC" },
+                            { title: "EST-NUT" },
+                            { title: "ALT-UTE" },
+                            { title: "TENS-MEDIA" },
+                            { title: "FECHA-FUR" },
+                            { title: "TALLA" },
+                            { title: "HEMOGLOB" },
+                            { title: "TRIMESTRE" },
+                            { title: "CALCIO" },
+                            { title: "HIERRO" },
+                            { title: "ACIDOF" }
+                        ]
+                    })
+                }
 
-// }
+            }
+        }, _validarFechAper9714())
+        .catch((error) => {
+            console.log(error)
+        });
+}
+
+function actualizarSisvan9714() {
+    var parametros, msj, aperfecha, d, respuesta;
+    switch (parseInt(SAL9714['NOVEDADW'])) {
+        case 7:
+            SAL9714.FICHA_SISVAN = document.getElementById('NUMEROFIC_9714').value;
+            aperfecha = fechaAperMask._value;
+            aperfecha = aperfecha.split('/')[0] + aperfecha.split('/')[1] + aperfecha.split('/')[2];
+            SAL9714.FECHA_SISVAN = aperfecha
+            d = new Date();
+            SAL9714.FECHACREA_SISVAN = moment().format("YYYYMMDD");
+            SAL9714.CNTSALUD_SISVA = document.getElementById('CENTROSER_9714').value;
+            SAL9714.BARRIO_SISVAN = document.getElementById('BARRIOSER_9714').value;
+            SAL9714.LACT_SISVAN = document.getElementById('LACTASER_9714').value;
+            SAL9714.EXCLUSIV_SISVAN = document.getElementById('EXCLSER_9714').value;
+            SAL9714.MESLACT_SISVAN = document.getElementById('MESLACTASER_9714').value
+            SAL9714.OPERMODIF_SISVAN = '    ';
+            SAL9714.FECHAMODIF_SISVAN = '        ';
+            d = new Date();
+            parametros = SAL9714.COD_SISVAN + '|' +
+                SAL9714.FICHA_SISVAN + '|' +
+                SAL9714.FECHA_SISVAN + '|' +
+                SAL9714.CNTSALUD_SISVAN + '|' +
+                SAL9714.BARRIO_SISVAN + '|' +
+                SAL9714.PROGRAM_SISVAN + '|' +
+                SAL9714.LACT_SISVAN + '|' +
+                SAL9714.EXCLUSIV_SISVAN + '|' +
+                SAL9714.MESLACT_SISVAN + '|' +
+                SAL9714.OPERCREA_SISVAN + '|' +
+                SAL9714.FECHACREA_SISVAN + '|'
+            msj = '¿DESEA GRABAR LOS DATOS?'
+            respuesta = "Datos grabados corectamente"
+
+            break;
+        case 8:
+            SAL9714.FICHA_SISVAN = document.getElementById('NUMEROFIC_9714').value;
+            aperfecha = fechaAperMask._value;
+            aperfecha = aperfecha.split('/')[0] + aperfecha.split('/')[1] + aperfecha.split('/')[2];
+            SAL9714.FECHA_SISVAN = aperfecha
+            SAL9714.CNTSALUD_SISVA = document.getElementById('CENTROSER_9714').value;
+            SAL9714.BARRIO_SISVAN = document.getElementById('BARRIOSER_9714').value;
+            SAL9714.LACT_SISVAN = document.getElementById('LACTASER_9714').value;
+            SAL9714.EXCLUSIV_SISVAN = document.getElementById('EXCLSER_9714').value;
+            SAL9714.OPERMODIF_SISVAN = localStorage['Usuario'];
+            d = new Date();
+            SAL9714.FECHAMODIF_SISVAN = d.getFullYear() + (d.getMonth() + 1) + cerosIzq(d.getDate(), 2);
+            parametros = SAL9714.COD_SISVAN + '|' +
+                SAL9714.FICHA_SISVAN + '|' +
+                SAL9714.FECHA_SISVAN + '|' +
+                SAL9714.CNTSALUD_SISVAN + '|' +
+                SAL9714.BARRIO_SISVAN + '|' +
+                SAL9714.PROGRAM_SISVAN + '|' +
+                SAL9714.LACT_SISVAN + '|' +
+                SAL9714.EXCLUSIV_SISVAN + '|' +
+                SAL9714.MESLACT_SISVAN + '|' +
+                SAL9714.OPERCREA_SISVAN + '|' +
+                SAL9714.FECHACREA_SISVAN + '|' +
+                SAL9714.OPERMODIF_SISVAN + '|' +
+                SAL9714.FECHAMODIF_SISVAN + '|';
+            msj = '¿DESEA MODIFICAR EL REGISTRO?'
+            respuesta = "Datos modificados corectamente"
+            break;
+        case 9:
+            parametros = SAL9714.COD_SISVAN + '|'
+            msj = '¿DESEA ELIMINAR EL REGISTRO?'
+            respuesta = "El registro se eliminó con exito"
+            break;
+    }
+    bootbox.confirm({
+        size: "small",
+        onEscape: false,
+        message: msj,
+        buttons: {
+            confirm: {
+                label: 'Si',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if (result == true) {
+                on_actualizarSisvan9714(parametros, SAL9714['NOVEDADW'], respuesta);
+
+            } else {
+                validarPrograma9714();
+            }
+        }
+    });
+}
+
+function on_actualizarSisvan9714(parametros, novedad, respuesta) {
+    let datos_envio = datosEnvio() + novedad + "|" + parametros
+    console.debug('Datos envio', datos_envio)
+    postData({
+        datosh: datos_envio
+    }, get_url("APP/SALUD/SAL714-02.DLL"))
+        .then((data) => {
+            if (data[0] == "00") {
+                setTimeout(() => {
+                    toastr.success(respuesta, 'MAESTRO ACT. FICHA SISVAN');
+                }, 100);
+                limpiarCajas_9714();
+            } else {
+                CON851('ERROR', 'ERROR AL ACTUALIZAR', limpiarCajas_9714(), 'error', 'error');
+            };
+        })
+
+        .catch((error) => {
+            console.log(error)
+        })
+    
+}
+
+function limpiarCajas_9714() {
+    // _toggleNav();
+    _inputControl('reset');
+    CON850(_evaluarCON850_SAL9714);
+}

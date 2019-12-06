@@ -1,8 +1,14 @@
+<style>
+    .hide {
+        display: none
+    }
+</style>
 <div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
     <div class="portlet light box-center box-title" style="margin: 0 auto;">
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject bold">Ficha de control de sistema de vigilancia alimentario y nutricional
+                <span class="caption-subject bold">9,7,1,4-Ficha de control de sistema de vigilancia alimentario y
+                    nutricional
                     (SISVAN)</span>
             </div>
         </div>
@@ -18,7 +24,8 @@
                             <div class="inline-inputs">
                                 <label class="col-md-12 col-sm-12 col-xs-12">Novedad:</label>
                                 <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="novSer714" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="NOVSER_9714" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -26,39 +33,17 @@
                 </div>
                 <div class="col-md-9 col-sm-9 col-xs-12">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="inline-inputs" id="fecha">
-                                <label class="col-md-7 col-sm-7 col-xs-7 text-label">
-                                    Fecha Apertura:
-                                </label>
-                                <div class="input-group col-md-7 col-sm-7 col-xs-7 float-left">
-                                    <input id="fechAper714" type="text" maxlength="10" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="inline-inputs" id="nroficha">
-                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">
-                                    Numero Ficha:
-                                </label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6 float-left">
-                                    <input id="numeroFic714" type="text" maxlength="6" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9 col-sm-9 col-xs-9">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-5 col-sm-5 col-xs-5">
-                            <div class="inline-inputs" id="tercero">
+                            <div class="inline-inputs">
                                 <label class="col-md-6 col-sm-6 col-xs-6">
                                     Identificacion:
                                 </label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                    <input id="cedula_714" type="text" maxlength="15" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8" id="codpaciente">
+                                    <input id="CODPACI_9714" type="text" maxlength="15" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
-                                <button type="button" id="cedulaBtn_714" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                <button type="button" id="CODPACIBtn_9714"
+                                    class="btn btn-default col-md-1 col-sm-1 col-xs-1">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
@@ -68,60 +53,97 @@
                                 <label class="col-md-7 col-sm-7 col-xs-7">
                                     Nombre:
                                 </label>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="nombreSer714" type="text" maxlength="54" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        disabled="disabled">
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" >
+                                    <input id="NOMBRE_9714" type="text" maxlength="54"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="col-md-7 col-sm-7 col-xs-7">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="inline-inputs" id="edad">
-                                <label class="col-md-6 col-sm-6 col-xs-6">
-                                    Edad:
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7 text-label">
+                                    Fecha Apertura:
                                 </label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="edadSer714" type="text" maxlength="3" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        disabled="disabled">
+                                <div class="input-group col-md-7 col-sm-7 col-xs-7 float-left" id="fechaapertura">
+                                    <input id="FECHAPER_9714" type="text" data-orden="1" maxlength="12"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="inline-inputs">
-                                <label class="col-md-7 col-sm-7 col-xs-7">
-                                    Sexo:
+                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">
+                                    Numero Ficha:
                                 </label>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="sexoSer714" type="text" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        disabled="disabled">
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6 float-left" id="numficha">
+                                    <input id="NUMEROFIC_9714" type="text" maxlength="6" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-5 col-sm-5 col-xs-5">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs" id="barrio">
-                                <label class="col-md-6 col-sm-6 col-xs-6">
-                                    Barrio:
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="inline-inputs" id="edad">
+                                <label class="col-md-3 col-sm-3 col-xs-3">
+                                    Edad:
                                 </label>
-                                <div class="input-group col-md-7 col-sm-7 col-xs-7">
-                                    <input id="barrioSer714" type="text" maxlength="20" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        data-orden="1">
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3" id="edadpaciente">
+                                    <input id="EDADSER_9714" type="text" maxlength="3"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <label class="col-md-4 col-sm-4 col-xs-4">
+                                    Meses:
+                                </label>
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3" id="edadmeses">
+                                    <input id="EDADMES_9714" type="text" maxlength="3"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="inline-inputs">
+                                <label class="col-md-7 col-sm-7 col-xs-7">
+                                    Sexo:
+                                </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" >
+                                    <input id="SEXOSER_9714" type="text" maxlength="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">
+                                    Barrio:
+                                </label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8" id="barrio">
+                                    <input id="BARRIOSER_9714" type="text" maxlength="20" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="inline-inputs">
                                 <label class="col-md-6 col-sm-6 col-xs-6">
                                     Direccion:
                                 </label>
                                 <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                    <input id="direccSer714" type="text" maxlength="30" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="DIRECCSER_9714" type="text" maxlength="30"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -131,7 +153,8 @@
                                     Ciudad:
                                 </label>
                                 <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                    <input id="ciudadSer714" type="text" maxlength="20" disabled="disabled" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="CIUDADSER_9714" type="text" maxlength="20"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -141,7 +164,8 @@
                                     Telefono:
                                 </label>
                                 <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="telefSer714" disabled="disabled" type="text" maxlength="10" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="TELEFSER_9714" type="text" maxlength="10"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -155,7 +179,8 @@
                                     Centro de Salud:
                                 </label>
                                 <div class="input-group col-md-8 col-sm-8 col-xs-8" id="centrosalud">
-                                    <input id="centroSer714" type="text" maxlength="20" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="CENTROSER_9714" type="text" maxlength="20" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -168,8 +193,9 @@
                                 <label class="col-md-6 col-sm-6 col-xs-6">
                                     Zona:
                                 </label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="zonaSer714" disabled="disabled" maxlength="1" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6" >
+                                    <input id="ZONASER_9714" maxlength="2" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -178,8 +204,9 @@
                                 <label class="col-md-6 col-sm-6 col-xs-6">
                                     Regimen:
                                 </label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="regmnSer714" disabled="disabled" type="text" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6" >
+                                    <input id="REGMNSER_9714" type="text" maxlength="2"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -188,8 +215,9 @@
                                 <label class="col-md-6 col-sm-6 col-xs-6">
                                     Etnia:
                                 </label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="etniaSer714" disabled="disabled" type="text" maxlength="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6" >
+                                    <input id="ETNIASER_9714" type="text" maxlength="2"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -202,8 +230,9 @@
                                 <label class="col-md-12 col-sm-12 col-xs-12">
                                     Lactancia Actual?
                                 </label>
-                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
-                                    <input id="LactaSer714" type="text"  maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3" id="lactsisvan">
+                                    <input id="LACTASER_9714" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -216,18 +245,20 @@
                                 <label class="col-md-8 col-sm-8 col-xs-8">
                                     Exclusiva?
                                 </label>
-                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
-                                    <input id="exclSer714" type="text" maxlength="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-3 col-sm-3 col-xs-3" id="exclusivasisvan">
+                                    <input id="EXCLSER_9714" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-8">
-                            <div class="inline-inputs" id="meses">
+                            <div class="inline-inputs" >
                                 <label class="col-md-12 col-sm-12 col-xs-12">
-                                    Meses Lactancia Exclusiva:
+                                    Lactancia Exclusiva(meses):
                                 </label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                    <input id="mesLactaSer714" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8" id="meslactancia">
+                                    <input id="MESLACTASER_9714" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -235,80 +266,36 @@
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="inline-inputs" id="program">
-                                <label class="col-md-7 col-sm-7 col-xs-7">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="inline-inputs">
+                                <label class="col-md-5 col-sm-12 col-xs-12">
                                     Programa:
                                 </label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5">
-                                    <input id="progrSer714" type="text" data-orden="1" maxlength="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <div class="input-group col-md-7 col-sm-12 col-xs-12" id="programasisvan">
+                                    <input id="PROGRAMA_9714" type="text" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
-                                <button type="button" id="f8progr714" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="descrProgr714" type="text" maxlength="25" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- TABLA 1 -->
-                <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-12 col-sm-12 col-xs-12 hide" id="contenedortabla1">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <table id="tablasisva714" class="table table-light table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Meses</th>
-                                    <th>Peso</th>
-                                    <th>Talla</th>
-                                    <th>IMC</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
+                        <table id="TABLASISVA_9714" class="table table-light table-striped">
+
                         </table>
                     </div>
                 </div>
-                <!--TABLA 2-->
-                <div class="col-md-6 col-sm-6 col-xs-6">
+                <!-- TABLA 2 -->
+                <div class="col-md-12 col-sm-12 col-xs-12 hide" id="contenedortabla2">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <table id="tablasis714" class="table table-light table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Meses</th>
-                                    <th>Peso</th>
-                                    <th>Talla</th>
-                                    <th>IMC</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
+                        <table id="TABLASISVA2_9714" class="table table-light table-striped">
+
                         </table>
                     </div>
                 </div>
+
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-6 col-sm-6 col-xs-6">
@@ -317,10 +304,12 @@
                                     Creacion:
                                 </label>
                                 <div class="input-group col-md-4 col-sm-4 col-xs-4 float-left">
-                                    <input id="operdCrea714" type="text" maxlength="4" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="OPERDCREA_9714" type="text" maxlength="4"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                                 <div class="input-group col-md-5 col-sm-5 col-xs-5 float-left">
-                                    <input id="fechaCrea714" type="text" maxlength="6" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="FECHACREA_9714" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
@@ -330,10 +319,11 @@
                                     Modificacion:
                                 </label>
                                 <div class="input-group col-md-4 col-sm-4 col-xs-4 float-left">
-                                    <input id="operModf714" maxlength="4" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="OPERMODF_9714" maxlength="4"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                                 <div class="input-group col-md-5 col-sm-5 col-xs-5 float-left">
-                                    <input id="fechaModf714" maxlength="6" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    <input id="FECHAMODF_9714" class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>

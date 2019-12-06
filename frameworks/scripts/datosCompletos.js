@@ -1,8 +1,7 @@
-datoscompletos = [];
-
 function obtenerDatosCompletos(data, callbackSucces) {
     var nombreFD = data.nombreFd.toUpperCase()
     var programa
+    var objLocal = ''
 
     var ventanaimpresion = bootbox.dialog({
         message: '<div class="text-center"><div><i class="fa fa-spin fa-spinner"></i> Cargando ' + nombreFD + '...</div></div>',
@@ -12,8 +11,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
                 label: 'Aceptar',
                 className: 'btn-success',
                 callback: function () {
-                    callbackSucces(datoscompletos);
-                    datoscompletos = [];
+
                 }
             }
         }
@@ -57,6 +55,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
             break;
         case 'ZONAS_RUTAS':
             programa = "CONTAB/CON810"
+            // SI REQUIERE FILTRO
             break;
         case 'PATOLOGIAS':
             programa = "SALUD/SER858"
@@ -97,39 +96,140 @@ function obtenerDatosCompletos(data, callbackSucces) {
         case 'CLASIPACI':
             programa = "SALUD/SER868"
             break;
+        case 'PREFIJOS':
+            programa = "INVENT/INV109"
+            // NO REQUIERE FILTRO
+            break;
+        case 'LOTES':
+            programa = "CONTAB/CON110I"
+            // NO REQUIERE FILTRO
+            break;
+        case 'GRUPOTAR':
+            programa = "SALUD/SER803"
+            // NO REQUIERE FILTRO
+            break;
+        case 'LOCALIZACION':
+            programa = "INVENT/INV801"
+            // NO REQUIERE FILTRO
+            break;
+        case 'GRNEGOCIO':
+            programa = "CONTAB/CON818"
+            // NO REQUIERE FILTRO
+            break;
+        case 'CLASC':
+            programa = "CONTAB/CON810S"
+            // NO REQUIERE FILTRO
+            break;
+        case 'VENDEDOR':
+            programa = "CONTAB/CON805"
+            // NO REQUIERE FILTRO
+            break;
+        case 'USO':
+            programa = "INVENT/INV806"
+        // SI REQUIERE FILTRO
+        case 'POLIT':
+            programa = "INVENT/INV807"
+            // NO REQUIERE FILTRO
+            break;
+        case 'GRUPOS':
+            programa = "INVENT/INV804"
+            // SI REQUIERE FILTRO
+            break;
+        case 'COSTO':
+            programa = "CONTAB/CON803-01"
+            // NO REQUIERE FILTRO
+            break;
+        case 'ESPECIALIDAD':
+            programa = "SALUD/SER855"
+            // NO REQUIERE FILTRO
+            break;
+        case 'SUCURSALES':
+            programa = "CONTAB/CON823"
+            // NO REQUIERE FILTRO
+            break;
+        case 'OPERADOR':
+            programa = "CONTAB/CON982"
+            // NO REQUIERE FILTRO
+            break;
+        case 'PREMED':
+            programa = "SALUD/SER103"
+            // SI REQUIERE FILTRO
+            break;
+        case 'MEDATC':
+            programa = "SALUD/SER857"
+            // NO REQUIERE FILTRO
+            break;
+        case 'GRCAPITA':
+            programa = "SALUD/SER871"
+            // NO REQUIERE FILTRO
+            break;
+        case 'PROFESION':
+            objLocal = {
+                'PROFESION': [
+                    { 'COD': '1', 'DESCRIP': 'MEDICO ESPECIALISTA' },
+                    { 'COD': '2', 'DESCRIP': 'MEDICO GENERAL' },
+                    { 'COD': '3', 'DESCRIP': 'ENFERMERO(A) JEFE' },
+                    { 'COD': '4', 'DESCRIP': 'AUXILIAR ENFERMERIA' },
+                    { 'COD': '5', 'DESCRIP': 'TERAPEUTAS Y OTROS' },
+                    { 'COD': '6', 'DESCRIP': 'ENFERMERA JEFE P Y P' },
+                    { 'COD': '7', 'DESCRIP': 'PSICOLOGIA' },
+                    { 'COD': '8', 'DESCRIP': 'NUTRICIONISTA' },
+                    { 'COD': '9', 'DESCRIP': 'NO APLICA' },
+                    { 'COD': 'A', 'DESCRIP': 'ODONTOLOGO' },
+                    { 'COD': 'B', 'DESCRIP': 'AUDITOR MEDICO' },
+                    { 'COD': 'H', 'DESCRIP': 'HIGIENE ORAL' },
+                    { 'COD': 'I', 'DESCRIP': 'INSTRUMENTADOR(A)' },
+                    { 'COD': 'O', 'DESCRIP': 'OPTOMETRA' },
+                    { 'COD': 'T', 'DESCRIP': 'TRABAJO SOCIAL' },
+                ]
+            }
+            break;
+        case 'ESPCUPS':
+            programa = "SALUD/SAL71A-C"
+            // se puede filtrar por cod-cups
+            break;
+        case 'CUPS':
+            programa = "SALUD/SER802C"
+            break;
         default:
-                jAlert(
-                    { titulo: 'Error', mensaje: 'Nombre de fd no válido' },
-                    _toggleNav
-                );
+            $('.btn-success').click();
+            jAlert(
+                { titulo: 'Error', mensaje: 'Nombre de fd no válido' },
+                _toggleNav
+            );
             break;
         // pendiente por terminar de cuadrar
         // case 'MACRO-EVOL': programa = "HICLIN/HC107"
         //     break;
     }
 
-    var datos_envio_DC = datosEnvio();
-    if (data.filtro) {
-        datos_envio_DC += data.filtro
-        datos_envio_DC += '|'
-        if (data.campo) {
-            datos_envio_DC += data.campo
+    if (objLocal == '') {
+        var datos_envio_DC = datosEnvio();
+        if (data.filtro) {
+            datos_envio_DC += data.filtro
             datos_envio_DC += '|'
+            if (data.campo) {
+                datos_envio_DC += data.campo
+                datos_envio_DC += '|'
+            }
         }
-    }
-    console.log(datos_envio_DC)
-    let URL = get_url("APP/" + programa + ".DLL");
 
-    postData({
-        datosh: datos_envio_DC
-    }, URL)
-        .then((data) => {
-            datoscompletos = data;
-            console.debug(datoscompletos);
-            $('.btn-success').click();
-        })
-        .catch(error => {
-            console.error(error)
-            _toggleNav()
-        });
+        let URL = get_url("APP/" + programa + ".DLL");
+
+        postData({
+            datosh: datos_envio_DC
+        }, URL)
+            .then((data) => {
+                callbackSucces(data);
+                $('.btn-success').click();
+            })
+            .catch(error => {
+                console.error(error)
+                _toggleNav()
+            });
+    } else {
+        $('.btn-success').click();
+        callbackSucces(objLocal);
+        objLocal = ''
+    }
 }
