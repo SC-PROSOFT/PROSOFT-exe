@@ -1,57 +1,6 @@
+// SER109D
+
 SER109D = [];
-
-function loaderhearth(estado) {
-    // svg {
-    //     height: 100vh;
-    //     width: 100vw;
-    //     background-color: white;
-    //   }
-
-    //   path {
-    //     stroke-dasharray: 100;
-    //     animation: draw 2s infinite;
-    //   }
-
-    //   @keyframes draw {
-    //     from {
-    //       stroke-dashoffset: 0
-    //     }
-    //     to {
-    //       stroke-dashoffset: 200;
-    //     }
-    //   }stroke-dasharray: 450;
-    //   stroke-dashoffset: 450;
-    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="640"><defs><path d="M355.13 265.47h-22.69l-5.12-10.62-4.39 19.4-4.39-48.31-11.72 91.5-10.98-117.85-8.05 84.91-6.58-32.21-2.93 13.18h-24.16" id="a"/></defs><use xlink:href="#a" fill-opacity="0" stroke="#000"/></svg>
-    /* <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
-        <rect class="mouse" x="0" y="0" width="800" height="300"/>
-        <path class="diamondSt pathTulip" d="M400,280l-90-130l90-130l90,130L400,280z"/>
-        <style>
-            .mouse { fill: #E5E4E3; }
-            .pathTulip {
-                fill: #E5E4E3;
-                stroke: #CC2954;
-                stroke-width: 10px;
-                stroke-linejoin: round;
-                stroke-linecap: round;
-                stroke-dasharray: 1000;
-                stroke-dashoffset: 1000;
-            }
-            .diamondSt {
-                animation-name: diamondStroke;
-                animation-duration: 4s;
-                animation-iteration-count: infinite;
-            }
-            @keyframes diamondStroke {
-                0%   { stroke-dashoffset: 1000; }
-                50%   { stroke-dashoffset: 0; }
-                100% { stroke-dashoffset: 1000; }
-            }
-        </style>
-    </svg> */
-    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1920"><defs><path class="diamondSt pathTulip" d="M1920 1036.2h-214.47l-49.67-200.28-31.61 188.5h-29.35l-29.34 393.49-72.25-1029.68-56.44 699.8-24.83-160.22-38.38 96.61-298-7.07-40.64-110.75-29.35 117.82h-31.61l-29.35 235.62-74.5-629.12-45.15 428.84-29.35-87.18-33.86 51.84H463.84l-47.4-35.35-60.96 47.13-36.12 68.33-69.99-207.35-51.92 139.02-27.09-32.99-20.32 21.21H0" id="a"/></defs><use xlink:href="#a" fill-opacity="0" stroke="#000"/></svg>
-
-    $('#loader_content').append('<div id="hearthpulseanimation" style="display:flex; width: 100%; height: 100%; align-items: center; justify-content: center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1920"><defs><path class="diamondSt pathTulip" d="M1920 1036.2h-214.47l-49.67-200.28-31.61 188.5h-29.35l-29.34 393.49-72.25-1029.68-56.44 699.8-24.83-160.22-38.38 96.61-298-7.07-40.64-110.75-29.35 117.82h-31.61l-29.35 235.62-74.5-629.12-45.15 428.84-29.35-87.18-33.86 51.84H463.84l-47.4-35.35-60.96 47.13-36.12 68.33-69.99-207.35-51.92 139.02-27.09-32.99-20.32 21.21H0" id="a"/></defs><use xlink:href="#a" fill-opacity="0" stroke="#000"/></svg></div>')
-}
 
 $(document).ready(() => {
     // $('#ADICIONALES_SER109D').hide();
@@ -108,8 +57,8 @@ function _evaluarnumeroprefijo_SER109D() {
                 .then(data => {
                     console.debug(data);
                     SER109D.NUMERACION = data.NUMERACION[0];
-                    $('#entidad_SER109D').val(SER109D.NUMERACION.DESCRIP_NUM);
-                    $('#nombrepaciente_SER109D').val(SER109D.NUMERACION.NOMBREPAC_NUM);
+                    $('#entidad_SER109D').val(SER109D.NUMERACION.DESCRIP_NUM.trim());
+                    $('#nombrepaciente_SER109D').val(SER109D.NUMERACION.NOMBREPAC_NUM.trim());
                     SER109D.ESTADOW = SER109D.NUMERACION.ESTADO_NUM;
                     switch (SER109D.NUMERACION.ESTADO_NUM) {
                         case '0':
@@ -179,8 +128,8 @@ function _validarestadonum_SER109D() {
 }
 
 function _afectarnumeracion_SER109D() {
-    $('#observacion_SER109D').val(SER109D.NUMERACION.OBSERV_NUM);
-    $('#anexos_SER109D').val(SER109D.NUMERACION.ANEXOS_NUM);
+    $('#observacion_SER109D').val(SER109D.NUMERACION.OBSERV_NUM.trim());
+    $('#anexos_SER109D').val(SER109D.NUMERACION.ANEXOS_NUM.trim());
     if (SER109D.NUMERACION.FECHAPRE_NUM.substring(4, 6) == '00') {
         if (parseInt(SER109D.NUMERACION.FECHAPRE_NUM) > 0) {
             SER109D.FECHAFACW = SER109D.NUMERACION.FECHARET_NUM.substring(2, 8);
@@ -224,6 +173,7 @@ function _evaluarobservaciones_SER109D(orden) {
 }
 
 function _evaluarbloquearfactura_SER109D() {
+    bloquearfMask.typedValue = 'N';
     validarInputs({
         form: '#VALIDA4_SER109D',
         orden: '1'
@@ -245,7 +195,7 @@ function _grabarnumeracion_SER109D() {
         console.debug('son diferentes', SER109D.OBSERVW, SER109D.ANEXOSW, SER109D.ESTADOW);
         let URL = get_url("APP/SALUD/SER109D.DLL");
         postData({
-            datosh: datosEnvio() + '2|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW + '|' + SER109D.ANEXOSW + '|' + SER109D.ESTADOW
+            datosh: datosEnvio() + '2|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|'
         }, URL)
             .then((data) => {
                 console.debug(data);
@@ -273,19 +223,21 @@ function _evaluarfechaimpresion_SER109D() {
 }
 
 function _evaluarbloqueardrogueria_SER109D() {
+    bloqueardMask.typedValue = 'N';
     validarInputs({
         form: '#VALIDAR6_SER109D',
         orden: '1'
     },
         () => { _evaluarfechaimpresion_SER109D() },
         () => {
-            SER109D.SWDROG = $('#bloqueardrogueria_SER109D').val();
+            SER109D.SWDROG = bloqueardMask.value;
             _evaluarcompsucur_SER109D();
         }
     )
 }
 
 function _evaluarcompsucur_SER109D() {
+    $('#compsucur_SER109D').val('**');
     validarInputs({
         form: '#VALIDAR7_SER109D',
         orden: '1'
@@ -337,6 +289,7 @@ function _evaluarcompsucur_SER109D() {
 }
 
 function _evaluarcambfecha_SER109D() {
+    cambfechaMask.typedValue = 'N';
     validarInputs({
         form: '#VALIDAR8_SER109D',
         orden: '1'
@@ -360,6 +313,7 @@ function _evaluarcambfecha_SER109D() {
                 SER109D.DIVIW = (uno + dos + tres + cuatro + cinco + seis + siete + ocho + nueve + diez) / 11;
                 SER109D.DIVIW = SER109D.DIVIW.toString();
                 let decimales = SER109D.DIVIW.split('.');
+                decimales.length = 1 ? decimales.push('0') : decimales = decimales;
                 let dec2w = decimales[1].substring(1, 2);
                 let dec1w = decimales[0].substring(0, 1);
                 if (parseInt(dec2w) > 0) {
@@ -397,28 +351,34 @@ function sumarabonos_SER109D() {
 
 function _consultarfactura_SER109D(){
     console.debug(SER109D.LLAVEW);
+    _EventocrearSegventana(['on', 'Cargando datos...'], _evaluarsubtotalcomp_SER109D, _evaluarnumeroprefijo_SER109D);
     let URL = get_url("APP/SALUD/SER109D.DLL");
     postData({
-        datosh: datosEnvio() + '3|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW + '|' + SER109D.ANEXOSW + '|' + SER109D.ESTADOW + '|' + SER109D.SWFECHA + '|' + SER109D.SUCURW + '|' + parseInt(SER109D.NITUSU) + '|' + SER109D.PUCUSU + '|' + SER109D.SWDROG
+        datosh: datosEnvio() + '3|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|' + SER109D.SWFECHA + '|' + SER109D.SUCURW + '|' + parseInt(SER109D.NITUSU) + '|' + SER109D.PUCUSU + '|' + SER109D.SWDROG + '|'
     }, URL)
         .then(data => {
             console.debug(data);
             SER109D.SER109E = data.FACTURA;
-            _evaluarsubtotalcomp_SER109D();
+            _EventocrearSegventana(['off']);
         })
         .catch(error => {
             console.log(error);
-            _evaluarnumeroprefijo_SER109D();
+            _EventocrearSegventana(['cancelar']);
+            // _evaluarnumeroprefijo_SER109D();
         });
 }
 
 
 function _evaluarsubtotalcomp_SER109D(){
+    subtotalcompMask.typedValue = 'N';
+    nommedicoMask.typedValue = 'N';
+    abonosMask.typedValue = 'N';
+    originalMask.typedValue = 'N';
     validarInputs({
         form: '#VALIDAR9_SER109D',
         orden: '1'
     },
-        () => {  },
+        () => { _evaluarcambfecha_SER109D() },
         () => {
             SER109D.SWTOT = subtotalcompMask._value;
             SER109D.SWVALIDA = nommedicoMask._value;
@@ -453,7 +413,7 @@ function _evaluarsubtotalcomp_SER109D(){
                     SER109D.IMPRESION['DESCRIPNUM'] = SER109D.NUMERACION.DESCRIP_TER;
                     SER109D.IMPRESION['DIRECCTER'] = SER109D.NUMERACION.DIRECC_TER;
                     SER109D.IMPRESION['TELTER'] = SER109D.NUMERACION.TEL_TER;
-                    SER109D.IMPRESION['EDADTEM'] = SER109D.SER109E[0].EDAD_TEM;
+                    SER109D.IMPRESION['EDADTEM'] = 'EDAD: ' + SER109D.SER109E[0].EDAD_TEM;
                     SER109D.IMPRESION['SEXOTEM'] = SER109D.SER109E[0].SEXO_TEM;
                     SER109D.IMPRESION['IDPACTEM'] = SER109D.SER109E[0].PACIENTE_TEM;
                     SER109D.IMPRESION['DVTER'] = SER109D.NUMERACION.DV_TER;
@@ -578,7 +538,7 @@ var bloquearfMask = IMask($("#bloquearfactura_SER109D")[0], {
         masked._value = value.toLowerCase()
     }
 });
-var bloquearfMask = IMask($("#bloqueardrogueria_SER109D")[0], {
+var bloqueardMask = IMask($("#bloqueardrogueria_SER109D")[0], {
     mask: 'a',
     definitions: {
         'a': /[N-S]/
