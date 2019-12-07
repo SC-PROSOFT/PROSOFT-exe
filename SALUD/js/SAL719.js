@@ -2317,6 +2317,7 @@ function validarMartes_119(a) {
 
                     if (entra1.trim().length > 0) {
                         if (a == '2') {
+                            maskHora[idEntra1].typedValue = cerosDer(entra1, 4)
                             validarMartes_119(parseInt(a) + 1)
                         } else {
                             var idAnt = 'horaSalida' + (parseInt(secuencia) - 1) + '_1'
@@ -2450,6 +2451,7 @@ function validarMiercoles_119(a) {
 
                     if (entra1.trim().length > 0) {
                         if (a == '2') {
+                            maskHora[idEntra1].typedValue = cerosDer(entra1, 4)
                             validarMiercoles_119(parseInt(a) + 1)
                         } else {
                             var idAnt = 'horaSalida' + (parseInt(secuencia) - 1) + '_2'
@@ -2586,6 +2588,7 @@ function validarJueves_119(a) {
 
                     if (entra1.trim().length > 0) {
                         if (a == '2') {
+                            maskHora[idEntra1].typedValue = cerosDer(entra1, 4)
                             validarJueves_119(parseInt(a) + 1)
                         } else {
                             var idAnt = 'horaSalida' + (parseInt(secuencia) - 1) + '_3'
@@ -2720,6 +2723,7 @@ function validarViernes_119(a) {
 
                     if (entra1.trim().length > 0) {
                         if (a == '2') {
+                            maskHora[idEntra1].typedValue = cerosDer(entra1, 4)
                             validarViernes_119(parseInt(a) + 1)
                         } else {
                             var idAnt = 'horaSalida' + (parseInt(secuencia) - 1) + '_4'
@@ -2854,6 +2858,7 @@ function validarSabado_119(a) {
 
                     if (entra1.trim().length > 0) {
                         if (a == '2') {
+                            maskHora[idEntra1].typedValue = cerosDer(entra1, 4)
                             validarSabado_119(parseInt(a) + 1)
                         } else {
                             var idAnt = 'horaSalida' + (parseInt(secuencia) - 1) + '_5'
@@ -2988,6 +2993,7 @@ function validarDomingo_119(a) {
 
                     if (entra1.trim().length > 0) {
                         if (a == '2') {
+                            maskHora[idEntra1].typedValue = cerosDer(entra1, 4)
                             validarDomingo_119(parseInt(a) + 1)
                         } else {
                             var idAnt = 'horaSalida' + (parseInt(secuencia) - 1) + '_6'

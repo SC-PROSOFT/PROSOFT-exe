@@ -5906,13 +5906,13 @@
               "Tipo": "POWER",
               "Sub": [
                 {
-                  "Id": "0966",
+                  "Id": "09661",
                   "Descripcion": "Auditoria de facturas",
                   "Opc-segu": "I661",
                   "Tipo": "POWER",
                   "Sub": [
                     {
-                      "Id": "09661",
+                      "Id": "096611",
                       "Descripcion": "Auditorias facturas resumido",
                       "Opc-segu": "I6611",
                       "Tipo": "POWER",
@@ -5924,7 +5924,7 @@
                       ]
                     },
                     {
-                      "Id": "09662",
+                      "Id": "096612",
                       "Descripcion": "Auditorias facturas detallado",
                       "Opc-segu": "I6612",
                       "Tipo": "POWER",
