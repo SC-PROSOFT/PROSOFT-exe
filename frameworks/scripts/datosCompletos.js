@@ -127,6 +127,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
         case 'USO':
             programa = "INVENT/INV806"
         // SI REQUIERE FILTRO
+            break;
         case 'POLIT':
             programa = "INVENT/INV807"
             // NO REQUIERE FILTRO

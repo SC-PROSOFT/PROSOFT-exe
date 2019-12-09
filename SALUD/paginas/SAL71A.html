@@ -1,99 +1,51 @@
+<style>
+    #tablaEspecialidades thead,
+#tablaEspecialidades tfoot{
+  width: 100%;
+}
+
+#tablaEspecialidades tbody {
+  height: 230px;
+  overflow-y:scroll;
+  width: 100%;
+  display: inline-block;
+}
+
+#tablaEspecialidades tbody td,
+#tablaEspecialidades thead > tr> th,
+#tablaEspecialidades tfoot > tr> td{
+  float: left;
+  border-bottom-width: 0;
+  width: 172px;
+}
+</style>
 <div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
     <div class="portlet light box-center box-title" style="margin: 0 auto;">
         <div class="portlet-title">
-            <div class="caption">
-                <span class="caption-subject bold">Actualiza restricciones de facturacion a CUPS por especialidad, sexo
-                    y RIPS</span>
+            <div class="caption col-md-12">
+                <span class="caption-subject bold " style="text-align: left">9,7,1,A - Actualiza
+                    restricciones de facturacion a CUPS por
+                    especialidad, sexo
+                    y RIPS</span><span class="caption-subject bold " style="text-align: right;">operador fecha</span>
             </div>
         </div>
     </div>
 </div>
+
 <div class="col-md-12">
     <div class="portlet light no-padding">
         <div class="portlet-body no-padding">
+
             <form class="form-horizontal">
-                <div class="form-group col-md-7 col-sm-7 col-xs-7 box-center">
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                        <div class="inline-inputs">
-                            <label class="col-md-6 col-sm-6 col-xs-6">Novedad:</label>
-                            <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                <input id="novSer71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                        <div class="inline-inputs">
-                            <label class="col-md-6 col-sm-6 col-xs-6">Operador:</label>
-                            <div class="input-group col-md-7 col-sm-7 col-xs-7">
-                                <input id="oper71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                        <div class="inline-inputs">
-                            <label class="col-md-8 col-sm-8 col-xs-8">Fecha:</label>
-                            <div class="input-group col-md-7 col-sm-7 col-xs-7">
-                                <input id="fecha71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-12 col-sm-12 col-xs-12 no-padding" style="padding-right: 0;">
+                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-4 col-sm-4 col-xs-4">
-                            <div class="inline-inputs" id="consulta">
-                                <label class="col-md-5 col-sm-5 col-xs-5">Codigo CUPS:</label>
-                                <div class="input-group col-md-3 col-sm-3 col-xs-3">
-                                    <input id="grupo_71A" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
-                                    <input id="codigo_71A" type="text" maxlength="4" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="codigoBtn_71A" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-8 col-xs-8" id="detalle">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">Descripcion:</label>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="descrip71A" type="text" data-orden="1" maxlength="50" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-3 no-padding" style="padding-right: 0;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="inline-inputs" id="pypdatos">
-                                <label class="col-md-8 col-sm-8 col-xs-8">PYP?</label>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="display: flex">
+                            <div class="col-md-6 col-sm-8 col-xs-12 inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Novedad:</label>
                                 <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="pyp71A" type="text" maxlength="3" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-9 col-sm-9 col-xs-9" style="padding-right: 0;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="inline-inputs">
-                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">Tip procedimiento:</label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="proced71A" type="text" maxlength="20" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6" id="profesionales">
-                            <div class="inline-inputs">
-                                <label class="col-md-5 col-sm-5 col-xs-5 text-label">Finalidad:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-8">
-                                    <input id="finalidad71A" type="text" maxlength="11" required="true" data-orden="1"
+                                    <input id="novSer71A" type="text"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
@@ -101,36 +53,93 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-md-4 col-sm-4 col-xs-4 no-padding">
+                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="inline-inputs">
-                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">Aplica solo al sexo:</label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="sexo71A" type="text" maxlength="1" data-orden="2" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <label class="col-md-5 col-sm-5 col-xs-5">Codigo CUPS:</label>
+                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="codigoscups">
+                                    <input id="codcups_71A" type="text" maxlength="12" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="codcupsBtn_71A"
+                                    class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="inline-inputs">
+                                <label class="col-md-5 col-sm-5 col-xs-5">Descripcion:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="descrip71A" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-8 col-sm-8 col-xs-8" style="padding-right: 0;">
+                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-
-                        <div class="col-md-5 col-sm-5 col-xs-5">
-                            <div class="inline-inputs" id="especialidad71A">
-                                <label class="col-md-7 col-sm-7 col-xs-7">Persona Atiende:</label>
-                                <div class="input-group col-md-4 col-sm-4 col-xs-4">
-                                    <input id="persona71A" type="text" maxlength="1" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">PYP?:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6" id="pyp">
+                                    <input id="pyp_71A" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
-                                <button type="button" id="f8person71A" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6 text-label">Tip procedimiento:</label>
+                                <div class="input-group col-md-6 col-sm-6 col-xs-6" id="tipoprocedimiento">
+                                    <input id="proced71A" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" id="profesionales">
+                            <div class="inline-inputs">
+                                <label class="col-md-5 col-sm-5 col-xs-5 text-label">Finalidad:</label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-8" id="finalidad">
+                                    <input id="finalidad71A" type="text" maxlength="11" required="true" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="inline-inputs" >
+                                <label class="col-md-7 col-sm-12 col-xs-12">Sexo Aplica:</label>
+                                <div class="input-group col-md-4 col-sm-4 col-xs-4" id="sexoaplica">
+                                    <input id="sexo71A" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <div class="inline-inputs" id="personal71A">
+                                <label class="col-md-7 col-sm-7 col-xs-7">Persona Atiende:</label>
+                                <div class="input-group col-md-4 col-sm-12 col-xs-12">
+                                    <input id="atiende71A" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="f8person71A"
+                                    class="btn btn-default col-md-1 col-sm-1 col-xs-1">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="input-group col-md-7 col-sm-7 col-xs-7">
+                        <div class="input-group col-md-5 col-sm-12 col-xs-12">
                             <div class="inline-inputs">
                                 <input id="descrPer71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
@@ -138,582 +147,58 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 col-sm-6 col-xs-6 no-padding">
+                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div class="col-md-12 col-sm-12 col-xs-12 head-box">
-                            <label>Especialidades</label>
-                        </div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">001:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec1">
-                                    <input id="espec1_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec1_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
                         <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">002:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec2">
-                                    <input id="espec2_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-2 col-sm-3 col-xs-3">
+                            <div class="inline-inputs" >
+                                <label class="col-md-3 col-sm-3 col-xs-3">Id:</label>
+                                <div class="input-group col-md-9 col-sm-9 col-xs-9" id="idespecialidad_71A">
+                                    <input id="especialidad_71A" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
-                                <button type="button" id="f8Espec2_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-3 col-xs-3">
+                            <div class="inline-inputs" id="consulta">
+                                <label class="col-md-8 col-sm-5 col-xs-5">Especialidad:</label>
+                                <div class="input-group col-md-6 col-sm-3 col-xs-3" id="numespecialidad">
+                                    <input id="espec_71A" type="text" maxlength="2" data-orden="1"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <button type="button" id="Btnespec_71A"
+                                    class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
                         </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec2_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">003:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec3">
-                                    <input id="espec3_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <div class="inline-inputs">
+                                    <input id="DescEsp_71A" type="text"
+                                        class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
                                 </div>
-                                <button type="button" id="f8Espec3_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
                             </div>
                         </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec3_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">004:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec4">
-                                    <input id="espec4_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec4_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec4_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">005:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec5">
-                                    <input id="espec5_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec5_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec5_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">006:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec6">
-                                    <input id="espec6_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec6_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec6_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">007:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec7">
-                                    <input id="espec7_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec7_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec7_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">008:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec8">
-                                    <input id="espec8_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec8_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec8_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">009:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec9">
-                                    <input id="espec9_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec9_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec9_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">010:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec10">
-                                    <input id="espec10_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec10_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec10_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">011:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec11">
-                                    <input id="espec11_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec11_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec11_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">012:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec12">
-                                    <input id="espec12_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec12_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec12_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">013:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec13">
-                                    <input id="espec13_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec13_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec13_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">014:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec14">
-                                    <input id="espec14_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec14_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec14_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-                <!-- 2da tabla-->
-                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 0;">
+
+                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                    <div class="salto-linea"></div>
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-
-
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">015:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec15">
-                                    <input id="espec15_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec15_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
+                        <div style="text-align:left;" class="col-md-12 col-sm-12 col-xs-12 ">
+                            <label>Especialidades</label>
+                            <br><br>
                         </div>
+                        <table id="tablaEspecialidades" class="table table-light table-striped" data-orden="1">
+                            <thead>
+                                <th>Id</th>
+                                <th>Cod Especialidad</th>
+                                <th>Nombre Especialidad</th>
+                            </thead>
+                            <tbody></tbody>
 
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec15_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-
-                        <div class="salto-linea"></div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">016:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec16">
-                                    <input id="espec16_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec16_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec16_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">017:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec17">
-                                    <input id="espec17_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec17_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec17_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">018:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec18">
-                                    <input id="espec18_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec18_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec18_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">019:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec19">
-                                    <input id="espec19_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec19_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec19_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">020:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec20">
-                                    <input id="espec20_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec20_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec20_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">021:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec21">
-                                    <input id="espec21_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec21_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec21_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">022:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec22">
-                                    <input id="espec22_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec22_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec22_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">023:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec23">
-                                    <input id="espec23_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec23_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec23_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">024:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec24">
-                                    <input id="espec24_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec24_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec24_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3 ">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">025:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec25">
-                                    <input id="espec25_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec25_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec25_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">026:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec26">
-                                    <input id="espec26_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec26_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec1_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">027:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec27">
-                                    <input id="espec27_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec27_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec27_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">028:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec28">
-                                    <input id="espec28_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec28_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec28_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="salto-linea"></div>
-
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                            <div class="inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-4">029:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-5" id="validarEspec29">
-                                    <input id="espec29_71A" type="text" maxlength="3" data-orden="1" class="form-control f8Esp_71A col-md-12 col-sm-12 col-xs-12">
-                                </div>
-                                <button type="button" id="f8Espec29_71A" class="btn btn-default col-md-3 col-sm-3 col-xs-3">
-                                    <i class="icon-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                            <div class="inline-inputs">
-                                <input id="DescEspec29_71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
+                        </table>
                     </div>
                 </div>
             </form>

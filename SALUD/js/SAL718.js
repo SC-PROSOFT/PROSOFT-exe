@@ -1,10 +1,11 @@
 /* NOMBRE RM --> SER102C // NOMBRE ELECTR --> SAL718 */
 
-var $_NovSal718; var $nitterc718 = '0'; var $ingrTerc718 = '0'; var $_PUCUSU718; var $llavemae718 = '0';
+var $_NovSal718; var $nitterc718 = '0'; var $ingrTerc718 = '0'; var $_PUCUSU718; var $llavemae718 = '0', $_gruposer;
+var SAL718 = [], $_cups, $_costos, $_ctamayor, $_terceros, $_cuentas, $_divisiones;
+
 
 $(document).ready(function () {
-    _inputControl('disabled');
-
+    loader('hide');
     _toggleF8([
         { input: 'grupoSal', app: '718', funct: _ventanaGrupo718 },
         { input: 'codCup', app: '718', funct: _ventanaCups718 },
@@ -16,24 +17,56 @@ $(document).ready(function () {
         { input: 'divSal2', app: '718', funct: _ventanaDivisDos718 }
 
     ]);
-    ocultCajas718();
-});
+    obtenerDatosCompletos({
+        nombreFd: 'GRUPO-SER'
+    }, (data) => {
+        $_gruposer = data.CODIGOS
+        obtenerDatosCompletos({
+            nombreFd: 'CUPS'
+        }, (data) => {
+            $_cups = data.CODIGOS
+            obtenerDatosCompletos({
+                nombreFd: 'COSTOS'
+            }, (data) => {
+                $_costos = data.COSTO
+                obtenerDatosCompletos({
+                    nombreFd: 'CTA-MAYOR'
+                }, (data) => {
+                    $_cuentas = data.MAESTROS
+                    obtenerDatosCompletos({
+                        nombreFd: 'TERCEROS'
+                    }, (data) => {
+                        $_terceros = data.TERCEROS
+                        obtenerDatosCompletos({
+                            nombreFd: 'DIVISION'
+                        }, (data) => {
+                            $_divisiones = data.CODIGOS
+                            // ocultCajas718();
+                            setTimeout(CON850(_evaluarCON850), 250)
 
+                        })
+                    })
+                })
+            })
+        })
+
+    })
+});
+function on_datos718(){
+    document.querySelector('#grupoSal_718').value
+}
 // F8 GRUPO-SERVICIO //
 function _ventanaGrupo718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: "GRUPOS DE SERVICIO",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_gruposer',
-            callback_esc: function () {
-                _validarGrpo718()
-            },
-            callback: function (data) {
-                console.debug(data);
-                $('#grupoSal_718').val(data.codigo_grser.trim())
-                $('#descrpGrupo718').val(data.descrip_grser.trim())
+            titulo: "VENTANA DE GRUPOS DE SERVICIOS",
+            columnas: ["COD", "DESCRIP"],
+            data: $_gruposer,
+            callback_esc: () => { _validarGrpo718() },
+            callback: (data) => {
+                SAL718.COD_SER = data.COD; SAL718.DESCRIP_SER = data.DESCRIP;
+                document.querySelector('#grupoSal_718').value = data.COD_CUP;
+                document.querySelector('#grupoSadescrpGrupo718l_718').value = data.DESCRIP_SER;
                 _enterInput('#grupoSal_718');
             }
         });
@@ -45,17 +78,13 @@ function _ventanaCups718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "VENTANA DE CODIGOS CUPS",
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archcups',
-            callback_esc: function () {
-                _validarCUPS718()
-            },
-            callback: function (data) {
-                console.debug(data);
-                var cup = data.codigo;
-                $('#codCup_718').val(cup.substring(2, 11))
-                $('#descrpCups718').val(data.descripcion.trim())
+            columnas: ["LLAVE", "DESCRIP", "INGR_CLIN", "INGR_TERC", "COD_CONTAB"],
+            data: $_cups,
+            callback_esc: () => { _validarCUPS718() },
+            callback: (data) => {
+                SAL718.COD_CUP = data.LLAVE; SAL718.DESCRIP_CUP = data.DESCRIP;
+                document.querySelector('#codCup_718').value = data.COD_CUP;
+                document.querySelector('#descrpCups718').value = data.DESCRIP_SER;
                 _enterInput('#codCup_718');
             }
         });
@@ -66,17 +95,14 @@ function _ventanaCups718(e) {
 function _ventanaCentrCosto718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: "VENTANA DE CENTROS DE COSTO",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archcos',
-            callback_esc: function () {
-                _validaCentroCost718()
-            },
-            callback: function (data) {
-                console.debug(data);
-                $('#centrCost_718').val(data.codigo.trim())
-                $('#descCosto718').val(data.descripcion.trim())
+            titulo: "VENTANA CENTRO DE COSTO",
+            columnas: ["COD", "NOMBRE"],
+            data: $_costos,
+            callback_esc: () => { _validaCentroCost718() },
+            callback: (data) => {
+                SAL718.COD_COSTO = data.COD; SAL718.DESCRIP_COSTO = data.NOMBRE;
+                $('#centrCost_718').val(data.COD.trim())
+                $('#descCosto718').val(data.NOMBRE.trim())
                 _enterInput('#centrCost_718');
             }
         });
@@ -87,18 +113,15 @@ function _ventanaCentrCosto718(e) {
 function _ventanaContab718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: "VENTANA PLAN DE CUENTAS",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archmae',
-            callback_esc: function () {
-                cuentTercero718()
-            },
-            callback: function (data) {
-                console.debug(data);
-                $('#cuentaTerc_718').val(data.llave_mae)
-                $('#descrCta718').val(data.nombre_mae)
-                _enterInput('#cuentaTerc_718');
+            titulo: "VENTANA CUENTA MAYOR",
+            columnas: ["COD", "NOMBRE"],
+            data: $_cuentas,
+            callback_esc: () => { cuentTercero718() },
+            callback: (data) => {
+                SAL718.COD_CTAMAYOR = data.COD; SAL718.DESCRIP_CTAMAYOR = data.NOMBRE;
+                $('#centrCost_718').val(data.COD.trim())
+                $('#descCosto718').val(data.NOMBRE.trim())
+                _enterInput('#centrCost_718');
             }
         });
     }
@@ -108,40 +131,25 @@ function _ventanaContab718(e) {
 function ventanaTerceros718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: 'Ventana De Terceros',
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archter',
-            callback_esc: function () {
-                terceroNit718()
-            },
-            callback: function (data) {
-                var cedula = cerosIzq(data.cod_ter)
+            titulo: "VENTANA DE TERCEROS",
+            columnas: ["COD", "NOMBRE"],
+            data: $_terceros,
+            callback_esc: () => { terceroNit718() },
+            callback: (data) => {
                 $("#nitTerc_718").val(cedula)
-                $("#nombreTer718").val(data.descrip_ter);
+                $("#nombreTer718").val(data.NOMBRE);
                 _enterInput('#nombreTer718');
             }
         });
     }
 }
 
-// F8 CUENTA-MAYOR //
+// F8 PLAN DE CUENTAS //
 function _ventanaPUC718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA PLAN DE CUENTAS",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_archmae',
-            callback_esc: function () {
-                cuentTercero718()
-            },
-            callback: function (data) {
-                console.debug(data);
-                $('#codPuc_718').val(data.llave_mae + ' - ' + data.nombre_mae)
-                _enterInput('#codPuc_718');
-            }
-        });
+        let data = _ventanaContab718(e)
+        $('#codPuc_718').val(data.CTA_MAY + ' - ' + data.NOMBRE_MAE)
+        _enterInput('#codPuc_718');
     }
 }
 
@@ -149,38 +157,26 @@ function _ventanaPUC718(e) {
 function _ventanaDivisUno718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: "VENTANA DIVISION",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_divis',
-            callback_esc: function () {
-                _validarDato()
-            },
-            callback: function (data) {
-                $('#divSal1_718').val(data.llave_div);
-                $('#descpCups1_718').val(data.descrip_div);
+            titulo: "VENTANA DE DIVISIONES",
+            columnas: ["COD", "NOMBRE"],
+            data: $_divisiones,
+            callback_esc: () => { _validarDato() },
+            callback: (data) => {
+                $('#divSal1_718').val(data.COD);
+                $('#descpCups1_718').val(data.DESCRIP);
                 _enterInput('#divSal1_718');
             }
+
         });
     }
 }
 
 function _ventanaDivisDos718(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA DIVISION",
-            tipo: 'mysql',
-            db: $CONTROL,
-            tablaSql: 'sc_divis',
-            callback_esc: function () {
-                _validarDato()
-            },
-            callback: function (data) {
-                $('#divSal2_718').val(data.llave_div);
-                $('#descpCups2_718').val(data.descrip_div);
-                _enterInput('#divSal2_718');
-            }
-        });
+        data = _ventanaDivisUno718(e);
+        $('#divSal2_718').val(data.COD);
+        $('#descpCups2_718').val(data.DESCRIP);
+        _enterInput('#divSal2_718');
     }
 }
 
@@ -242,33 +238,20 @@ function _validarGrpo718() {
                         _validarCUPS718()
                         break;
                     default:
-                        _consultaSql({
-                            sql: `SELECT * FROM sc_gruposer  WHERE codigo_grser = '${$grupo718}'`,
-                            db: $CONTROL,
-                            callback: function (error, results, fields) {
-                                if (error) throw error;
-                                else {
-                                    var datos = results[0]
-                                    console.log(datos)
-                                    if (results.length = !results.length) {
-                                        CON851('01', '01', null, 'error', 'Error');
-                                        _validarGrpo718()
-                                    } else {
-                                        $('#grupoSal_718').val(datos.codigo_grser.trim())
-                                        $('#descrpGrupo718').val(datos.descrip_grser.trim())
-                                        _validarCUPS718()
-
-                                    }
-                                }
-                            }
-                        })
+                        let datos = $_gruposer.filter(grupo => grupo.COD.trim() == $grupo718.trim());
+                        if (datos.length > 0) {
+                            $('#grupoSal_718').val(datos.COD.trim())
+                            $('#descrpGrupo718').val(datos.DESCRIP.trim())
+                            _validarCUPS718()
+                        } else {
+                            CON851('01', '01', null, 'error', 'Error');
+                            _validarGrpo718()
+                        }
                         break;
                 }
             }
-        }
-    )
+        })
 }
-
 function _validarCUPS718() {
     validarInputs(
         {
@@ -288,38 +271,24 @@ function _validarCUPS718() {
                         _validarCUPS718()
                         break;
                     default:
-                        _consultaSql({
-                            sql: `SELECT * FROM sc_archcups  WHERE codigo = '${$LLAVECUP}'`,
-                            db: 'datos_pros',
-                            callback: function (error, results, fields) {
-                                if (error) throw error;
-                                else {
-                                    var datos = results[0]
-                                    console.log(results);
-                                    if ($_NovSal718 == '7') {
-                                        if (results.length = !results.length) {
-                                            registroNuevo718()
-                                        } else {
-                                            CON851('00', '00', null, 'error', 'Error');
-                                            _validarCUPS718()
-                                        }
-                                    } else {
-                                        if (results.length = !results.length) {
-                                            CON851('01', '01', null, 'error', 'Error');
-                                            _validarCUPS718()
-                                        } else {
-                                            consultDatos718()
-                                        }
-                                    }
-
-                                }
+                        let datos = $_cups.filter(grupo => grupo.COD.trim() == $grupoCups718.trim());
+                        if ($_NovSal718 == '7') {
+                            registroNuevo718()
+                        } else {
+                            _validarCUPS718()
+                        }
+                        if ($_NovSal718 == '8' || $_NovSal718 == '8') {
+                            if (datos.length > 0) {
+                                consultDatos718()
+                            } else {
+                                CON851('01', '01', null, 'error', 'Error');
+                                _validarCUPS718()
                             }
-                        })
-                        break;
+                            break;
+                        }
                 }
             }
-        }
-    )
+        })
 }
 
 
@@ -1068,7 +1037,7 @@ function envioDatos718() {
             $centroCosto718, $EdadMin718, $EdadMax718, MEDIDA718, SEXO718, DIAGN718, INTRGMED718, $INGCLIN718, $ingrTerc718,
             $llavemae718, NITTERC718, $CODPUC718, $CODCOOP718, $CODOFIC718, $divUno718, $divDos718],
         callback: function (data) {
-            actualBD718(data, $LLAVECUP, DESCRIP718)
+            actualizar718(data)
         },
         nombredll: 'SAL718-G',
         carpeta: 'SALUD'
@@ -1077,79 +1046,35 @@ function envioDatos718() {
 }
 
 
-function actualBD718(data, $LLAVECUP, DESCRIP718) {
+function actualizar718(data) {
     loader('hide');
     var rdll = data.split('|');
     console.log(rdll[0])
     if (rdll[0].trim() == '00') {
         switch (parseInt($_NovSal718)) {
             case 7:
-                _consultaSql({
-                    sql: `INSERT INTO sc_archcups VALUES ('${$LLAVECUP}', '${DESCRIP718}');`,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                                    function () {
-                                        terminar718();
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-                                    function () {
-                                        terminar718();
-                                    });
-                            }
-                        }
-                    }
-                })
+                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                    function () {
+                        terminar718();
+                    });
+                // error
+                terminar718();
                 break;
             case 8:
-                _consultaSql({
-                    sql: `UPDATE sc_archcups SET descripcion ='${DESCRIP718}' WHERE codigo = '${$LLAVECUP}' `,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-                                    function () {
-                                        terminar718()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-                                    function () {
-                                        terminar718();
-                                    });
-                            }
-                        }
-                    }
-                })
+                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                    function () {
+                        terminar718();
+                    });
+                // error
+                terminar718();
                 break;
             case 9:
-                _consultaSql({
-                    sql: `DELETE FROM sc_archcups WHERE codigo = '${$LLAVECUP}'`,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-                                    function () {
-                                        terminar718()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-                                    function () {
-                                        terminar718()
-                                    });
-                            }
-                        }
-                    }
-                })
+                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
+                    function () {
+                        terminar718();
+                    });
+                // error
+                terminar718();
                 break;
         }
     } else {
@@ -1163,10 +1088,4 @@ function terminar718() {
     _inputControl('disabled');
 
 }
-
-
-function psre() {
-    console.debug('kfldfd')
-}
-
 

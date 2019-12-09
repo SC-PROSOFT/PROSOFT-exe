@@ -1,197 +1,282 @@
 /* NOMBRE RM --> SER11A // NOMBRE ELECTR --> SAL71D */
 
-var $_NovedSer71D, arraycoleg, $_fechaact, $arrayprofes, $CIUDCOLG71D;
+var $_NovedSer71D
+
+var arrayColegio_71d = []
+var arrayCiudades_71d = []
+var arrayDatosCompletos71D = []
 
 $(document).ready(function () {
-
+    _inputControl('reset');
+    _inputControl('disabled');
     _toggleF8([
-        { input: 'tipo', app: '71D', funct: _ventanColeg },
-        { input: 'ciudad', app: '71D', funct: _ventanColeg },
-        { input: 'codigo', app: '71D', funct: _ventanColeg },
-        { input: 'codciud', app: '71D', funct: _ventanCiudad }
+        { input: 'tipo', app: '71D', funct: _ventanTipo_71d },
+        { input: 'ciudad', app: '71D', funct: _ventanCiudad_71d },
+        { input: 'codigo', app: '71D', funct: _ventanCod_71d }
+        // { input: 'codciud', app: '71D', funct: _ventanCiudad }
     ]);
     loader('hide');
-    CON850(_evaluarCON850);
+    obtenerDatosCompletos({ nombreFd: 'COLEGIOS' }, recibirColegios_71d)
 });
 
+function recibirColegios_71d(data) {
+    arrayColegio_71d = data.COLEGIOS
+    arrayColegio_71d.pop()
+    obtenerDatosCompletos({ nombreFd: 'CIUDADES' }, recibirCiudades_71d)
+}
+
+function recibirCiudades_71d(data) {
+    arrayCiudades_71d = data.CIUDAD
+    arrayCiudades_71d.pop()
+    CON850(_evaluarCON850)
+}
+
 // --> F8 COLEGIOS //
-function _ventanColeg(e) {
+function _ventanTipo_71d(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
-            titulo: "VENTANA DE INSTITUCIONES",
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_coleg',
+            titulo: "Ventana De Colegios",
+            columnas: ["TIPO", "CIUDAD", "SECU", "DESCRIP"],
+            data: arrayColegio_71d,
             callback_esc: function () {
-                _validarColeg71D()
+                $("#tipo_71D").focus()
             },
             callback: function (data) {
-                console.debug(data);
-                $colegC71D = data.cod_coleg;
-                $('#tipo_71D').val(data.tipo_coleg);
-                $('#ciudad_71D').val($colegC71D.substring(0, 5));
-                $('#codigo_71D').val($colegC71D.substring(5, 11));
-                $('#ciudcoleg_71D').val(data.ciudad_coleg);
+                $("#tipo_71D").val(data.TIPO)
+                $("#ciudad_71D").val(data.CIUDAD);
+                $("#codigo_71D").val(data.SECU);
                 _enterInput('#tipo_71D');
             }
         });
+
     }
 }
 
-function _ventanCiudad(e) {
+function _ventanCiudad_71d(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+
         _ventanaDatos({
-            titulo: "VENTANA CIUDADES",
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archciud',
+            titulo: "Ventana De ciudades",
+            columnas: ["COD", "DEPART", "NOMBRE"],
+            data: arrayCiudades_71d,
             callback_esc: function () {
-                _validarColeg71D
+                $("#ciudad_71D").focus()
             },
             callback: function (data) {
-                console.debug(data);
-                $CIUDCOLG71D = data.nombre.trim()
-                $('#codciud_71D').val(data.cuenta);
-                $('#ciudad71D').val($CIUDCOLG71D);
-                $('#ciudcoleg_71D').val($CIUDCOLG71D);
-
-                _enterInput('#codciud_71D');
+                console.log(data)
+                $('#ciudad_71D').val(data.COD);
+                $('#ciudColeg_71D').val(data.NOMBRE)
+                _enterInput('#ciudad_71D');
             }
         });
     }
 }
 
+function _ventanCod_71d(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        var tipo = $('#tipo_71D').val().trim()
+        var ciudad = $("#ciudad_71D").val().trim()
 
+        var filtroColegios
+        filtroColegios = arrayColegio_71d.filter(colegio => colegio.CIUDAD == ciudad)
+        if (tipo.length > 0) {
+            filtroColegios = filtroColegios.filter(colegio => colegio.TIPO == tipo)
+        }
+
+        _ventanaDatos({
+            titulo: "Ventana De Colegios",
+            columnas: ["TIPO", "CIUDAD", "SECU", "DESCRIP"],
+            data: filtroColegios,
+            callback_esc: function () {
+                $("#codigo_71D").focus()
+            },
+            callback: function (data) {
+                $("#tipo_71D").val(data.TIPO)
+                $("#ciudad_71D").val(data.CIUDAD);
+                $("#codigo_71D").val(data.SECU);
+                _enterInput('#codigo_71D');
+            }
+        });
+    }
+}
 // NOVEDAD //
 function _evaluarCON850(novedad) {
-    _inputControl('reset');
-    _inputControl('disabled');
-    console.debug(novedad)
     $_NovedSer71D = novedad.id;
-    switch (parseInt(novedad.id)) {
-        case 7:
-        case 8:
-        case 9:
-            _validarColeg71D();
+    switch ($_NovedSer71D) {
+        case '7':
+        case '8':
+        case '9':
+            _validarTipo_71D();
             break;
-        default:
-            _toggleNav();
+        case 'F':
+            limpiarCampos71D();
             break;
     }
     $('#novSer71D').val(novedad.id + ' - ' + novedad.descripcion)
 }
 
-function _validarColeg71D() {
+function _validarTipo_71D() {
     validarInputs(
         {
-            form: "#colegio",
+            form: "#validarTipo_71D",
             orden: '1'
         },
         function () { CON850(_evaluarCON850); },
         function () {
-
-            $tipo71D = $('#tipo_71D').val();
-            $ciud71D = $('#ciudad_71D').val();
-            $codg71D = $('#codigo_71D').val();
-
-            $colegio71D = $tipo71D + $ciud71D + $codg71D;
-
-
-
-            let datos_envio = datosEnvio()
-            datos_envio += '|'
-            datos_envio += $colegio71D
-            SolicitarDll({ datosh: datos_envio }, on_datosColeg71D, get_url('/APP/SALUD/SAL71D-01.DLL'));
+            validarCiudad_71d()
         }
     )
 }
 
-function on_datosColeg71D(data) {
-    console.debug(data);
+function validarCiudad_71d() {
+    validarInputs(
+        {
+            form: "#validarCiudad_71D",
+            orden: '1'
+        },
+        function () { _validarTipo_71D() },
+        function () {
+            var ciudadDigitada = cerosIzq($('#ciudad_71D').val(), 5)
+            $('#ciudad_71D').val(ciudadDigitada)
 
-    var date = data.split('|');
-    $_CODCOLEG71D = date[2].trim();
-    $_NOMBCOLEG71D = date[3].trim();
-    $_NUCLEOCOLEG71D = date[4].trim();
-    $_ZONACOLEG71D = date[5].trim();
-    $_DIRECCOLEG71D = date[6].trim();
-    $_CODCIUDAD71D = date[7].trim();
-    $_CIUDAD71D = date[8].trim();
-    $_TELFNCOLEG71D = date[9].trim();
+            var busqueda = arrayCiudades_71d.find(ciudad => ciudad.COD == ciudadDigitada)
 
-    if (date[0].trim() == '00') {
-        if ($_NovedSer71D == '7') {
-            CON851('00', '00', null, 'error', 'Error');
-            _validarColeg71D()
+            if (busqueda) {
+                $('#ciudad_71D').val(busqueda.COD)
+                $('#ciudColeg_71D').val(busqueda.NOMBRE)
+                validarCodigo_71d()
+            } else {
+                CON851('01', '01', null, 'error', 'error');
+                validarCiudad_71d()
+            }
+
         }
-        else {
-            _llenarDatos71D()
-        }
-    }
-    else if (date[0].trim() == '01') {
-        if ($_NovedSer71D == '7') {
-            descrp71D();
-        }
-        else {
-            CON851('01', '01', null, 'error', 'Error');
-            _validarColeg71D();
-        }
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
+    )
 }
 
+function validarCodigo_71d() {
+    validarInputs(
+        {
+            form: "#validarCodigo_71D",
+            orden: '1'
+        },
+        function () { validarCiudad_71d(); },
+        function () {
+            var tipo = $('#tipo_71D').val().trim()
+            var ciudad = $('#ciudad_71D').val().trim()
+            var codigo = cerosIzq($('#codigo_71D').val().trim(), 6)
+            $('#codigo_71D').val(codigo)
+            var llave = tipo + ciudad + codigo
 
+            var busqueda = arrayColegio_71d.find(colegio => (colegio.TIPO + colegio.CIUDAD + colegio.SECU) == llave)
+            if (busqueda) {
+                switch ($_NovedSer71D) {
+                    case '7':
+                        CON851('00', '00', null, 'error', 'error');
+                        validarCodigo_71d()
+                        break;
+                    case '8':
+                        arrayDatosCompletos71D = busqueda
+                        console.log(arrayDatosCompletos71D)
+                        mostrarDatos_71d()
+                        descripColeg_71d()
+                        break;
+                    case '9':
+                        arrayDatosCompletos71D = busqueda
+                        mostrarDatos_71d()
+                        CON851P('54', validarCodigo_71d, eliminarRegistro_71d)
+                        break;
+                }
 
-function _llenarDatos71D() {
-    var colg71D = $_CODCOLEG71D
-    console.debug($_TELFNCOLEG71D + 'TELEFONO DLL');
-    $('#tipo_71D').val(colg71D.substring(0, 1));
-    $('#ciudad_71D').val(colg71D.substring(1, 6));
-    $('#codigo_71D').val(colg71D.substring(6, 12));
-    $('#ciudcoleg_71D').val($_CODCIUDAD71D);
-    $('#descrip71D').val($_NOMBCOLEG71D)
-    $('#nucleo71D').val($_NUCLEOCOLEG71D)
-    $('#codciud_71D').val($_CODCIUDAD71D);
-    $('#ciudad71D').val($_CIUDAD71D)
-    $('#zona71D').val($_ZONACOLEG71D);
-    $('#direcc71D').val($_DIRECCOLEG71D);
-    $('#telefono71D').val($_TELFNCOLEG71D);
+            } else {
+                switch ($_NovedSer71D) {
+                    case '7':
+                        nuevo_71d(tipo, ciudad, codigo)
+                        break;
+                    case '8':
+                    case '9':
+                        CON851('01', '01', null, 'error', 'error');
+                        validarCodigo_71d()
+                        break;
+                }
+            }
 
-    switch (parseInt($_NovedSer71D)) {
-        case 8:
-            descrp71D()
+        }
+    )
+}
+
+function nuevo_71d(tipo, ciudad, codigo){
+    arrayDatosCompletos71D = {
+        'TIPO': tipo,
+        'CIUDAD': ciudad,
+        'SECU': codigo,
+        'DESCRIP': '',
+        'DIRECCION': '',
+        'NUCLEO': '',
+        'TELEFONO': '',
+        'ZONA': ''
+    }
+    descripColeg_71d()
+}
+
+function mostrarDatos_71d() {
+    $('#descrip71D').val(arrayDatosCompletos71D.DESCRIP.trim())
+    switch (arrayDatosCompletos71D.ZONA) {
+        case '1':
+                $('#zona71D').val(arrayDatosCompletos71D.ZONA + '. Urbana')
             break;
-        case 9:
-            CON851P('54', _validarColeg71D, _eliminaDatos71D)
+        case '2':
+                $('#zona71D').val(arrayDatosCompletos71D.ZONA + '. Rural')
             break;
     }
+    $('#nucleo71D').val(arrayDatosCompletos71D.NUCLEO.trim());
+    $('#direcc71D').val(arrayDatosCompletos71D.DIRECCION.trim());
+    $('#telefono71D').val(arrayDatosCompletos71D.TELEFONO.trim());
 }
 
 // ELIMINAR REGISTRO
-function _eliminaDatos71D() {
+function eliminarRegistro_71d() {
+    var tipo = arrayDatosCompletos71D.TIPO
+    var ciudad = arrayDatosCompletos71D.CIUDAD
+    var codigo = cerosIzq(arrayDatosCompletos71D.SECU, 6)
+    var llave = tipo + ciudad + codigo
 
-    LLAMADO_DLL({
-        dato: [$_NovedSer71D, $colegio71D],
-        callback: function (data) {
-            validarResp_71D(data, $colegio71D)
-        },
-        nombredll: 'SAL71D-02',
-        carpeta: 'SALUD'
-    })
+    var datos_Envio_71d = datosEnvio()
+    datos_Envio_71d += $_NovedSer71D
+    datos_Envio_71d += '|'
+    datos_Envio_71d += llave
+    datos_Envio_71d += '|'
+    console.log(datos_Envio_71d)
+    let URL = get_url("APP/SALUD/SAL71D.DLL");
+
+    postData({
+        datosh: datos_Envio_71d
+    }, URL)
+        .then((data) => {
+            loader('hide')
+            jAlert(
+                { titulo: 'SAL71D', mensaje: data },
+                limpiarCampos71D
+            );
+        })
+        .catch(error => {
+            loader('hide')
+            console.error(error)
+            _toggleNav()
+        });
 }
 
-/// NOVEDAD 7 ///
-function descrp71D() {
+function descripColeg_71d() {
     validarInputs(
         {
-            form: '#descrp',
+            form: '#descrip_71d',
             orden: '1'
         },
-        function () { _validarColeg71D(); },
+        function () { validarCiudad_71d(); },
         function () {
-            setTimeout(validarNucleo71D, 300)
+            var descrip = espaciosDer($('#descrip71D').val().trim(),50)
+            arrayDatosCompletos71D.DESCRIP = descrip
+            validarNucleo71D()
         }
     )
 }
@@ -199,26 +284,15 @@ function descrp71D() {
 function validarNucleo71D() {
     validarInputs(
         {
-            form: '#nucleo',
+            form: '#nucleo_71d',
             orden: '1'
         },
-        function () { descrp71D(); },
+        function () { descripColeg_71d(); },
         function () {
-            setTimeout(validarCiud71D, 300)
+            var nucleo = espaciosDer($('#nucleo71D').val().trim(),10)
+            arrayDatosCompletos71D.NUCLEO = nucleo
+            validarZonad71D()
         }
-    )
-}
-
-
-
-function validarCiud71D() {
-    validarInputs(
-        {
-            form: '#ciudad',
-            orden: '1'
-        },
-        function () { validarNucleo71D(); },
-        function () { validarZonad71D() }
     )
 }
 
@@ -235,13 +309,14 @@ function validarZonad71D() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        callback_f: validarCiud71D
+        callback_f: validarNucleo71D,
+        seleccion: arrayDatosCompletos71D.ZONA
     }, function (data) {
+        arrayDatosCompletos71D.ZONA = data.COD
         switch (data.COD.trim()) {
             case '1':
             case '2':
                 $('#zona71D').val(data.COD.trim() + '. ' + data.DESCRIP.trim())
-                $_ZONA = data.COD.trim()
                 validarDirecc71D();
                 break;
         }
@@ -254,8 +329,18 @@ function validarDirecc71D() {
             form: '#direccion',
             orden: '1'
         },
-        function () { validarCiud71D(); },
-        function () { validarTelf71D(); }
+        function () { validarZonad71D(); },
+        function () {
+            var direccion = $('#direcc71D').val().trim()
+            arrayDatosCompletos71D.DIRECCION = espaciosDer(direccion,30)
+
+            if (direccion.length < 1) {
+                CON851('84', '84', null, 'error', 'error');
+                validarDirecc71D()
+            } else {
+                validarTelf71D();
+            }
+        }
     )
 }
 
@@ -267,117 +352,68 @@ function validarTelf71D() {
         },
         function () { validarDirecc71D(); },
         function () {
-            $TELFONO = $('#telefono71D').val();
-            setTimeout(envioDatos71D, 300);
+            arrayDatosCompletos71D.TELEFONO = cerosIzq($('#telefono71D').val(),10)
+            envioDatos71D()
         }
     )
 }
 
 
 function envioDatos71D() {
+    var tipo = espaciosIzq(arrayDatosCompletos71D.TIPO,1)
+    var ciudad = arrayDatosCompletos71D.CIUDAD
+    var secu = arrayDatosCompletos71D.SECU
+    var llave = tipo + ciudad + secu
+    var decrpcolg = arrayDatosCompletos71D.DESCRIP
+    var nucleoclg = arrayDatosCompletos71D.NUCLEO
+    var zona = arrayDatosCompletos71D.ZONA
+    var direcclg = arrayDatosCompletos71D.DIRECCION
+    var telfclg = arrayDatosCompletos71D.TELEFONO 
 
-    var decrpcolg = espaciosDer($('#descrip71D').val(), 50);
-    var nucleoclg = cerosIzq($('#nucleo71D').val(), 10);
-    var codciud = cerosIzq($('#codciud_71D').val(), 5);
-    var direcclg = espaciosDer($('#direcc71D').val(), 30);
-    var telfclg = cerosIzq($TELFONO, 10);
 
-    $codCiud71D = + $ciud71D + $codg71D;
+    var datos_Envio_71d = datosEnvio()
+    datos_Envio_71d += $_NovedSer71D
+    datos_Envio_71d += '|'
+    datos_Envio_71d += llave
+    datos_Envio_71d += '|'
+    datos_Envio_71d += decrpcolg
+    datos_Envio_71d += '|'
+    datos_Envio_71d += nucleoclg
+    datos_Envio_71d += '|'
+    datos_Envio_71d += zona
+    datos_Envio_71d += '|'
+    datos_Envio_71d += direcclg
+    datos_Envio_71d += '|'
+    datos_Envio_71d += telfclg
+    datos_Envio_71d += '|'
 
-    LLAMADO_DLL({
-        dato: [$_NovedSer71D, $colegio71D, decrpcolg, nucleoclg, codciud, $_ZONA, direcclg, telfclg],
-        callback: function (data) {
-            validarResp_71D(data, $tipo71D,  $codCiud71D, decrpcolg, $ciud71D)
-        },
-        nombredll: 'SAL71D-02',
-        carpeta: 'SALUD'
-    })
-}
+    console.log(datos_Envio_71d)
+    let URL = get_url("APP/SALUD/SAL71D.DLL");
 
-function validarResp_71D(data, $tipo71D,  $codCiud71D, decrpcolg, $ciud71D) {
-    loader('hide');
-    var rdll = data.split('|');
-    console.log(rdll[0])
-    if (rdll[0].trim() == '00') {
-        switch (parseInt($_NovedSer71D)) {
-            case 7:
-                _consultaSql({
-                    sql: `INSERT INTO sc_coleg VALUES ('${$tipo71D}', '${$codCiud71D}', '${decrpcolg}', '${$ciud71D}');`,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCampos71D();
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR CREANDO EL DATO' },
-                                    function () {
-                                        limpiarCampos71D();
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 8:
-                var TABSQL = `UPDATE sc_coleg SET ciudad_coleg ='${$codg71D}' descrip_coleg ='${decrpcolg}' WHERE tipo_coleg= '${$tipo71D}' cod_coleg = '${$codCiud71D}' `
-                _consultaSql({
-                    sql: TABSQL,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO MODIFICADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCampos71D()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR MODIFICANDO EL DATO' },
-                                    function () {
-                                        limpiarCampos71D();
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-            case 9:
-                _consultaSql({
-                    sql: `DELETE FROM sc_coleg WHERE tipo_coleg= '${$tipo71D}' SET cod_coleg = '${$codCiud71D}' `,
-                    db: 'datos_pros',
-                    callback: function (error, results, fields) {
-                        if (error) throw error;
-                        else {
-                            console.log(results)
-                            if (results.affectedRows > 0) {
-                                jAlert({ titulo: 'Notificacion', mensaje: 'DATO ELIMINADO CORRECTAMENTE' },
-                                    function () {
-                                        limpiarCampos71D()
-                                    });
-                            } else {
-                                jAlert({ titulo: 'ERROR', mensaje: 'HA OCURRIDO UN ERROR ELIMINANDO EL DATO' },
-                                    function () {
-                                        limpiarCampos71D()
-                                    });
-                            }
-                        }
-                    }
-                })
-                break;
-        }
-    } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
+    postData({
+        datosh: datos_Envio_71d
+    }, URL)
+        .then((data) => {
+            loader('hide')
+            jAlert(
+                { titulo: 'SAL71D', mensaje: data },
+                limpiarCampos71D
+            );
+        })
+        .catch(error => {
+            loader('hide')
+            console.error(error)
+            _toggleNav()
+        });
 }
 
 function limpiarCampos71D() {
-    _toggleNav();
+    arrayCiudades_71d = []
+    arrayColegio_71d = []
+    arrayDatosCompletos71D = []
+    $_NovedSer71D = ''
     _inputControl('reset');
     _inputControl('disabled');
+    _toggleNav();
 
 }
