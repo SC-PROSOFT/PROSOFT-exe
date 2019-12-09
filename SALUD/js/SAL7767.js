@@ -849,24 +849,16 @@ function _dataSAL7767_02(data) {
 
         _nuevoregistro_7767();
     } else if (($_NOVEDAD7767 == '7') && (swinvalid == '00')) {
-
         if ($_NITW > "000000000000000") {
             $_NOVEDAD7767 = '8';
             $('#novedad_110c').val($_NOVEDAD7767);
-
-            setTimeout(function () {
-                CON850(_dato_novedad_7767)
-            }, 100)
-            _cambioregistro_7767();
+            setTimeout(_consultademostrarinf_7767, 100);
         } else {
             setTimeout(_consultademostrarinf_7767, 100);
-            _error_7767();
         }
     } else if (($_NOVEDAD7767 == '8') && (swinvalid == '00')) {
 
         setTimeout(_consultademostrarinf_7767, 100);
-        // _dato4_7767();
-
     } else if (($_NOVEDAD7767 == '8') && (swinvalid == '01')) {
         _error_7767();
     } else if (($_NOVEDAD7767 == '9') && (swinvalid == '01')) {
@@ -874,23 +866,18 @@ function _dataSAL7767_02(data) {
     } else if (($_NOVEDAD7767 == '9') && (swinvalid == '00')) {
         setTimeout(_retirar, 100);
     }
-
 }
 
 function _error_7767() {
 
     if ($_NOVEDAD7767 == '7') {
+        $_NOVEDAD7767 = 8;
+        $('#novedad_110c').val('8- Cambio');
         CON851('00', '00', null, 'error', 'Error');
-
-        setTimeout(function () {
-            CON850(_dato_novedad_7767)
-        }, 100)
-
+        setTimeout(_evaluarpaciente_7767, 100);
     } else if (($_NOVEDAD7767 == '8') || ($_NOVEDAD7767 == '9')) {
         CON851('01', '01', null, 'error', 'Error');
-        setTimeout(function () {
-            CON850(_dato_novedad_7767)
-        }, 100)
+        _evaluarpaciente_7767()
     }
 }
 
@@ -1073,25 +1060,25 @@ function _validacionestipopac2_7767() {
             if ($_NOVEDAD7767 == '7') {
                 _dato4_7767();
             }
-        }else {
-            _evaluarlugarnac_7767(); 
+        } else {
+            _evaluarlugarnac_7767();
         }
-    }else {
-        _evaluarlugarnac_7767(); 
+    } else {
+        _evaluarlugarnac_7767();
     }
 }
 
-function _evaluarlugarnac_7767(){
+function _evaluarlugarnac_7767() {
     validarInputs({
         form: '#LUGARNAM_110C',
         orden: "1"
     },
-        function () {_evaluarpaciente_7767();},
+        function () { _evaluarpaciente_7767(); },
         _validarlugarnaci_7767
     )
 }
 
-function _validarlugarnaci_7767(){
+function _validarlugarnaci_7767() {
     $_LUGARIDPACIW = $('#lugar_110c').val();
     if (($_LUGARIDPACIW == '00000') || ($_LUGARIDPACIW.trim() == '')) {
         _evaluarapellido_7767();
@@ -1286,7 +1273,6 @@ function _dato5_7767() {
 }
 
 function _evaluarprimernombre_7767() {
-    console.log('evaluarNOMBRE')
     validarInputs({
         form: '#NOMBRE1_110C',
         orden: "1"
@@ -1320,7 +1306,6 @@ function _dato6_7767() {
 }
 
 function _evaluarsegnombre_7767() {
-    console.log('SEGUNDO evaluarNOMBRE')
     validarInputs({
         form: '#NOMBRE2_110C',
         orden: "1"
@@ -1425,7 +1410,6 @@ function _buscarduplicado_7767() {
     $_NOMB_PACIW = $_NOMBRE1PACW.padEnd(12, ' ') + '|' + $_NOMBRE2PACW.padEnd(12, ' ');
     if ($_NOVEDAD7767 == '7') {
         var datos_envio = datosEnvio() + $_APEL_PACIW.toUpperCase() + '|' + $_NOMB_PACIW.toUpperCase() + '|' + $_CODPACIW + '|' + $_NACIMPACIW;
-        console.log(datos_envio)
         postData({
             datosh: datos_envio
         }, get_url("APP/SALUD/SER810H.DLL"))
@@ -1442,9 +1426,8 @@ function _buscarduplicado_7767() {
 }
 
 function ventanaDuplicado_7767(data) {
-    console.log("si hay duplicado")
+
     $_BUSQ = data['DUPLICADO'][0];
-    console.log($_BUSQ)
     $_APEL_PACIW = $_APELLIDO1PACW + ' ' + $_APELLIDO2PACW;
     $_NOMB_PACIW = $_NOMBRE1PACW + ' ' + $_NOMBRE2PACW;
     CON851('2B', '2B', mostrarDuplicados_7767($_BUSQ));
@@ -1498,38 +1481,15 @@ function mostrarDuplicados_7767($_BUSQ) {
 
 function reprocesarDatosPaci_7767() {
 
-    var vtnMsj = bootbox.dialog({
-        title: 'Documento ya existe',
-        message: '<span>¿desea reprocesar?</span>',
-        buttons: {
-            Aceptar: {
-                //Si desea reprocesar
-                span: 'Si',
-                className: 'btn-success',
-                callback: function () {
-                    console.log('llena', $_BUSQ['CEDULA'])
-                    vtnMsj.off('show.bs.modal');
-                    LLAMADO_DLL({
-                        dato: [$_BUSQ['CEDULA']],
-                        callback: _dataSAL7767_03,
-                        nombredll: 'SAL7767_03',
-                        carpeta: 'SALUD'
-                    });
-                }
-            },
-
-            Cancelar: {
-                //No desea reprocesar
-                span: 'No',
-                className: 'btn-danger',
-                callback: function () {
-                    _evaluarpaciente_7767();
-                    vtnMsj.off('show.bs.modal');
-
-                }
-            }
-        }
-    })
+    CON851P('07', _dato3_7767, pacienteexistente_7767)
+}
+function pacienteexistente_7767() {
+    LLAMADO_DLL({
+        dato: [$_BUSQ['CEDULA']],
+        callback: _dataSAL77672_03,
+        nombredll: 'SAL7767_03',
+        carpeta: 'SALUD'
+    });
 }
 
 function _evaluargruposang_7767() {
@@ -1976,7 +1936,6 @@ function _datociudad_7767() {
 }
 
 function _dataSAL7767_04(data) {
-    // console.debug(data, 'SAL7767_04');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCIUDW = date[1].trim();
@@ -2010,7 +1969,6 @@ function _datopais_7767() {
 }
 
 function _f8paisesrips(data) {
-    console.log(data)
     $_PAISRIP_7767 = data.PAISESRIPS;
     $_PAISRIP_7767.pop()
     _evaluarpais_7767();
@@ -2041,7 +1999,6 @@ function _mostrarpais_66717() {
 }
 
 function _dataSAL7767_05(data) {
-    // console.debug(data, 'SAL7767_05');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPPAISW = date[1].trim();
@@ -2099,7 +2056,6 @@ function consultarocupacion_7767() {
 }
 
 function _dataSAL7767_06(data) {
-    // console.debug(data, 'SAL7767_06');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPOCUPAW = date[1].trim();
@@ -2371,7 +2327,7 @@ function _seleccionaretnia_7767(etnia) {
             _validacionesetnia_7767();
             break;
         default:
-        _evaluarcolegio_7767;
+            _evaluarcolegio_7767;
             break;
     }
     $("#etnia_110c").val(etnia.COD + " - " + etnia.DESCRIP);
@@ -2993,14 +2949,17 @@ function _dataSER810C(data) {
         if (($_PARENTPACIW == '1') || ($_PARENTPACIW == '3')) {
             $("#cotizanted_110c").val($_DESCRIPCOTIPACW);
             _validatipocotizante_7767()
-
         } else {
             CON851('03', '03', null, 'error', 'error');
             _datocotizante_7767();
         }
     } else if (swinvalid == "01") {
-        CON851('01', '01', null, 'error', 'error');
-        _evaluarcotizante_7767()
+        // CON851('01', '01', null, 'error', 'error');
+        // _evaluarcotizante_7767()
+        let { ipcRenderer } = require("electron");
+        ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+        vector = ['on', 'Actualizando maestro de pacientes...']
+        _EventocrearSegventana(vector, consultarcotizante_7767);
 
     } else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -3552,7 +3511,7 @@ function peridocerticado_7767() {
             label: 'DESCRIP'
         }],
         seleccion: $_PERIECOPACIW,
-        callback_f: _evaluarcerteco_7767()
+        callback_f: _evaluarcerteco_7767
     },
         _seleccionarperiodoeco_7767);
 }
@@ -4333,42 +4292,30 @@ function _consultademostrarinf_7767() {
         nombredll: 'SAL7767_03',
         carpeta: 'SALUD'
     });
-
 }
 
 function _dataSAL7767_03(data) {
-
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODPACIW = date[1].trim();
     $_TIPOPACIW = date[2].trim();
     $_LUGARIDPACIW = date[3].trim();
     $_DECRIPPACIW = date[4].trim();
-
     $_APELLIDO1PACW = $_DECRIPPACIW.substring(0, 14);
-
     $_PERAPEL1PACIW = $_DECRIPPACIW.substring(0, 1);
     $_PERAPEL2PACIW = $_DECRIPPACIW.substring(1, 14);
-
     $_APELLIDO2PACW = $_DECRIPPACIW.substring(14, 29);
-
     $_PERANOM1PACIW = $_DECRIPPACIW.substring(14, 15);
     $_PERANOM2PACIW = $_DECRIPPACIW.substring(15, 30);
-
     $_NOMBRE1PACW = $_DECRIPPACIW.substring(29, 41);
-
     $_NOMBRE2PACW = $_DECRIPPACIW.substring(41, 54);
-
-
     $_NACIMPACIW = date[5].trim();
     $_ANOPACW = $_NACIMPACIW.substring(0, 4);
     $_MESPACW = $_NACIMPACIW.substring(4, 6);
     $_DIAPACW = $_NACIMPACIW.substring(6, 8);
-
     $_HEMOCLASPAC = date[6].trim();
     $_GRPSANGPACIW = $_HEMOCLASPAC.substring(0, 1);
     $_RHPACIW = $_HEMOCLASPAC.substring(1, 3);
-
     $_SEXOPACIW = date[7].trim();
     $_ESTCIVILPACIW = date[8].trim();
     $_NIVESTUPACIW = date[9].trim();
@@ -4443,7 +4390,6 @@ function _dataSAL7767_03(data) {
     $_ANTCANCERPACIW = date[67].trim();
     $_MEDFAMIPACIW = date[68].trim();
     $_DESCRIPMEDPACIW = date[69].trim();
-
     if (swinvalid == '00') {
         LLAMADO_DLL({
             dato: [$_CODPACIW],
@@ -4481,9 +4427,14 @@ function _dataSAL7767_03_1(data) {
 
 function _mostrardatos_7767() {
 
-    $('#numero_110c').val($_CODPACIW);
+    // $('#numero_110c').val($_CODPACIW);
     $('#identif_110c').val($_TIPOPACIW);
-    $('#lugar_110c').val($_LUGARIDPACIW);
+    if($_LUGARIDPACIW.trim() == ''){
+        $_LUGARIDPACIW= ''; 
+        $('#lugar_110c').val($_LUGARIDPACIW);
+    }else{
+        $('#lugar_110c').val($_LUGARIDPACIW);
+    }
     $('#apellido1_110c').val($_APELLIDO1PACW);
     $('#apellido2_110c').val($_APELLIDO2PACW);
     $('#nombre1_110c').val($_NOMBRE1PACW);
@@ -4493,9 +4444,7 @@ function _mostrardatos_7767() {
     $_DIANACIMPACIW = $_NACIMPACIW.substring(6, 8);
     $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
     $_EDADPACW = $_ANOACTUALW - $_ANONACIMPACIW;
-
     $('#edad_110c').val($_EDADPACW);
-
     $('#gruposang_110c').val($_GRPSANGPACIW);
     $('#rh_110c').val($_RHPACIW);
     $('#sexo_110c').val($_SEXOPACIW);
@@ -4584,27 +4533,31 @@ function _mostrardatos_7767() {
     $('#entidad_110c').val($_ENTIFACTPACIW);
     $('#entidadd_110c').val($_DESCRIPENTIPACIW);
     $('#fechasistd_110c').val($_FECHANITPACIW);
-
-    if($_MEDFAMIPACIW == '0000000000'){
+    if ($_MEDFAMIPACIW == '0000000000') {
         $_MEDFAMIPACIW = ' ';
         $('#medicofam_110c').val($_MEDFAMIPACIW);
-    }else{
+    } else {
         $('#medicofam_110c').val($_MEDFAMIPACIW);
     }
-    
     $('#medicofamd_110c').val($_DESCRIPMEDPACIW);
     $('#correopacie_110c').val($_EMAILPACIW);
     $('#fact_110c').val($_OPERCREAPACIW);
     $('#fechaact_110c').val($_FECHACREAPACIW);
-    $('#hr_110c').val($_HORACREAPACIW);
+    $_HORACREA = $_HORACREAPACIW.substring(0, 2);
+    $_MINCREA = $_HORACREAPACIW.substring(2, 4);
+    $('#hr_110c').val($_HORACREA + ':' + $_MINCREA);
     $('#modificado_110c').val($_OPERMODIFPACIW);
     $('#fechamodif_110c').val($_FECHAMODIFPACIW);
-    $('#hrmodif_110c').val($_HORAMODIFPACIW);
+    $_HORAMOD = $_HORAMODIFPACIW.substring(0, 2);
+    $_MINMOD = $_HORAMODIFPACIW.substring(2, 4);
+    $('#hrmodif_110c').val($_HORAMOD + ':' + $_MINMOD);
 
     if ($_NOVEDAD7767 == '9') {
         _retiroregistro_7767();
-    } else {
+    } else if ($_NOVEDAD7767 == '8') {
         _dato4_7767();
+    } else {
+        _error_7767();
     }
 }
 
@@ -4667,12 +4620,14 @@ function _grabardatos_7767() {
         $_OPERMODIFPACIW = $_ADMINW;
         $_FECHAMODIFPACIW = moment().format('YYMMDD');
         $_HORAMODIFPACIW = moment().format('HH:mm');
+        $_HORAMODIFPACIW = $_HORAMODIFPACIW.replace(/:/, '');
 
 
     } else {
         $_OPERCREAPACIW = $_ADMINW;
         $_FECHACREAPACIW = moment().format('YYMMDD');
         $_HORACREAPACIW = moment().format('HH:mm');
+        $_HORACREAPACIW = $_HORACREAPACIW.replace(/:/, '');
         $_OPERMODIFPACIW = '';
         $_FECHAMODIFPACIW = '';
         $_HORAMODIFPACIW = '';
@@ -4680,6 +4635,10 @@ function _grabardatos_7767() {
 
     $_HEMOCLASPAC = $_GRPSANGPACIW + $_RHPACIW;
     $_RESTRICCIONPACIW = $_RESTAPLIPACIW + $_RESTDROGPACIW + $_RESTCIRUPACIW + $_RESTLABOPACIW + $_RESTIMAGPACIW + $_RESTESTAPACIW + $_RESTCONSPACIW + $_RESTTERFPACIW + $_RESTTEROPACIW + $_RESTADONPACIW + $_RESTPYPPACIW;
+    $_APELLIDO1PACW.padEnd(15, ' ');
+    $_APELLIDO2PACW.padEnd(15, ' ');
+    $_NOMBRE1PACW.padEnd(12, ' ');
+    $_NOMBRE2PACW.padEnd(12, ' ');
 
     LLAMADO_DLL({
         dato: [$_NOVEDAD7767, $_CODPACIW, $_TIPOPACIW, $_LUGARIDPACIW, $_APELLIDO1PACW, $_APELLIDO2PACW, $_NOMBRE1PACW, $_NOMBRE2PACW, $_NACIMPACIW, $_HEMOCLASPAC, $_SEXOPACIW, $_ESTCIVILPACIW, $_NIVESTUPACIW, $_ZONAPACIW, $_PADREPACIW, $_MADREPACIW, $_DIRPACIW, $_TELPACIW, $_CELPACIW, $_CIUPACIW, $_OCUPPACIW, $_PAISPACIW, $_ESTRATOPACIW, $_COPAGOPACIW, $_TIPOPACIW, $_INSTITUTOPACIW, $_ETNIAPACIW, $_COMUNIPACW, $_RESGUARPACIW, $_TIPOAFILPACIW, $_PORTABPACIW, $_CIUDASEGPACIW, $_EPSPACIW, $_CONTRATOPACIW, $_FECHAAFILPACIW, $_FICHAPACIW, $_CARNETPACIW, $_FECHAVENCEPACIW, $_FECHADEMPACIW, $_DEMANINDPACIW, $_IDCOTIPACIW, $_PARENTPACIW, $_VICTICONFLICPACIW, $_PROGEPSPACIW, $_ALTCOSPACIW, $_TUTELAPACIW, $_EMPRESAPACIW, $_CRONICOPACIW, $_PATOLCRONICPACIW, $_CLASIFPACIW, $_ACOMPAPACIW, $_TELACOMPACIW, $_CERTESTUDPACIW, $_PERIESTUDPACIW, $_ULTMAMOPACIW, $_CERTECONOPACIW, $_PERIECOPACIW, $_MULTICONSULPACIW, $_RESTRICCIONPACIW, $_VCMPACIW, $_DERECHOPACIW, $_OBSERVPACIW, $_DISCAPPACIW, $_EMBALTOPACIW, $_ENTIFACTPACIW, $_FECHANITPACIW, $_ANTCANCERPACIW, $_MEDFAMIPACIW, $_EMAILPACIW, $_OPERCREAPACIW, $_FECHACREAPACIW, $_HORACREAPACIW, $_OPERMODIFPACIW, $_FECHAMODIFPACIW, $_HORAMODIFPACIW],
@@ -4724,10 +4683,12 @@ function _dataSAL7767_13(data) {
     if (swinvalid == "00") {
         if ($_NOVEDAD7767 == '9') {
             toastr.success('Se ha retirado', 'MAESTRO PACIENTES');
-            limpiarCajas_7767();
+            _inputControl('reset');
+            CON850(_dato_novedad_7767);
         } else {
             toastr.success('Se ha guardado', 'MAESTRO PACIENTES');
-            limpiarCajas_7767();
+            _inputControl('reset');
+            CON850(_dato_novedad_7767);
         }
     } else if (swinvalid == "01") {
         CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
@@ -4736,15 +4697,6 @@ function _dataSAL7767_13(data) {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-
-function limpiarCajas_7767() {
-    _inputControl('reset');
-    CON850(_dato_novedad_7767);
-}
-
-
-
-
 /////////////////////////////////// OTRAS VALIDACIONES /////////////////////////////////
 
 function _evaluarantecendentescancer() {
@@ -4906,4 +4858,256 @@ function _dato2email_7767() {
     } else {
         _datodireccion_7767();
     }
+}
+
+function _dataSAL77672_03(data) {
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_CODPACIW = date[1].trim();
+    $_TIPOPACIW = date[2].trim();
+    $_LUGARIDPACIW = date[3].trim();
+    $_DECRIPPACIW = date[4].trim();
+    $_APELLIDO1PACW = $_DECRIPPACIW.substring(0, 14);
+    $_PERAPEL1PACIW = $_DECRIPPACIW.substring(0, 1);
+    $_PERAPEL2PACIW = $_DECRIPPACIW.substring(1, 14);
+    $_APELLIDO2PACW = $_DECRIPPACIW.substring(14, 29);
+    $_PERANOM1PACIW = $_DECRIPPACIW.substring(14, 15);
+    $_PERANOM2PACIW = $_DECRIPPACIW.substring(15, 30);
+    $_NOMBRE1PACW = $_DECRIPPACIW.substring(29, 41);
+    $_NOMBRE2PACW = $_DECRIPPACIW.substring(41, 54);
+    $_NACIMPACIW = date[5].trim();
+    $_ANOPACW = $_NACIMPACIW.substring(0, 4);
+    $_MESPACW = $_NACIMPACIW.substring(4, 6);
+    $_DIAPACW = $_NACIMPACIW.substring(6, 8);
+    $_HEMOCLASPAC = date[6].trim();
+    $_GRPSANGPACIW = $_HEMOCLASPAC.substring(0, 1);
+    $_RHPACIW = $_HEMOCLASPAC.substring(1, 3);
+    $_SEXOPACIW = date[7].trim();
+    $_ESTCIVILPACIW = date[8].trim();
+    $_NIVESTUPACIW = date[9].trim();
+    $_ZONAPACIW = date[10].trim();
+    $_PADREPACIW = date[11].trim();
+    $_MADREPACIW = date[12].trim();
+    $_DIRPACIW = date[13].trim();
+    $_TELPACIW = date[14].trim();
+    $_CELPACIW = date[15].trim();
+    $_CIUPACIW = date[16].trim();
+    $_NOMCIUPACIW = date[17].trim();
+    $_OCUPPACIW = date[18].trim();
+    $_NOMOCUPPACIW = date[19].trim();
+    $_PAISPACIW = date[20].trim();
+    $_ESTRATOPACIW = date[21].trim();
+    $_COPAGOPACIW = date[22].trim();
+    $_REGIMENPACIW = date[23].trim();
+    $_INSTITUTOPACIW = date[24].trim();
+    $_DESCRIPINSTIPACIW = date[25].trim();
+    $_ETNIAPACIW = date[26].trim();
+    $_TIPOAFILPACIW = date[27].trim();
+    $_PORTABPACIW = date[28].trim();
+    $_CIUDASEGPACIW = date[29].trim();
+    $_EPSPACIW = date[30].trim();
+    $_NOMEPSPACIW = date[31].trim();
+    $_CONTRATOPACIW = date[32].trim();
+    $_FECHAAFILPACIW = date[33].trim();
+    $_FICHAPACIW = date[34].trim();
+    $_CARNETPACIW = date[35].trim();
+    $_FECHAVENCEPACIW = date[36].trim();
+    $_FECHADEMPACIW = date[37].trim();
+    $_DEMANINDPACIW = date[38].trim();
+    $_IDCOTIPACIW = date[39].trim();
+    $_DESCRIPCOTIPACW = date[40].trim();
+    $_PARENTPACIW = date[41].trim();
+    $_VICTICONFLICPACIW = date[42].trim();
+    $_PROGEPSPACIW = date[43].trim();
+    $_ALTCOSPACIW = date[44].trim();
+    $_TUTELAPACIW = date[45].trim();
+    $_EMPRESAPACIW = date[46].trim();
+    $_CRONICOPACIW = date[47].trim();
+    $_PATOLCRONICPACIW = date[48].trim();
+    $_CLASIFPACIW = date[49].trim();
+    $_ACOMPAPACIW = date[50].trim();
+    $_TELACOMPACIW = date[51].trim();
+    $_CERTESTUDPACIW = date[52].trim();
+    $_PERIESTUDPACIW = date[53].trim();
+    $_ULTMAMOPACIW = date[54].trim();
+    $_CERTECONOPACIW = date[55].trim();
+    $_PERIECOPACIW = date[56].trim();
+    $_MULTICONSULPACIW = date[57].trim();
+    $_RESTRICCIONPACIW = date[58].trim();
+    $_RESTAPLIPACIW = $_RESTRICCIONPACIW.substring(0, 1);
+    $_RESTDROGPACIW = $_RESTRICCIONPACIW.substring(1, 2);
+    $_RESTCIRUPACIW = $_RESTRICCIONPACIW.substring(2, 3);
+    $_RESTLABOPACIW = $_RESTRICCIONPACIW.substring(3, 4);
+    $_RESTIMAGPACIW = $_RESTRICCIONPACIW.substring(4, 5);
+    $_RESTESTAPACIW = $_RESTRICCIONPACIW.substring(5, 6);
+    $_RESTCONSPACIW = $_RESTRICCIONPACIW.substring(6, 7);
+    $_RESTTERFPACIW = $_RESTRICCIONPACIW.substring(7, 8);
+    $_RESTTEROPACIW = $_RESTRICCIONPACIW.substring(8, 9);
+    $_RESTADONPACIW = $_RESTRICCIONPACIW.substring(9, 10);
+    $_RESTPYPPACIW = $_RESTRICCIONPACIW.substring(10, 11);
+    $_VCMPACIW = date[59].trim();
+    $_DERECHOPACIW = date[60].trim();
+    $_OBSERVPACIW = date[61].trim();
+    $_DISCAPPACIW = date[62].trim();
+    $_EMBALTOPACIW = date[63].trim();
+    $_ENTIFACTPACIW = date[64].trim();
+    $_DESCRIPENTIPACIW = date[65].trim();
+    $_FECHANITPACIW = date[66].trim();
+    $_ANTCANCERPACIW = date[67].trim();
+    $_MEDFAMIPACIW = date[68].trim();
+    $_DESCRIPMEDPACIW = date[69].trim();
+    if (swinvalid == '00') {
+        LLAMADO_DLL({
+            dato: [$_CODPACIW],
+            callback: _dataSAL77672_03_1,
+            nombredll: 'SAL7767_03_1',
+            carpeta: 'SALUD'
+        });
+    } else {
+        CON852(date[1], date[2], date[3], _toggleNav);
+    }
+}
+
+function _dataSAL77672_03_1(data) {
+
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_CODPACIW = date[1].trim();
+    $_COMUNIPACW = date[2].trim();
+    $_RESGUARPACIW = date[3].trim();
+    $_EMAILPACIW = date[4].trim();
+    $_DATOACTPACIW = date[5].trim();
+    $_OPERCREAPACIW = $_DATOACTPACIW.substring(0, 4);
+    $_FECHACREAPACIW = $_DATOACTPACIW.substring(4, 12);
+    $_HORACREAPACIW = $_DATOACTPACIW.substring(12, 16);
+    $_OPERMODIFPACIW = $_DATOACTPACIW.substring(16, 20);
+    $_FECHAMODIFPACIW = $_DATOACTPACIW.substring(20, 28);
+    $_HORAMODIFPACIW = $_DATOACTPACIW.substring(28, 32);
+    if (swinvalid == '00') {
+        _mostrardatos2_7767();
+    } else {
+        CON852(date[1], date[2], date[3], _toggleNav);
+    }
+}
+function _mostrardatos2_7767() {
+
+    // $('#numero_110c').val($_CODPACIW);
+    $('#identif_110c').val($_TIPOPACIW);
+    $('#lugar_110c').val($_LUGARIDPACIW);
+    $('#apellido1_110c').val($_APELLIDO1PACW);
+    $('#apellido2_110c').val($_APELLIDO2PACW);
+    $('#nombre1_110c').val($_NOMBRE1PACW);
+    $('#nombre2_110c').val($_NOMBRE2PACW);
+    $_ANONACIMPACIW = $_NACIMPACIW.substring(0, 4);
+    $_MESNACIMPACIW = $_NACIMPACIW.substring(4, 6);
+    $_DIANACIMPACIW = $_NACIMPACIW.substring(6, 8);
+    $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
+    $_EDADPACW = $_ANOACTUALW - $_ANONACIMPACIW;
+    $('#edad_110c').val($_EDADPACW);
+    $('#gruposang_110c').val($_GRPSANGPACIW);
+    $('#rh_110c').val($_RHPACIW);
+    $('#sexo_110c').val($_SEXOPACIW);
+    $('#civil_110c').val($_ESTCIVILPACIW);
+    $('#estudio_110c').val($_NIVESTUPACIW);
+    $('#zona_110c').val($_ZONAPACIW);
+    $('#padre_110c').val($_PADREPACIW);
+    $('#madre_110c').val($_MADREPACIW);
+    $('#direccion_110c').val($_DIRPACIW);
+    $('#tel1_110c').val($_TELPACIW);
+    $('#tel2_110c').val($_CELPACIW);
+    $('#ciudad_110c').val($_CIUPACIW);
+    $('#ciudadd_110c').val($_NOMCIUPACIW);
+    $('#ocupacion_110c').val($_OCUPPACIW);
+    $('#ocupaciond_110c').val($_NOMOCUPPACIW);
+    $('#pais_110c').val($_PAISPACIW);
+    $('#nivel_110c').val($_ESTRATOPACIW);
+    $('#copago_110c').val($_COPAGOPACIW);
+    $('#regimen_110c').val($_REGIMENPACIW);
+    $('#colegio_110c').val($_INSTITUTOPACIW);
+    $('#etnia_110c').val($_ETNIAPACIW);
+    $('#comunidades_110c').val($_COMUNIPACW);
+    $('#resguardos_110c').val($_RESGUARPACIW);
+    $('#tipoafil_110c').val($_TIPOAFILPACIW);
+    $('#portabilidad_7767').val($_PORTABPACIW);
+    $('#ciudadportab_7767').val($_CIUDASEGPACIW);
+    $('#eps_110c').val($_EPSPACIW);
+    $('#epsd_110c').val($_NOMEPSPACIW);
+    $('#contrato_110c').val($_CONTRATOPACIW);
+    $_ANOAFILPACIW = $_FECHAAFILPACIW.substring(0, 4);
+    $_MESAFILPACIW = $_FECHAAFILPACIW.substring(4, 6);
+    $_DIAAFILPACIW = $_FECHAAFILPACIW.substring(6, 8);
+    $('#fechaafil_110c').val($_ANOAFILPACIW + '/' + $_MESAFILPACIW + '/' + $_DIAAFILPACIW);
+    $('#ficha_110c').val($_FICHAPACIW);
+    $('#carnet_110c').val($_CARNETPACIW);
+    $_ANOVENCEPACIW = $_FECHAVENCEPACIW.substring(0, 4);
+    $_MESVENCEPACIW = $_FECHAVENCEPACIW.substring(4, 6);
+    $_DIAVENCEPACIW = $_FECHAVENCEPACIW.substring(6, 8);
+    $('#fechavence_110c').val($_ANOVENCEPACIW + '/' + $_MESVENCEPACIW + '/' + $_DIAVENCEPACIW);
+    $_ANODEMPACIW = $_FECHADEMPACIW.substring(0, 4);
+    $_MESDEMPACIW = $_FECHADEMPACIW.substring(4, 6);
+    $_DIADEMPACIW = $_FECHADEMPACIW.substring(6, 8);
+    $('#fechademan_110c').val($_ANODEMPACIW + '/' + $_MESDEMPACIW + '/' + $_DIADEMPACIW);
+    $('#demandaindu_110c').val($_DEMANINDPACIW);
+    $('#cotizante_110c').val($_IDCOTIPACIW);
+    $('#cotizanted_110c').val($_DESCRIPCOTIPACW);
+    $('#parentezco_110c').val($_PARENTPACIW);
+    $('#victimac_110c').val($_VICTICONFLICPACIW);
+    $('#proespecial_110c').val($_PROGEPSPACIW);
+    $('#altocosto_110c').val($_ALTCOSPACIW);
+    $('#pacitutela_110c').val($_TUTELAPACIW);
+    $('#empresalab_110c').val($_EMPRESAPACIW);
+    $('#cronica_110c').val($_CRONICOPACIW);
+    $('#patologiacronica_110c').val($_PATOLCRONICPACIW);
+    $('#clasif_110c').val($_CLASIFPACIW);
+    $('#acompañante_110c').val($_ACOMPAPACIW);
+    $('#telefacomp_110c').val($_TELACOMPACIW);
+    $_ANOCERTESTUDPACIW = $_CERTESTUDPACIW.substring(0, 4);
+    $_MESCERTESTUDPACIW = $_CERTESTUDPACIW.substring(4, 6);
+    $('#fechamatr_110c').val($_ANOCERTESTUDPACIW + '/' + $_MESCERTESTUDPACIW);
+    $('#matr_110c').val($_PERIESTUDPACIW);
+    $_ANOULTMAMOPACIW = $_ULTMAMOPACIW.substring(0, 4);
+    $_MESULTMAMOPACIW = $_ULTMAMOPACIW.substring(4, 6);
+    $('#mamografia_110c').val($_ANOULTMAMOPACIW + '/' + $_MESULTMAMOPACIW);
+    $_ANOCERTECONOPACIW = $_CERTECONOPACIW.substring(0, 4);
+    $_MESCERTECONOPACIW = $_CERTECONOPACIW.substring(4, 6);
+    $('#fechaecono_110c').val($_ANOCERTECONOPACIW + '/' + $_MESCERTECONOPACIW);
+    $('#econo_110c').val($_PERIECOPACIW);
+    $('#policonsul_110c').val($_MULTICONSULPACIW);
+    $('#restric_110c').val($_RESTAPLIPACIW);
+    $('#drog_110c').val($_RESTDROGPACIW);
+    $('#cirug_110c').val($_RESTCIRUPACIW);
+    $('#lab_110c').val($_RESTLABOPACIW);
+    $('#rx_110c').val($_RESTIMAGPACIW);
+    $('#estanc_110c').val($_RESTESTAPACIW);
+    $('#consult_110c').val($_RESTCONSPACIW);
+    $('#fisiot_110c').val($_RESTTERFPACIW);
+    $('#terap_110c').val($_RESTTEROPACIW);
+    $('#odont_110c').val($_RESTADONPACIW);
+    $('#pyp_110c').val($_RESTPYPPACIW);
+    $('#vcm_110c').val($_VCMPACIW);
+    $('#basedatos_110c').val($_DERECHOPACIW);
+    $('#observaciones_110c').val($_OBSERVPACIW);
+    $('#discapacidad_110c').val($_DISCAPPACIW);
+    $('#altoriesgo_110c').val($_EMBALTOPACIW);
+    $('#entidad_110c').val($_ENTIFACTPACIW);
+    $('#entidadd_110c').val($_DESCRIPENTIPACIW);
+    $('#fechasistd_110c').val($_FECHANITPACIW);
+    if ($_MEDFAMIPACIW == '0000000000') {
+        $_MEDFAMIPACIW = ' ';
+        $('#medicofam_110c').val($_MEDFAMIPACIW);
+    } else {
+        $('#medicofam_110c').val($_MEDFAMIPACIW);
+    }
+    $('#medicofamd_110c').val($_DESCRIPMEDPACIW);
+    $('#correopacie_110c').val($_EMAILPACIW);
+    $('#fact_110c').val($_OPERCREAPACIW);
+    $('#fechaact_110c').val($_FECHACREAPACIW);
+    $('#hr_110c').val($_HORACREAPACIW);
+    $('#modificado_110c').val($_OPERMODIFPACIW);
+    $('#fechamodif_110c').val($_FECHAMODIFPACIW);
+    $_HORAMOD = $_HORAMODIFPACIW.substring(0, 1);
+    $_MINMOD = $_HORAMODIFPACIW.substring(1, 3);
+    $('#hrmodif_110c').val($_HORAMOD + ':' + $_MINMOD);
+
+    _evaluargruposang_7767();
 }

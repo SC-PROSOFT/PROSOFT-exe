@@ -7,7 +7,7 @@ var $_SECU1NUM, $_SECU2NUM, $_REDEXTER, NUM_FACT, $_FECHA_SIG_W, $_FECHA_ING_W, 
     $_CONTROLCL2 = '', $_CONTROLCL3 = '', $_CONTROLCL4 = '', $_CONTROLCL5 = '', $_CONTROLCL6 = '', $_CONTROLCL7 = '', $_CISW, $_MYTW, $_CONTROLXSERVW,
     $_ARTIVAW, $_NROPOLW, $_RUTAW = '', $_ESTW, $_CLASIFW, $_ENTRAREMITW, $_ORIGREMIT, $_CIUDADW, $_DESCRIPCIUDADW, $_FUNCAUTORINGW,
     $_NROAUTORIZACIONW, $_OBSERAPERW, $_OPERBLOQNUM = '', $_ENTIDADTER = ' ', $_FORMACOPAGNUM = '', $_TIPOFACTNUM = '', $_CLASIFNUM = '',
-    $_TIPOEVENTONUM = '', $_TIPOPACINUM;
+    $_TIPOEVENTONUM = '', $_TIPOPACINUM, $_NITCONTW = '';
 var $_PACILNK;
 var SAL7411 = [];
 
@@ -1103,7 +1103,7 @@ function _datoestado() {
         _cambiarestado_SAL7411();
     }
     else {
-        if (parseInt($_AÑOPACI_ING7411) > 1999) {
+        if (parseInt($_AÑOPACI_ING7411) > 1899) {
             ventanaclave();
         }
         // else{
@@ -1917,6 +1917,7 @@ function validar_fechaing_7411() {
             _evaluarservicio_SAL7411();
         }
     } else {
+        $_FECHAINGNUM = 20 + $_FECHAINGNUM; 
         $_HORAINGNUMW = moment().format('HH:mm');
         $("#horaing_108").val($_HORAINGNUMW);
         _evaluarfechasalida_7411();

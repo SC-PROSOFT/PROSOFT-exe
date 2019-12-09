@@ -31,6 +31,7 @@
         height: 20%;
         position: absolute;
     }
+
     #encabezado_fact {
         /* margin-top: 5px; */
         display: flex;
@@ -39,6 +40,7 @@
         padding-top: 30px;
         justify-content: space-between;
     }
+
     #cliente_fact {
         /* margin-top: 5px; */
         display: flex;
@@ -47,6 +49,7 @@
         padding-bottom: 40px;
         justify-content: space-between;
     }
+
     #datospac_fact {
         margin: auto;
         border: black 1px solid;
@@ -83,6 +86,11 @@
         display: flex;
         justify-content: space-between;
     }
+    #firma_linea {
+        margin-top: 2px;
+        display: flex;
+        justify-content: flex-end;
+    }
 
     #septima_linea {
         margin-top: 2px;
@@ -97,18 +105,19 @@
         </div>
         <div id="encabezado_fact">
             <div id="admision_fact">
-                <a style="font-size:16px; margin:0 auto;" class="admision_ser108p">HOJA DE ADMISION </a>
+                <a style="font-size:18px; margin:0 auto;" class="admision_ser108p">HOJA DE ADMISION </a>
             </div>
             <div id="factura_fact">
-                <a style="font-size:16px; margin:0 auto;" class="facturatxt_ser108p">CUENTA NRO: </a>
+                <a style="font-size:18px; margin:0 auto;" class="facturatxt_ser108p">CUENTA NRO: </a>
             </div>
         </div>
         <div id="cliente_fact">
             <div id="descripnit_fact">
-                <a style="font-size:14px;" class="descripnittxt_ser108p"></a>
+                <a style="font-size:15px;" class="descripnittxt_ser108p"></a>
             </div>
             <div id="nit_fact">
-                <a style="font-size:14px;" class="nittxt_ser108p"></a>
+                <a style="font-size:15px; margin:0 auto;" class="nittxt_ser108p">NIT: </a>
+                <!-- <a style="font-size:14px;" class="nittxt_ser108p">NIT </a> -->
             </div>
         </div>
     </div>
@@ -146,6 +155,11 @@
     </div>
     <div class="salto-linea"></div>
     <div id="masdatos_fact">
+        <div id="firma_linea">
+            <div id="nombreauto_fact">
+                <a style="font-size:14px; margin:0 auto;" class="firmatxt_ser108p">_________________________________</a>
+            </div>
+        </div>
         <div id="quinta_linea">
             <div id="cedulaauto_fact">
                 <a style="font-size:14px; margin:0 auto;" class="cedautotxt_ser108p">AUTORIZO: </a>
@@ -173,7 +187,7 @@
                 <a style="font-size:9px; margin:0 auto;" class="fechamodiftxt_ser108p"></a>
             </div>
             <div id="bloq_fact">
-                <a style="font-size:9px; margin:0 auto;" class="bloqtxt_ser108p"> BLOQ: </a>
+                <a style="font-size:9px; margin:0 auto;" class="bloqtxt_ser108p"> BLOQ:  </a>
             </div>
             <div id="imprime_fact">
                 <a style="font-size:9px; margin:0 auto;" class="imprimetxt_ser108p"> IMPR: </a>
@@ -187,28 +201,28 @@
 <script>
     var SER108P = [];
     ipcRenderer.on('ping', (e, data) => {
-        // console.log(data);
+        console.log(data);
 
         SER108P = data.datos;
         SER108P.FACTURA = 'CUENTA NRO:' + SER108P.FACTURA;
         SER108P.DESCRIPCION = '' + SER108P.DESCRIPCION;
-        SER108P.NIT = '' + SER108P.NIT;
+        SER108P.NIT = 'NIT: ' + SER108P.NIT;
         SER108P.CEDULA = 'PACIENTE:' + SER108P.CEDULA;
-        SER108P.PACIENTE = '' + SER108P.PACIENTE; 
+        SER108P.PACIENTE = '' + SER108P.PACIENTE;
         SER108P.EPS = 'ENTIDAD:' + SER108P.EPS;
-        SER108P.DESCRIPCION = '' + SER108P.DESCRIPCION; 
+        SER108P.DESCRIPCION = '' + SER108P.DESCRIPCION;
         SER108P.INGRESO = 'FECHA INGRESO:' + SER108P.INGRESO;
         SER108P.HABITACION = 'HABITACION:' + SER108P.HABITACION;
         SER108P.RETIRO = 'FECHA SALIDA:' + SER108P.RETIRO;
         SER108P.FUNCIONARIO = 'AUTORIZO:' + SER108P.FUNCIONARIO;
-        SER108P.NOMBREFUNC = '' + SER108P.NOMBREFUNC; 
+        SER108P.NOMBREFUNC = '' + SER108P.NOMBREFUNC;
         SER108P.OBSERVACION = 'OBSERVACION:' + SER108P.OBSERVACION;
         SER108P.OPERCREADO = 'ELABORADO:' + SER108P.OPERCREADO;
-        SER108P.FECHACREADO = '' + SER108P.FECHACREADO; 
+        SER108P.FECHACREADO = '' + SER108P.FECHACREADO;
         SER108P.OPERMODIF = 'MODIFICADO:' + SER108P.OPERMODIF;
-        SER108P.FECHAMODIF = '' + SER108P.FECHAMODIF; 
-        SER108P.OPERBLOQ = 'BLOQ:' + SER108P.OPERBLOQ;
-        SER108P.ADMIN = 'IMPR:' + SER108P.ADMIN;
+        SER108P.FECHAMODIF = '' + SER108P.FECHAMODIF;
+        SER108P.OPERBLOQ = 'BLOQ:   ' + SER108P.OPERBLOQ;
+        SER108P.ADMIN = 'IMPR:  ' + SER108P.ADMIN;
 
         $('.facturatxt_ser108p').text(SER108P.FACTURA);
         $('.descripnittxt_ser108p').text(SER108P.DESCRIPCION);

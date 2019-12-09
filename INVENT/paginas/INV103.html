@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-12" style="padding-right: 0; padding-left: 10px;">
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                                    <!-- <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
                                         <div class="inline-inputs">
                                             <label class="col-md-4 col-sm-3 col-xs-12">Tipo</label>
                                             <div class="input-group col-md-10 col-sm-9 col-xs-12">
@@ -63,9 +63,9 @@
                                                     data-orden="1">
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
 
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <!-- <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="inline-inputs">
                                             <label class="col-md-4">Tipo: </label>
                                             <div class="col-md-8">
@@ -80,7 +80,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                         <div class="inline-inputs">
@@ -135,7 +135,7 @@
                                             <label class="col-md-3 col-sm-8 col-xs-12">Descripcion</label>
                                             <div class="input-group col-md-9 col-sm-4 col-xs-12" id="DESCRIPCION_103">
                                                 <input id="descripcion_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                    data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -250,7 +250,7 @@
                                             <label class="col-md-3 col-sm-3 col-xs-3">Otros</label>
                                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
                                                 <input id="otros_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                    data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -293,7 +293,7 @@
                                             <label class="col-md-5 col-sm-8 col-xs-12">Referencia</label>
                                             <div class="input-group col-md-7 col-sm-4 col-xs-12" id="REFERENCIA_103">
                                                 <input id="referencia_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="15" data-orden="1">
+                                                    maxlength="15" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -335,7 +335,7 @@
                                             <label class="col-md-5 col-sm-8 col-xs-12">Un.Medida</label>
                                             <div class="input-group col-md-7 col-sm-4 col-xs-12" id="UNIDAD_103">
                                                 <input id="unimedida_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="5" data-orden="1">
+                                                    maxlength="5" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -387,7 +387,7 @@
 
                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                         <div class="inline-inputs">
-                                            <label class="col-md-5 col-sm-8 col-xs-12">Stock Alm </label>
+                                            <label class="col-md-5 col-sm-8 col-xs-12">Stock Almac </label>
                                             <div class="input-group col-md-8 col-sm-4 col-xs-12" id="STOCKALM_103">
                                                 <input id="stockalm_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="7" data-orden="1">
@@ -521,7 +521,7 @@
                                             <label class="col-md-4 col-sm-6 col-xs-6">Color</label>
                                             <div class="input-group col-md-8 col-sm-6 col-xs-6" id="COLOR_103">
                                                 <input id="color_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="20" data-orden="1">
+                                                    maxlength="20" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -933,28 +933,26 @@
                                                 <input id="presentacion_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="3" data-orden="1">
                                             </div>
-                                            <button type="button" id="codpresentacionBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                            <button type="button" id="presentacionBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
                                                 <i class="icon-magnifier"></i>
                                             </button>
                                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                                <input id="presentaciond_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                <input id="presentaciond_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-5 col-xs-12">
                                         <div class="inline-inputs">
-                                            <label class="col-md-6 col-sm-6 col-xs-12">Unidad Medida</label>
-                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="UNIDADMED_103">
+                                            <label class="col-md-6 col-sm-6 col-xs-12">Unid Medida</label>
+                                            <div class="input-group col-md-6 col-sm-6 col-xs-12" id="UNIDADME_103">
                                                 <input id="unidadme_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="2" data-orden="1">
+                                                    maxlength="3" data-orden="1">
                                             </div>
-                                            <button type="button" id="codunidadmedBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                            <button type="button" id="unidadmeBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
                                                 <i class="icon-magnifier"></i>
                                             </button>
                                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                                <input id="unidadmed_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                <input id="unidadmed_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
                                             </div>
                                         </div>
                                     </div>
@@ -962,10 +960,10 @@
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Atc</label>
                                             <div class="input-group col-md-5 col-sm-6 col-xs-12" id="ATC_103">
-                                                <input id="Atc_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                <input id="atc_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                maxlength="11" data-orden="1">
                                             </div>
-                                            <button type="button" id="AtcBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                            <button type="button" id="atcBtn_103" class="btn btn-default col-md-1 col-sm-1 col-xs-1">
                                                 <i class="icon-magnifier"></i>
                                             </button>
                                         </div>
@@ -974,8 +972,7 @@
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Concentrado</label>
                                             <div class="input-group col-md-6 col-sm-6 col-xs-12" id="CONCENTRADO_103">
-                                                <input id="concentrado_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    data-orden="1">
+                                                <input id="concentrado_103" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
                                             </div>
                                         </div>
                                     </div>
@@ -1235,6 +1232,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <a id="grabar_inv103" class="float_inv103" style="left: 21px;">
+                                <span>F3 </span>
+                                <i class="glyphicon glyphicon-print my-float-con110c"></i>
+                            </a>
                         </form>
                     </div>
                 </div>
@@ -1242,5 +1243,33 @@
         </div>
     </div>
 </div>
+<style>
+    .float_inv103 {
+        position: fixed;
+        width: 65px;
+        height: 60px;
+        bottom: 16px;
+        background-color: #476fad;
+        color: #FFF;
+        border-radius: 50px;
+        text-align: center;
+        box-shadow: 1px 1px 1px #999;
+        overflow: hidden;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .float_inv103:hover {
+        box-shadow: 2px 2px 2px #999;
+        transition: padding .5s ease, background-position .5s ease, transform .8s ease;
+        text-decoration: none;
+        color: #FFF;
+    }
+
+    .my-float-con110c {
+        margin-left: 5px;
+    }
+</style>
 <script src="../../INVENT/JS/INV103.js" type="text/javascript"></script>
 <script src="../../frameworks/scripts/ventanas.js"></script>

@@ -1,13 +1,13 @@
-var $_OTRSTAT = '00', $_APEL2TER2W = ' ', $_DESCRIPTER2W = ' ', $_NOMBRECLIW = ' ',  $_ENTIDADTERCEW = '', $_CONVENIOTERCEW = '', $_NOMCOMERTERCEW = '', 
-    $_OTROSTERCEW = '', $_CONTACTTERCEW = '', $_WEBTERCEW = '', $_CARGOTERCEW = '', $_EMAILTERCEW = '', $_ASESORTERCEW = '', $_TIPOCUPOTERCEW = '', $_RUTTERCEW = '', 
+var $_OTRSTAT = '00', $_APEL2TER2W = ' ', $_DESCRIPTER2W = ' ', $_NOMBRECLIW = ' ', $_ENTIDADTERCEW = '', $_CONVENIOTERCEW = '', $_NOMCOMERTERCEW = '',
+    $_OTROSTERCEW = '', $_CONTACTTERCEW = '', $_WEBTERCEW = '', $_CARGOTERCEW = '', $_EMAILTERCEW = '', $_ASESORTERCEW = '', $_TIPOCUPOTERCEW = '', $_RUTTERCEW = '',
     $_PLAZOTERCEW = '', $_ORDENTERCEW = '', $_ACTIVICATERCEW = '', $_PORCICATERCEW = '', $_PORCRETTERCEW = '', $_GRANCONTRIBTERCEW = '', $_RETETERCEW = '',
     $_RETIVACOMPTERCEW = '', $_RETIVATERCEW = '', $_EXENTRETTERCEW = '', $_SEGUROTERCEW = '', $_DATACRETERCEW = '', $_ACUEPAGOTERCEW = '', $_CAPITADOTERCEW = '',
-    $_NITCLITERCEW = '', $_RETICAVTERCEW = '', $_BLOQTERCEW = '', $_VLRBASERETTERCEW = '', $_EXIVATERCEW = '', $_EMPRESAVEHTERCEW = '',  $_MARCATERCEW= '', $_NROVEHTERCEW = '', $_PLACAVEHTERCEW = '', 
-    $_IDREPRETERCEW = '',$_NOMREPRETERCEW = '', $_EMAILREPTERCEW = '', $_IDTESORTERCEW = '', $_NOMTESORTERCEW = '',$_EMAILTESOTERCEW = '',$_NOMREF1TERCEW= '', $_DIRREF1TERCEW = '',
+    $_NITCLITERCEW = '', $_RETICAVTERCEW = '', $_BLOQTERCEW = '', $_VLRBASERETTERCEW = '', $_EXIVATERCEW = '', $_EMPRESAVEHTERCEW = '', $_MARCATERCEW = '', $_NROVEHTERCEW = '', $_PLACAVEHTERCEW = '',
+    $_IDREPRETERCEW = '', $_NOMREPRETERCEW = '', $_EMAILREPTERCEW = '', $_IDTESORTERCEW = '', $_NOMTESORTERCEW = '', $_EMAILTESOTERCEW = '', $_NOMREF1TERCEW = '', $_DIRREF1TERCEW = '',
     $_TELREF1TERCEW = '', $_RELREF1TERCEW = '', $_NOMREF2TERCEW = '', $_DIRREF2TERCEW = '', $_TELREF2TERCEW = '', $_RELREF2TERCEW = '', $_NOMREF3TERCEW = '',
     $_DIRREF3TERCEW = '', $_TELREF3TERCEW = '', $_RELREF3TERCEW = '', $_NOMTRABTERCEW = '', $_DIRTRABTERCEW = '', $_TELTRABTERCEW = '', $_CARTRABTERCEW = '',
-    $_SUETRABTERCEW = '', $_ANTTRABTERCEW = '', $_FECHANACTERCEW = '', $_CIUEXPTERCEW = '', $_FECHAAFILTERCEW = '', $_EMBARGOTERCEW= '', $_ENTIDAFITERCEW = '', $_NOMBRETXT = ''
-    $_PAGOTERCEW = '00'; 
+    $_SUETRABTERCEW = '', $_ANTTRABTERCEW = '', $_FECHANACTERCEW = '', $_CIUEXPTERCEW = '', $_FECHAAFILTERCEW = '', $_EMBARGOTERCEW = '', $_ENTIDAFITERCEW = '', $_NOMBRETXT = ''
+    $_PAGOTERCEW = '00', $_CODZONAW = '', $_CODRUTAW = '', $_TIPOIDTERCEW = '', $_REGIVATERCEW = '', $_CALIFITERCEW = '', $_VENDTERCEW = '';
 var $_CODTERCEROLNK, $_NOMTERCEROLNK = '', $_FPAGOLNK;
 
 
@@ -17,7 +17,8 @@ var porcentica_110cMask = new IMask(document.getElementById('porcetica_110c'),
 var porcentreten_110cMask = new IMask(document.getElementById('porcentreten_110c'),
     { mask: Number, min: 0, max: 999, scale: 1, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
 );
-
+var plazoUnitMask_110c = new IMask($('#plazo_110c')[0], { mask: Number, thousandsSeparator: ',' });
+// var codterUnitMask_110c = new IMask($('#codclien_con110c')[0], { mask: Number, thousandsSeparator: ',' });
 
 var $_FECHAACTUAL = moment().format('YYYYMMDD');
 $_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
@@ -97,6 +98,8 @@ $(document).ready(function () {
     $_CARTERAUSU = $_USUA_GLOBAL[0].CARTERA;
     $_PLACAUSU = $_USUA_GLOBAL[0].PLACA;
     $_CUOTASUSU = $_USUA_GLOBAL[0].CUOTAS;
+    $_TIPOEMPRESAUSU = $_USUA_GLOBAL[0].TIPO_EMPRE;
+    $_RETENEDORUSU = $_USUA_GLOBAL[0].RETENEDOR; 
 
     _toggleF8([
         { input: 'codclien', app: 'con110c', funct: _ventanatercerosCON110C },
@@ -106,35 +109,43 @@ $(document).ready(function () {
         { input: 'zona', app: '110c', funct: _ventanazonasCON110C },
         { input: 'ruta', app: '110c', funct: _ventanarutaCON110C },
         { input: 'grdnegocio', app: '110c', funct: _ventanagrdnegocioCON110C },
-        { input: 'clasifclien', app: '110c', funct: _ventanaclasclienteCON110C }
-  
-    ]);
+        { input: 'clasifclien', app: '110c', funct: _ventanaclasclienteCON110C }, 
+        { input: 'convenio', app: '110c', funct: _ventanaconvenioCON110C }
 
-    _comenzaropccon110c();
+    ]);
+    obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, _f8terceros)
 })
+function _f8terceros(data) {
+    $_TERCEROS_CON110C = data.TERCEROS
+    $_TERCEROS_CON110C.pop()
+    _comenzaropccon110c();
+}
 
 ////////////////////////////////////F8////////////////////////////////
 
 function _ventanatercerosCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos_lite({
-            titulo: 'BUSQUEDA DE TERCEROS',
-            db: $CONTROL,
-            tablaSql: 'sc_archter',
-            indice: ['cod_ter','descrip_ter', 'act_ter', 'entidad_ter'],
-            mascara: [
-                {
-                    
-                }
-            ],
-            minLength: 1,
-            callback_esc: function () {
-                $('#codclien_con110c').focus();
-            },
-            callback: function (data) {
-                
-                $('#codclien_con110c').val(data.cod_ter);
 
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos_lite_v2({
+            titulo: 'VENTANA DE TERCEROS',
+            data: $_TERCEROS_CON110C,
+            indice: ["COD", "NOMBRE", "DIRREC", "TELEF", "CIUDAD", "FACTOR", "ACT"],
+            mascara: [{
+                "COD": 'Identificacion',
+                "NOMBRE": 'Nombre',
+                "DIRREC": "direccion",
+                "TELEF": "telefono"
+            }],
+            minLength: 3,
+            callback: function () {
+                $("#codclien_con110c").focus();
+            }, callback: function (data) {
+                $_CODTERCEROW = data.COD.trim();
+                $_CODTERCEROW = $_CODTERCEROW.padStart(10, "0");
+               
+                $('#codclien_con110c').val($_CODTERCEROW);
+                // document.getElementById("codclien_con110c").value = data.COD;
+                // document.getElementById("nitd_108").value = data.NOMBRE;
                 _enterInput('#codclien_con110c');
             }
         });
@@ -142,148 +153,263 @@ function _ventanatercerosCON110C(e) {
 }
 
 function _ventanaciudadesCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE CIUDADES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archciud',
-            callback_esc: function () {
-                $("#ciudad_con110c").focus();
-            },
-            callback: function (data) {
-                $('#ciudad_con110c').val(data.cuenta.trim());
-                $('#ciudadd_con110c').val(data.nombre.trim());
-                _enterInput('#ciudad_con110c');
+    var $_CIUDAD_CON110C = [];
+    let URL = get_url("APP/" + "CONTAB/CON809" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_CIUDAD_CON110C = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE CONSULTA DE CIUDADES",
+                    columnas: ["COD", "NOMBRE", "PAIS", "NOM_PAIS", "DEPART"],
+                    data: $_CIUDAD_CON110C.CIUDAD,
+                    callback_esc: function () {
+                        $("#ciudad_con110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('ciudad_con110c').value = data.COD.trim();
+                        document.getElementById('ciudadd_con110c').value = data.NOMBRE;
+                        _enterInput('#ciudad_con110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
+
 
 function _ventanaactividadCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE ACTIVIDADES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archact',
-            callback_esc: function () {
-                $("#actividad_con110c").focus();
-            },
-            callback: function (data) {
-                $('#actividad_con110c').val(data.cod_act.trim());
-                $('#actividadd_con110c').val(data.nombre_act.trim());
-                _enterInput('#actividad_con110c');
+    var $_ACT_CON110C = [];
+    let URL = get_url("APP/" + "CONTAB/CON806" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_ACT_CON110C = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE ACTIVIDADES",
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_ACT_CON110C.ACTIVIDADES,
+                    callback_esc: function () {
+                        $("#actividad_con110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('actividad_con110c').value = data.COD;
+                        document.getElementById('actividadd_con110c').value = data.DESCRIP;
+                        
+                        _enterInput('#actividad_con110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
-
 function _ventanaentidadCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE ENTIDADES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_archent',
-            callback_esc: function () {
-                $("#entidad_con110c").focus();
-            },
-            callback: function (data) {
-                $('#entidad_con110c').val(data.cod_ent.trim());
-                $('#entidadd_con110c').val(data.nombre_ent.trim());
-                _enterInput('#entidad_con110c');
+    var $_ENTIDADES_CON110C = [];
+    let URL = get_url("APP/" + "SALUD/SER853" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_ENTIDADES_CON110C = data;
+
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE ENTIDADES',
+                    columnas: ["COD-ENT", "NOMBRE-ENT", "NIT-ENT"],
+                    data: $_ENTIDADES_CON110C.ENTIDADES,
+                    callback_esc: function () {
+                        $("#entidad_con110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('entidad_con110c').value = data["COD-ENT"];
+                        document.getElementById('entidadd_con110c').value = data['NOMBRE-ENT'];
+                        _enterInput('#entidad_con110c');
+                    }
+                });
+
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
+
 }
 
 function _ventanazonasCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE ZONAS',
-            tipo: 'mysql',
-            db: $CONTROL,
-            // tablaSql: 'sc_archuso',
-            consultaSql: "SELECT * FROM `sc_archzona` WHERE `tipo_zona` LIKE '1%'",
-            callback_esc: function () {
-                $("#zona_110c").focus();
-            },
-            callback: function (data) {
-                $_CODZONAW = data.cod_zona.trim();
+    var $_ZONA_7767 = [];
+    let URL = get_url("APP/" + "CONTAB/CON810" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_ZONA_7767 = data.ZONAS;
+            TIPOZONA = "1";
+            filtrozonas = $_ZONA_7767.filter(zona => (zona.TIPO == TIPOZONA))
 
-                $('#zona_110c').val($_CODZONAW);
-                $("#zonad_110c").val(data.descrip_zona.trim());
-                _enterInput('#zona_110c');
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE ZONAS",
+                    columnas: ["ZONA", "NOMBRE"],
+                    data: filtrozonas,
+                    callback_esc: function () {
+                        $("#zona_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('zona_110c').value = data.ZONA;
+
+                        _enterInput('#zona_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanarutaCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE RUTAS',
-            tipo: 'mysql',
-            db: $CONTROL,
-            consultaSql: "SELECT * FROM `sc_archzona` WHERE `tipo_zona` LIKE '2%'",
-            callback_esc: function () {
-                $("#ruta_110c").focus();
-            },
-            callback: function (data) {
-                $_CODZONAW = data.cod_zona.trim();
+    var $_RUTA_7767 = [];
+    let URL = get_url("APP/" + "CONTAB/CON810" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_RUTA_7767 = data.ZONAS;
+            TIPORUTA = "2";
+            filtrorutas = $_RUTA_7767.filter(ruta => (ruta.TIPO == TIPORUTA))
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE ZONAS",
+                    columnas: ["ZONA", "NOMBRE"],
+                    data: filtrorutas,
+                    callback_esc: function () {
+                        $("#ruta_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('ruta_110c').value = data.ZONA;
 
-                $('#ruta_110c').val($_CODZONAW);
-                $("#rutad_110c").val(data.descrip_zona.trim());
-                _enterInput('#ruta_110c');
+                        _enterInput('#ruta_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 function _ventanagrdnegocioCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE GRADO DE NEGOCIOS',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_grneg',
-            callback_esc: function () {
-                $("#grdnegocio_110c").focus();
-            },
-            callback: function (data) {
-                $('#grdnegocio_110c').val(data.llave_grad.trim());
-                $('#grdnegociod_110c').val(data.descrip_grad.trim());
-                _enterInput('#grdnegocio_110c');
+    var $_GRADONEG_7767 = [];
+    let URL = get_url("APP/" + "CONTAB/CON818" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_GRADONEG_7767 = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE GRADO DE NEGOCIOS',
+                    columnas: ["TIPO", "NOMBRE"],
+                    data: $_GRADONEG_7767.GRNEGOCIO,
+                    callback_esc: function () {
+                        $("#grdnegocio_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('grdnegocio_110c').value = data.TIPO;
+                        document.getElementById('grdnegociod_110c').value = data.NOMBRE;
+                       
+                        _enterInput('#grdnegocio_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
+    
 }
 
 function _ventanaclasclienteCON110C(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: 'VENTANA DE CLASIFICACION CLIENTES',
-            tipo: 'mysql',
-            db: 'datos_pros',
-            tablaSql: 'sc_clasc',
-            callback_esc: function () {
-                $("#clasifclien_110c").focus();
-            },
-            callback: function (data) {
-                $('#clasifclien_110c').val(data.llave_clasc);
-                $('#clasifcliend_110c').val(data.descrip_clasc.trim());
-                _enterInput('#clasifclien_110c');
+    var $_CLASC_110C = [];
+    let URL = get_url("APP/" + "CONTAB/CON810S" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_CLASC_110C = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE CLASIFICACION CLIENTES',
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_CLASC_110C.CLASC,
+                    callback_esc: function () {
+                        $("#clasifclien_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('clasifclien_110c').value = data.COD;
+                        document.getElementById('clasifcliend_110c').value = data.DESCRIP;
+                        // $('#clasifclien_110c').val(data.llave_clasc);
+                        // $('#clasifcliend_110c').val(data.descrip_clasc.trim());
+                        _enterInput('#clasifclien_110c');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
+}
+
+function _ventanaconvenioCON110C(e){
+    var $_CONVENIO_CON110C = [];
+    let URL = get_url("APP/" + "SALUD/SER804" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_CONVENIO_CON110C = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE CONVENIOS",
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_CONVENIO_CON110C.TARIFAS,
+                    callback_esc: function () {
+                        $("#convenio_con110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('convenio_110c').value = data.COD;
+                        document.getElementById('conveniod_con110c').value = data.DESCRIP;
+
+                        _enterInput('#convenio_110c');
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
 
 /////////////////////////////// OPCION CON110C- MAESTRO DE TERCEROS //////////////////////////////////
 
 function _comenzaropccon110c() {
-    console.debug('comenzar');
     // ACCEPT FECHA-ACT-CTL FROM DATE.
     // MOVE 20 TO SIG-ACT-CTL.
     $_SW9CON110C = '0';
@@ -303,6 +429,7 @@ function _comenzaropccon110c() {
 function _datonovedad_con110c(novedad) {
     _inputControl('reset');
     _inputControl('disabled');
+    $('#tabla1').click();
     $_SWCREAR = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
@@ -346,7 +473,7 @@ function revisarpermisos_con110c() {
 }
 
 function _dataCON904_01_110C(data) {
-    // console.debug(data, 'CON904_01_110C');
+    
     var date = data.split('|');
     if (date[0].trim() == '01') {
         $_SW9CON110C = '1';
@@ -361,7 +488,7 @@ function _dataCON904_01_110C(data) {
 }
 
 function _datocodigo_con110c() {
-    console.debug('datocodigo');
+    
     if ($_CODTERCEROLNK > 0) {
         $_CODTERCEROW = $_CODTERCEROLNK;
         _leertercero_con110c();
@@ -385,27 +512,20 @@ function _evaluarcodcliente110c() {
 }
 
 function _codlcon110c() {
-    // console.debug('codlcon110c');
+    
     $_CODTERCEROW = $('#codclien_con110c').val();
-    // $_CODTERCEROW = $_CODTERCEROLNK;
+    // $_CODTERCEROW = codterUnitMask_110c.unmaskedValue;
+    $_CODTERCEROW = $_CODTERCEROW.padStart(10, "0");
+    $('#codclien_con110c').val($_CODTERCEROW);
 
-    // if ($_CODTERCEROW < '1') {
-    //     if ($_CODTERCEROW == '0000000000') {
-    //         //// CONTINUE
-
-    //     } else {
-    //         CON851('02', '02', null, 'error', 'Error');
-    //     }
-    // } else 
-    if (($_NOVEDADCON110C == '7') || ($_NOVEDADCON110C == '8')){
+    if (($_NOVEDADCON110C == '7') || ($_NOVEDADCON110C == '8')) {
         if ($_CODTERCEROW == '0') {
             $_CODTERCEROW = $_NITUSU;
-            console.log($_CODTERCEROW);
             // $_NOMBRECLIW = $_NOMUSU;
             // console.log($_NOMBRECLIW);
             // $("#1erapellido_con110c").val($_NOMBRECLIW);
             _leertercero_con110c();
-        }else{
+        } else {
             _leertercero_con110c();
         }
     }
@@ -415,67 +535,61 @@ function _codlcon110c() {
 }
 
 function _leertercero_con110c() {
-    console.debug($_CODTERCEROW,'_leertercero');
 
     let datos_envio = datosEnvio()
     datos_envio += '|'
-    datos_envio += $_CODTERCEROW.padStart(10, '0');
-    console.debug(datos_envio);
+    datos_envio += $_CODTERCEROW;
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_02_110C, get_url("/APP/CONTAB/CON110C_01.DLL"));
 }
 
 function _dataCON110C_02_110C(data) {
-    console.debug(data, "CON110C_02_110C");
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (($_NOVEDADCON110C == '7') && (swinvalid == '01')) {
-        console.debug('novedad 7 = 01');
         _nuevoregistrocon110c();
     }
     else if (($_NOVEDADCON110C == '7') && (swinvalid == '00')) {
-        console.debug('novedad 7 = 00');
         _error1CON110C();
     }
     else if (($_NOVEDADCON110C == '8') && (swinvalid == '00')) {
-        console.debug('novedad 8 = 00');
         setTimeout(_consultadatos_con110c, 100);
-        _evaluardatodv_con110c();
+        
 
     }
     else if (($_NOVEDADCON110C == '8') && (swinvalid == '01')) {
-        console.debug('novedad 8 = 01');
-        _error1CON110C_02(); 
+    
+        _error1CON110C_02();
 
     }
     else if (($_NOVEDADCON110C == '9') && (swinvalid == '00')) {
-        console.debug('novedad 9 = 00');
+    
         setTimeout(_retirar_con110c, 100);
 
     }
     else if (($_NOVEDADCON110C == '9') && (swinvalid == '01')) {
-        console.debug('novedad 9 = 01');
+
         _error1CON110C_02();
 
     }
 }
 
 function _error1CON110C() {
-    console.log('error');
+    
     $_SW9CON110C = '1';
     $_NOVEDADCON110C = 8;
-    $("#novedad_CON110C").val($_NOVEDADCON110C);
+    $("#novedad_CON110C").val('8 - Cambio');
+    CON851('00', '00', null, 'error', 'Error'); 
     _evaluarcodcliente110c();
-   
+
 }
 function _error1CON110C_02() {
-    console.log('error2'); 
-    console.log('ELSE'); 
+    
     CON851('01', '01', null, 'error', 'Error');
     setTimeout(_evaluarcodcliente110c, 300);
 }
 
 function _nuevoregistrocon110c() {
-    console.debug('nuevo registro');
+    
     $_SW9CON110C = '1';
     $_NITCLIW = '';
     $_NOMBRECLIW = '';
@@ -483,7 +597,7 @@ function _nuevoregistrocon110c() {
 }
 
 function _evaluardatodv_con110c() {
-    console.debug('evaluar dvtercero');
+
     validarInputs({
         form: '#DV_CON110C',
         orden: "1"
@@ -494,7 +608,7 @@ function _evaluardatodv_con110c() {
 }
 
 function _datodv_con110c() {
-    console.debug('datodv');
+
     $_DVTERCEROW = $('#dv_con110c').val();
 
     if ($_DVTERCEROW.trim() == '') {
@@ -511,21 +625,19 @@ function _datodv_con110c() {
 }
 
 function _calculadigitoverificacion() {
-    console.debug('calculadigitoverificacion');
+    
     let datos_envio = datosEnvio()
     datos_envio += '|'
     datos_envio += $_CODTERCEROW.padStart(10, '0')
     datos_envio += '|'
     datos_envio += $_DVTERCEROW;
-    console.debug(datos_envio);
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_04_110C, get_url("/APP/CONTAB/CON110C_04.DLL"));
 }
 
 function _dataCON110C_04_110C(data) {
-    console.debug(data, 'CON110C_04');
+    
     var date = data.split('|');
     var $_DVTERW = date[0].trim();
-    console.debug($_DVTERW);
     if ($_DVTERW != $_DVTERCEROW) {
         CON851('9I', '9I', null, 'error', 'Error');
         _evaluardatodv_con110c();
@@ -536,7 +648,6 @@ function _dataCON110C_04_110C(data) {
 }
 
 function _evaluardatocumpleaños_con110c() {
-    console.log('fecha cumpleaños');
     momentMask.updateValue();
     validarInputs({
         form: '#CUMPLE_CON110C',
@@ -548,20 +659,11 @@ function _evaluardatocumpleaños_con110c() {
 }
 
 function _dato1apellido_con110c() {
-    $_FECHACUMPTERCEW =  momentMask.unmaskedValue; 
-    console.log('dato1apellido');
+    $_FECHACUMPTERCEW = momentMask.unmaskedValue;
 
-    // if ($_NOVEDADCON110C == '7') {
-    //     if ($_CODTERCEROW == '0') {
-    //         $_NOMBRECLIW = $_NOMUSU;
-    //         $("#1erapellido_con110c").val($_NOMBRECLIW);
-    //         _evaluarnombreext_con110c();
-    //     }
-    // }else
-    
-    if($_FECHACUMPTERCEW.trim() == ''){
+    if ($_FECHACUMPTERCEW.trim() == '') {
         validacionesnombres();
-    }else{
+    } else {
         validacionesnombres();
     }
 }
@@ -570,21 +672,26 @@ function validacionesnombres() {
 
     ///VALIDACIONES DE SALUD 
 
-    if ((($_CODTERCEROW > '1000') && ($_CODTERCEROW < '100000000')) || (($_CODTERCEROW > '700000000') &&($_CODTERCEROW <'799000000')) || ($_CODTERCEROW > '1000000000')){
-        _evaluardato1apellido_con110c(); 
-        
-    }else if (($_NITUSU == '0830009610') || ($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) {
-        _evaluarnombreext_con110c(); 
+    if ((($_CODTERCEROW > '1000') && ($_CODTERCEROW < '100000000')) || (($_CODTERCEROW > '700000000') && ($_CODTERCEROW < '799000000')) || ($_CODTERCEROW > '1000000000')) {
 
-        console.log(' nit dif ')
+        if ($_NOVEDADCON110C == '7') {
+            _ventanapersonanatural_con110c()
+        } else {
+            _evaluarnombreext_con110c();
+        }
+
+    } else if (($_NITUSU == '0830009610') || ($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) {
+    
+        _evaluarnombreext_con110c();
+
     } else {
-        _evaluarnombreext_con110c();  
+        _evaluarnombreext_con110c();
     }
 
 }
-
-function _evaluarnombreext_con110c(){
-    console.log('evaluar extension');
+/////////////////// EMPRESA /////////////////////////
+function _evaluarnombreext_con110c() {
+    
     validarInputs({
         form: '#PRAPELLIDO_CON110C',
         orden: "1"
@@ -594,26 +701,72 @@ function _evaluarnombreext_con110c(){
     )
 
 }
-function _aceptarextensionnom_con110c(){
+function _aceptarextensionnom_con110c() {
 
-    
-    $_NOMBRECLIW = $('#1erapellido_con110c').val();
-    $_APEL1TER2W = $_NOMBRECLIW; 
-    console.log($_APEL1TER2W, 'nombre extension'); 
-    if( $_APEL1TER2W.trim() == ''){
+    $_NOMBRECLIW = $('#nombres_con110c').val();
+    $_DESCRIPTERW = $_NOMBRECLIW;
+
+    if ($_DESCRIPTERW.trim() == '') {
         CON851('02', '02', null, 'error', 'error');
-        _evaluarnombreext_con110c(); 
-    }else{
-        _evaluardireccion_con110c(); 
+        _evaluarnombreext_con110c();
+    } else {
+        _evaluardireccion_con110c();
     }
 }
 
+///////// VENTANA DE PERSONA NATURAL
+function _ventanapersonanatural_con110c() {
+    var ventananombresp = bootbox.dialog({
+        size: 'xl',
+        onEscape: false,
+        title: 'PERSONA NATURAL',
+        message: '<div class="row"> ' +
+            '<div class="col-md-12"> ' +
+            '<div class="form-group" id= "PRAPELLIDOS_CON110C"> ' +
 
-function _evaluardato1apellido_con110c() {
-    console.log('evaluar aceptar nombre');
+            '<label class="col-md-4 control-label" for="name">' + '1ER APELLIDO:' + '</label> ' +
+            '<div class="col-md-6"> ' +
+            '<input id="1erapellidos_con110c" type="text" class="form-control input-md" data-orden="1"> ' +
+            '</div> ' +
+            '<label class="col-md-4 control-label" for="name">' + '2DO APELLIDO:' + '</label> ' +
+            '<div class="col-md-6"> ' +
+            '<input id="2doapellido_con110c" type="text" class="form-control input-md" data-orden="2"> ' +
+            '</div> ' +
+            '<label class="col-md-4 control-label" for="name">' + 'NOMBRES:' + '</label> ' +
+            '<div class="col-md-6"> ' +
+            '<input id="nombre_con110c" type="text" class="form-control input-md" data-orden="3"> ' +
+            '</div> ' +
+            '</div> ' +
+            '</div>' +
+            '</div>',
+        buttons: {
+            main: {
+                label: 'Aceptar',
+                className: 'btn-info',
+                callback: function () {
+                    ventananombresp.off('show.bs.modal');
+                    // $_APEL1TER2W = $('#1erapellidos_con110c').val();
+                    // $_APEL2TER2W = $('#2doapellido_con110c').val();
+                    // $_NOMB1TER2W = $('#nombres_con110c').val();
+                    // _evaluardato1apellido_con110c();
+
+                }
+            }
+        }
+    });
+    ventananombresp.init(_evaluardato1apellido_con110c("1"));
+    ventananombresp.on('shown.bs.modal', function () {
+        $("#1erapellidos_con110c").focus();
+    });
+
+}
+
+
+function _evaluardato1apellido_con110c(orden) {
+    _inputControl("disabled");
     validarInputs({
-        form: '#PRAPELLIDO_CON110C',
-        orden: "1"
+        form: '#PRAPELLIDOS_CON110C',
+        orden: orden
     },
         function () { _evaluardatocumpleaños_con110c(); },
         _aceptarapellido1_con110c
@@ -621,64 +774,32 @@ function _evaluardato1apellido_con110c() {
 }
 
 function _aceptarapellido1_con110c() {
-    console.log('aceptar apellido 1')
-    $_APEL1TER2W = $('#1erapellido_con110c').val();
-
-    if ($_APEL1TER2W.trim() == '') {
-        CON851('02', '02', null, 'error', 'error');
-        _evaluardato1apellido_con110c()
-    } else {
-        _evaluardato2apellido_con110c()
-    }
-}
-
-function _evaluardato2apellido_con110c() {
-    console.log('evaluarapellido2');
-    validarInputs({
-        form: '#SDOAPELLIDO_CON110C',
-        orden: "1"
-    },
-        function () { _evaluardato1apellido_con110c(); },
-        _aceptarapellido2_con110c
-    )
-}
-
-function _aceptarapellido2_con110c() {
-    console.log('aceptar apellido 2')
+    $_APEL1TER2W = $('#1erapellidos_con110c').val();
     $_APEL2TER2W = $('#2doapellido_con110c').val();
+    $_NOMB1TER2W = $('#nombre_con110c').val();
 
-    _evaluardatonombre_con110c();
-}
-
-function _evaluardatonombre_con110c() {
-    console.debug('evaluarnombres');
-    validarInputs({
-        form: '#NOMBRES_CON110C',
-        orden: "1"
-    },
-        function () { _evaluardato2apellido_con110c(); },
-        _aceptarnombres_con110c
-    )
-}
-function _aceptarnombres_con110c() {
-    console.debug('aceptar nombre')
-    $_NOMB1TER2W = $('#nombres_con110c').val();
-
-    if ($_NOMB1TER2W.trim() == '') {
+    if (($_APEL1TER2W.trim() == '') && ($_NOMB1TER2W.trim() == '')) {
         CON851('02', '02', null, 'error', 'error');
-        _evaluardatonombre_con110c();
+        _ventanapersonanatural_con110c();
+        // validaripsante("1");
     } else {
-        _evaluardireccion_con110c();
+
+        $_DESCRIPTERW = $_APEL1TER2W + ' ' + $_APEL2TER2W + ' ' + $_NOMB1TER2W;
+        
+        $('#nombres_con110c').val($_DESCRIPTERW);
+        $(".btn-info").click();
+        _evaluardireccion_con110c()
     }
 }
+
 
 function _evaluardireccion_con110c() {
-    console.debug('evaluar direccion');
+
     validarInputs({
         form: '#DIRECC_CON110C',
         orden: "1"
     },
-        function () { _evaluardatonombre_con110c(); },
+        function () { _evaluarnombreext_con110c(); },
         _datodireccion_con110c
     )
 }
@@ -693,7 +814,7 @@ function _datodireccion_con110c() {
     }
 }
 function _evaluarciudad_con110c() {
-    console.log('evaluar ciudad');
+    
     validarInputs({
         form: '#CIUDAD_CON110C',
         orden: "1"
@@ -704,29 +825,20 @@ function _evaluarciudad_con110c() {
 }
 
 function _datociudad_con110c() {
-    console.log('DATO ciudad');
+    
     $_CODCIUTERCEW = $('#ciudad_con110c').val();
     if ($_CODCIUTERCEW.trim() == '') {
         CON851('01', '01', null, 'error', 'error');
         _evaluarciudad_con110c();
     } else {
-        console.log('ELSE', $_CODCIUTERCEW);
-        // LLAMADO_DLL({
-        //     dato: [$_CODCIUTERCEW],
-        //     callback: _dataCON110C_05_110C,
-        //     nombredll: 'CON110C_05',
-        //     carpeta: 'CONTAB'
-        // });
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_CODCIUTERCEW;
-        console.debug(datos_envio);
         SolicitarDll({ datosh: datos_envio }, _dataCON110C_05_110C, get_url('/APP/CONTAB/CON110C_05.DLL'));
     }
 }
 
 function _dataCON110C_05_110C(data) {
-    console.log(data, 'CON110C_05 CIUDAD');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCIUTERW = date[1].trim();
@@ -743,7 +855,7 @@ function _dataCON110C_05_110C(data) {
 }
 
 function _evaluartelind_con110c() {
-    console.log('evaluar TEL IND');
+
     validarInputs({
         form: '#IND_CON110C',
         orden: "1"
@@ -759,7 +871,6 @@ function _datotelind_con110c() {
     _evaluartelefonoterc_con110c();
 }
 function _evaluartelefonoterc_con110c() {
-    console.debug('evaluar TEL IND');
     validarInputs({
         form: '#TEL_CON110C',
         orden: "1"
@@ -771,16 +882,15 @@ function _evaluartelefonoterc_con110c() {
 function _datotelefonoterc_con110c() {
     $_TELTERCEW = $('#tel_con110c').val();
 
-    if($_NOVEDADCON110C == '7'){
+    if ($_NOVEDADCON110C == '7') {
         $('#cc_con110c').val('0');
         _evaluarcedula_con110c();
-    }else{
+    } else {
         _evaluarcedula_con110c();
     }
 }
 function _evaluarcedula_con110c() {
-    console.debug('evaluar TEL IND');
-    
+
     validarInputs({
         form: '#CC_CON110C',
         orden: "1"
@@ -802,13 +912,13 @@ function _datocedula_con110c() {
 
 function _validartipo_con110c() {
     var documento = [
-        { "COD": "CC", "DESCRIP": "Cedula de Ciudadania" },
-        { "COD": "CE", "DESCRIP": "Cedula de Extranjeria" },
-        { "COD": "PA", "DESCRIP": "Numero Pasaporte" },
-        { "COD": "RC", "DESCRIP": "Registro Civil" },
-        { "COD": "TI", "DESCRIP": "Tarjeta de Identidad" },
-        { "COD": "NU", "DESCRIP": "Numero Unico de Identidad" },
-        { "COD": "NI", "DESCRIP": "Numero Identidad Tributaria" }
+        { "COD": "CC", "DESCRIP": "1- Cedula de Ciudadania" },
+        { "COD": "CE", "DESCRIP": "2- Cedula de Extranjeria" },
+        { "COD": "PA", "DESCRIP": "3- Numero Pasaporte" },
+        { "COD": "RC", "DESCRIP": "4- Registro Civil" },
+        { "COD": "TI", "DESCRIP": "5- Tarjeta de Identidad" },
+        { "COD": "NU", "DESCRIP": "6- Numero Unico de Identidad" },
+        { "COD": "NI", "DESCRIP": "7- Numero Identidad Tributaria" }
     ]
     POPUP({
         array: documento,
@@ -816,6 +926,7 @@ function _validartipo_con110c() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
+        seleccion: $_TIPOIDTERCEW,
         callback_f: _evaluarcedula_con110c
     },
         _evaluartipodoc_con110c);
@@ -850,7 +961,6 @@ function validacionestipodoc_con110c() {
     }
 }
 function _evaluaractividades_con110c() {
-    console.log('evaluar ACTIVIDAD');
     validarInputs({
         form: '#ACTIVI_CON110C',
         orden: "1"
@@ -868,19 +978,22 @@ function _datoactividad_con110c() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_ACTTERCEW;
-        console.debug(datos_envio);
         SolicitarDll({ datosh: datos_envio }, _dataCON110C_06_110C, get_url('/APP/CONTAB/CON110C_06.DLL'));
     }
 }
 
 function _dataCON110C_06_110C(data) {
-    console.log(data, 'CON110C_06 CIUDAD');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPACTTERW = date[1].trim();
     if (swinvalid == '00') {
         $("#actividadd_con110c").val($_DESCRIPACTTERW);
-        _evaluarcomercial_con110c();
+        if ($_TIPOEMPRESAUSU == "H") {
+            _evaluarentidad_con110c();
+        } else {
+            _evaluarrut_con110c()
+            // _evaluarcomercial_con110c();
+        }
     }
     else if (swinvalid == '01') {
         CON851('01', '01', null, 'error', 'error');
@@ -890,8 +1003,132 @@ function _dataCON110C_06_110C(data) {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
+
+
+function _evaluarentidad_con110c() {
+    validarInputs({
+        form: '#ENTIDAD_CON110C',
+        orden: "1"
+    },
+        function () { _evaluartipo_con110c(); },
+        _datoentidad_con110c
+    )
+}
+function _datoentidad_con110c() {
+    $_ENTIDADTERCEW = $('#entidad_con110c').val();
+    if ($_ENTIDADTERCEW.trim() == '') {
+        $_ENTIDADTERCEW = ''; 
+        if (($_ACTTERCEW < 05) || ($_ACTTERCEW > 90)) {
+            $_CONVENIOTERCEW = '';
+            $("#convenio_con110c").val($_CONVENIOTERCEW);
+            _evaluarrut_con110c(); 
+
+        } else {
+            _evaluarconvenio_con110c();
+        }
+    } else {
+        let datos_envio = datosEnvio();
+        datos_envio += '|'
+        datos_envio += $_ENTIDADTERCEW;
+        SolicitarDll({ datosh: datos_envio }, _dataCON110C_07_110C, get_url('/APP/CONTAB/CON110C_07.DLL'));
+    }
+}
+function _dataCON110C_07_110C(data) {
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPENTTERW = date[1].trim();
+    if (swinvalid == '00') {
+        $("#entidadd_con110c").val($_DESCRIPENTTERW);
+        if (($_ACTTERCEW < 05) || ($_ACTTERCEW > 90)) {
+            $_CONVENIOTERCEW = '';
+            $("#convenio_con110c").val($_CONVENIOTERCEW);
+            _evaluarrut_con110c(); 
+
+        } else {
+            _evaluarconvenio_con110c();
+        }
+    }
+    else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarentidad_con110c();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
+
+function _evaluarconvenio_con110c() {
+    validarInputs({
+        form: '#CONVENIO_CON110C',
+        orden: "1"
+    },
+        function () { _evaluarentidad_con110c(); },
+        _datoconvenio_con110c
+    )
+}
+function _datoconvenio_con110c() {
+    $_CONVENIOTERCEW = $('#convenio_110c').val();
+    if ($_CONVENIOTERCEW.trim() == '') {
+        $_CONVENIOTERCEW = ''; 
+        _evaluarrut_con110c();
+    } else {
+        let datos_envio = datosEnvio();
+        datos_envio += '|'
+        datos_envio += $_CONVENIOTERCEW;
+        SolicitarDll({ datosh: datos_envio }, _dataCON110C_08_110C, get_url('/APP/CONTAB/CON110C_08.DLL'));
+    }
+}
+
+function _dataCON110C_08_110C(data) {
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_DESCRIPTARIFTERW = date[1].trim();
+    if (swinvalid == '00') {
+        $("#conveniod_con110c").val($_DESCRIPTARIFTERW);
+        _evaluarrut_con110c(); 
+    }
+    else if (swinvalid == '01') {
+        CON851('01', '01', null, 'error', 'error');
+        _evaluarconvenio_con110c();
+    }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
+
+function _evaluarrut_con110c(){
+    validarInputs({
+        form: '#RUT_110C',
+        orden: "1"
+    },
+        function () { _evaluarentidad_con110c(); },
+        _datorut_con110c
+    )
+}
+function _datorut_con110c(){
+    $_RUTTERCEW = $('#rut_110c').val();
+    if($_RUTTERCEW.trim() == ''){
+        $_RUTTERCEW = 'N'; 
+        $('#rut_110c').val($_RUTTERCEW);
+        if ($_TIPOEMPRESAUSU == "H") {
+            _evaluarcomercial_con110c(); 
+        } else {
+            _evaluarfactorvent_con110c();
+        }
+
+    }else if(($_RUTTERCEW == 'N') || ($_RUTTERCEW == 'S')){
+        if ($_TIPOEMPRESAUSU == "H") {
+            _evaluarcomercial_con110c(); 
+        } else {
+            _evaluarfactorvent_con110c();
+        }
+    }else{
+        _evaluarrut_con110c(); 
+    }
+
+}
 function _evaluarcomercial_con110c() {
-    console.log('evaluar COMERCIAL');
+    
     validarInputs({
         form: '#NOMCOM_CON110C',
         orden: "1"
@@ -905,7 +1142,7 @@ function _datocomercial_con110c() {
     _evaluarotrosdatos_con110c();
 }
 function _evaluarotrosdatos_con110c() {
-    console.log('evaluar OTROS DATOS');
+
     validarInputs({
         form: '#DATOS_CON110C',
         orden: "1"
@@ -919,7 +1156,7 @@ function _datootros_con110c() {
     _evaluarcontacto_con110c();
 }
 function _evaluarcontacto_con110c() {
-    console.log('evaluar CONTACTO');
+    
     validarInputs({
         form: '#CONTACT_CON110C',
         orden: "1"
@@ -933,7 +1170,7 @@ function _datocontacto_con110c() {
     _evaluarweb_con110c();
 }
 function _evaluarweb_con110c() {
-    console.log('evaluar WEB');
+    
     validarInputs({
         form: '#WEB_CON110C',
         orden: "1"
@@ -947,7 +1184,7 @@ function _datoweb_con110c() {
     _evaluarcargocontac_con110c();
 }
 function _evaluarcargocontac_con110c() {
-    console.log('evaluar CARGOCONTAC');
+    
     validarInputs({
         form: '#CARGO_CON110C',
         orden: "1"
@@ -961,7 +1198,6 @@ function _datocargocontac_con110c() {
     _evaluaremail_con110c();
 }
 function _evaluaremail_con110c() {
-    console.log('evaluar EMAIL');
     $('#tabla1').click();
     validarInputs({
         form: '#EMAIL_CON110C',
@@ -979,17 +1215,7 @@ function _datoemail_con110c() {
         _evaluarasesor_con110c();
     } else {
         _evaluarasesor_con110c();
-        // $_SWBUSCAR = '0'; 
-
-        // if($_SWBUSCAR != '1'){
-        //     CON851('03', '03', null, 'error', 'Error');
-        //     _evaluaremail_con110c();
-        // }
-        // if(($_SWBUSCAR < '1') && ($_SWBUSCAR > '3')){
-        //     CON851('03', '03', null, 'error', 'Error');
-        //     _evaluaremail_con110c();
-        // }
-
+        
     }
 }
 function _evaluarasesor_con110c() {
@@ -1021,101 +1247,21 @@ function _datotipo_con110c() {
     //     _evaluarentidad_con110c(); 
     // }else{
     // } 
-    if($_NOVEDADCON110C == '7'){
+    if ($_NOVEDADCON110C == '7') {
         $('#factventas_con110c').val('1');
         $('#factventasd_con110c').val('0');
         _evaluarfactorvent_con110c();
-    }else{
-        _evaluarfactorvent_con110c();
-    }   
-}
-
-function _evaluarentidad_con110c() {
-    validarInputs({
-        form: '#ENTIDAD_CON110C',
-        orden: "1"
-    },
-        function () { _evaluartipo_con110c(); },
-        _datoentidad_con110c
-    )
-}
-function _datoentidad_con110c() {
-    $_ENTIDADTERCEW = $('#entidad_con110c').val();
-    if ($_ENTIDADTERCEW.trim() == '') {
-        _evaluarentidad_con110c();
     } else {
-        let datos_envio = datosEnvio();
-        datos_envio += '|'
-        datos_envio += $_ENTIDADTERCEW;
-        console.debug(datos_envio);
-        SolicitarDll({ datosh: datos_envio }, _dataCON110C_07_110C, get_url('/APP/CONTAB/CON110C_07.DLL'));
-    }
-}
-function _dataCON110C_07_110C(data) {
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    $_DESCRIPENTTERW = date[1].trim();
-    if (swinvalid == '00') {
-        $("#entidadd_con110c").val($_DESCRIPENTTERW);
-        if (($_ACTTERCEW < '05') || ($_ACTTERCEW > '90')) {
-            $_CONVENIOTERCEW = '';
-            $("#convenio_con110c").val($_CONVENIOTERCEW);
-            _evaluarfactorvent_con110c();
-        } else {
-            _evaluarconvenio_con110c();
-        }
-    }
-    else if (swinvalid == '01') {
-        CON851('01', '01', null, 'error', 'error');
-        _evaluarentidad_con110c();
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
-}
-
-function _evaluarconvenio_con110c() {
-    validarInputs({
-        form: '#CONVENIO_CON110C',
-        orden: "1"
-    },
-        function () { _evaluarentidad_con110c(); },
-        _datoconvenio_con110c
-    )
-}
-function _datoconvenio_con110c() {
-    $_CONVENIOTERCEW = $('#convenio_con110c').val();
-    if ($_CONVENIOTERCEW.trim() == '') {
-        _evaluarconvenio_con110c();
-    } else {
-        let datos_envio = datosEnvio();
-        datos_envio += '|'
-        datos_envio += $_CONVENIOTERCEW;
-        console.debug(datos_envio);
-        SolicitarDll({ datosh: datos_envio }, _dataCON110C_08_110C, get_url('/APP/CONTAB/CON110C_08.DLL'));
-    }
-}
-
-function _dataCON110C_08_110C(data) {
-    console.log(data, 'CON110C_08 actividad');
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    $_DESCRIPTARIFTERW = date[1].trim();
-    if (swinvalid == '00') {
-        $("#conveniod_con110c").val($_DESCRIPTARIFTERW);
         _evaluarfactorvent_con110c();
     }
-    else if (swinvalid == '01') {
-        CON851('01', '01', null, 'error', 'error');
-        _evaluarconvenio_con110c();
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
 }
+
+///////////////////////// SEGUNDA PAGINA ///////////////////////
+
 
 function _evaluarfactorvent_con110c() {
     $('#tabla2').click();
+    $('#imprimir_con110c').hide()
     validarInputs({
         form: '#FACTVENTAS_CON110C',
         orden: "1"
@@ -1148,7 +1294,6 @@ function _datofactorvent2_con110c() {
     _evaluarcuposmvm_con110c();
 }
 function _evaluarcuposmvm_con110c() {
-    console.log('evaluar SMVM');
     validarInputs({
         form: '#SMVM_CON110C',
         orden: "1"
@@ -1165,8 +1310,16 @@ function _datcupossmvm_con110c() {
     } else {
         $_CUPOASIGW = $_CUPOTERCEW * $_SALMINUSU;
         $("#smvmd_con110c").val($_CUPOASIGW);
-        // $_CUPOASIGW = cupoasig_110CMask.unmaskedValue; 
-        _evaluarvendedor_con110c();
+        
+        if($_TIPOEMPRESAUSU == 'H'){
+            if($_RETENEDORUSU == 'S'){
+                _evaluarformapago_con110c(); 
+            }else{
+                _evaluarplazo_con110c();
+            }
+        }else{
+            _evaluarvendedor_con110c();
+        }
     }
 }
 function _evaluarvendedor_con110c() {
@@ -1197,7 +1350,6 @@ function _datovendedor_con110c() {
     }
 }
 function _mostrarvendedro_con110c() {
-    console.log('evaluar MOSTRAR VENDEDOR');
     if ($_VENDTERCEW.trim() == '') {
         if (($_CUOTASUSU == '2') && ($_ACTTERCEW == '01') && ($_CARTERAUSU == 'S')) {
             CON851('02', '02', null, 'error', 'error');
@@ -1211,7 +1363,6 @@ function _mostrarvendedro_con110c() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_VENDTERCEW;
-        console.debug(datos_envio);
         SolicitarDll({ datosh: datos_envio }, _dataCON110C_09_110C, get_url('/APP/CONTAB/CON110C_09.DLL'));
     }
 }
@@ -1252,12 +1403,6 @@ function _validacionesfpago_con110c() {
         // INVOKE POW-SELF "CALLFORM" USING "CON820A" "C:\PROG\CONTAB\CON110C.DLL"
         _datopago_con110c();
     } else {
-        // $_FPAGOLNK = $_PAGOTERCEW; 
-        // console.log($_FPAGOLNK); 
-        // $("#formapago_110c").val($_FPAGOLNK);
-        // INVOKE POW-SELF "CALLFORM" USING "CON820" "C:\PROG\CONTAB\CON820.DLL"
-        // $_PAGOTERCEW =  $_FPAGOLNK; 
-        // _datopago_con110c(); 
         _datopago_con110c();
     }
 }
@@ -1274,6 +1419,7 @@ function _datopago_con110c() {
             indices: [
                 { id: 'COD', label: 'DESCRIP' }
             ],
+            seleccion: $_PAGOTERCEW,
             callback_f: _evaluarcomercial_con110c
         },
             _evaluarformapago_con110c);
@@ -1296,6 +1442,7 @@ function _datopago_con110c() {
             indices: [
                 { id: 'COD', label: 'DESCRIP' }
             ],
+            seleccion: $_PAGOTERCEW,
             callback_f: _evaluarcomercial_con110c
         },
             _evaluarformapago_con110c);
@@ -1335,13 +1482,19 @@ function _evaluarplazo_con110c() {
         orden: "1"
     },
         function () { _evaluarcuposmvm_con110c(); },
-        _datoplazo_con110c
+        _datoplazo_con110c 
     )
 }
 function _datoplazo_con110c() {
-    $_PLAZOTERCEW = $('#plazo_110c').val();
+
+    $_PLAZOTERCEW = plazoUnitMask_110c.unmaskedValue;
+    
     if (($_ACTTERCEW == '02') || ($_ACTTERCEW == '03') || ($_ACTTERCEW == '04') || ($_ACTTERCEW == '05') || ($_ACTTERCEW == '92')) {
-        _evaluargrado_con110c();
+        if($_TIPOEMPRESAUSU == 'H'){
+            _evaluarzona_con110c(); 
+        }else{
+            _evaluargrado_con110c();
+        }
     } else {
         _evaluarzona_con110c();
     }
@@ -1367,7 +1520,6 @@ function _datozona_con110c() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_ZONATERCEW;
-        console.debug(datos_envio);
         SolicitarDll({ datosh: datos_envio }, _dataCON110C_10_110C, get_url('/APP/CONTAB/CON110C_10.DLL'));
     }
 }
@@ -1431,7 +1583,6 @@ function _datorutas_con110c() {
         let datos_envio = datosEnvio();
         datos_envio += '|'
         datos_envio += $_RUTATERCEW;
-        console.debug(datos_envio);
         SolicitarDll({ datosh: datos_envio }, _dataCON110C_101_110C, get_url('/APP/CONTAB/CON110C_10.DLL'));
     }
 }
@@ -1569,12 +1720,10 @@ function consultagradonegocio_con110c() {
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_GRADOTERCEW;
-    console.debug(datos_envio);
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_11_110C, get_url('/APP/CONTAB/CON110C_11.DLL'));
 }
 
 function _dataCON110C_11_110C(data) {
-    console.log(data, 'CON110C_11 GRADO');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPGRADTERW = date[1].trim();
@@ -1582,7 +1731,7 @@ function _dataCON110C_11_110C(data) {
         $("#grdnegociod_110c").val($_DESCRIPGRADTERW);
         _evaluarclasif_con110c();
     }
-    else if (swinvalid == '01') {      
+    else if (swinvalid == '01') {
         // $_GRADOTERCEW = '9';
         // $("#grdnegocio_110c").val($_GRADOTERCEW);
         _evaluarclasif_con110c();
@@ -1596,31 +1745,29 @@ function _evaluarclasif_con110c() {
         form: '#CLASIFCLIEN_110C',
         orden: "1"
     },
-        function () { _evaluarporcentica_con110c(); },
+        function () { _evaluarporcentica_con110c() },
         _datoclasifclien_con110c
     )
 }
-function _datoclasifclien_con110c(){
-    $_CLASIFTERCEW = $('#clasifclien_110c').val();
-
+function _datoclasifclien_con110c() {
+    $_CLASIFTERCEW = $("#clasifclien_110c").val();
+    console.log($_CLASIFTERCEW, '$_CLASIFTERCEW')
+    console.log(datosEnvio(), 'datos envio')
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_CLASIFTERCEW;
-    console.debug(datos_envio);
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_01_1_110C, get_url('/APP/CONTAB/CON110C_01_1.DLL'));
 }
-function _dataCON110C_01_1_110C(data){
-    // console.log(data, 'CON110C_01_1 clasif');
+function _dataCON110C_01_1_110C(data) {
+    console.log('data'. data)
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $_DESCRIPCLASIFTERW = date[1].trim();
+    $_DESCRIPCLASIFTERW = date[1];
     if (swinvalid == '00') {
         $("#clasifcliend_110c").val($_DESCRIPCLASIFTERW);
         _evaluarIVA_con110c();
     }
-    else if (swinvalid == '01') {      
-        // $_GRADOTERCEW = '9';
-        // $("#grdnegocio_110c").val($_GRADOTERCEW);
+    else if (swinvalid == '01') {
         _evaluarIVA_con110c();
     }
     else {
@@ -1641,6 +1788,7 @@ function _evaluarIVA_con110c() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
+        seleccion: $_REGIVATERCEW,
         callback_f: _evaluargrado_con110c
     },
         _validariva_con110c);
@@ -1676,6 +1824,7 @@ function _evaluarcalificacion_con110c() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
+        seleccion: $_CALIFITERCEW,
         callback_f: _evaluargrado_con110c
     },
         _validarcalificacion_con110c);
@@ -1689,11 +1838,13 @@ function _validarcalificacion_con110c(calificacion) {
         case "3":
         case "4":
         case "9":
-            if($_NOVEDADCON110C == '7'){
+            if ($_NOVEDADCON110C == '7') {
                 $('#baseret_con110c').val('0');
-                _evaluarbaseret_con110c();
-            }else{
-                _evaluarbaseret_con110c();
+                _evaluarcontribuyente(); 
+                // _evaluarbaseret_con110c();
+            } else {
+                _evaluarcontribuyente();
+                // _evaluarbaseret_con110c();
             }
             break;
         default:
@@ -1703,19 +1854,308 @@ function _validarcalificacion_con110c(calificacion) {
     $("#calif_110c").val(calificacion.COD + " - " + calificacion.DESCRIP);
 }
 
+function _evaluarcontribuyente(){
+    validarInputs({
+        form: '#CONTRIBUYENTE_103',
+        orden: "1",
+    },
+        function () { _evaluarclasif_con110c(); },
+        _datocontribuyente_con110c
+    )
+}
+function _datocontribuyente_con110c(){
+    $_GRANCONTRIBTERCEW = $('#contribuyente_con110c').val();
+    if($_GRANCONTRIBTERCEW.trim() == ''){
+        $_GRANCONTRIBTERCEW = 'N'; 
+        $_VLRBASERETTERCEW = '0'; 
+        $('#baseret_con110c').val($_VLRBASERETTERCEW);
+        $('#contribuyente_con110c').val($_GRANCONTRIBTERCEW);
+        _evaluaragenteret_110c();
+    }else if($_GRANCONTRIBTERCEW == 'S'){
+        _evaluarbaseret_con110c(); 
+    }else if($_GRANCONTRIBTERCEW == 'N'){
+        $_VLRBASERETTERCEW = '0'; 
+        $('#baseret_con110c').val($_VLRBASERETTERCEW);
+        _evaluaragenteret_110c(); 
+    }else{
+        _evaluarcontribuyente(); 
+    }
+}
+
+
 function _evaluarbaseret_con110c() {
+    // $('#imprimir_con110c').show()
+     // $('#imprimir_con110c').hide()
     validarInputs({
         form: '#BASERET_110C',
         orden: "1",
-        event_f3: _ubicargrabar_con110c
     },
-        function () { _evaluarcalificacion_con110c(); },
+        function () { _evaluarcontribuyente(); },
         _datoagenteret_con110c
     )
 }
 function _datoagenteret_con110c() {
+    
     $_VLRBASERETTERCEW = $('#baseret_con110c').val();
-    _evaluarnombreref1_con110c();
+    _evaluaragenteret_110c(); 
+}
+
+function  _evaluaragenteret_110c(){
+    validarInputs({
+        form: '#RETENEDOR_110C',
+        orden: "1",
+    },
+        function () { _evaluarclasif_con110c(); },
+        _datoagenteret_con110c
+    )
+}
+
+function _datoagenteret_con110c(){
+    $_RETETERCEW = $('#retenedor_con110c').val();
+    if($_RETETERCEW.trim() == ''){
+        $_RETETERCEW = 'N'; 
+        $('#retenedor_con110c').val($_RETETERCEW);
+        _evaluarreteivacomp_con110();
+    }else if(($_RETETERCEW == 'S') || ($_RETETERCEW == 'N')){
+        _evaluarreteivacomp_con110(); 
+    }else{
+        _evaluaragenteret_110c(); 
+    }
+}
+
+function _evaluarreteivacomp_con110(){
+    validarInputs({
+        form: '#RETCOMP_110C',
+        orden: "1",
+    },
+        function () { _evaluaragenteret_110c(); },
+        _datoreteiva_con110c
+    )
+}
+function _datoreteiva_con110c(){
+    $_RETIVACOMPTERCEW = $('#reteivacompra_con110c').val();
+    if($_RETIVACOMPTERCEW.trim() == ''){
+        $_RETIVACOMPTERCEW = 'N'; 
+        $('#reteivacompra_con110c').val($_RETIVACOMPTERCEW);
+        _evaluarreteivaventa_con110();
+    }else if(($_RETIVACOMPTERCEW == 'S') || ($_RETIVACOMPTERCEW == 'N')){
+        _evaluarreteivaventa_con110(); 
+    }else{
+        _evaluarreteiva_con110(); 
+    }
+}
+
+function _evaluarreteivaventa_con110(){
+    validarInputs({
+        form: '#RETVENTA_110C',
+        orden: "1",
+    },
+        function () { _evaluaragenteret_110c(); },
+        _datoreteivaventa_con110c
+    )
+}
+function _datoreteivaventa_con110c(){
+    $_RETIVATERCEW = $('#causareteiva_con110c').val();
+    if($_RETIVATERCEW.trim() == ''){
+        $_RETIVATERCEW = 'N'; 
+        $('#causareteiva_con110c').val($_RETIVATERCEW);
+        _evaluarexento_110c()
+    }else if(($_RETIVATERCEW == 'S') || ($_RETIVATERCEW == 'N')){
+        _evaluarexento_110c();  
+    }else{
+        _evaluarreteivaventa_con110(); 
+    }
+}
+function _evaluarexento_110c(){
+    validarInputs({
+        form: '#EXENTO_110C',
+        orden: "1",
+    },
+        function () {  _evaluarreteivaventa_con110(); },
+        _datoexento_con110c
+    )
+}
+function _datoexento_con110c(){
+    $_EXENTRETTERCEW = $('#exento_con110c').val();
+    if($_EXENTRETTERCEW.trim() == ''){
+        $_EXENTRETTERCEW = 'N'; 
+        $('#exento_con110c').val($_EXENTRETTERCEW);
+        _evaluarcobroseg_110c(); 
+    }else if(($_EXENTRETTERCEW == 'S') || ($_EXENTRETTERCEW == 'N')){
+        _evaluarcobroseg_110c();  
+    }else{
+        _evaluarexento_110c(); 
+    } 
+}
+function _evaluarcobroseg_110c(){
+    validarInputs({
+        form: '#COBROSEG_110C',
+        orden: "1",
+    },
+        function () {  _evaluarexento_110c(); },
+        _datocobroseguro_con110c
+    )
+}
+function _datocobroseguro_con110c(){
+    $_SEGUROTERCEW = $('#cobroseg_con110c').val();
+    if($_SEGUROTERCEW.trim() == ''){
+        $_SEGUROTERCEW = 'N'; 
+        $('#cobroseg_con110c').val($_SEGUROTERCEW);
+        _evaluardatacredito_110c(); 
+    }else if(($_SEGUROTERCEW == 'S') || ($_SEGUROTERCEW == 'N')){
+        _evaluardatacredito_110c();  
+    }else{
+        _evaluarcobroseg_110c(); 
+    } 
+}
+function _evaluardatacredito_110c(){
+    validarInputs({
+        form: '#DATACREDIT_110C',
+        orden: "1",
+    },
+        function () {  _evaluarexento_110c(); },
+        _datocredito_con110c
+    )
+}
+function _datocredito_con110c(){
+    $_DATACRETERCEW  = $('#datacredito_con110c').val();
+    if($_DATACRETERCEW.trim() == ''){
+        $_DATACRETERCEW  = 'N'; 
+        $('#datacredito_con110c').val($_DATACRETERCEW);
+        _evaluaracuerdopag_110c(); 
+    }else if(($_DATACRETERCEW  == 'S') || ($_DATACRETERCEW == 'N')){
+        _evaluaracuerdopag_110c();  
+    }else{
+        _evaluardatacredito_110c(); 
+    } 
+}
+function _evaluaracuerdopag_110c(){
+    validarInputs({
+        form: '#ACUERDO_110C',
+        orden: "1",
+    },
+        function () { _evaluardatacredito_110c(); },
+        _datoacuerdopago_con110c
+    )
+}
+function _datoacuerdopago_con110c(){
+    $_ACUEPAGOTERCEW  = $('#acuerdopago_con110c').val();
+    if($_ACUEPAGOTERCEW.trim() == ''){
+        $_ACUEPAGOTERCEW  = 'N'; 
+        $('#acuerdopago_con110c').val($_ACUEPAGOTERCEW);
+        _evaluarcapitado_110c(); 
+    }else if(($_ACUEPAGOTERCEW  == 'S') || ($_ACUEPAGOTERCEW == 'N')){
+        _evaluarcapitado_110c();  
+    }else{
+        _evaluaracuerdopag_110c(); 
+    }  
+}
+
+function _evaluarcapitado_110c(){
+    validarInputs({
+        form: '#CAPITADO_110C',
+        orden: "1",
+    },
+        function () { _evaluaracuerdopag_110c(); },
+        _datocapitado_con110c
+    )
+}
+function _datocapitado_con110c(){
+    $_CAPITADOTERCEW = $('#capitado_con110c').val();
+    if($_CAPITADOTERCEW.trim() == ''){
+        $_CAPITADOTERCEW  = 'N'; 
+        $('#capitado_con110c').val($_CAPITADOTERCEW);
+        _evaluarnitcli_110c(); 
+    }else if(($_CAPITADOTERCEW  == 'S') || ($_CAPITADOTERCEW == 'N')){
+        _evaluarnitcli_110c(); 
+    }else{
+        _evaluarcapitado_110c(); 
+    }  
+}
+function _evaluarnitcli_110c(){
+    validarInputs({
+        form: '#NITCLIEN_110C',
+        orden: "1",
+    },
+        function () { _evaluaracuerdopag_110c(); },
+        _datonitcli_con110c
+    )
+}
+function _datonitcli_con110c(){
+    $_NITCLITERCEW = $('#nitcliente_con110c').val();
+    if($_NITCLITERCEW.trim() == ''){
+        $_NITCLITERCEW  = 'N'; 
+        $('#nitcliente_con110c').val($_NITCLITERCEW);
+        _evaluarcausaret_110c(); 
+    }else if(($_NITCLITERCEW  == 'S') || ($_NITCLITERCEW == 'N')){
+        _evaluarcausaret_110c(); 
+    }else{
+        _evaluarcapitado_110c(); 
+    } 
+}
+
+function _evaluarcausaret_110c(){
+    validarInputs({
+        form: '#RETIVA_110C',
+        orden: "1",
+    },
+        function () { _evaluarnitcli_110c(); },
+        _datocausaret_con110c
+    )
+}
+function _datocausaret_con110c(){
+    $_RETICAVTERCEW = $('#icav_con110c').val();
+    if($_RETICAVTERCEW.trim() == ''){
+        $_RETICAVTERCEW  = 'N'; 
+        $('#icav_con110c').val($_RETICAVTERCEW);
+        _evaluarbloqvende_110c(); 
+    }else if(($_RETICAVTERCEW  == 'S') || ($_RETICAVTERCEW == 'N')){
+        _evaluarbloqvende_110c(); 
+    }else{
+        _evaluarcapitado_110c(); 
+    } 
+}
+function _evaluarbloqvende_110c(){
+    validarInputs({
+        form: '#BLOQVEN_110C',
+        orden: "1",
+    },
+        function () { _evaluarcausaret_110c(); },
+        _datobloqvend_con110c
+    )
+}
+function _datobloqvend_con110c(){
+    $_BLOQTERCEW = $('#bloquearvend_con110c').val();
+    if($_BLOQTERCEW.trim() == ''){
+        $_BLOQTERCEW = 'N'; 
+        $('#bloquearvend_con110c').val($_BLOQTERCEW);
+        _evaluarexcluiriva_110c(); 
+    }else if(($_BLOQTERCEW == 'S') || ($_BLOQTERCEW == 'N')){
+        _evaluarexcluiriva_110c(); 
+    }else{
+        _evaluarbloqvende_110c(); 
+    }
+}
+function _evaluarexcluiriva_110c(){
+    validarInputs({
+        form: '#EXCLUIRIVA_110C',
+        orden: "1",
+    },
+        function () { _evaluarbloqvende_110c(); },
+        _datoexcluiriva_con110c
+    )
+}
+function _datoexcluiriva_con110c(){
+    $_EXIVATERCEW = $('#excluiriva_con110c').val();
+    if($_EXIVATERCEW.trim() == ''){
+        $_EXIVATERCEW  = 'N'; 
+        $('#excluiriva_con110c').val($_EXIVATERCEW);
+        _evaluarnombreref1_con110c(); 
+    }else if(($_EXIVATERCEW  == 'S') || ($_EXIVATERCEW == 'N')){
+        _evaluarnombreref1_con110c();  
+    }else{
+        _evaluarexcluiriva_110c(); 
+    }
 }
 
 function _evaluarnombreref1_con110c() {
@@ -1912,7 +2352,11 @@ function _datoembargosempl_con110c() {
     if (($_NITUSU == '0800224972') || ($_NITUSU == '0900165076') || ($_NITUSU == '0830138486')) {
         _evaluarcedulasempl_con110c()
     } else {
-        ultimapestaña_con110c();
+        if($_TIPOEMPRESAUSU == 'H'){
+            _ubicargrabar_con110c(); 
+        }else{
+            ultimapestaña_con110c();
+        }
     }
 }
 
@@ -1927,7 +2371,6 @@ function _evaluarcedulasempl_con110c() {
 }
 
 function _evaluarentidadempl_con110c() {
-    console.log('evaluar ENTIDAD EMPLEADOR');
     validarInputs({
         form: '#ENTIDADAFIL_CON110C',
         orden: "1"
@@ -1962,17 +2405,20 @@ function ultimapestaña_con110c() {
 }
 
 function _evaluardirectabla_con110c() {
+    $('#imprimir_con110c').show()
     validarInputs({
         form: '#DIRESUCU_CON103',
-        orden: "1"
+        orden: "1",
+        event_f3: _ubicargrabar_con110c
     },
-        function () { _evaluarnombreref1_con110c();},
+        function () { _evaluarnombreref1_con110c(); },
         _validardirecciontabla
     )
 }
 function _validardirecciontabla() {
+    $('#imprimir_con110c').hide()
     $_DIRECCIONTABLA = $("#diresucu_con110c").val();
-  
+
     _evaluarteltabla_con110c();
 }
 function _evaluarteltabla_con110c() {
@@ -1980,7 +2426,7 @@ function _evaluarteltabla_con110c() {
         form: '#TELSUCU_CON110C',
         orden: "1"
     },
-        function () { _evaluardirectabla_con110c();},
+        function () { _evaluardirectabla_con110c(); },
         _validarteltabla
     )
 }
@@ -1993,7 +2439,7 @@ function _evaluarciudadtabla_con110c() {
         form: '#CIUDADSUCU_CON110C',
         orden: "1"
     },
-        function () { _evaluarteltabla_con110c();},
+        function () { _evaluarteltabla_con110c(); },
         _validarciudadtabla
     )
 }
@@ -2002,12 +2448,10 @@ function _validarciudadtabla() {
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_CIUDADTABLA;
-    console.debug(datos_envio);
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_05_01_110C, get_url('/APP/CONTAB/CON110C_05.DLL'));
 }
 
 function _dataCON110C_05_01_110C(data) {
-    // console.log(data, 'CON110C_05_1 CIUDAD');
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == '00') {
@@ -2026,7 +2470,7 @@ function _evaluarbarriotabla_con110c() {
         form: '#BARRIOSUCU_CON110C',
         orden: "1"
     },
-        function () { _evaluarciudadtabla_con110c();},
+        function () { _evaluarciudadtabla_con110c(); },
         _validarbarriotabla
     )
 }
@@ -2035,12 +2479,12 @@ function _validarbarriotabla() {
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_BARRIOTABLA.padStart(8, '0');
-    console.debug(datos_envio);
+    
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_13_110C, get_url('/APP/CONTAB/CON110C_13.DLL'));
 }
 
 function _dataCON110C_13_110C(data) {
-    // console.log(data, 'CON110C_13 BARRIO');
+
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == '00') {
@@ -2058,7 +2502,7 @@ function _dataCON110C_13_110C(data) {
             agregarFilaTabla_con110c();
         } else {
             editarfilatabla_con110c();
-        } 
+        }
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -2070,16 +2514,16 @@ function editarfilatabla_con110c() {
     let nfila = parseInt($_Nfila) - 1;
     // console.debug($_Nfila);
     var cambiar = $('#item_con110c').val();
-    cambiar = parseInt(cambiar); 
+    cambiar = parseInt(cambiar);
     let fila = $('#TABLADIRECCION_CON110C tbody tr:eq(' + nfila + ')');
-    let html ='<td>' + $('#item_con110c').val() +
+    let html = '<td>' + $('#item_con110c').val() +
         '</td><td>' + $('#diresucu_con110c').val() +
         '</td><td>' + $('#telsucu_con110c').val() +
         '</td><td>' + $('#ciudadsucu_con110c').val() +
         '</td><td>' + $('#barriosucu_110c').val() +
         '</td>';
     fila.html(html);
-
+    $('#imprimir_con110c').show()
     _validaciontabla_con110c();
 }
 
@@ -2093,10 +2537,12 @@ function agregarFilaTabla_con110c() {
         '<td>' + $('#barriosucu_110c').val() + '</td>' +
         '</tr>'
     );
+    
     _validaciontabla_con110c();
 }
 
 function _validaciontabla_con110c(orden) {
+    // $('#imprimir_con110c').show()
     validarTabla(
         {
             tabla: '#TABLADIRECCION_CON110C',
@@ -2141,37 +2587,12 @@ function _limpiarcampos_con110c() {
 
 ///////////////////////////// GRABAR DATOS ///////////////////////////////
 function _ubicargrabar_con110c() {
-    console.debug('ubicar grabar');
-    bootbox.confirm({
-        size: "small",
-        onEscape: false,
-        message: "DESEA GRABAR LOS DATOS?",
-        buttons: {
-            confirm: {
-                label: 'Si',
-                className: 'btn-success'
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-danger'
-            }
-
-        },
-        callback: function (result) {
-            if (result == true) {
-
-                _tabladiretxt();
-
-            }
-            else {
-                _evaluarnombreref1_con110c();
-            }
-        }
-    })
+    
+    CON851P('01', _evaluarnombreref1_con110c, _tabladiretxt)
 }
 
 function _tabladiretxt() {
-    // console.debug("tabladostxt");
+    
     tablados = '';
     $.each($('#TABLADIRECCION_CON110C tbody tr'), function (k, v) {
         let direccion = $(v).children('td:eq(1)').text();
@@ -2185,7 +2606,7 @@ function _tabladiretxt() {
         tablados += '|';
         let barrio = $(v).children('td:eq(4)').text();
         tablados += barrio;
-        tablados += '|'+"\r\n";
+        tablados += '|' + "\r\n";
     });
 
     var columnas2 = $('#TABLADIRECCION_CON110C tbody tr').length;
@@ -2198,7 +2619,7 @@ function _tabladiretxt() {
         tablados += '00000';
         tablados += '|';
         tablados += '00000000';
-        tablados += '|'+"\r\n";
+        tablados += '|' + "\r\n";
     }
     $_FECHA_CON110C = moment().format('YYYYMMDDhhmm');
     var nombre_archivo = 'C:\\PROSOFT\\TEMP\\DIRECC-' + $_FECHA_CON110C + '.txt';
@@ -2244,50 +2665,35 @@ function _grabardatos_con110c() {
     $_CIUEXPTERCEW = $('#celempleador_con110c').val();
     $_FECHAAFILTERCEW = $('#fechaafil_con110c').val();
 
-    $('#rut_110c').is(':checked') ? $_RUTTERCEW == 'S' : $_RUTTERCEW == 'N';
-    $('#contribuyente_con110c').is(':checked') ? $_GRANCONTRIBTERCEW == 'S' : $_GRANCONTRIBTERCEW == 'N';
-    $('#retenedor_con110c').is(':checked') ? $_RETETERCEW == 'S' : $_RETETERCEW == 'N';
-    $('#reteivacompra_con110c').is(':checked') ? $_RETIVACOMPTERCEW == 'S' : $_RETIVACOMPTERCEW == 'N';
-    $('#causareteiva_con110c').is(':checked') ? $_RETIVATERCEW == 'S' : $_RETIVATERCEW == 'N';
-    $('#exento_con110c').is(':checked') ? $_EXENTRETTERCEW == 'S' : $_EXENTRETTERCEW == 'N';
-    $('#cobroseg_con110c').is(':checked') ? $_SEGUROTERCEW == 'S' : $_SEGUROTERCEW == 'N';
-    $('#datacredito_con110c').is(':checked') ? $_DATACRETERCEW == 'S' : $_DATACRETERCEW == 'N';
-    $('#acuerdopago_con110c').is(':checked') ? $_ACUEPAGOTERCEW == 'S' : $_ACUEPAGOTERCEW == 'N';
-
-    $('#capitado_con110c').is(':checked') ? $_CAPITADOTERCEW == 'S' : $_CAPITADOTERCEW == 'N';
-    $('#nitcliente_con110c').is(':checked') ? $_NITCLITERCEW == 'S' : $_NITCLITERCEW == 'N';
-    $('#icav_con110c').is(':checked') ? $_RETICAVTERCEW == 'S' : $_RETICAVTERCEW == 'N';
-    $('#excluiriva_con110c').is(':checked') ? $_EXIVATERCEW == 'S' : $_EXIVATERCEW == 'N';
 
     if ($_NOVEDADCON110C == '8') {
         $_FECHAMODARTW = moment().format('YYMMDD');
         $_OPERMODARTW = $_ADMINW;
 
-    }else {
-        $_FECHACRETERCEW  = moment().format('YYMMDD');
+    } else {
+        $_FECHACRETERCEW = moment().format('YYMMDD');
         $_ADMINCRETERCEW = $_ADMINW;
         $_FECHAMODTERCEW = ' ';
-        $_ADMINMODTERCEW = ' ';    
+        $_ADMINMODTERCEW = ' ';
     }
     $_FACTORTERCEW = $_PORCICATER2W.padStart(3, '0') + $_PORCRETTER2W.padEnd(2, '0');
 
-    // console.log($_FECHACUMPTERCEW); 
 
     LLAMADO_DLL({
-        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_FECHACUMPTERCEW, $_APEL1TER2W, $_APEL2TER2W, $_NOMB1TER2W, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW, 
-            $_OTROSTERCEW, $_CONTACTTERCEW, $_WEBTERCEW, $_CARGOTERCEW, $_EMAILTERCEW, $_ASESORTERCEW, $_TIPOCUPOTERCEW, $_FECHACRETERCEW, $_ADMINCRETERCEW, $_FECHAMODTERCEW, $_ADMINMODTERCEW, $_FACTORTERCEW, $_CUPOTERCEW, $_VENDTERCEW, $_PAGOTERCEW, $_PLAZOTERCEW, $_CODZONAW, 
-            $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW,$_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW, 
-            $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW,$_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW,$_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
+        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_FECHACUMPTERCEW, $_DESCRIPTERW, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW,
+            $_OTROSTERCEW, $_CONTACTTERCEW, $_WEBTERCEW, $_CARGOTERCEW, $_EMAILTERCEW, $_ASESORTERCEW, $_TIPOCUPOTERCEW, $_FECHACRETERCEW, $_ADMINCRETERCEW, $_FECHAMODTERCEW, $_ADMINMODTERCEW, $_FACTORTERCEW, $_CUPOTERCEW, $_VENDTERCEW, $_PAGOTERCEW, $_PLAZOTERCEW, $_CODZONAW,
+            $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW,
+            $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW, $_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
             $_NOMREF1TERCEW, $_DIRREF1TERCEW, $_TELREF1TERCEW, $_RELREF1TERCEW, $_NOMREF2TERCEW, $_DIRREF2TERCEW, $_TELREF2TERCEW, $_RELREF2TERCEW, $_NOMREF3TERCEW, $_DIRREF3TERCEW, $_TELREF3TERCEW, $_RELREF3TERCEW, $_NOMTRABTERCEW, $_DIRTRABTERCEW, $_TELTRABTERCEW, $_CARTRABTERCEW,
             $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, $_NOMBRETXT],
         callback: _dataCON110C_14,
         nombredll: 'CON110C_14',
         carpeta: 'CONTAB'
     });
-   
+
 }
 
-function _eliminarregistro_con110c(){
+function _eliminarregistro_con110c() {
     $_NOMREF1TERCEW = $('#nombreref1_110c').val();
     $_DIRREF1TERCEW = $('#dirref1_110c').val();
     $_TELREF1TERCEW = $('#telref1_110c').val();
@@ -2311,71 +2717,56 @@ function _eliminarregistro_con110c(){
     $_CIUEXPTERCEW = $('#celempleador_con110c').val();
     $_FECHAAFILTERCEW = $('#fechaafil_con110c').val();
 
-    $('#rut_110c').is(':checked') ? $_RUTTERCEW == 'S' : $_RUTTERCEW == 'N';
-    $('#contribuyente_con110c').is(':checked') ? $_GRANCONTRIBTERCEW == 'S' : $_GRANCONTRIBTERCEW == 'N';
-    $('#retenedor_con110c').is(':checked') ? $_RETETERCEW == 'S' : $_RETETERCEW == 'N';
-    $('#reteivacompra_con110c').is(':checked') ? $_RETIVACOMPTERCEW == 'S' : $_RETIVACOMPTERCEW == 'N';
-    $('#causareteiva_con110c').is(':checked') ? $_RETIVATERCEW == 'S' : $_RETIVATERCEW == 'N';
-    $('#exento_con110c').is(':checked') ? $_EXENTRETTERCEW == 'S' : $_EXENTRETTERCEW == 'N';
-    $('#cobroseg_con110c').is(':checked') ? $_SEGUROTERCEW == 'S' : $_SEGUROTERCEW == 'N';
-    $('#datacredito_con110c').is(':checked') ? $_DATACRETERCEW == 'S' : $_DATACRETERCEW == 'N';
-    $('#acuerdopago_con110c').is(':checked') ? $_ACUEPAGOTERCEW == 'S' : $_ACUEPAGOTERCEW == 'N';
-
-    $('#capitado_con110c').is(':checked') ? $_CAPITADOTERCEW == 'S' : $_CAPITADOTERCEW == 'N';
-    $('#nitcliente_con110c').is(':checked') ? $_NITCLITERCEW == 'S' : $_NITCLITERCEW == 'N';
-    $('#icav_con110c').is(':checked') ? $_RETICAVTERCEW == 'S' : $_RETICAVTERCEW == 'N';
-    $('#excluiriva_con110c').is(':checked') ? $_EXIVATERCEW == 'S' : $_EXIVATERCEW == 'N';
-
     if ($_NOVEDADCON110C == '8') {
         $_FECHAMODARTW = moment().format('YYMMDD');
         $_OPERMODARTW = $_ADMINW;
 
-    }else {
-        $_FECHACRETERCEW  = moment().format('YYMMDD');
+    } else {
+        $_FECHACRETERCEW = moment().format('YYMMDD');
         $_ADMINCRETERCEW = $_ADMINW;
         $_FECHAMODTERCEW = ' ';
-        $_ADMINMODTERCEW = ' ';    
+        $_ADMINMODTERCEW = ' ';
     }
     $_FACTORTERCEW = $_PORCICATER2W.padStart(3, '0') + $_PORCRETTER2W.padEnd(2, '0');
-   
+
 
     LLAMADO_DLL({
-        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_FECHACUMPTERCEW, $_APEL1TER2W, $_APEL2TER2W, $_NOMB1TER2W, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW, 
-            $_OTROSTERCEW, $_CONTACTTERCEW, $_WEBTERCEW, $_CARGOTERCEW, $_EMAILTERCEW, $_ASESORTERCEW, $_TIPOCUPOTERCEW, $_FECHACRETERCEW, $_ADMINCRETERCEW, $_FECHAMODTERCEW, $_ADMINMODTERCEW, $_FACTORTERCEW, $_CUPOTERCEW, $_VENDTERCEW, $_PAGOTERCEW, $_PLAZOTERCEW, $_CODZONAW, 
-            $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW, 
-            $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW,$_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
-            $_NOMREF1TERCEW, $_DIRREF1TERCEW, $_TELREF1TERCEW, $_RELREF1TERCEW, $_NOMREF2TERCEW, $_DIRREF2TERCEW, $_TELREF2TERCEW, $_RELREF2TERCEW, $_NOMREF3TERCEW, $_DIRREF3TERCEW, $_TELREF3TERCEW, $_RELREF3TERCEW, $_NOMTRABTERCEW, $_DIRTRABTERCEW, $_TELTRABTERCEW, $_CARTRABTERCEW,
-            $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, $_NOMBRETXT],
+        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_FECHACUMPTERCEW, $_DESCRIPTERW, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW,
+        $_OTROSTERCEW, $_CONTACTTERCEW, $_WEBTERCEW, $_CARGOTERCEW, $_EMAILTERCEW, $_ASESORTERCEW, $_TIPOCUPOTERCEW, $_FECHACRETERCEW, $_ADMINCRETERCEW, $_FECHAMODTERCEW, $_ADMINMODTERCEW, $_FACTORTERCEW, $_CUPOTERCEW, $_VENDTERCEW, $_PAGOTERCEW, $_PLAZOTERCEW, $_CODZONAW,
+        $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW,
+        $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW, $_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
+        $_NOMREF1TERCEW, $_DIRREF1TERCEW, $_TELREF1TERCEW, $_RELREF1TERCEW, $_NOMREF2TERCEW, $_DIRREF2TERCEW, $_TELREF2TERCEW, $_RELREF2TERCEW, $_NOMREF3TERCEW, $_DIRREF3TERCEW, $_TELREF3TERCEW, $_RELREF3TERCEW, $_NOMTRABTERCEW, $_DIRTRABTERCEW, $_TELTRABTERCEW, $_CARTRABTERCEW,
+        $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, $_NOMBRETXT],
         callback: _dataCON110C_14,
         nombredll: 'CON110C_14',
         carpeta: 'CONTAB'
     });
 }
-function _dataCON110C_14(data){
-    console.log(data, 'CON110C_14'); 
+function _dataCON110C_14(data) {
+   
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
-        if($_NOVEDADCON110C == '9'){
+        if ($_NOVEDADCON110C == '9') {
             toastr.success('Se ha retirado', 'MAESTRO TERCEROS');
-            limpiarCajas_CON110C();
-        }else{
+            // validarChecked('#Medicamentos_ser119', 'N')
+            CON850(_datonovedad_con110c);
+            _inputControl('reset');
+        } else {
             toastr.success('Se ha guardado', 'MAESTRO TERCEROS');
-            limpiarCajas_CON110C();
+            CON850(_datonovedad_con110c);
+            _inputControl('reset');
         }
     }
     else if (swinvalid == "01") {
         CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
-        
+
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
-function limpiarCajas_CON110C() {
-    CON850(_datonovedad_con110c);
-    _inputControl('reset');
-}
+
 
 ////////////////////////////// NOVEDAD 8 Y 9 ///////////////////////////////////
 function _retirar_con110c() {
@@ -2383,24 +2774,23 @@ function _retirar_con110c() {
 }
 
 function _consultadatos_con110c() {
-    console.debug($_CODTERCEROW, 'novedad 8');
-    console.log($_CODTERCEROW.padStart(10, '0'));
 
     let datos_envio = datosEnvio()
     datos_envio += '|'
-    datos_envio += $_CODTERCEROW.padStart(10, '0');
-    console.debug(datos_envio);
+    datos_envio += $_CODTERCEROW
+
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_02, get_url('/APP/CONTAB/CON110C_02.DLL'));
 }
 
 function _dataCON110C_02(data) {
-    // console.log(data, "CON110C_02");
+    console.log(data, 'mostrar datos')
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_CODTERCEROW = date[1].trim();
     $_DVTERCEROW = date[2].trim();
     $_FECHACUMPTERCEW = date[3].trim();
-    $_APEL1TER2W = date[4].trim();
+    $_DESCRIPTERW = date[4].trim();
+    // $_APEL1TER2W = date[4].trim();
     $_APEL2TER2W = date[5].trim();
     $_NOMB1TER2W = date[6].trim();
     $_DIRECCTERCEW = date[7].trim();
@@ -2451,12 +2841,19 @@ function _dataCON110C_02(data) {
     $_REGIVATERCEW = date[47].trim();
     $_CALIFITERCEW = date[48].trim();
     $_GRANCONTRIBTERCEW = date[49].trim();
+    console.log($_GRANCONTRIBTERCEW, '$_GRANCONTRIBTERCEW')
     $_RETETERCEW = date[50].trim();
+    console.log($_RETETERCEW, '$_RETETERCEW')
     $_VLRBASERETTERCEW = date[51].trim();
+    console.log($_VLRBASERETTERCEW, '$_VLRBASERETTERCEW')
     $_RETIVACOMPTERCEW = date[52].trim();
+    console.log($_RETIVACOMPTERCEW, '$_RETIVACOMPTERCEW')
     $_RETIVATERCEW = date[53].trim();
+    console.log($_RETIVATERCEW, '$_RETIVATERCEW')
     $_EXENTRETTERCEW = date[54].trim();
+    console.log($_EXENTRETTERCEW, '$_EXENTRETTERCEW')
     $_SEGUROTERCEW = date[55].trim();
+    console.log($_SEGUROTERCEW, '$_SEGUROTERCEW')
     $_DATACRETERCEW = date[56].trim();
     $_ACUEPAGOTERCEW = date[57].trim();
     $_CAPITADOTERCEW = date[58].trim();
@@ -2468,11 +2865,11 @@ function _dataCON110C_02(data) {
     $_EMPRESAVEHTERCEW = date[65].trim();
 
     if (swinvalid == '00') {
-        
+
         let datos_envio = datosEnvio()
         datos_envio += localStorage.Usuario + '|'
         datos_envio += $_CODTERCEROW.padStart(10, '0');
-        console.debug(datos_envio);
+        
         SolicitarDll({ datosh: datos_envio }, _dataCON110C_03, get_url('/APP/CONTAB/CON110C_03.DLL'));
     }
     else {
@@ -2482,7 +2879,7 @@ function _dataCON110C_02(data) {
 }
 
 function _dataCON110C_03(data) {
-    console.log(data, "CON110C_03");
+    console.log(data, 'mostrar datos 02')
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_NROVEHTERCEW = date[1].trim();
@@ -2527,11 +2924,11 @@ function _dataCON110C_03(data) {
     if (date[0].trim() == '00') {
         var json = date[17].trim();
         var rutajson = get_url("temp/" + json);
-        console.log(rutajson);
+    
         SolicitarDatos(
             null,
             function (data) {
-                console.log(data, 'direcciones')
+                
                 $_DIRECCI_CON110C = data.DIRECCIONES;
                 // arraygrpser.pop();
                 var arrayEliminar = [];
@@ -2548,10 +2945,10 @@ function _dataCON110C_03(data) {
 }
 
 function on_eliminarJsoncon110c(data) {
-    console.log(data);
+    
     var date = data.split('|');
     if (date[0].trim() == '00') {
-        console.debug('json eliminado');
+    
         _mostrardatos_con110c();
     } else {
         console.error(res[1]);
@@ -2560,30 +2957,16 @@ function on_eliminarJsoncon110c(data) {
 }
 
 function _mostrardatos_con110c() {
-    $_RUTTERCEW == 'S' ? $('#rut_110c')[0].checked = true : $('#rut_110c')[0].checked = false;
-    $_GRANCONTRIBTERCEW == 'S' ? $('#contribuyente_con110c')[0].checked = true : $('#contribuyente_con110c')[0].checked = false;
-    $_RETETERCEW == 'S' ? $('#retenedor_con110c')[0].checked = true : $('#retenedor_con110c')[0].checked = false;
-    $_RETIVACOMPTERCEW == 'S' ? $('#reteivacompra_con110c')[0].checked = true : $('#reteivacompra_con110c')[0].checked = false;
-    $_RETIVATERCEW == 'S' ? $('#causareteiva_con110c')[0].checked = true : $('#causareteiva_con110c')[0].checked = false;
-    $_EXENTRETTERCEW == 'S' ? $('#exento_con110c')[0].checked = true : $('#exento_con110c')[0].checked = false;
-    $_SEGUROTERCEW == 'S' ? $('#cobroseg_con110c')[0].checked = true : $('#cobroseg_con110c')[0].checked = false;
-    $_DATACRETERCEW == 'S' ? $('#datacredito_con110c')[0].checked = true : $('#datacredito_con110c')[0].checked = false;
-    $_ACUEPAGOTERCEW == 'S' ? $('#acuerdopago_con110c')[0].checked = true : $('#acuerdopago_con110c')[0].checked = false;
-    $_CAPITADOTERCEW == 'S' ? $('#capitado_con110c')[0].checked = true : $('#capitado_con110c')[0].checked = false;
-    $_NITCLITERCEW == 'S' ? $('#nitcliente_con110c')[0].checked = true : $('#nitcliente_con110c')[0].checked = false;
-    $_RETICAVTERCEW == 'S' ? $('#icav_con110c')[0].checked = true : $('#icav_con110c')[0].checked = false;
-    $_BLOQTERCEW == 'S' ? $('#bloquearvend_con110c')[0].checked = true : $('#bloquearvend_con110c')[0].checked = false;
-    $_EXIVATERCEW == 'S' ? $('#excluiriva_con110c')[0].checked = true : $('#excluiriva_con110c')[0].checked = false;
-
+    
     $('#codclien_con110c').val($_CODTERCEROW);
     $('#dv_con110c').val($_DVTERCEROW);
     $_AÑOCUMPLETERCEW = $_FECHACUMPTERCEW.substring(0, 4);
     $_DIACUMPLETERCEW = $_FECHACUMPTERCEW.substring(4, 6);
     $_MESCUMPLETERCEW = $_FECHACUMPTERCEW.substring(6, 8);
-    $('#cumple_con110').val($_DIACUMPLETERCEW + '/' + $_MESCUMPLETERCEW + '/'+ $_AÑOCUMPLETERCEW);
-    $('#1erapellido_con110c').val($_APEL1TER2W);
-    $('#2doapellido_con110c').val($_APEL2TER2W);
-    $('#nombres_con110c').val($_NOMB1TER2W);
+    $('#cumple_con110').val($_DIACUMPLETERCEW + '/' + $_MESCUMPLETERCEW + '/' + $_AÑOCUMPLETERCEW);
+    $('#nombres_con110c').val($_DESCRIPTERW);
+    // $('#2doapellido_con110c').val();
+    // $('#nombres_con110c').val();
     $('#direcc_con110c').val($_DIRECCTERCEW);
     $('#ciudad_con110c').val($_CODCIUTERCEW);
     $('#ciudadd_con110c').val($_DESCRIPCIUTERW);
@@ -2637,18 +3020,28 @@ function _mostrardatos_con110c() {
     $('#grdnegocio_110c').val($_GRADOTERCEW);
     $('#grdnegociod_110c').val($_DESCRIPGRADTERW);
     $('#clasifclien_110c').val($_CLASIFTERCEW);
-    
+
     $('#iva_110c').val($_REGIVATERCEW);
     $('#calif_110c').val($_CALIFITERCEW);
+    $('#contribuyente_con110c').val($_GRANCONTRIBTERCEW);
     $('#baseret_con110c').val($_VLRBASERETTERCEW);
+    $('#retenedor_con110c').val($_RETETERCEW);
+    $('#reteivacompra_con110c').val($_RETIVACOMPTERCEW);
+    $('#causareteiva_con110c').val($_RETIVATERCEW);
+    $('#exento_con110c').val($_EXENTRETTERCEW);
+    $('#cobroseg_con110c').val($_SEGUROTERCEW);
+    $('#datacredito_con110c').val($_DATACRETERCEW);
+    $('#acuerdopago_con110c').val($_ACUEPAGOTERCEW);
+    $('#capitado_con110c').val($_CAPITADOTERCEW);
+    $('#nitcliente_con110c').val($_NITCLITERCEW);
+    $('#icav_con110c').val($_RETICAVTERCEW);
+    $('#bloquearvend_con110c').val($_BLOQTERCEW);
+    $('#excluiriva_con110c').val($_EXIVATERCEW);
 
-    // $('#hectaria_con110c').val();
     $('#marca_con110c').val($_MARCATERCEW);
     $('#empresa_con110c').val($_EMPRESAVEHTERCEW);
     $('#numero_con110c').val($_NROVEHTERCEW);
     $('#placa_con110c').val($_PLACAVEHTERCEW);
-
-    // $('#codventas_con110c').val();
 
     $('#replegal_con110c').val($_IDREPRETERCEW);
     $('#nombrelegal_con110c').val($_NOMREPRETERCEW);
@@ -2701,46 +3094,23 @@ function _mostrardatos_con110c() {
                 + '<td>' + cont.toString().padStart(2, '0') + '</td>'
                 + '<td>' + direcciontabla + '</td>'
                 + '<td>' + telefonotabla + '</td>'
-                + '<td>' + ciudadtabla + '</td>'       
+                + '<td>' + ciudadtabla + '</td>'
                 + '<td>' + barriotabla + '</td>'
                 + "</tr>"
             );
         }
 
     }
-
     if ($_NOVEDADCON110C == '9') {
         _retiroregistro_con110c();
+    }else{
+        _evaluardatodv_con110c();
     }
 }
 
 function _retiroregistro_con110c() {
-    // _consultademostrarinf(); 
-    bootbox.confirm({
-        size: "small",
-        onEscape: false,
-        message: "DESEA RETIRAR ESTOS DATOS?",
-        buttons: {
-            confirm: {
-                label: 'Si',
-                className: 'btn-success'
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-danger'
-            }
-
-        },
-        callback: function (result) {
-            if (result == true) {
-                _tabladiretxt();
-            }
-            else {
-                CON850(_datonovedad_con110c);
-            }
-        }
-    });
-
+    
+    CON851P('54', _evaluarcodcliente110c, _tabladiretxt)
 }
 
 
