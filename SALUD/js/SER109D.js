@@ -499,19 +499,20 @@ function finImpresion_SER109D() {
         postData({ datosh: datosEnvio() + SER109D.LLAVEW }, URL)
             .then(data => {
                 console.debug(data);
-                _ventana({
-                    size: small,
-                    title: 'Desea cerrar la factura?',
-                    escape: false,
-                    focus: '#cierrefactura_SER109D',
-                    form: '#VALIDARVENTANA1_41',
-                    order: '1',
-                    global1: SER109D.CIERREW,
-                    source: '<div class="col-md-12" id="VALIDARVENTANA1_41"> ' +
-                    '<input id="cierrefactura_SER109D" type="text" class="form-control input-md" data-orden="1" maxlength="1"> ' +
-                    '</div>',
-                    mascara: mascaracierreFactura_SER109D
-                }, _evaluarFechacierre_SER109D, _toggleNav);
+                _toggleNav();
+                // _ventana({
+                //     size: small,
+                //     title: 'Desea cerrar la factura?',
+                //     escape: false,
+                //     focus: '#cierrefactura_SER109D',
+                //     form: '#VALIDARVENTANA1_41',
+                //     order: '1',
+                //     global1: SER109D.CIERREW,
+                //     source: '<div class="col-md-12" id="VALIDARVENTANA1_41"> ' +
+                //     '<input id="cierrefactura_SER109D" type="text" class="form-control input-md" data-orden="1" maxlength="1"> ' +
+                //     '</div>',
+                //     mascara: mascaracierreFactura_SER109D
+                // }, _evaluarFechacierre_SER109D, _toggleNav);
             })
             .catch(err => {
                 console.debug(err);
