@@ -217,9 +217,9 @@ if (process.platform === 'darwin') {
   template[3].submenu.push({
     type: 'separator'
   }, {
-      label: 'Bring All to Front',
-      role: 'front'
-    })
+    label: 'Bring All to Front',
+    role: 'front'
+  })
 
   addUpdateMenuItems(template[0].submenu, 1)
 }
@@ -282,8 +282,8 @@ function creaVentana() {
 
 }
 
-ipcMain.on('ping',(e, m) => {
-  if(m.param == 'salir'){
+ipcMain.on('ping', (e, m) => {
+  if (m.param == 'salir') {
     cerrarVentana()
   }
 });
@@ -329,8 +329,8 @@ ipcMain.on('another', (e, m) => {
   var tamano = tamano[0].size;
   segundaventana = new BrowserWindow({
     frame: false,
-    width: parseInt(tamano.width - (tamano.width*0.1)),
-    height: parseInt(tamano.height - (tamano.height*0.1)),
+    width: parseInt(tamano.width - (tamano.width * 0.1)),
+    height: parseInt(tamano.height - (tamano.height * 0.1)),
     // icon: 'build/SC.ico',
     parent: win,
     webPreferences: {
@@ -338,7 +338,7 @@ ipcMain.on('another', (e, m) => {
     }
   });
 
-  segundaventana.setBounds({y: 40});
+  segundaventana.setBounds({ y: 40 });
   segundaventana.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
   segundaventana.webContents.on('did-finish-load', () => {
     var dir = path.join(__dirname, m);
@@ -353,7 +353,8 @@ ipcMain.on('another', (e, m) => {
 //     win.webContents.send('closed2', m);
 //   }
 // })
-ipcMain.on('ventana2', (e,m) => {
-console.log(m);
-segundaventana.close();
+ipcMain.on('ventana2', (e, m) => {
+  console.log(m);
+  segundaventana.close();
+  win.webContents.send('closed2');
 })

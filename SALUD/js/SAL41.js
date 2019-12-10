@@ -3626,7 +3626,7 @@ function _Validandopaciente10_41() {
 }
 
 function _Buscarconsultas_41() {
-    SER835({ PACIENTE: $_IDHISTORIAFACT.padStart(15, '0'), CLFACT: $_CLFACT, NITUSU: $_NITUSU }, _Evaluaridhistoriafact_41, _Buscarconsultas2_41);
+    SER835({ PACIENTE: $_IDHISTORIAFACT.padStart(15, '0'), CLFACT: $_CLFACT, NITUSU: $_NITUSU, DESCRIPPACI: $_DESCRIPPACI }, _Evaluaridhistoriafact_41, _Buscarconsultas2_41);
 }
 
 function _Buscarconsultas2_41() {
@@ -7468,12 +7468,14 @@ function _Leercondic_41() {
                 $('#embarestado_SAL41').html(
                     '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO ESTA EMBARAZADA</label>'
                 )
+                _Leercondic2_41()
             } else {
                 $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
                     '<div class="inline-inputs">' +
                     '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO ESTA EMBARAZADA</label>' +
                     '</div>' +
                     '</div>');
+                _Leercondic2_41()
             }
             break;
         case '8':
@@ -7486,11 +7488,11 @@ function _Leercondic2_41() {
         _Tipoproced_41();
     } else {
         if ($_DIAGNCUP1 == 'S') {
+            console.debug('diagnostico cup S');
             SAL41.TIPOPROCESTAD = '0';
             $_FINALIDESTAD = '' ? $_FINALIDESTAD = ' ' : $_FINALIDESTAD = $_FINALIDESTAD;
             _Controlcapitacion_41();
-        }
-        else {
+        } else {
             _Tipoproced_41();
         }
     }
@@ -8013,7 +8015,7 @@ function _dataSAL41_12(data) {
 }
 
 function _Controlcapitacion_41() {
-    console.debug('controlcapacitacion')
+    console.debug('controlcapacitacion');
     if (($_NITUSU == '0891855847') && ($_CLFACT == '0')) {
         _Controlcapitacion2_41();
     } else {
@@ -8816,6 +8818,9 @@ function _evaluarSER811_SAL41(data) {
             } else {
                 _imprimirINV412P_SAL97C11();
             }
+            break;
+        case '0':
+            _toggleNav();
     }
 }
 
@@ -9241,13 +9246,14 @@ function _imprimirINV414_SAL97C11() {
         formato: 'salud/INV414.html',
         nombre: SAL41.NOMBREPDF
     }
-    _toggleNav();
+    // _toggleNav();
 
     imprimir(opcinesImpresion_INV414, finImpresion_INV411)
 }
 
 function finImpresion_INV411() {
     console.debug('Impresion satisfactoria');
+    _toggleNav();
 }
 
 function _Imprimir10_41() {

@@ -5,7 +5,6 @@ SER109D = [];
 $(document).ready(() => {
     // $('#ADICIONALES_SER109D').hide();
     _inputControl('disabled');
-    _evaluarprefijo_SER109D();
     SER109D.ADMINW = localStorage.getItem('Usuario').trim();
     SER109D.FECHANUM = $_USUA_GLOBAL[0].FECHALNK;
     SER109D.NITUSU = $_USUA_GLOBAL[0].NIT;
@@ -16,6 +15,18 @@ $(document).ready(() => {
     SER109D.ABONOSW = 0;
     SER109D.GLOSASW = 0;
     SER109D.NOTASW = 0;
+    obtenerDatosCompletos({ nombreFd: 'CIUDADES' }, data => {
+        SER109D.CIUDAD = data.CIUDAD;
+        SER109D.CIUDAD.forEach(element => {
+            if ($_USUA_GLOBAL[0].COD_CIUD == element.COD) {
+                SER109D.CIUDADUSU = element.NOMBRE;
+            }
+        });
+        obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, data => {
+            SER109D.TERCEROS = data.TERCEROS;
+            _evaluarprefijo_SER109D();
+        });
+    });
 })
 
 function _evaluarprefijo_SER109D() {
@@ -31,7 +42,7 @@ function _evaluarprefijo_SER109D() {
                 .then(data => {
                     console.debug(data);
                     var data = data.split("|");
-                    numeroprefijoMask_SER109D.typedValue = parseInt(data[1].substring(3,9));
+                    numeroprefijoMask_SER109D.typedValue = parseInt(data[1].substring(3, 9));
                     _evaluarnumeroprefijo_SER109D();
                 })
                 .catch(err => {
@@ -52,7 +63,7 @@ function _evaluarnumeroprefijo_SER109D() {
             SER109D.LLAVEW = SER109D.PREFIJOW + SER109D.NUMEROW.padStart(6, '0');
             let URL = get_url("APP/SALUD/SER109D.DLL");
             postData({
-                datosh: datosEnvio() + '1|' + SER109D.LLAVEW
+                datosh: datosEnvio() + '1|' + $_USUA_GLOBAL[0].COD_CIUD + '|' + SER109D.LLAVEW + ' |'
             }, URL)
                 .then(data => {
                     console.debug(data);
@@ -110,9 +121,14 @@ function _validarestadonum_SER109D() {
             if (data[0].trim() == '00') {
                 let URL = get_url("APP/SALUD/SER109D.DLL");
                 postData({
-                    datosh: datosEnvio() + '1|' + SER109D.PREFIJOW + SER109D.NUMEROW.padStart(6, '0')
+                    datosh: datosEnvio() + '1|' + $_USUA_GLOBAL[0].COD_CIUD + '|' + SER109D.PREFIJOW + SER109D.NUMEROW.padStart(6, '0')
                 }, URL)
                     .then(data => {
+                        SER109D.TERCEROS.forEach(element => {
+                            if (SER109D.NUMERACION.NIT_NUM.trim().padStart(10, '0') == element.COD.trim().padStart(10, '0')) {
+                                SER109D.CIUDADTER = element.CIUDAD;
+                            }
+                        })
                         console.debug(data);
                         SER109D.NUMERACION = data.NUMERACION[0];
                         _afectarnumeracion_SER109D();
@@ -157,9 +173,10 @@ function _afectarnumeracion2_SER109D() {
 function _evaluarobservaciones_SER109D(orden) {
     validarInputs({
         form: '#VALIDAR3_SER109D',
-        orden: orden
+        orden: orden,
+        key: 'keydown'
     },
-        () => { _evaluarnumeroprefijo_SER109D() },
+        () => { _evaluarnumeroprefijo_SER109D(), console.debug('key event') },
         () => {
             SER109D.OBSERVW = $('#observacion_SER109D').val();
             SER109D.ANEXOSW = $('#anexos_SER109D').val();
@@ -195,7 +212,7 @@ function _grabarnumeracion_SER109D() {
         console.debug('son diferentes', SER109D.OBSERVW, SER109D.ANEXOSW, SER109D.ESTADOW);
         let URL = get_url("APP/SALUD/SER109D.DLL");
         postData({
-            datosh: datosEnvio() + '2|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|'
+            datosh: datosEnvio() + '2|' + $_USUA_GLOBAL[0].COD_CIUD + '|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|'
         }, URL)
             .then((data) => {
                 console.debug(data);
@@ -349,12 +366,12 @@ function sumarabonos_SER109D() {
     _consultarfactura_SER109D();
 }
 
-function _consultarfactura_SER109D(){
+function _consultarfactura_SER109D() {
     console.debug(SER109D.LLAVEW);
     _EventocrearSegventana(['on', 'Cargando datos...'], _evaluarsubtotalcomp_SER109D, _evaluarnumeroprefijo_SER109D);
     let URL = get_url("APP/SALUD/SER109D.DLL");
     postData({
-        datosh: datosEnvio() + '3|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|' + SER109D.SWFECHA + '|' + SER109D.SUCURW + '|' + parseInt(SER109D.NITUSU) + '|' + SER109D.PUCUSU + '|' + SER109D.SWDROG + '|'
+        datosh: datosEnvio() + '3|' + $_USUA_GLOBAL[0].COD_CIUD + '|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|' + SER109D.SWFECHA + '|' + SER109D.SUCURW + '|' + parseInt(SER109D.NITUSU) + '|' + SER109D.PUCUSU + '|' + SER109D.SWDROG + '|'
     }, URL)
         .then(data => {
             console.debug(data);
@@ -369,7 +386,7 @@ function _consultarfactura_SER109D(){
 }
 
 
-function _evaluarsubtotalcomp_SER109D(){
+function _evaluarsubtotalcomp_SER109D() {
     subtotalcompMask.typedValue = 'N';
     nommedicoMask.typedValue = 'N';
     abonosMask.typedValue = 'N';
@@ -385,55 +402,76 @@ function _evaluarsubtotalcomp_SER109D(){
             SER109D.SWABONOS = abonosMask._value;
             SER109D.SWORIGINAL = originalMask._value;
             SER109D.IMPRESION = new Object;
-            if (SER109D.SWVALIDA == 'S'){
+            if (SER109D.SWVALIDA == 'S') {
                 console.debug('impresionar faltantes')
             } else {
-                if ((SER109D.PREFIJOW != 'C') && (SER109D.PREFIJOW != 'E') && (SER109D.PREFIJOW != 'Ñ') && (SER109D.PREFIJOW != 'U')){ 
+                if ((SER109D.PREFIJOW != 'C') && (SER109D.PREFIJOW != 'E') && (SER109D.PREFIJOW != 'Ñ') && (SER109D.PREFIJOW != 'U')) {
                     console.debug('SER109E.SC4');
-                    moment.updateLocale('es',{
-                        months : [
-                                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
-                                "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                            ]
-                        }
+                    moment.updateLocale('es', {
+                        months: [
+                            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+                            "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                        ]
+                    }
                     );
                     SER109D.IMPRESION['NOMBREUSU'] = $_USUA_GLOBAL[0].NOMBRE;
                     SER109D.IMPRESION['NITUSU'] = SER109D.NITUSU;
-                    SER109D.IMPRESION.NIT = SER109D.SER109E[0].NIT_TEM;
                     SER109D.IMPRESION['DVUSU'] = $_USUA_GLOBAL[0].DV;
                     SER109D.IMPRESION['DIRECUSU'] = $_USUA_GLOBAL[0].DIRECC;
-                    SER109D.IMPRESION['FECHAIMP'] = moment().format('LL');
-                    SER109D.IMPRESION['ADMINW'] = SER109D.ADMINW;
-                    SER109D.IMPRESION['OPERBLOQNUM'] = SER109D.SER109E[0].OPER_NUM;
                     SER109D.IMPRESION['TELUSU'] = $_USUA_GLOBAL[0].TEL;
-                    let sumarunmes = moment(SER109D.IMPRESION.FECHAIMP).add(1,'month');
-                    sumarunmes = sumarunmes._d.toLocaleDateString();
-                    let dia = sumarunmes.substring(0,2); let mes = sumarunmes.substring(3,5); let ano = sumarunmes.substring(6,10);
-                    SER109D.IMPRESION['FECHAVENCE'] = moment(ano+mes+dia).format('LL');
+                    SER109D.IMPRESION.CIUDADUSU = SER109D.CIUDADUSU;
+                    SER109D.IMPRESION['FECHAIMP'] = moment().format('LL');
+                    let fechaactual = moment().format('YYYYMMDD');
+                    let sumarunmes = moment(fechaactual).add(1, 'month');
+                    // sumarunmes = sumarunmes._d.toLocaleDateString();
+                    sumarunmes = moment(sumarunmes).format('YYYYMMDD');
+                    // let dia = sumarunmes.substring(0,2); let mes = sumarunmes.substring(3,5); let ano = sumarunmes.substring(6,10);
+                    SER109D.IMPRESION['FECHAVENCE'] = moment(sumarunmes).format('LL');
+                    SER109D.IMPRESION.PREFIJOFACT = SER109D.PREFIJOW;
+                    SER109D.IMPRESION.NUMEROFACT = SER109D.NUMEROW.padStart(6, '0');
                     SER109D.IMPRESION['DESCRIPNUM'] = SER109D.NUMERACION.DESCRIP_TER;
+                    SER109D.IMPRESION.NIT = SER109D.SER109E[0].NIT_TEM;
                     SER109D.IMPRESION['DIRECCTER'] = SER109D.NUMERACION.DIRECC_TER;
                     SER109D.IMPRESION['TELTER'] = SER109D.NUMERACION.TEL_TER;
+                    SER109D.IMPRESION.CIUDADTER = SER109D.CIUDADTER;
+                    SER109D.IMPRESION['DESCRIPTAR'] = SER109D.NUMERACION.CONVENIO_NUM;
+                    SER109D.IMPRESION['OBSERV'] = SER109D.OBSERVW;
+                    SER109D.IMPRESION['ANEXOS'] = SER109D.ANEXOS;
+
+                    SER109D.IMPRESION['ADMINW'] = SER109D.ADMINW;
+                    SER109D.IMPRESION['OPERBLOQNUM'] = SER109D.SER109E[0].OPER_NUM;
                     SER109D.IMPRESION['EDADTEM'] = 'EDAD: ' + SER109D.SER109E[0].EDAD_TEM;
                     SER109D.IMPRESION['SEXOTEM'] = SER109D.SER109E[0].SEXO_TEM;
                     SER109D.IMPRESION['IDPACTEM'] = SER109D.SER109E[0].PACIENTE_TEM;
                     SER109D.IMPRESION['DVTER'] = SER109D.NUMERACION.DV_TER;
-                    SER109D.IMPRESION['DESCRIPTAR'] = SER109D.NUMERACION.CONVENIO_NUM;
-                    SER109D.IMPRESION['OBSERV'] = SER109D.OBSERVW;
-                    SER109D.IMPRESION['ANEXOS'] = SER109D.ANEXOS;
-                    SER109D.IMPRESION.SWORIGINAL =  SER109D.SWORIGINAL;
-                    SER109D.IMPRESION.PREFIJOFACT = SER109D.PREFIJOW;
-                    SER109D.IMPRESION.NUMEROFACT = SER109D.NUMEROW;
+                    SER109D.IMPRESION.SWORIGINAL = SER109D.SWORIGINAL;
                     SER109D.FACTURASIMPRIMIR = [];
+                    SER109D.VALORTOTALFACTURAS = 0;
+                    SER109D.VALORTOTALCOPAGOS = 0;
                     SER109D.SER109E.forEach(element => {
-                        element.TABLA.forEach( element2 => {
+                        SER109D.VALORTOTALPORFACTURA = 0;
+                        element.TABLA.forEach(element2 => {
                             let FACTURA = element2.CONCEPTO_TEM.trim();
-                            if(FACTURA.length > 0){
-                                console.debug(FACTURA)
+                            if (FACTURA.length > 0) {
+                                console.debug(FACTURA);
+                                let value = parseInt(element2.VALOR_TEM.replace(/,/g, ''));
+                                isNaN(value) ? value = 0 : value = value;
+                                SER109D.VALORTOTALPORFACTURA = SER109D.VALORTOTALPORFACTURA + value;
+                                console.debug(SER109D.VALORTOTALPORFACTURA);
                                 SER109D.FACTURASIMPRIMIR.push(element);
                             }
                         })
+                        element.VALORCOMPROBANTE = SER109D.VALORTOTALPORFACTURA;
+                        SER109D.VALORTOTALFACTURAS = SER109D.VALORTOTALFACTURAS + SER109D.VALORTOTALPORFACTURA;
+                        let copago = parseInt(element.COPAGO_TEM);
+                        isNaN(copago) ? copago = 0 : copago = copago;
+                        SER109D.VALORTOTALCOPAGOS = SER109D.VALORTOTALCOPAGOS + copago;
                     });
                     SER109D.IMPRESION['FACTURASIMPRIMIR'] = SER109D.FACTURASIMPRIMIR;
+                    SER109D.IMPRESION.FACTURASIMPRIMIR.VALORNETOFACTURA = SER109D.VALORTOTALFACTURAS + SER109D.VALORTOTALCOPAGOS;
+                    SER109D.IMPRESION.VALORTOTALCOPAGOS = SER109D.VALORTOTALCOPAGOS;
+                    SER109D.IMPRESION.VALORFACT = SER109D.VALORTOTALFACTURAS;
+
                     opcionesImpresion_SER109D = {
                         datos: SER109D.IMPRESION,
                         tipo: 'pdf',
@@ -443,9 +481,9 @@ function _evaluarsubtotalcomp_SER109D(){
                     _cargandoimpresion('on');
                     imprimir(opcionesImpresion_SER109D, finImpresion_SER109D)
                 } else {
-                    if ((SER109D.NIT == '0830092718') || (SER109D.NIT == '0830092719') || (SER109D.NIT == '0900193162')){
+                    if ((SER109D.NIT == '0830092718') || (SER109D.NIT == '0830092719') || (SER109D.NIT == '0900193162')) {
                         console.debug('SER109E.SC4');
-                    } else{
+                    } else {
                         console.debug('SER109P.SC4')
                     }
                 }
@@ -454,8 +492,41 @@ function _evaluarsubtotalcomp_SER109D(){
     )
 }
 
-function finImpresion_SER109D(){
+function finImpresion_SER109D() {
     _cargandoimpresion('off');
+    if ((SER109D.ESTADOW == '0') || (SER109D.ESTADOW == '3')) {
+        let URL = get_url("APP/SALUD/SAL020I.DLL");
+        postData({ datosh: datosEnvio() + SER109D.LLAVEW }, URL)
+            .then(data => {
+                console.debug(data);
+                _ventana({
+                    size: small,
+                    title: 'Desea cerrar la factura?',
+                    escape: false,
+                    focus: '#cierrefactura_SER109D',
+                    form: '#VALIDARVENTANA1_41',
+                    order: '1',
+                    global1: SER109D.CIERREW,
+                    source: '<div class="col-md-12" id="VALIDARVENTANA1_41"> ' +
+                    '<input id="cierrefactura_SER109D" type="text" class="form-control input-md" data-orden="1" maxlength="1"> ' +
+                    '</div>',
+                    mascara: mascaracierreFactura_SER109D
+                }, _evaluarFechacierre_SER109D, _toggleNav);
+            })
+            .catch(err => {
+                console.debug(err);
+            })
+    } else {
+        _toggleNav();
+    }
+}
+
+function _evaluarFechacierre_SER109D(){
+    if(SER109D.CIERREW == 'S'){
+      
+    } else {
+        _toggleNav();
+    }
 }
 
 function _cargandoimpresion(estado) {
@@ -616,3 +687,19 @@ var originalMask = IMask($("#original_SER109D")[0], {
         masked._value = value.toLowerCase()
     }
 });
+
+function mascaracierreFactura_SER109D(){
+    var cierreMask = IMask($("#cierrefactura_SER109D")[0], {
+        mask: 'a',
+        definitions: {
+            'a': /[N-S]/
+        },
+        prepare: function (str) {
+            console.debug(str);
+            return str.toUpperCase();
+        },
+        commit: function (value, masked) {
+            masked._value = value.toLowerCase()
+        }
+    });
+}

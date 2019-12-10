@@ -3,7 +3,7 @@
         overlay_id: 'overlay-f8_lite',
         content_id: 'content-f8_lite',
         css_id: 'css_ventanaDatos_lite',
-        tabla_id: 'datos',
+        tabla_id: 'datoslite',
         id_input: 'input_busquedaF8Lite',
         id_select: 'select_busquedaF8Lite',
         datatable: [],
@@ -106,25 +106,25 @@
             // End responsive
 
             // Insertar formulario
-            $('<select />', {
-                id: $.F8LITE.id_select
-            })
-                .css({
-                    width: '40%',
-                    background: '#f2fbff',
-                    padding: '10px 8px',
-                    border: '1px solid #becdda',
-                    outline: 'none',
-                    'border-radius': '2px 2px 0 0',
-                })
-                // .attr('disabled', true)
-                .appendTo(`#${$.F8LITE.content_id}_body`);
+            // $('<select />', {
+            //     id: $.F8LITE.id_select
+            // })
+            //     .css({
+            //         width: '40%',
+            //         background: '#f2fbff',
+            //         padding: '10px 8px',
+            //         border: '1px solid #becdda',
+            //         outline: 'none',
+            //         'border-radius': '2px 2px 0 0',
+            //     })
+            //     // .attr('disabled', true)
+            //     .appendTo(`#${$.F8LITE.content_id}_body`);
 
             $('<input />', {
                 id: $.F8LITE.id_input
             })
                 .css({
-                    width: '60%',
+                    width: '100%',
                     background: '#f2fbff',
                     padding: '10px 8px',
                     border: '1px solid #becdda',
@@ -139,6 +139,9 @@
             })
 
             // Footer
+            $(`#${$.F8LITE.content_id}_body`).append(
+                '<span> Debe digitar al menos 3 caracteres y un maximo de 10 </span>'
+            )
 
             var objResultados = $('<div />', {
                 id: 'labelResultadosLite'
@@ -227,24 +230,30 @@
 
         _sendData: () => {
             if ($(`#${$.F8LITE.id_input}`).val().length > 10) {
-                alert('Ingresar menos de 10 caracteres');
-                CON851('Ingresar menos de 10 caracteres', null, 'error')
+                CON851('','Ingresar menos de 10 caracteres', null, 'error', 'Error')
+                $(`#${$.F8LITE.id_input}`).focus();
             } else if ($(`#${$.F8LITE.id_input}`).val().length < 3) {
-                alert('Ingresar minimo 3 caracteres');
-                CON851('Ingresar minimo 3 caracteres', null, 'error')
+                CON851('', 'Ingresar minimo 3 caracteres', null, 'error','Error');
+                $(`#${$.F8LITE.id_input}`).focus();
             } else {
+                $('span').remove();
                 let URL = get_url("APP/SALUD/SER810.DLL");
-
+                $(`#${$.F8LITE.id_input}`).hide();
+                $('#content-f8_lite_body').append('<div id="cargando_F8cargarndo" style="display:flex;justify-content:center;"><i class="fa fa-spin fa-spinner fa-3x"></i></div>');
                 postData({
                     datosh: datosEnvio() + '1' + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
                 }, URL)
                     .then(data => {
+                        $('#cargando_F8cargarndo').remove();
                         var array = data[$.F8LITE.f8data];
                         table = [];
                         $.F8LITE.datatable = array;
                         array.forEach(index => {
                             var datatotable = Object.values(index);
-                            table.push(datatotable);
+                            console.debug(datatotable[0].trim())
+                            if (datatotable[0].trim() != ''){
+                                table.push(datatotable);
+                            }
                         });
                         var columnas = $.F8LITE.columnas;
                         $.F8LITE.table = $(`#${$.F8LITE.tabla_id}`).DataTable({
@@ -277,7 +286,7 @@
                                 })
 
                                 // Set focus search
-                                $('#' + $.F8LITE.content_id + '_table' + '_filter label input').focus();
+                                $('#' + $.F8LITE.tabla_id + '_filter label input').focus();
 
                                 // Init teclas
                                 $.F8LITE._initControls(true);
@@ -374,8 +383,11 @@
         _close: function () {
             $('#' + $.F8LITE.overlay_id).remove();
             $.F8LITE._initenterinput('off');
-            $.F8LITE.table.destroy();
+            if ($(`#${$.F8LITE.tabla_id} tbody`).length > 0){
+                $.F8LITE.table.destroy();
+            }
             $.F8LITE._initControls(false);
+            setTimeout( $.F8LITE.cancelcallback, 200);
         },
 
     }

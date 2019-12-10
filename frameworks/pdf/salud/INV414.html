@@ -1,0 +1,716 @@
+<script>
+    const { ipcRenderer } = require('electron'),
+        fs = require('fs'),
+        exec = require('child_process').exec,
+        path = require('path'),
+        remote = require('electron').remote;
+    window.$ = window.jQuery = require('jquery');
+</script>
+<div class="encabezado_INV414">
+    <div class="datosusu_INV414">
+        <div class="primera_linea">
+            <a class="nombre_INV414" style="font-size: 12px"> HOSPITAL LOCAL SAN MARTIN ESE</a>
+            <a class="nitusu_INV414" style="font-size: 10px">NIT 892,000,458</a>
+            <a class="claseserviciousu_INV414" style="font-size: 10px">COMPROB. 3 IMAGENOLOGIA</a>
+            <a class="comprobantepaciente_INV414" style="font-size: 10px">NRO: 008217</a>
+        </div>
+        <div class="segunda_linea">
+            <a class="direccionusu_INV414"> CL 4 7 34</a>
+            <a class="telefonousu_INV414">Tel: 6483035</a>
+            <a class="ciudadusu_INV414">SAN MARTIN</a>
+            <a class="acceso_INV414">ACCESO: UR</a>
+        </div>
+    </div>
+    <div class="datosfact_INV414">
+        <div class="tercera_linea">
+            <a class="entidadpaciente_INV414">ENTIDAD: CAPITAL SALUD EPSS</a>
+            <a class="codigoeps_INV414">EPSS34</a>
+            <a class="facturapaciente_INV414"> FACTURA NR: P027040</a>
+            <a class="fechapaciente_INV414"> NOVIEMBRE 15 DEL 2019</a>
+        </div>
+        <div class="cuarta_linea">
+            <a class="medotr_INV414">ATIENDE: MONSALVE TAMAYO GUSTAVO</a>
+            <a class="personaledit_INV414">MD.GEN</a>
+            <a class="especialidad_INV414">Espec: 602 RADIOLOGIA E IMAGENES DIA</a>
+        </div>
+        <div class="quinta_linea">
+            <a class="formapago_INV414">F.PAGO: Hospit.</a>
+            <a class="autor_INV414">Autorizacion: 123123123</a>
+            <a class="afiliacion_INV414">Afiliciacion: </a>
+        </div>
+    </div>
+    <div class="cuerpo_INV414">
+        <table class="tablacodservicio_INV414 table table-bordered table-hover" style="font-size:12px">
+            <thead>
+                <tr>
+                    <th style="width: 5%;font-size:9px;">Codigo</th>
+                    <th style="width: 12%;font-size:9px;">Descripcion</th>
+                    <th style="width: 2%;font-size:9px;">Cant</th>
+                    <th style="width: 5%;font-size:9px;">Valor unit.</th>
+                    <th style="width: 5%;font-size:9px;">Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <a class="detalle_INV414"> DETALLE: PRIMERA FACTURA DE RX</a> </br>
+        <a class="resoldian_INV414">RESOLUCION</a>
+        <div class="recepcion_INV414">
+            <a>Recibi el servicio a satisfaccion: _______________________________</a>
+            <a class="elaboro_INV414">Elaboro: 0101</a>
+        </div>
+        <div class="historia_INV414">
+            <a>HISTORIA CLINICA</a>
+            <a>HORA ATENCION:</a>
+            <a>HORA EGRESO:</a>
+            <a class="horaimpreso_INV414">Impreso:</a>
+        </div>
+        <div class="sexta_linea">
+            <a style="width: 40%;border-right: black solid 0.1px;">NOMBRE DEL PACIENTE</a>
+            <a style="width: 15%;border-right: black solid 0.1px;">IDENTIDAD</a>
+            <a style="width: 6%;border-right: black solid 0.1px;">EMB</a>
+            <a style="width: 6%;border-right: black solid 0.1px;">EDAD</a>
+            <a style="width: 6%;border-right: black solid 0.1px;">SEXO</a>
+            <a style="width: 8%;border-right: black solid 0.1px;">CIUDAD</a>
+            <a style="width: 8%;border-right: black solid 0.1px;">ZONA</a>
+            <a style="width: 10%;">FIN</a>
+        </div>
+        <div class="septima_linea">
+            <a class="nombrepaciente_INV414">SANDOVAL PEDREROS JHON JAIRO</a>
+            <a class="idhistoria_INV414">000001120504800</a>
+            <a class="embar_INV414"></a>
+            <a class="edad_INV414">A023</a>
+            <a class="sexo_INV414">M</a>
+            <a class="ciudadpaci_INV414">50689</a>
+            <a class="ZONA_INV414">U</a>
+            <a style="width: 10%;">ALI</a>
+        </div>
+        <div class="octava_linea">
+            <a class="direccionpaci_INV414">DIRECCION:</a>
+            <a class="ocupacion_INV414">COD OCUPACION: 999</a>
+            <a class="tipousuar_INV414">TIPO USUARIO: SUBSID</a>
+            <a>DAD</a>
+        </div>
+        <div class="novena_linea">
+            <a class="descripocu_INV414">OCUPACION:</a>
+            <a class="telefonopaci_INV414">TEL:</a>
+            <a class="horaingresopaci_INV414">09:10</a>
+            <a style="width: 11%;border-bottom: black solid 0.1px;">PYP</a>
+        </div>
+        <div class="decima_linea">
+            <a class="acompañante_INV414">ACOMPAÑANTE</a>
+        </div>
+        <div class="onceava_linea">
+            <a class="pcllego_INV414">PACIENTE LLEGO:</a>
+            <a class="spaces_INV414"></a>
+            <a class="consulta_INV414">CONSULTA</a>
+            <a class="estadosalida_INV414">ESTADO SALIDA</a>
+            <a class="finalidad_INV414">FINALIDAD CONS</a>
+            <a>T.DX</a>
+        </div>
+        <div class="doceava_linea">
+            <a class="conseciente_INV414"> CONSCIENTE :</a>
+            <a class="pretriage12_INV414">TRIAGE 1 Y 2</a>
+            <a class="triage12_INV414"> tt </a>
+            <a class="primeravez_INV414">1A VEZ</a>
+            <a class="casilla1ravez_INV11"></a>
+            <a class="estado_INV414">VIVO:</a>
+            <a class="causaexterna_INV414">CAUSA EXTERNA</a>
+            <a class="spacesdoceavalinea_INV414"></a>
+        </div>
+        <div class="treceava_linea">
+            <a class="inconsciente_INV414">INCONSCIENTE :</a>
+            <a class="spacestreceavalinea_INV414"></a>
+            <a class="spacestreceavalinea2_INV414"></a>
+            <a class="spacestreceavalinea3_INV414"></a>
+            <a class="spacestreceavalinea4_INV414"></a>
+            <a class="muerto_INV414">MUERTO: </a>
+            <a class="diagnprincip_INV414">DIAGN.PRINCIP:</a>
+            <a class="tipo_INV414">TIPO</a>
+        </div>
+        <div class="catorceava_linea">
+            <a class="muerto2_INV414">MUERTO : </a>
+            <a class="pretriage34_INV4411">TRIAGE 3 Y 4</a>
+            <a class="triage34_INV414">tt</a>
+            <a class="repet_INV414">REPET.</a>
+            <a class="spacesrepet_INV414"></a>
+            <a class="remitid_INV414">REMITID:</a>
+            <a class="diagnrelacion_INV414">DIAGN.RELACI:</a>
+            <a class="spacestipo_INV414"></a>
+        </div>
+        <a class="diagnosticoprincipal_INV414">Diagnostico Principal </a>
+        <a class="diagnosticorelacionado_INV414">Diagnostico Relacionado </a>
+        <a> Causa Basica que origina la atencion:</a>
+    </div>
+    <!-- 
+    <a class="ivausu_INV414">NO RESPONSABLES DE IVA</a>
+
+    <div class="terceralinea_INV414" style="font-size:12px">
+        <a class="costo_INV414">COS: 02 CONSULTA EXTERNA</a>
+    </div>
+    <div class="cuartalinea_INV414" style="font-size:12px">
+        <a class="us_INV414">US: URGENCIAS</a>
+    </div>
+    <div class="quintalinea_INV414" style="font-size:12px">
+    </div>
+    <div class="sextalinea_INV414" style="font-size:12px">
+    </div>
+    <a class="remite_INV414" style="font-size:12px">SOLICITA: ARTEGA LOPEZ JOSE IGNACIO</a>
+    <div class="septimalinea" style="font-size:12px">
+        <a class="totalfactura_INV414">TOTAL FACTURA: 1,000</a>
+        <a class="copagos_INV414">ABONOS/COPAGOS: </a>
+        <a class="saldo_INV414">SALDO: 1,000</a>
+    </div>
+    <a class="cantidadennumeros_INV414" style="font-size:12px">SON: UN MILLON DE PESOS</a>
+    <div class="octavalinea_INV414" style="font-size:12px">
+        <a class="fechaelaborado_INV414">191128 11:44</a>
+        <a>Firma paciente: _____________________________ ______________________________</a>
+        <a class="operelabfact_INV414">0101</a>
+        <a class="opercorrecfact_INV414">Mod: 0101</a>
+        <a class="imprime_INV414">0101</a>
+    </div> -->
+</div>
+<style>
+    .encabezado_INV414 {
+        width: 100%;
+        height: 100%;
+    }
+
+    .datosusu_INV414 {
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .primera_linea {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .segunda_linea {
+        font-size: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .datosfact_INV414 {
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .tercera_linea {
+        font-size: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .cuarta_linea {
+        font-size: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .quinta_linea {
+        font-size: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .cuerpo_INV414 {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .tablacodservicio_INV414 {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    thead {
+        border-top: black solid 0.1px;
+    }
+
+    tbody {
+        text-align: center;
+    }
+
+    .detalle_INV414 {
+        width: 100;
+        font-size: 10px;
+    }
+
+    .resoldian_INV414 {
+        width: 100%;
+        font-size: 10px;
+    }
+
+    .recepcion_INV414 {
+        font-size: 10px;
+    }
+
+    .historia_INV414 {
+        font-size: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .sexta_linea {
+        display: flex;
+        width: 100%;
+        font-size: 10px;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+    }
+
+    .septima_linea {
+        width: 100%;
+        display: flex;
+        font-size: 10px;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+    }
+
+    .septima_linea .nombrepaciente_INV414 {
+        width: 40%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .idhistoria_INV414 {
+        width: 15%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .embar_INV414 {
+        width: 6%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .edad_INV414 {
+        width: 6%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .sexo_INV414 {
+        width: 6%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .ciudadpaci_INV414 {
+        width: 8%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .ZONA_INV414 {
+        width: 8%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .octava_linea {
+        width: 100%;
+        display: flex;
+        font-size: 10px;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+    }
+
+    .direccionpaci_INV414 {
+        width: 40%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .ocupacion_INV414 {
+        width: 21%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .tipousuar_INV414 {
+        width: 28%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .novena_linea {
+        width: 100%;
+        display: flex;
+        font-size: 10px;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+    }
+
+    .descripocu_INV414 {
+        width: 40%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .telefonopaci_INV414 {
+        width: 21%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .horaingresopaci_INV414 {
+        width: 28%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .decima_linea {
+        font-size: 10px;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .onceava_linea {
+        font-size: 10px;
+        display: flex;
+        width: 100%;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+    }
+
+    .pcllego_INV414 {
+        width: 20%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .spaces_INV414 {
+        width: 20%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .consulta_INV414 {
+        width: 12.1%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .estadosalida_INV414 {
+        width: 18.9%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .finalidad_INV414 {
+        width: 19%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .doceava_linea {
+        font-size: 10px;
+        display: flex;
+        width: 100%;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .conseciente_INV414 {
+        width: 20%;
+        border-right: black solid 0.1px;
+    }
+
+    .pretriage12_INV414 {
+        width: 16%;
+        border-right: black solid 0.1px;
+    }
+
+    .triage12_INV414 {
+        width: 4%;
+        border-right: black solid 0.1px;
+    }
+
+    .primeravez_INV414 {
+        width: 8%;
+        border-right: black solid 0.1px;
+    }
+
+    .casilla1ravez_INV11 {
+        width: 4%;
+        border-right: black solid 0.1px;
+    }
+
+    .estado_INV414 {
+        width: 19%;
+        border-right: black solid 0.1px;
+    }
+
+    .causaexterna_INV414 {
+        width: 19%;
+        border-right: black solid 0.1px;
+    }
+
+    .treceava_linea {
+        font-size: 10px;
+        display: flex;
+        width: 100%;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+    }
+
+    .inconsciente_INV414 {
+        width: 20%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .spacestreceavalinea_INV414 {
+        width: 16%;
+        border-right: black solid 0.1px;
+    }
+
+    .spacestreceavalinea2_INV414 {
+        width: 4%;
+        border-right: black solid 0.1px;
+    }
+
+    .spacestreceavalinea3_INV414 {
+        width: 8%;
+        border-right: black solid 0.1px;
+    }
+
+    .spacestreceavalinea4_INV414 {
+        width: 4%;
+        border-right: black solid 0.1px;
+    }
+
+    .muerto_INV414 {
+        width: 19%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .diagnprincip_INV414 {
+        width: 19%;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .catorceava_linea {
+        font-size: 10px;
+        display: flex;
+        width: 100%;
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .muerto2_INV414 {
+        width: 20%;
+        border-right: black solid 0.1px;
+    }
+
+    .pretriage34_INV4411{
+        width: 16%;
+        border-right: black solid 0.1px;
+    }
+
+    .triage34_INV414{
+        width: 4%;
+        border-right: black solid 0.1px;
+    }
+
+    .repet_INV414{
+        width: 8%;
+        border-right: black solid 0.1px;
+    }
+
+    .spacesrepet_INV414{
+        width: 4%;
+        border-right: black solid 0.1px;
+    }
+
+    .remitid_INV414{
+        width: 19%;
+        border-right: black solid 0.1px;
+    }
+    .diagnrelacion_INV414{
+        width: 19%;
+        border-right: black solid 0.1px;
+    }
+    .diagnosticoprincipal_INV414{
+        font-size: 10px;
+        display: flex;
+        width: 100%;
+    }
+    .diagnosticorelacionado_INV414{
+        font-size: 10px;
+        display: flex;
+        width: 100%;
+    }
+</style>
+<script>
+    var INV414 = [];
+    ipcRenderer.on('ping', (e, data) => {
+        INV414 = data.datos;
+        $('.nombre_INV414').text(INV414.NOMBREUSU);
+        $('.nitusu_INV414').text(INV414.NITUSU);
+        // $('.ivausu_INV414').text(INV414.IVAUSU);
+        $('.direccionusu_INV414').text(INV414.DIRECCIONUSU);
+        $('.telefonousu_INV414').text(INV414.TELEFONOUSU);
+        $('.claseserviciousu_INV414').text(INV414.CLASESERVICIO);
+        $('.comprobantepaciente_INV414').text(INV414.COMPROBANTE)
+        $('.ciudadusu_INV414').text(INV414.CIUDADUSU);
+        $('.acceso_INV414').text(INV414.PUERTAW);
+        $('.entidadpaciente_INV414').text(INV414.DESCRIPTER);
+        $('.codigoeps_INV414').text(INV414.CODIGOEPS);
+        $('.facturapaciente_INV414').text(INV414.FACTURA);
+        $('.fechapaciente_INV414').text(INV414.FECHAFACT);
+        $('.medotr_INV414').text(INV414.ATIENDE);
+        $('.personaledit_INV414').text(INV414.PERSONALEDIT);
+        $('.especialidad_INV414').text(INV414.ESPECIALIDAD);
+        $('.formapago_INV414').text(INV414.FPAGO);
+        $('.autor_INV414').text(INV414.NROAURO);
+        
+        $('.detalle_INV414').text(INV414.DETALLE);
+        $('.resoldian_INV414').text(INV414.RESOLDIAN);
+        $('.elaboro_INV414').text(INV414.OPERELABFACT)
+        
+        $('.nombrepaciente_INV414').text(INV414.NOMBREPACIENTE)
+        $('.idhistoria_INV414').text(INV414.PACIENTE);
+        $('.edad_INV414').text(INV414.EDAD);
+        $('.sexo_INV414').text(INV414.SEXO);
+        $('.ciudadpaci_INV414').text(INV414.CIUDADPACI);
+        $('.ZONA_INV414').text(INV414.ZONA);
+        $('.direccionpaci_INV414').text(INV414.DIRECCPACI)
+        $('.ocupacion_INV414').text(INV414.OCUPACION);
+        $('.tipousuar_INV414').text(INV414.TIPOUSUW);
+        $('.descripocu_INV414').text(INV414.NOMBREOCU);
+        $('.telefonopaci_INV414').text(INV414.CELLPACI);
+        $('.horaingresopaci_INV414').text(INV414.HORAESTAD);
+        $('.acompañante_INV414').text(INV414.ACOMPAPACI);
+        $('.triage12_INV414').text(INV414.TRIAGEESTAD12);
+
+        $('.finalidad_INV414').text('FINALIDAD CONS ' + INV414.FINALIDESTAD);
+        $('.causaexterna_INV414').text('CAUSA EXTERNA ' + INV414.CAUSAESTAD);
+        $('.triage34_INV414').text(INV414.TRIAGEESTAD34);
+        $('.diagnprincip_INV414').text('DIAGN.PRINCIP: ' + INV414.CODDIAGESTAD);
+        $('.estado_INV414').text('VIVO ' + INV414.VIVO);
+        $('.muerto_INV414').text('MUERTO ' + INV414.MUERTO);
+        $('.remitid_INV414').text('REMITID ' + INV414.REMITID);
+
+        $('.diagnosticoprincipal_INV414').text('Diagnostico Principal : ' + INV414.NOMBREENF1);
+        $('.diagnosticorelacionado_INV414').text('Diagnostico Relacionado : ' + INV414.NOMBREENF2);
+
+        // $('.costo_INV414').text(INV414.COSTO);
+        // $('.us_INV414').text(INV414.UNSERVFACT);
+        // $('.remite_INV414').text(INV414.SOLICITA);
+        // $('.cantidadennumeros_INV414').text(INV414.SON);
+        // $('.operelabfact_INV414').text(INV414.OPERELABFACT);
+        // $('.opercorrecfact_INV414').text(INV414.OPERCORRECFACT);
+        // $('.imprime_INV414').text(INV414.ADMINW);
+
+        // $('.ciudad_INV414').text(INV414.CIUDAD);
+        // $('.totalfactura_INV414').text(INV414.VLRTOTAL);
+        // $('.copagos_INV414').text(INV414.COPAGO);
+        // $('.saldo_INV414').text(INV414.SALDO);
+        // $('.fechaelaborado_INV414').text(INV414.FECHAELABORADO);
+
+        if (parseInt(INV414.VLRIVAFACT) == 0) {
+            for (var i in INV414.TABLA) {
+                $('.tablacodservicio_INV414 tbody').append(
+                    '<tr>' +
+                    '<th>' + INV414.TABLA[i].ARTFACT + '</th>' +
+                    '<td>' + INV414.TABLA[i].DESCRIPCUP + '</td>' +
+                    '<td>' + INV414.TABLA[i].CANTFACT + '</td>' +
+                    '<td>' + INV414.TABLA[i].VLRFACT + '</td>' +
+                    '<td>' + INV414.TABLA[i].VLRTOTAL + '</td>' +
+                    '</tr>'
+                )
+            }
+        } if (parseInt(INV414.VLRIVAFACT) > 0) {
+            for (var i in INV414.TABLA) {
+                alert(INV414.TABLA[i].ARTFACT);
+                $('.tablacodservicio_INV414 tbody').append(
+                    '<tr>' +
+                    '<th>' + INV414.TABLA[i].ARTFACT + '</th>' +
+                    '<td>' + INV414.TABLA[i].DESCRIPCUP + '</td>' +
+                    '<td>' + INV414.TABLA[i].CANTFACT + '</td>' +
+                    '<td>' + INV414.TABLA[i].VLRFACT + '</td>' +
+                    '<td>' + INV414.TABLA[i].VLRTOTAL + '</td>' +
+                    '</tr>'
+                )
+            }
+            $('.tablacodservicio_INV414 tbody').append(
+                '<tr>' +
+                '<th>' + '</th>' +
+                '<td>' + 'I.V.A.' + '</td>' +
+                '<td>' + INV414.VLRIVAFACT + '</td>' +
+                '<td>' + + '</td>' +
+                '<td>' + + '</td>' +
+                '</tr>'
+            )
+        } if (parseInt(INV414.COPAGO) > 0) {
+            switch (INV414.COPAGO) {
+                case '1':
+                    $('.tablacodservicio_INV414 tbody').append(
+                        '<tr>' +
+                        '<th>' + '</th>' +
+                        '<td>' + 'COPAGOS' + '</td>' +
+                        '<td>' + INV414.VLRCOPAGO + '</td>' +
+                        '<td>' + + '</td>' +
+                        '<td>' + + '</td>' +
+                        '</tr>'
+                    )
+                    break;
+                case '2':
+                    $('.tablacodservicio_INV414 tbody').append(
+                        '<tr>' +
+                        '<th>' + '</th>' +
+                        '<td>' + 'CUOTA MODERADORA' + '</td>' +
+                        '<td>' + INV414.VLRCOPAGO + '</td>' +
+                        '<td>' + + '</td>' +
+                        '<td>' + + '</td>' +
+                        '</tr>'
+                    )
+                    break;
+                case '3':
+                    $('.tablacodservicio_INV414 tbody').append(
+                        '<tr>' +
+                        '<th>' + '</th>' +
+                        '<td>' + 'VALOR A PAGAR' + '</td>' +
+                        '<td>' + INV414.VLRCOPAGO + '</td>' +
+                        '<td>' + + '</td>' +
+                        '<td>' + + '</td>' +
+                        '</tr>'
+                    )
+                    break;
+            }
+        }
+        // var nit = INV414.NIT;
+        // var url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);
+
+        // fs.readFile(url, function (err, data) {
+        //     if (err) throw err;
+        //     var dataImg1 = Buffer.from(data).toString('base64');
+        //     $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg1}`).appendTo('.logo')
+        // });
+
+        // var nitprofe = parseInt(RXI02A.IDRADIOLOGO_RX);
+        // var urlprofe = path.join(`P:\\PROG\\DATOS\\17329215.bmp`);
+        // fs.readFile(urlprofe, function (err, data) {
+        //     if (err) throw err;
+        //     var dataImg2 = Buffer.from(data).toString('base64');
+        //     $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg2}`).appendTo('.firmaprofe')
+        // });
+
+    })
+</script>

@@ -858,6 +858,7 @@ function _Cargarunidadesdeservicio_7C11() {
 }
 
 function _evaluardatoclase_SAL7C11() {
+    claseMask_SAL7C11.typedValue = '';
     claseMask_SAL7C11.updateValue();
     validarInputs(
         {

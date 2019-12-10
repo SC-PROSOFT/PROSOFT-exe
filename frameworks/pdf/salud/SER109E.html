@@ -6,86 +6,133 @@
         remote = require('electron').remote;
     window.$ = window.jQuery = require('jquery');
 </script>
-<div class="encabezado_SER109E">
-    <a class="nombre_SER109E"> HOSPITAL LOCAL SAN MARTIN ESE</a>
-    <a class="nitusu_SER109E">NIT 892,000,458</a>
-    <div class="datos_usu_SER109E">
-        <a class="direccionusu_SER109E"> CL 4 7 34</a>
-        <a class="telefonousu_SER109E">Tel: 6483035</a>
-        <a class="ciudadusu_SER109E">SAN MARTIN</a>
-    </div>
-    <a class="copia_SER109E">** COPIA **</a>
-    <div class="primeralinea_SER109E">
-        <a class="fechafactura_SER109E"> FECHA: Noviembre 22 de 2019</a>
-        <a class="fechavence_SER109E"> FECHA: Noviembre 22 de 2019</a>
-        <a class="facturaventa_SER109E"> FACTURA DE VENTA No: P27040</a>
-    </div>
-    <div class="segundalinea_SER109E">
-        <a class="cliente_SER109E">CLIENTE: CAPITAL SALUD EPSS</a>
-        <a class="nitcliente_SER109E">NIT: 900,298,372 9</a>
-    </div>
-    <div class="terceralinea_SER109E">
-        <a class="direccion_SER109E">Direccion: CRA 38 NO.33A-37 B/O 7 DE</a>
-        <a class="telefono_SER109E">TEL: 6614700</a>
-        <a class="ciudad_SER109E">CIUDAD: VILLAVICENCIO</a>
-    </div>
-    <div class="cuartalinea_SER109E">
-        <a class="paciente_SER109E">PACIENTE: CAPITAL SALUD EPSS</a>
-        <a class="idpaciente_SER109E">ID: 1,120,504,800</a>
-        <a class="edad_SER109E">EDAD: A023</a>
-    </div>
-    <div class="quintalinea_SER109E">
-        <a class="convenio_SER109E">SOAT MAS INCREMENTO 2423</a>
-    </div>
-    <div class="sextalinea_SER109E">
-        <a class="observaciones_SER109E"> Observac: ANEXO</a>
-    </div>
-    <div class="septimalinea_SER109E">
-        <a class="anexos_SER109E">Anexos:</a>
-    </div>
-    <div class="salto-linea"></div>
-    <div class="headertabla_SER109E">
-        <table class="tablaheader_SER109E table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th style="width: 1%;font-size:9px;">Comp.</th>
-                    <th style="width: 2%;font-size:9px;">Fecha</th>
-                    <th style="width: 12%;font-size:9px;">Descripcion</th>
-                    <th style="width: 1%;font-size:9px;">Edad</th>
-                    <th style="width: 1%;font-size:9px;">Sx.</th>
-                    <th style="width: 10%;font-size:9px;">Concepto</th>
-                    <th style="width: 1%;font-size:9px;">Cant</th>
-                    <th style="width: 2%;font-size:9px;">Valor</th>
-                    <th style="width: 1%;font-size:9px;">Copagos</th>
-                    <th style="width: 3%;font-size:9px;">Autor.</th>
-                    <th style="width: 1%;font-size:9px;">Cod.serv</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <table class="tablacodservicio_SER109E table table-bordered table-hover">
-        <tbody>
-            <!-- <tr>
-                <th style="width: 1%;">102396</th>
-                <td style="width: 2%;">2019/03/10</td>
-                <td style="width: 12%;"></td>
-                <td style="width: 1%;">A023</td>
-                <td style="width: 1%;">M</td>
-                <td style="width: 10%;">DROGAS</td>
-                <td style="width: 1%;">1</td>
-                <td style="width: 2%;">10,000</td>
-                <td style="width: 1%;">12</td>
-                <td style="width: 3%;">00909090099</td>
-                <td style="width: 1%;">874510</td>
-            </tr> -->
-        </tbody>
-    </table>
+<table>
+    <thead>
+        <tr>
+            <th>
+                <div class="encabezado_SER109E">
+                    <a class="nombre_SER109E"> HOSPITAL LOCAL SAN MARTIN ESE</a>
+                    <a class="nitusu_SER109E">NIT 892,000,458</a>
+                    <div class="datos_usu_SER109E">
+                        <a class="direccionusu_SER109E"> CL 4 7 34</a>
+                        <a class="telefonousu_SER109E">Tel: 6483035</a>
+                        <a class="ciudadusu_SER109E">SAN MARTIN</a>
+                    </div>
+                    <a class="copia_SER109E">** COPIA **</a>
+                    <div class="primeralinea_SER109E">
+                        <a class="fechafactura_SER109E"> FECHA: Noviembre 22 de 2019</a>
+                        <a class="fechavence_SER109E"> FECHA: Noviembre 22 de 2019</a>
+                        <a class="facturaventa_SER109E"> FACTURA DE VENTA No: P27040</a>
+                    </div>
+                    <div class="segundalinea_SER109E">
+                        <a class="cliente_SER109E">CLIENTE: CAPITAL SALUD EPSS</a>
+                        <a class="nitcliente_SER109E">NIT: 900,298,372 9</a>
+                    </div>
+                    <div class="terceralinea_SER109E">
+                        <a class="direccion_SER109E">Direccion: CRA 38 NO.33A-37 B/O 7 DE</a>
+                        <a class="telefono_SER109E">TEL: 6614700</a>
+                        <a class="ciudad_SER109E">CIUDAD: VILLAVICENCIO</a>
+                    </div>
+                    <div class="cuartalinea_SER109E">
+                        <a class="paciente_SER109E">PACIENTE: CAPITAL SALUD EPSS</a>
+                        <a class="idpaciente_SER109E">ID: 1,120,504,800</a>
+                        <a class="edad_SER109E">EDAD: A023</a>
+                    </div>
+                    <div class="quintalinea_SER109E">
+                        <a class="convenio_SER109E">SOAT MAS INCREMENTO 2423</a>
+                    </div>
+                    <div class="sextalinea_SER109E">
+                        <a class="observaciones_SER109E"> Observac: ANEXO</a>
+                    </div>
+                    <div class="septimalinea_SER109E">
+                        <a class="anexos_SER109E">Anexos:</a>
+                    </div>
+                    <div class="salto-linea"></div>
+                    <div class="headertabla_SER109E">
+                        <table class="tablaheader_SER109E table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 1%;font-size:9px;">Comp.</th>
+                                    <th style="width: 2%;font-size:9px;">Fecha</th>
+                                    <th style="width: 12%;font-size:9px;">Descripcion</th>
+                                    <th style="width: 1%;font-size:9px;">Edad</th>
+                                    <th style="width: 1%;font-size:9px;">Sx.</th>
+                                    <th style="width: 10%;font-size:9px;">Concepto</th>
+                                    <th style="width: 1%;font-size:9px;">Cant</th>
+                                    <th style="width: 2%;font-size:9px;">Valor</th>
+                                    <th style="width: 1%;font-size:9px;">Copagos</th>
+                                    <th style="width: 3%;font-size:9px;">Autor.</th>
+                                    <th style="width: 1%;font-size:9px;">Cod.serv</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <table class="tablacodservicio_SER109E table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>
+                                <div class="tablaencabezado_SER109E"></div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                                            <th style="width: 1%;">102396</th>
+                                            <td style="width: 2%;">2019/03/10</td>
+                                            <td style="width: 12%;"></td>
+                                            <td style="width: 1%;">A023</td>
+                                            <td style="width: 1%;">M</td>
+                                            <td style="width: 10%;">DROGAS</td>
+                                            <td style="width: 1%;">1</td>
+                                            <td style="width: 2%;">10,000</td>
+                                            <td style="width: 1%;">12</td>
+                                            <td style="width: 3%;">00909090099</td>
+                                            <td style="width: 1%;">874510</td>
+                                        </tr> -->
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<a class="cantidadenletras_SER109E">SON: TRESCIENTOS OCHENTA Y UN MIL CIENTO TRIENTA Y NUEVE PESOS M/CTE</a>
+<style type="text/css">
+    @media print {
+        thead {
+            display: table-header-group;
+        }
 
-</div>
+        tfoot {
+            display: table-footer-group;
+        }
+    }
+
+    @media screen {
+        thead {
+            display: block;
+        }
+
+        tfoot {
+            display: block;
+        }
+    }
+</style>
 <style>
+    .encabezado_SER109E,
+    .tablaencabezado_SER109E {
+        height: 300px;
+    }
+
     .encabezado_SER109E {
-        width: 100%;
-        height: 100%;
+        width: 98%;
+        /* position: fixed; */
     }
 
     .nombre_SER109E {
@@ -201,12 +248,14 @@
         width: 100%;
     }
 
-    thead {
+    .tablacodservicio_SER109E thead {
         border-top: black solid 0.1px;
+        display: table-header-group;
     }
 
-    tbody {
+    .tablacodservicio_SER109E tbody {
         text-align: center;
+
     }
 
     .headertabla_SER109E {
@@ -218,6 +267,13 @@
         border-bottom: black solid 0.1px;
     }
 
+    .cuerpo_SER109E {
+        padding-top: 320px;
+        width: 99%;
+        height: 60%;
+        display: table-row-group;
+    }
+
     .tablaheader_SER109E {
         margin: 0 auto;
         width: 100%;
@@ -225,6 +281,15 @@
 
     .salto-linea {
         padding-top: 20px;
+    }
+</style>
+<style type="text/css" media="print">
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
     }
 </style>
 
@@ -236,7 +301,7 @@
         $('.nitusu_SER109E').text('Nit: ' + SER109E.NITUSU + '-' + SER109E.DVUSU);
         $('.direccionusu_SER109E').text(SER109E.DIRECUSU);
         $('.telefonousu_SER109E').text('Tel: ' + SER109E.TELUSU);
-        $('.ciudadusu_SER109E').text('CIUDAD: ');
+        $('.ciudadusu_SER109E').text(SER109E.CIUDADUSU);
         $('.fechafactura_SER109E').text('FECHA: ' + SER109E.FECHAIMP);
         $('.fechavence_SER109E').text('VENCE: ' + SER109E.FECHAVENCE);
         $('.facturaventa_SER109E').text('FACTURA DE VENTA No: ' + SER109E.PREFIJOFACT + SER109E.NUMEROFACT);
@@ -244,34 +309,121 @@
         $('.nitcliente_SER109E').text('NIT: ' + SER109E.NIT + ' ' + SER109E.DVTER);
         $('.direccion_SER109E').text('Direccion: ' + SER109E.DIRECCTER);
         $('.telefono_SER109E').text('TEL: ' + SER109E.TELTER);
-        $('.ciudad_SER109E').text(' ME FALTA');
+        $('.ciudad_SER109E').text('CIUDAD: ' + SER109E.CIUDADTER);
         $('.paciente_SER109E').text('PACIENTE: ' + 'RESVISAR');
-        $('.idpaceinte_SER109E').text('REVISAR');
+        $('.idpaceinte_SER109E').text(SER109E.IDPACTEM);
         $('.edad_SER109E').text(SER109E.EDADTEM);
         $('.convenio_SER109E').text(SER109E.DESCRIPTAR);
         $('.observaciones_SER109E').text(SER109E.ONSERV);
         $('.anexos_SER109E').text(SER109E.ANEXOS);
-        SER109E.FACTURASIMPRIMIR.forEach(element => {
-            element.TABLA.forEach(element2 => {
-                if (element2.CODIGO_TEM.trim() != '') {
-                    $('.tablacodservicio_SER109E').append(
-                        '<tr>' +
-                        '<th style="width: 1%;font-size:9px;">' + element.LLAVEFACT_TEM.substring(3, 9) + '</th>' +
-                        '<td style="width: 2%;font-size:9px;">' + element.FECHA_TEM + '</td>' +
-                        '<td style="width: 12%;font-size:9px;">' + '</td>' +
-                        '<td style="width: 1%;font-size:9px;">' + element.EDAD_TEM + '</td>' +
-                        '<td style="width: 1%;font-size:9px;">' + element.SEXO_TEM + '</td>' +
-                        '<td style="width: 10%;font-size:9px;">' + element2.CONCEPTO_TEM + '</td>' +
-                        '<td style="width: 1%;font-size:9px;">' + parseFloat(element2.CANT_TEM) + '</td>' +
-                        '<td style="width: 2%;font-size:9px;">' + parseFloat(element2.VALOR_TEM) + '</td>' +
-                        '<td style="width: 1%;font-size:9px;">' + element.COPAGO_TEM + '</td>' +
-                        '<td style="width: 3%;font-size:9px;">' + element.AUTOR_TEM + '</td>' +
-                        '<td style="width: 1%;font-size:9px;">' + element2.CONCEPTO_TEM.substring(32, 40) + '</td>' +
-                        '</tr>'
-                    )
-                }
-            })
+        SER109E.FACTURASIMPRIMIR.forEach((element, index) => {
+            if (index < 1) {
+                element.TABLA.forEach(element2 => {
+                    if (element2.CODIGO_TEM.trim() != '') {
+                        $('.tablacodservicio_SER109E').append(
+                            '<tr>' +
+                            '<th style="width: 1%;font-size:9px;">' + element.LLAVEFACT_TEM.substring(3, 9) + '</th>' +
+                            '<td style="width: 2%;font-size:9px;">' + element.FECHA_TEM + '</td>' +
+                            '<td style="width: 12%;font-size:9px;">' + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element.EDAD_TEM + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element.SEXO_TEM + '</td>' +
+                            '<td style="width: 10%;font-size:9px;">' + element2.CONCEPTO_TEM + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + parseInt(element2.CANT_TEM) + '</td>' +
+                            '<td style="width: 2%;font-size:9px;">' + parseInt(element2.VALOR_TEM.replace(/,/g, '')) + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element.COPAGO_TEM + '</td>' +
+                            '<td style="width: 3%;font-size:9px;">' + element.AUTOR_TEM + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element2.CONCEPTO_TEM.substring(32, 40) + '</td>' +
+                            '</tr>'
+                        )
+                    }
+                });
+            } else {
+                element.TABLA.forEach(element2 => {
+                    if (element2.CODIGO_TEM.trim() != '') {
+                        $('.tablacodservicio_SER109E').append(
+                            '<tr>' +
+                            '<th style="width: 1%;font-size:9px;">' + element.LLAVEFACT_TEM.substring(3, 9) + '</th>' +
+                            '<td style="width: 2%;font-size:9px;">' + element.FECHA_TEM + '</td>' +
+                            '<td style="width: 12%;font-size:9px;">' + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element.EDAD_TEM + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element.SEXO_TEM + '</td>' +
+                            '<td style="width: 10%;font-size:9px;">' + element2.CONCEPTO_TEM + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + parseFloat(element2.CANT_TEM) + '</td>' +
+                            '<td style="width: 2%;font-size:9px;">' + parseFloat(element2.VALOR_TEM.replace(/,/g, '')) + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+                            '<td style="width: 3%;font-size:9px;">' + element.AUTOR_TEM + '</td>' +
+                            '<td style="width: 1%;font-size:9px;">' + element2.CONCEPTO_TEM.substring(32, 40) + '</td>' +
+                            '</tr>'
+                        )
+                    }
+                });
+            }
+            $('.tablacodservicio_SER109E').append(
+                '<tr>' +
+                '<th style="width: 1%;font-size:9px;">' + '</th>' +
+                '<td style="width: 2%;font-size:9px;">' + '</td>' +
+                '<td style="width: 12%;font-size:9px;">' + '</td>' +
+                '<td style="width: 1%;font-size:9px;">' + '</td>' +
+                '<td style="width: 1%;font-size:9px;">' + '</td>' +
+                '<td style="width: 10%;font-size:9px;"> Total comprobante </td>' +
+                '<td style="width: 1%;font-size:9px;">' + '</td>' +
+                '<td style="width: 2%;font-size:9px;">' + element.VALORCOMPROBANTE + '</td>' +
+                '<td style="width: 1%;font-size:9px;">' + '</td>' +
+                '<td style="width: 3%;font-size:9px;">' + '</td>' +
+                '<td style="width: 1%;font-size:9px;">' + '</td>' +
+                '</tr>'
+            )
         });
+
+        $('.tablacodservicio_SER109E').append(
+            '<tr>' +
+            '<th style="width: 1%;font-size:9px;">' + '</th>' +
+            '<td style="width: 2%;font-size:9px;">' + '</td>' +
+            '<td style="width: 12%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 10%;font-size:9px;"> Total Fact </td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 2%;font-size:9px;">' + SER109E.VALORFACT + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 3%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '</tr>'
+        )
+
+        $('.tablacodservicio_SER109E').append(
+            '<tr>' +
+            '<th style="width: 1%;font-size:9px;">' + '</th>' +
+            '<td style="width: 2%;font-size:9px;">' + '</td>' +
+            '<td style="width: 12%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 10%;font-size:9px;"> Total copagos recibidos </td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 2%;font-size:9px;">' + SER109E.VALORTOTALCOPAGOS + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 3%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '</tr>'
+        )
+
+        $('.tablacodservicio_SER109E').append(
+            '<tr>' +
+            '<th style="width: 1%;font-size:9px;">' + '</th>' +
+            '<td style="width: 2%;font-size:9px;">' + '</td>' +
+            '<td style="width: 12%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 10%;font-size:9px;"> Saldo neto factura </td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 2%;font-size:9px;">' + SER109E.VALORNETOFACTURA + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '<td style="width: 3%;font-size:9px;">' + '</td>' +
+            '<td style="width: 1%;font-size:9px;">' + '</td>' +
+            '</tr>'
+        )
+
+
         var nit = RXI02A.NIT;
         var url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);
 
