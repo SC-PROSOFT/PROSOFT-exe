@@ -5501,7 +5501,7 @@ function _Total_41() {
     else {
         PriceContMask_41.typedValue = $_VLRTOTEDIT;
         PriceivaMask_41.typedValue = $_VLRIVAFACT;
-        NetoFactMask_41.typedValue = $_VLRIVAFACT;
+        NetoFactMask_41.typedValue = $_VLRTOTEDIT;
         console.debug($_VLRIVAFACT, $_VLRTOTEDIT);
     }
     _Limpiarcampos_41();
@@ -5811,6 +5811,8 @@ function _Validarcopago2_41() {
     } else {
         $_COPAGOESTIMFACT = Math.round((($_VALORBRUTO + $_VLRIVAFACT - $_VALORDESFACT) * $_PORCENTCOPAGO) / 100);
     }
+    SAL41.VALORTOTAL = NetoFactMask_41.value.replace(/,/g,'');
+    NetoFactMask_41.typedValue = parseInt(SAL41.VALORTOTAL) - $_COPAGOESTIMFACT;
     _Datocopago_41();
 }
 
@@ -5858,12 +5860,12 @@ function _Editarabono_41() {
     $_VALOREDIT = $_COPAGOESTIMFACT; // mostrar valoredit? en neto factura
     $_VALOTOTAL = $_VALORBRUTO + $_VLRIVAFACT - $_VALORDESFACT - $_COPAGOESTIMFACT;
     $_VALORTOTEDIT = $_VALORTOTAL;
-    if ($_SWOCULTAR == '01') {
-        NetoFactMask_41.typedValue = ' ';
-    }
-    else {
-        NetoFactMask_41.typedValue = $_VALORTOTAL;
-    }
+    // if ($_SWOCULTAR == '01') {
+    //     NetoFactMask_41.typedValue = ' ';
+    // }
+    // else {
+    //     NetoFactMask_41.typedValue = $_VALORTOTAL;
+    // }
     _Aceptartipocopago_41();
 }
 
