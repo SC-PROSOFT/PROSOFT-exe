@@ -11,11 +11,9 @@ $(function () {
 });
 
 $(document).ready(function () {
-    if (localStorage['Modulo'] == 'MIG') {
-        cargarMenu()
-    } else {
-        _cargarUsuario();
-    }
+
+    _cargarUsuario();
+
     $('#cerrar_menu_user').click(function () {
         var url = path.join(__dirname, '../../login/login.html');
         window.location.href = url;
@@ -23,7 +21,7 @@ $(document).ready(function () {
 });
 
 function _cargarUsuario() {
-    var url = localStorage.Modulo == 'BOM' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
+    var url = localStorage.Modulo == 'BOM' || localStorage.Contab == 'TOPALXE19' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
     var datos_envio = localStorage.Sesion + '|' + localStorage.Contab + '|' + localStorage.Mes + '|' + localStorage.Usuario;
     SolicitarDll({ datosh: datos_envio }, _onCargarUsuario, url);
 }
@@ -101,6 +99,7 @@ function CON851P(codigo, funCancel, funAccept, a) {
     bootbox.confirm({
         size: "small",
         message: msj,
+        animate: false,
         callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
             if (a == undefined) {
                 result == true ? setTimeout(funAccept, 10) : setTimeout(funCancel, 10);
@@ -215,13 +214,12 @@ function _toggleNav() {
     let Window = BrowserWindow.getAllWindows();
     console.debug(Window);
 
-    if (Window.length > 1) {
-        var { ipcRenderer } = require('electron');
-        let vector = ['salir', 'ejemplo']
-        ipcRenderer.send('ventana2', { param: vector });
-        _EventocrearSegventana('off');
-    }
-    else {
+    // if (Window.length > 1) {
+    //     var { ipcRenderer } = require('electron');
+    //     let vector = ['salir', 'ejemplo']
+    //     ipcRenderer.send('ventana2', { param: vector });
+    // }
+    // else {
         // if (widthScreen > 992) { // Pantalla grande
         if (visible) {
             if (widthScreen > 992) {
@@ -254,11 +252,11 @@ function _toggleNav() {
                 });
             }
             _cargarEventos('on');
-            //$('#body_main').html('')
+            $('#body_main').html('')
         }
 
         $("html, body").animate({ scrollTop: 0 }, "slow");
-    }
+    // }
 }
 
 function _inputControl(set) {
@@ -532,38 +530,57 @@ _consultaSql = function (params) {
     connection.end();
 }
 
-function _EventocrearSegventana(data, callbackfunction) {
+function _EventocrearSegventana(data, callbackfunction, cancelfunction) {
     if (data[0] == 'on') {
-        var ventanaespera = bootbox.dialog({
-            message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>' + data[1] + '</div>',
-            closeButton: false,
-            buttons: {
-                aceptar: {
-                    label: 'Continue',
-                    className: 'btn-primary',
-                    callback: function () {
-                        console.debug('creando segunda ventana');
-                        callbackfunction();
+        if (cancelfunction != undefined) {
+            var ventanaespera = bootbox.dialog({
+                message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>' + data[1] + '</div>',
+                closeButton: false,
+                buttons: {
+                    aceptar: {
+                        label: 'Continue',
+                        className: 'btn-primary',
+                        callback: function () {
+                            callbackfunction();
+                        }
+                    },
+                    cancelar: {
+                        label: 'Cancelar',
+                        className: 'btn-danger',
+                        callback: function () {
+                            cancelfunction();
+                        }
                     }
                 }
-            }
-        });
-        ventanaespera.init($('.modal-footer').hide());
-    }
-    else {
-        console.debug('click en la primer ventana');
+            });
+            ventanaespera.init($('.modal-footer').hide());
+        } else {
+            var ventanaespera = bootbox.dialog({
+                message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>' + data[1] + '</div>',
+                closeButton: false,
+                buttons: {
+                    aceptar: {
+                        label: 'Continue',
+                        className: 'btn-primary',
+                        callback: function () {
+                            console.debug(callbackfunction);
+                            callbackfunction();
+                        }
+                    }
+                }
+            });
+            ventanaespera.init($('.modal-footer').hide());
+        }
+    } else if (data[0] == 'off') {
         $('.btn-primary').click();
+    } else if (data[0] == 'cancelar') {
+        $('.btn-danger').click();
     }
-}
-
-function _Seconndwindow(data) {
-    const { ipcRenderer } = require('electron');
-    ipcRenderer.send(data.params[0], data.params);
 }
 
 require('electron').ipcRenderer.on('closed2', (event, message) => {
     console.debug(message);
-    _EventocrearSegventana('off');
+    _EventocrearSegventana(['off']);
 });
 
 function calcular_edad(fecha) {

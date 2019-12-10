@@ -21,7 +21,55 @@ var fondoReposicion_tax015 = new IMask(
     { mask: "0,0", min: 0, max: 99, scale: 1, radix: ',' }
 );
 
+var tarjOperacoion_tax015 = IMask(
+    document.getElementById('tarjOperacoion_tax015'),
+    {
+        mask: Date,
+        lazy: false,
+        overwrite: false,
+        autofix: true,
+        blocks: {
+            d: { mask: IMask.MaskedRange, placeholderChar: 'd', from: 1, to: 31, maxLength: 2 },
+            m: { mask: IMask.MaskedRange, placeholderChar: 'm', from: 1, to: 12, maxLength: 2 },
+            Y: { mask: IMask.MaskedRange, placeholderChar: 'y', from: 1900, to: 2999, maxLength: 4 }
+        }
+    }
+);
+
+var fechaAfil_tax015 = IMask(
+    document.getElementById('fechaAfil_tax015'),
+    {
+        mask: Date,
+        lazy: false,
+        overwrite: true,
+        autofix: true,
+        blocks: {
+            d: { mask: IMask.MaskedRange, placeholderChar: 'd', from: 1, to: 31, maxLength: 2 },
+            m: { mask: IMask.MaskedRange, placeholderChar: 'm', from: 1, to: 12, maxLength: 2 },
+            Y: { mask: IMask.MaskedRange, placeholderChar: 'y', from: 1900, to: 2999, maxLength: 4 }
+        }
+    }
+);
+
+var fechaRetiro_tax015 = IMask(
+    document.getElementById('fechaRetiro_tax015'),
+    {
+        mask: Date,
+        lazy: false,
+        overwrite: true,
+        autofix: true,
+        blocks: {
+            d: { mask: IMask.MaskedRange, placeholderChar: 'd', from: 1, to: 31, maxLength: 2 },
+            m: { mask: IMask.MaskedRange, placeholderChar: 'm', from: 1, to: 12, maxLength: 2 },
+            Y: { mask: IMask.MaskedRange, placeholderChar: 'y', from: 1900, to: 2999, maxLength: 4 }
+        }
+    }
+);
+
 (() => {
+    $('#combu_tax015').select2()
+    $("#Naturaleza_tax015").select2()
+
     _inputControl('reset');
     _inputControl('disabled');
     placas_tax015();
@@ -89,13 +137,13 @@ function _ventanaCostos_tax015(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'Busqueda de costos',
-            columnas: ["CODIGO", "DESCRIP"],
+            columnas: ["COD", "DESCRIP"],
             data: $_TAX015.COSTOS,
             callback_esc: function () {
                 $("#costo_tax015").focus();
             },
             callback: function (data) {
-                document.getElementById("costo_tax015").value = data.CODIGO.trim()
+                document.getElementById("costo_tax015").value = data.COD.trim()
                 _enterInput("#costo_tax015");
             }
         });
@@ -314,52 +362,68 @@ function evaluarFondoRepos_tax015() {
             orden: "1"
         },
         evaluarFondoMantenimiento_tax015,
-        () => {
-            // validar
-            evaluarCombus_tax015()
-        }
+        evaluarCombus_tax015
     )
 }
 
 function evaluarCombus_tax015() {
     $('#combu_tax015').removeAttr('disabled');
-    $('#combu_tax015').select2().on('select2:select', _validarCombus_tax015);
+    $('#combu_tax015').on('select2:select', (data) => { setTimeout(() => { _validarCombus_tax015(data) }, 500); });
     setTimeout(function () { $('#combu_tax015').select2('open') }, 500);
 }
 
 function _validarCombus_tax015(e) {
     var seleccionado = e.params.data.id;
+    $('#combu_tax015').off('select2:select').attr('disabled', true);
     if (seleccionado != 'F') {
         evaluarNaturaleza_tax015()
     } else {
-        $('#combu_tax015').attr('disabled', true);
+        $('#combu_tax015').val("0")
         evaluarFondoRepos_tax015();
     }
 }
 
 function evaluarNaturaleza_tax015() {
     $("#Naturaleza_tax015").removeAttr('disabled');
-    $("#Naturaleza_tax015").select2().on('select2:select', _validarNaturale_tax015)
+    $("#Naturaleza_tax015").on('select2:select', (data) => { setTimeout(() => { _validarNaturale_tax015(data) }, 500) })
     setTimeout(function () { $('#Naturaleza_tax015').select2('open') }, 500);
 }
 
 function _validarNaturale_tax015(e) {
     var seleccionado = e.params.data.id;
+    $('#Naturaleza_tax015').off('select2:select').attr('disabled', true);
     if (seleccionado != 'F') {
         evaluarNroInterno_tax015()
     } else {
-        $('#Naturaleza_tax015').attr('disabled', true);
+        $('#combu_tax015').val("0")
+        $('#Naturaleza_tax015').val("0")
         evaluarCombus_tax015();
     }
 }
 
 function evaluarNroInterno_tax015() {
+    console.log("nro interno")
     validarInputs(
         {
             form: "#faseNroInterno",
             orden: "1"
         },
-        evaluarNaturaleza_tax015,
+        () => {
+            $('#Naturaleza_tax015').val("0")
+            evaluarNaturaleza_tax015()
+        },
+        evaluarFechas_tax015
+    )
+}
+
+function evaluarFechas_tax015() {
+    console.log("fechas")
+    validarInputs(
+        {
+            form: "#faseFechas",
+            orden: "1"
+        },
+        evaluarNroInterno_tax015,
         evaluarCosto_tax015
     )
 }
@@ -378,7 +442,8 @@ function evaluarCosto_tax015() {
 function _validarCosto_ta015() {
     var idCosto = document.getElementById('costo_tax015').value,
         busqueda = $_TAX015.COSTOS.find(e => {
-            return e.CODIGO == idCosto.toUpperCase();
+            console.log(e.COD)
+            return e.COD.trim() == idCosto.toUpperCase();
         })
 
     if (busqueda) {
@@ -388,6 +453,8 @@ function _validarCosto_ta015() {
                 var datos_envio = datosEnvio();
                 datos_envio += $_TAX015.NOVEDAD;
                 datos_envio += "|";
+                datos_envio += bajarDatos_tax015();
+                console.log(datos_envio);
                 // postData({ datosh: datos_envio }, get_url("app/TAX/TAX015.DLL"))
                 //     .then(data => {
                 //         console.log(data)
@@ -403,7 +470,24 @@ function _validarCosto_ta015() {
     }
 }
 
-function bajarDatos_tax015(){
+function bajarDatos_tax015() {
+    var fecha_tOperac = tarjOperacoion_tax015._unmaskedValue.split(".")
+    var fecha_afil = fechaAfil_tax015._unmaskedValue.split(".");
+    var fecha_retiro = fechaRetiro_tax015._unmaskedValue.split(".");
+
+    let fondoCar = producidoEmpresa_tax015.unmaskedValue || 0;
+    fondoCar = parseFloat(fondoCar).toFixed(2).replace(/\./g, '');
+    fondoCar = fondoCar.padStart(4, "0");
+
+    let fondo_r = fondoMantenim_tax015.unmaskedValue || 0;
+    fondo_r = parseFloat(fondo_r).toFixed(1).replace(/\./g, '');
+    fondo_r = fondo_r.padStart(2, "0")
+
+    let fondo_reposicion = fondoReposicion_tax015.unmaskedValue || 0;
+    fondo_reposicion = parseFloat(fondo_reposicion).toFixed(1).replace(/\./g,'');
+    fondo_reposicion = fondo_reposicion.padStart(2,"0");
+
+
     return document.getElementById('placa_tax015').value
         + "|"
         + document.getElementById('propie_tax015').value
@@ -422,15 +506,24 @@ function bajarDatos_tax015(){
         + "|"
         + document.getElementById('chasis_tax015').value
         + "|"
-        + document.getElementById('marca_tax015').value
+        + fecha_tOperac[2].padStart(4, "0") + fecha_tOperac[1].padStart(2, "0") + fecha_tOperac[0].padStart(2, "0")
         + "|"
-        + document.getElementById('marca_tax015').value
+        + document.getElementById('Naturaleza_tax015').value
         + "|"
-        + document.getElementById('marca_tax015').value
+        + fondoCar
         + "|"
-        + document.getElementById('marca_tax015').value
+        + fondo_r
         + "|"
-        
+        + document.getElementById('modalidad_tax015').value
+        + "|"
+        + document.getElementById('costo_tax015').value
+        + "|"
+        + fecha_afil[2].padStart(4, "0") + fecha_afil[1].padStart(2, "0") + fecha_afil[0].padStart(2, "0")
+        + "|"
+        + fecha_retiro[2].padStart(4, "0") + fecha_retiro[1].padStart(2, "0") + fecha_retiro[0].padStart(2, "0")
+        + "|"
+        + fondo_reposicion
+        + "|";
 }
 
 function finProceso_tax015() {

@@ -110,12 +110,12 @@ function validarFechaInicial() {
             dia = $_FECHA_NUM.toString().substr(4, 2);
         }
         $_FECHA_FIN = ano + mes + dia;
-        fechaFinal();
+        fechaFinal('1');
     }
 
 }
 
-function fechaFinal() {
+function fechaFinal(orden) {
     $('#añoFinal').val($_FECHA_FIN.toString().substr(0, 2));
     $('#mesFinal').val($_FECHA_FIN.toString().substr(2, 2));
     $('#diaFinal').val(dia);
@@ -134,18 +134,18 @@ function validarFechaFinal() {
     mes = $('#mesFinal').val();
     dia = $('#diaFinal').val();
     if (mes < 1 || mes > 12) {
-        fechaFinal();
+        fechaFinal('2');
     } else {
         mes_ini = $_FECHA_INI.toString().substr(2, 2);
         $_FECHA_FIN = ano + mes + dia;
         if (mes == mes_ini || mes == (mes_ini + 1)) {
             if ($_FECHA_FIN < $_FECHA_INI) {
-                fechaFinal();
+                fechaFinal('2');
             } else {
                 nitProcesar();
             }
         } else {
-            fechaFinal();
+            fechaFinal('2');
         }
     }
 }
@@ -156,7 +156,7 @@ function nitProcesar() {
             form: '#fase2',
             orden: '1'
         },
-        _toggleNav,
+        () => { fechaFinal('2') },
         _validarTercero_11
     );
 }

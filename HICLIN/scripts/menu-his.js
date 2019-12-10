@@ -1,4 +1,4 @@
-$_REG_PROF = [], $_REG_HC = [], $_REG_PACI = [];
+$_REG_PROF = {}, $_REG_HC = {}, $_REG_PACI = {};
 $_COMP = {
 	suc: "",
 	tipo: "",
@@ -25,82 +25,88 @@ function _iniciar_menu_his() {
 		}, URL)
 		.then((data) => {
 			var res = data.split("|");
-			obtenerDatosCompletos({"nombreFd":"PROFESIONALES"}, function (array_profesionales) {
-				$_REG_PROF.datos_prof = array_profesionales['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == parseInt(res[1].trim()));
-				$_REG_PROF.tabla_especialidad = new Array();
-				$_REG_PROF.tabla_especialidad = res[2].split(";");
-				$_REG_PROF.tabla_especialidad.pop();
+			var idProfe = parseInt(res[1]);
+			obtenerDatosCompletos({
+				"nombreFd": "PROFESIONALES"
+			}, function (array_profesionales) {
+				$_REG_PROF.datos_prof = array_profesionales['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == idProfe.toString());
+				$_REG_PROF.datos_prof.IDENTIFICACION = $_REG_PROF.datos_prof.IDENTIFICACION.trim().padStart(10, "0");
+				if ($_REG_PROF.datos_prof) {
+					$_REG_PROF.tabla_especialidad = new Array();
+					$_REG_PROF.tabla_especialidad = $_REG_PROF.datos_prof.TAB_ESPEC
+					$_REG_PROF.tabla_especialidad.pop();
+					validarPaciente();
+				} else {
+					jAlert({
+						titulo: "Error ",
+						mensaje: "Personal que no atiende"
+					}, () => {
+						console.log('Personal que no atiende')
+					});
+				}
 			})
-			validarPaciente();
 			loader("hide");
 		})
 		.catch((error) => {
 			console.log(error)
 		});
 }
+
 function validarPaciente() {
 	validarInputs({
 			form: "#formConsult_his",
 			orden: "1"
 		},
 		function () {
-			CON850_P(
-				e.id == "S" ? salir_modulo() : validarPaciente(), {
-					msj: "03"
-				}
-			);
+			CON850_P(e.id == "S" ? salir_modulo() : validarPaciente(), {
+				msj: "03"
+			});
 		},
 		function () {
 			if (document.querySelector("#busqpaci_his").value.length > 0) {
 				// Crea Historia Clinica
-				let URL = get_url("APP/" + "HICLIN/HC000-1" + ".DLL");
+				var datos_envio = datosEnvio() + cerosIzq(document.querySelector("#busqpaci_his").value, 15) + "|" + localStorage["Usuario"] + "|";
 				postData({
-						datosh: datosEnvio() +
-							cerosIzq(document.querySelector("#busqpaci_his").value, 15) + "|" +
-							localStorage["Usuario"] + "|"
-					}, URL)
-					.then((data) => {
+						datosh: datos_envio
+					}, get_url("APP/HICLIN/HC000-1.DLL"))
+					.then(data => {
 						cargarDatosPaci(data);
 					})
-					.catch((error) => {
+					.catch(error => {
 						console.log(error)
 					});
 			} else {
 				jAlert({
-						titulo: "Error ",
-						mensaje: "Debe ingresar una identificacion"
-					},
-					validarPaciente
-				);
+					titulo: "Error ",
+					mensaje: "Debe ingresar una identificacion"
+				}, validarPaciente);
 			}
 		}
 	);
 }
 
 function cargarDatosPaci(data) {
-	var res = data.split("|");
-	console.log(res)
-		let URL = get_url("APP/" + "SALUD/SER810-1" + ".DLL");
-		postData({
-				datosh: datosEnvio() + res[1] + "|"
-			}, URL)
-			.then((data) => {
-				$_REG_PACI = data['REG-PACI'];
-				validarOpcPacienteHc(res);
-			})
-			.catch((error) => {
-				console.log(error)
-			});
+	var res = data.split("|"),
+		datos_envio = datosEnvio() + res[1] + "|";
+	postData({
+			datosh: datos_envio
+		}, get_url("APP/SALUD/SER810-1.DLL"))
+		.then((data) => {
+			$_REG_PACI = data['REG-PACI'];
+			validarOpcPacienteHc(res);
+		})
+		.catch((error) => {
+			console.log(error)
+		});
 }
 
 function validarOpcPacienteHc(res) {
 	if (res[2].trim() == 1) {
 		//Existe historia clinica anterior
-		let URL = get_url("APP/" + "HICLIN/HC811" + ".DLL");
-		console.log("datosh:", datosEnvio() + res[1] + "|")
+		let datos_envio = datosEnvio() + res[1] + "|";
 		postData({
-				datosh: datosEnvio() + res[1] + "|"
-			}, URL)
+				datosh: datos_envio
+			}, get_url("APP/HICLIN/HC811.DLL"))
 			.then((data) => {
 				loader("hide");
 				$_REG_HC.primera_hc = 2;
@@ -137,6 +143,7 @@ function montarHc811(data) {
 
 function _consultHc(llave) {
 	$_REG_HC.llave_hc = llave;
+	$_REG_HC.id_paciente = $_REG_HC.llave_hc.substr(0,15);
 	var data = datosEnvio() + llave + "|";
 	SolicitarDll({
 			datosh: data
@@ -144,7 +151,7 @@ function _consultHc(llave) {
 		function (data) {
 			var res = data.split("|");
 			if (res[0] == "00") {
-
+				_toggleNav();
 				_mostrarDatosPaci(res);
 			} else {
 				plantillaError(res[0], res[1], res[2]);
@@ -205,14 +212,13 @@ function _mostrarDatosPaci(resp) {
 	}
 
 	// llamado al HC904A RECALCULAR CENSO HOSPITALARIO
-	recalcularCenso_hosp(function(){
-	$("#descrip_hc_his").val(descrip_hc);
-	_toggleNav();
-	$(".menuToggle").attr("style", "display: block;");
-	$("#formConsult_his").attr("hidden", true);
-	$(".footer").attr("hidden", true);
-	}),$_REG_PROF.ATIENDE_PROF;
-
+	recalcularCenso_hosp(function () {
+		$("#descrip_hc_his").val(descrip_hc);
+		_toggleNav();
+		$(".menuToggle").attr("style", "display: block;");
+		$("#formConsult_his").attr("hidden", true);
+		$(".footer").attr("hidden", true);
+	}), $_REG_PROF.ATIENDE_PROF;
 }
 
 function historiaNueva(hc) {
@@ -255,28 +261,47 @@ function historiaNueva(hc) {
 function _ventanaPacientes(e) {
 	var $PACIENTES = [];
 	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-		obtenerDatosCompletos("PACIENTES", function (data) {
-			$PACIENTES = data.PACIENTES;
-			_ventanaDatos_lite_v2({
-				titulo: "VENTANA DE PACIENTES",
-				data: $PACIENTES,
-				indice: ["COD", "NOMBRE", "SEXO", "DERECHO"],
-				mascara: [{
-					"COD": 'IDENTIFICACION',
-					"NOMBRE": 'NOMBRE',
-					"ACOMPA�ANTE": "ACOMPAÑANTE"
-				}],
-				minLength: 3,
-				callback_esc: function () {
-					document.querySelector("#busqpaci_his").focus();
-				},
-				callback: function (data) {
-					document.querySelector("#busqpaci_his").value = data.COD;
-					document.querySelector("#busqpaci_his").focus();
-				}
-			})
-		});
+		// obtenerDatosCompletos("PACIENTES", function (data) {
+		// 	$PACIENTES = data.PACIENTES;
+		// 	_ventanaDatos_lite_v2({
+		// 		titulo: "VENTANA DE PACIENTES",
+		// 		data: $PACIENTES,
+		// 		indice: ["COD", "NOMBRE", "SEXO", "DERECHO"],
+		// 		mascara: [{
+		// 			"COD": 'IDENTIFICACION',
+		// 			"NOMBRE": 'NOMBRE',
+		// 			"ACOMPA�ANTE": "ACOMPAÑANTE"
+		// 		}],
+		// 		minLength: 3,
+		// 		callback_esc: function () {
+		// 			document.querySelector("#busqpaci_his").focus();
+		// 		},
+		// 		callback: function (data) {
+		// 			document.querySelector("#busqpaci_his").value = data.COD;
+		// 			document.querySelector("#busqpaci_his").focus();
+		// 		}
+		// 	})
+		// });
 
+		parametros = {
+			valoresselect: ['Descripcion', 'Identificacion'],
+			f8data: 'PACIENTES',
+			columnas: [{
+				title: 'COD'
+			}, {
+				title: 'NOMBRE'
+			}, {
+				title: 'EPS'
+			}],
+			callback: (data) => {
+				document.querySelector("#busqpaci_his").value = data.COD;
+				document.querySelector("#busqpaci_his").focus();
+			},
+			cancel: () => {
+				document.querySelector("#busqpaci_his").focus()
+			}
+		};
+		F8LITE(parametros);
 	}
 }
 

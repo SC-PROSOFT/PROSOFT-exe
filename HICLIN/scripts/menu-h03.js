@@ -18,8 +18,8 @@
 function _confirmar_medico_h03() {
 	var admin = localStorage["Usuario"];
 	//------Pruebas----------
-	$_REG_PROF.tabla_especialidad[0] = "490";
-	$_REG_PROF.tabla_especialidad[1] = "491";
+	// $_REG_PROF.tabla_especialidad[0] = "490";
+	// $_REG_PROF.tabla_especialidad[1] = "491";
 	//-------------------------
 	if (admin != "GEBC" || admin != "0101") {
 		var atiende = $_REG_PROF.datos_prof.ATIENDE_PROF;
@@ -73,43 +73,33 @@ function datoUnidad_h03() {
 }
 
 function on_datoUnidad_h03() {
-	_consultaSql({
-		sql: "Select codigo_unid_serv, descrip_unid_serv from sc_unser where activar_serv='S'",
-		bd: localStorage.Contab + "_13",
-		callback: function (error, results, fields) {
-			if (error) throw error;
-			else {
-				if (!results[0]) {
-					plantillaError("99", "Unidad de servicio inexistente", "menu_h03");
-				} else {
-					POPUP({
-							array: JSON.parse(JSON.stringify(results)),
-							titulo: "UNIDADES DE SERVICIO",
-							indices: [{
-								id: "codigo_unid_serv",
-								label: "descrip_unid_serv"
-							}],
-							callback_f: function () {
-								plantillaToast(
-									"",
-									"No se pudo ingresar. Menu-h03",
-									null,
-									"error",
-									"error"
-								);
-							}
-						},
-						validardatoUnidad_h03
-					);
-				}
+	obtenerDatosCompletos({
+		"nombreFD": "UNSERV"
+	}, function (data) {
+		POPUP({
+			array: data['UNSERV'],
+			titulo: "UNIDADES DE SERVICIO",
+			indices: [{
+				id: "COD",
+				label: "DESCRIP"
+			}],
+			callback_f: function () {
+				plantillaToast(
+					"",
+					"No se pudo ingresar. Menu-h03",
+					null,
+					"error",
+					"error"
+				);
 			}
-		}
-	});
+		},validardatoUnidad_h03)
+
+	})
 }
 
 function validardatoUnidad_h03(unidad) {
-	unidad.codigo_unid_serv = cerosIzq(unidad.codigo_unid_serv.toString(), 2);
-	unidad = unidad.codigo_unid_serv;
+	unidad.COD = cerosIzq(unidad.COD.toString(), 2);
+	unidad = unidad.COD;
 	var sw = 0;
 	var admin = localStorage["Usuario"];
 	if (
@@ -390,7 +380,7 @@ function mostrar_historiaPYP(array) {
 function seleccionPyp_h03(finalidad, sexo) {
 	var array_pyp = new Array();
 	if (sexo == "F") {
-		if (["03", "05", "06", "07", "10"].filter(arr => arr == finalidad).length>0) {
+		if (["03", "05", "06", "07", "10"].filter(arr => arr == finalidad).length > 0) {
 			array_pyp.push({
 				esquema: "8001",
 				descripcion: "HISTORIA CLINICA DE CITOLOGIA TOMA Y CONTROL"
@@ -459,21 +449,21 @@ function validar_servicio_finalidad_h03() {
 
 	if (esquema == "AI01" || esquema == "AI02") {
 		if (
-			["01", "02", "06", "07", "08"].filter(arr => arr == serv).length>0 &&
+			["01", "02", "06", "07", "08"].filter(arr => arr == serv).length > 0 &&
 			!finalidad == 08
 		) {
 			retorno = true;
 		}
 	}
 
-	if (["8001", "8002", "8031", "8051"].filter(arr => arr == esquema).length>0) {
-		if (serv == 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad).length>0) {
+	if (["8001", "8002", "8031", "8051"].filter(arr => arr == esquema).length > 0) {
+		if (serv == 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad).length > 0) {
 			retorno = true;
 		}
 	}
 
 	if (["HC12", "HC13", "HC14"].filter(arr => arr == esquema)) {
-		if (serv !== 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad).length>0) {
+		if (serv !== 08 && ["3", "5", "6", "10"].filter(arr => arr == finalidad).length > 0) {
 			retorno = true;
 		}
 	}
@@ -487,6 +477,9 @@ function buscar_programa_h03(programa) {
 		switch (programa) {
 			case 'HC-9004':
 				$("#body_main").load("../../HICLIN/paginas/hc9004.html");
+				break;
+			case 'HC-01':
+				$("#body_main").load("../../HICLIN/paginas/hc-01.html");
 				break;
 			default:
 				break;

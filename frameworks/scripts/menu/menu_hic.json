@@ -24,8 +24,8 @@
             "Tipo": "RM",
             "Params": [
                 {
-                    "formulario": "MENU-H03",
-                    "dll": "HICLIN\\MENU-H03"
+                    "formulario": "MENUH03",
+                    "dll": "HICLIN\\MENUH03"
                 }
             ]
         },

@@ -55,7 +55,7 @@ if ($_DATOS_MODULO != 'false') {
     }
 }
 
-if ($_DATOS_NOMINA != 'false') {
+if (($_DATOS_NOMINA != 'false') && (!empty($_DATOS_NOMINA))) {
     
     $fuente = "$|$";
 

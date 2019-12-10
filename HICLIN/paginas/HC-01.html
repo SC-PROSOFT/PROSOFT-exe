@@ -3,1175 +3,1165 @@ Proyecto: Notas y evoluciones
 Empresa: Prosoft
 Archivo: Notas de enfermeria || hacer apertura de hicstoria clinica
 -->
+
 <style>
     .actions{
-        padding: 6px 0 0 !important;
+        padding-bottom: 0 !important;
     }
 </style>
 
 <div class="col-md-12">
-    <div class="portlet light no-padding" style="background-color: transparent !important; box-shadow: none !important;">
-        <div class="portlet-body">
-            <form class="form-horizontal" onsubmit="return false;">
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label>Año:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="ano_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-2 col-xs-2">
-                        <label>Mes:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="mes_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-2 col-xs-2">
-                        <label>Dia:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="dia_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-2 col-xs-2">
-                        <label>Hora:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="hora_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-2 col-xs-2">
-                        <label>Minutos:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="min_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-8 col-xs-8">
-                        <label>&nbsp;</label>
-                        <div class="inline-inputs">
-                            <label class="col-md-4 col-sm-4 col-xs-12">Médico:</label>
-                            <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                <input id="med_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-4">
-                        <label>&nbsp;</label>
-                        <div class="inline-inputs">
-                            <div class="input-group col-md-7 col-sm-7 col-xs-12" style="margin-right: 10px;">
-                                <input id="act_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                            <div class="input-group col-md-7 col-sm-7 col-xs-12">
-                                <input id="descrip_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="clear: both;"></div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_1_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Motivo de consulta</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 1.
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_1">
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin: 15px 0;">
-                        <div class="inline-inputs">
-                            <label class="col-md-2 col-sm-2 col-xs-12">Procedencia:</label>
-                            <div class="input-group col-md-10 col-sm-10 col-xs-12" id="fase_procedencia_hc_01">
-                                <input id="proced_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_motivo_hc_01">
-                        <label>Motivo de consulta: </label>
-                        <textarea id="motiv_hc_01" rows="2" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_enferActual_hc_01">
-                        <label>Enfermedad actual: </label>
-                        <textarea id="enfer_act_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px"></textarea>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_2_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Antecedentes</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 2.
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_2">
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Familiares: </label>
-                        <textarea id="ant_famil_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Medicos: </label>
-                        <textarea id="ant_med_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="2" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Quirurgicos: </label>
-                        <textarea id="ant_ant_quirur_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="3" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Farmacologicos: </label>
-                        <textarea id="ant_farmaco_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="4" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Alergicos: </label>
-                        <textarea id="ant_alerg_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="5" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Traumatologicos: </label>
-                        <textarea id="ant_traumat_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="6" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Antecendentes Ocupacionales: </label>
-                        <textarea id="ant_ocup_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="7" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
-                        <label>Otros antecendetes: </label>
-                        <textarea id="otr_ant_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="8" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_obstetricos_hc_01">
-                        <label>Gineco obstetricos: </label>
-                        <textarea id="gineco_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px"></textarea>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label>Genograma:</label>
-                    </div>
-                    <div class="col-md-3 col-sm-12 col-xs-12">
-                        <label>&nbsp;</label>
-                        <div class="inline-inputs">
-                            <label class="col-md-6 col-sm-6 col-xs-6">Padre:</label>
+        <div class="portlet light no-padding" style="background-color: transparent !important; box-shadow: none !important;">
+            <div class="portlet-body">
+                <form class="form-horizontal" onsubmit="return false;">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label>Año:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="padre_hc_01" type="text" class="form-control  font-small "
-                                       />
+                                <input id="ano_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 col-sm-12 col-xs-12">
-                        <label>&nbsp;</label>
-                        <div class="inline-inputs">
-                            <label class="col-md-6 col-sm-6 col-xs-6">Madre:</label>
+                        <div class="col-md-1 col-sm-2 col-xs-2">
+                            <label>Mes:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="madre_hc_01" type="text" class="form-control  font-small "
-                                       />
+                                <input id="mes_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-xs-4">
-                        <label>Hermano,1:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="herm1_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label>2:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="herm2_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label>3:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="herm3_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label>4:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="herm4_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label>5:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="herm5_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label>6:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="herm6_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_3_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Revision por sistemas</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 3.
-                                </a>
+                        <div class="col-md-1 col-sm-2 col-xs-2">
+                            <label>Dia:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="dia_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center revisionSistemas_hc_01" id="pag_3">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Organo de los sentidos: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_sent_hc_01" type="text" class="form-control  font-small" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema cardiopulmonar: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_card_hc_01" type="text" class="form-control  font-small " data-orden="2"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema digestivo: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_dig_hc_01" type="text" class="form-control  font-small " data-orden="3"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema dermatologico: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_derm_hc_01" type="text" class="form-control  font-small " data-orden="4"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema Oestoarticular: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sist_oste_hc_01" type="text" class="form-control  font-small " data-orden="5"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema Neurologico: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_neur_hc_01" type="text" class="form-control  font-small " data-orden="6"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema Psiquiatrico: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_psiq_hc_01" type="text" class="form-control  font-small " data-orden="7"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema Genitourinario: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_gent_hc_01" type="text" class="form-control  font-small " data-orden="8"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema Genicologico: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_geni_hc_01" type="text" class="form-control  font-small " data-orden="9"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistema Obstetrico: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="sis_obst_hc_01" type="text" class="form-control  font-small "  data-orden="10"  />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_4_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Revision de embarazadas</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 4.
-                                </a>
+                        <div class="col-md-1 col-sm-2 col-xs-2">
+                            <label>Hora:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="hora_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_4">
-                    Solo para emmbarazadas
-
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_5_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Revision de signos</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 5.
-                                </a>
+                        <div class="col-md-1 col-sm-2 col-xs-2">
+                            <label>Minutos:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="min_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_5">
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Peso: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_peso_hc_01">
-                            <input id="peso_hc_01" type="number" class="form-control  font-small " maxlength="7" data-orden="1"/>
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Talla: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_talla_hc_01">
-                            <input id="talla_hc_01" type="number" class="form-control  font-small " maxlength="3"  data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">I.M.C: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="imc_hc_01" type="number" class="form-control  font-small " maxlength="5"/>
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">SupC: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="supc_hc_01" type="number" class="form-control  font-small " maxlength="5"/>
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Temp: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_temp_hc_01">
-                            <input id="temp_hc_01" type="number" class="form-control  font-small " maxlength="5" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">F.C: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_fcard_hc_01">
-                            <input id="fc_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">F.R: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_resp_hc_01">
-                            <input id="fr_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Sistole: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_tens1_hc_01">
-                            <input id="t_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Diastole: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_tens2_hc_01">
-                            <input id="arte_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Media: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="tam_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">Glasgow: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="glasgow_hc_01" type="text" class="form-control  font-small " />
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-4 col-xs-4">
-                        <label class="col-md-6 col-sm-6 col-xs-6">PVC: </label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_pvc_hc_01">
-                            <input id="pvc_hc_01" type="number" class="form-control  font-small " maxlength="2" data-orden="1"  />
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <hr style="border: 1px solid #ccc;">
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_examen_hc_01">
-                        <label>Examen. Hc.: </label>
-                        <textarea id="examen_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px">
-* INSPECCION GENERAL
-* CABEZA / CUELLO
-* CARDIOVASCULAR
-* PULMONAR
-* ABDOMEN
-* GENITOURINARIOS
-* COLUMNA / DORSO
-* EXTREMIDADES
-* NEUROLOGICO
-* PIEL
-                        </textarea>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_7_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Datos embarazada</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 7.
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_7">
-                    Mas datos embarazadas
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_8_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Diagnosticos</span>
-                            </div>
-                            <div class="actions">
-                                <a class="btn btn-outline white btn-sm" data="volver">
-                                    Pag 8.
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_8">
-                    <div class="col-md-6 col-sm-6 col-xs-6">
-                        <div class="inline-inputs">
-                            <label class="col-md-4 col-sm-4 col-xs-6">cod: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_diagnosticos_hc_01">
-                                <input id="cod_diag_hc_01" type="text" class="form-control  font-small " maxlength="4" disabled  data-orden="1"/>
-                            </div>
-                            <button id="diagnosticoBtn_hc_01" type="button" class="btn col-md-4 col-sm-4 col-xs-4 f8-Btn">
-                                <i class="icon-magnifier"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">                        
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <span id="continuar_analisis_hc_01" class="btn blue btn-block" style="background: #476fad !important; padding: 8px 0; margin-top: 3px;">Continuar</span>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="table-scrollable">
-                            <table id="table_diagnosticos" class="table table-light table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Codigo</th>
-                                        <th>Descripcion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Z000</td>
-                                        <td>EXAMEN MEDICO GENERAL</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <hr style="border: 1px solid #ccc;">
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_analisis_hc_01">
-                        <label>Analisis y plan: </label>
-                        <textarea id="analisis_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px">
-
-                        </textarea>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_10_title">
-                    <div class="portlet light box-center box-title" style="margin: 0 auto;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject bold">Revision de Rips</span>
-                            </div>
-                            <div class="actions">
-                                <a id="volverPag_10" class="btn btn-outline white btn-sm">
-                                    Pag 10.
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_10">
-                    <div class="form-group col-md-10 col-sm-12 col-xs-12" style="margin: 0 auto; float: none;">
-                        <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
                             <label>&nbsp;</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="act_rips_hc_01" type="text" class="form-control  font-small bold"
-                                       disabled value="Actualizacion de Rips" style="text-align: center;" />
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-12">Médico:</label>
+                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                    <input id="med_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                            <label class="col-md-6 col-sm-6 col-xs-6">Personal que Atiende: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="pers_atiend_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="salto-linea"></div>
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-md-4 col-sm-6 col-xs-6">
-                            <label>Estado gravidez: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="est_grav_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-6">                            
-                            <label>Causa externa: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="causa_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
+                        <div class="col-md-3 col-sm-4 col-xs-4">
+                            <label>&nbsp;</label>
+                            <div class="inline-inputs">
+                                <div class="input-group col-md-7 col-sm-7 col-xs-12" style="margin-right: 10px;">
+                                    <input id="act_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="input-group col-md-7 col-sm-7 col-xs-12">
+                                    <input id="descrip_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="salto-linea"></div>
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-md-3 col-sm-6 col-xs-6">
-                            <label>Tipo de diagnostico: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="tipo_diagn_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-6">
-                            <label>PyP: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="pyp_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-6">
-                            <label>Finalidad consulta: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="final_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-6">
-                            <label>1Era vez?:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="1eraVez_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
+                    <div style="clear: both;"></div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_1_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Motivo de consulta</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 1.
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="salto-linea"></div>
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_1">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin: 15px 0;">
+                            <div class="inline-inputs">
+                                <label class="col-md-2 col-sm-2 col-xs-12">Procedencia:</label>
+                                <div class="input-group col-md-10 col-sm-10 col-xs-12" id="fase_procedencia_hc_01">
+                                    <input id="proced_hc_01" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_motivo_hc_01">
+                            <label>Motivo de consulta: </label>
+                            <textarea id="motiv_hc_01" rows="2" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_enferActual_hc_01">
+                            <label>Enfermedad actual: </label>
+                            <textarea id="enfer_act_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_2_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Antecedentes</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 2.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_2">
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Familiares: </label>
+                            <textarea id="ant_famil_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Medicos: </label>
+                            <textarea id="ant_med_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="2" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Quirurgicos: </label>
+                            <textarea id="ant_ant_quirur_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="3" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Farmacologicos: </label>
+                            <textarea id="ant_farmaco_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="4" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Alergicos: </label>
+                            <textarea id="ant_alerg_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="5" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Traumatologicos: </label>
+                            <textarea id="ant_traumat_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="6" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Antecendentes Ocupacionales: </label>
+                            <textarea id="ant_ocup_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="7" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 fase_antecedentes_hc_01" style="margin-bottom: 15px;">
+                            <label>Otros antecendetes: </label>
+                            <textarea id="otr_ant_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="8" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_obstetricos_hc_01">
+                            <label>Gineco obstetricos: </label>
+                            <textarea id="gineco_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px"></textarea>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label>Genograma:</label>
+                        </div>
                         <div class="col-md-3 col-sm-12 col-xs-12">
-                            <label>Metodo Plan. Familiar:</label>
+                            <label>&nbsp;</label>
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Padre:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="padre_hc_01" type="text" class="form-control  font-small "
+                                           />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <label>&nbsp;</label>
+                            <div class="inline-inputs">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Madre:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="madre_hc_01" type="text" class="form-control  font-small "
+                                           />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                            <label>Hermano,1:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="metodPlanFamil_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
+                                <input id="herm1_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 col-xs-6">
-                            <label>Estado salida:</label>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label>2:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="est_sal_hc_01" type="text" class="form-control  font-small " disabled />
+                                <input id="herm2_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 col-xs-6">
-                            <label>Remitido a:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_remitido_hc_01">
-                                <input id="remit_hc_01" type="text" class="form-control  font-small " data-orden="1" disabled />
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label>3:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="herm3_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-12 col-xs-12">
-                            <label>diagnostico muerte: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_diag_muerte_hc_01">
-                                <input id="diagn_muert_hc_01" type="text" class="form-control  font-small " data-orden="1" disabled  maxlength="4"/>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label>4:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="herm4_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label>5:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="herm5_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label>6:</label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="herm6_hc_01" type="number" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
-                    <div class="salto-linea"></div>
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-md-4 col-sm-12 col-xs-12">
-                            <label>Paciente en observacion?</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="pacien_observ_hc_01" type="text" class="form-control  font-small " disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 col-xs-12">
-                            <label>confirme Triage:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="conf_triage_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="salto-linea"></div>
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-md-4 col-sm-6 col-xs-6">
-                            <label>No id ACOMP?</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="numer_acomp_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-6">
-                            <label>Nombre acom: </label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="nomb_acom_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12 col-xs-12">
-                            <label>Estado de Embreiaguez:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="estad_embriag_hc_01" type="text" class="form-control  font-small "
-                                       disabled />
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_3_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Revision por sistemas</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 3.
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center revisionSistemas_hc_01" id="pag_3">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Organo de los sentidos: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_sent_hc_01" type="text" class="form-control  font-small" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema cardiopulmonar: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_card_hc_01" type="text" class="form-control  font-small " data-orden="2"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema digestivo: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_dig_hc_01" type="text" class="form-control  font-small " data-orden="3"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema dermatologico: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_derm_hc_01" type="text" class="form-control  font-small " data-orden="4"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema Oestoarticular: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sist_oste_hc_01" type="text" class="form-control  font-small " data-orden="5"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema Neurologico: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_neur_hc_01" type="text" class="form-control  font-small " data-orden="6"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema Psiquiatrico: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_psiq_hc_01" type="text" class="form-control  font-small " data-orden="7"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema Genitourinario: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_gent_hc_01" type="text" class="form-control  font-small " data-orden="8"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema Genicologico: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_geni_hc_01" type="text" class="form-control  font-small " data-orden="9"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistema Obstetrico: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="sis_obst_hc_01" type="text" class="form-control  font-small "  data-orden="10"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_4_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Revision de embarazadas</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 4.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_4">
+                        Solo para emmbarazadas
+    
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_5_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Revision de signos</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 5.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_5">
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Peso: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_peso_hc_01">
+                                <input id="peso_hc_01" type="number" class="form-control  font-small " maxlength="7" data-orden="1"/>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Talla: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_talla_hc_01">
+                                <input id="talla_hc_01" type="number" class="form-control  font-small " maxlength="3"  data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">I.M.C: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="imc_hc_01" type="number" class="form-control  font-small " maxlength="5"/>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">SupC: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="supc_hc_01" type="number" class="form-control  font-small " maxlength="5"/>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Temp: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_temp_hc_01">
+                                <input id="temp_hc_01" type="number" class="form-control  font-small " maxlength="5" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">F.C: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_fcard_hc_01">
+                                <input id="fc_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">F.R: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_resp_hc_01">
+                                <input id="fr_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Sistole: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_tens1_hc_01">
+                                <input id="t_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Diastole: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_tens2_hc_01">
+                                <input id="arte_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Media: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="tam_hc_01" type="number" class="form-control  font-small " maxlength="3" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">Glasgow: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <input id="glasgow_hc_01" type="text" class="form-control  font-small " />
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-4 col-xs-4">
+                            <label class="col-md-6 col-sm-6 col-xs-6">PVC: </label>
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_pvc_hc_01">
+                                <input id="pvc_hc_01" type="number" class="form-control  font-small " maxlength="2" data-orden="1"  />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr style="border: 1px solid #ccc;">
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_examen_hc_01">
+                            <label>Examen. Hc.: </label>
+                            <textarea id="examen_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px">
+    * INSPECCION GENERAL
+    * CABEZA / CUELLO
+    * CARDIOVASCULAR
+    * PULMONAR
+    * ABDOMEN
+    * GENITOURINARIOS
+    * COLUMNA / DORSO
+    * EXTREMIDADES
+    * NEUROLOGICO
+    * PIEL
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_7_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Datos embarazada</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 7.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_7">
+                        Mas datos embarazadas
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_8_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Diagnosticos</span>
+                                </div>
+                                <div class="actions">
+                                    <a class="btn btn-outline white btn-sm" data="volver">
+                                        Pag 8.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_8">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="inline-inputs">
+                                <label class="col-md-4 col-sm-4 col-xs-6">cod: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_diagnosticos_hc_01">
+                                    <input id="cod_diag_hc_01" type="text" class="form-control  font-small " maxlength="4" disabled  data-orden="1"/>
+                                </div>
+                                <button id="diagnosticoBtn_hc_01" type="button" class="btn col-md-4 col-sm-4 col-xs-4 f8-Btn">
+                                    <i class="icon-magnifier"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">                        
+                            <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                <span id="continuar_analisis_hc_01" class="btn blue btn-block" style="background: #476fad !important; padding: 8px 0; margin-top: 3px;">Continuar</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-scrollable">
+                                <table id="table_diagnosticos" class="table table-light table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Descripcion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Z000</td>
+                                            <td>EXAMEN MEDICO GENERAL</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr style="border: 1px solid #ccc;">
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;" id="fase_analisis_hc_01">
+                            <label>Analisis y plan: </label>
+                            <textarea id="analisis_hc_01" rows="35" maxlength="200" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" style="max-height: 200px">
+    
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 no-padding" style="float: none; margin: 0 auto;" id="pag_10_title">
+                        <div class="portlet light box-center box-title" style="margin: 0 auto;">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold">Revision de Rips</span>
+                                </div>
+                                <div class="actions">
+                                    <a id="volverPag_10" class="btn btn-outline white btn-sm">
+                                        Pag 10.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="pag_10">
+                        <div class="form-group col-md-10 col-sm-12 col-xs-12" style="margin: 0 auto; float: none;">
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label>&nbsp;</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="act_rips_hc_01" type="text" class="form-control  font-small bold"
+                                           disabled value="Actualizacion de Rips" style="text-align: center;" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label class="col-md-6 col-sm-6 col-xs-6">Personal que Atiende: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="pers_atiend_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="salto-linea"></div>
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-6 col-xs-6">
+                                <label>Estado gravidez: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="est_grav_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-6">                            
+                                <label>Causa externa: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="causa_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="salto-linea"></div>
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <label>Tipo de diagnostico: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="tipo_diagn_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <label>PyP: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="pyp_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <label>Finalidad consulta: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="final_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <label>1Era vez?:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="1eraVez_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="salto-linea"></div>
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-3 col-sm-12 col-xs-12">
+                                <label>Metodo Plan. Familiar:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="metodPlanFamil_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <label>Estado salida:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="est_sal_hc_01" type="text" class="form-control  font-small " disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <label>Remitido a:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_remitido_hc_01">
+                                    <input id="remit_hc_01" type="text" class="form-control  font-small " data-orden="1" disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 col-xs-12">
+                                <label>diagnostico muerte: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_diag_muerte_hc_01">
+                                    <input id="diagn_muert_hc_01" type="text" class="form-control  font-small " data-orden="1" disabled  maxlength="4"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="salto-linea"></div>
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <label>Paciente en observacion?</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="pacien_observ_hc_01" type="text" class="form-control  font-small " disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-sm-12 col-xs-12">
+                                <label>confirme Triage:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="conf_triage_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="salto-linea"></div>
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-6 col-xs-6">
+                                <label>No id ACOMP?</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="numer_acomp_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-6">
+                                <label>Nombre acom: </label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="nomb_acom_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <label>Estado de Embreiaguez:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                    <input id="estad_embriag_hc_01" type="text" class="form-control  font-small "
+                                           disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="plantillaAcompañante" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body no-padding">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin: 0 auto;">
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding" style="display:flex;" id="acompañantePopup">
+                                <div class="col-md-12 inline-inputs">
+                                    <label class="col-md-4 col-sm-4 col-xs-12">Acompañante:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input class="acompañantehc_01 form-control col-md-12 col-sm-12 col-xs-12 "
+                                               maxlength="30" data-orden="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div id="plantillaAcompañante" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body no-padding">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin: 0 auto;">
-                        <div class="col-md-12 col-sm-12 col-xs-12 no-padding" style="display:flex;" id="acompañantePopup">
-                            <div class="col-md-12 inline-inputs">
-                                <label class="col-md-4 col-sm-4 col-xs-12">Acompañante:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input class="acompañantehc_01 form-control col-md-12 col-sm-12 col-xs-12 "
-                                           maxlength="30" data-orden="1">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="plantillaGlasgow" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body no-padding">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin: 0 auto;">
-                        <div class="col-md-12 col-sm-12 col-xs-12 no-padding" style="display:flex;">
-                            <div class="col-md-4">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="background: #ccc; padding: 10px; border-radius: 3px;">Apertura ocular:</label>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <ol>
-                                        <li value="1">Ninguna</li>
-                                        <li>Al dolor</li>
-                                        <li>A ordenes</li>
-                                        <li>Expontanea</li>
-                                        <li value=""></li>
-                                        <li value=""></li>
-                                    </ol>
+    
+    <div id="plantillaGlasgow" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body no-padding">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin: 0 auto;">
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding" style="display:flex;">
+                                <div class="col-md-4">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="background: #ccc; padding: 10px; border-radius: 3px;">Apertura ocular:</label>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                        <ol>
+                                            <li value="1">Ninguna</li>
+                                            <li>Al dolor</li>
+                                            <li>A ordenes</li>
+                                            <li>Expontanea</li>
+                                        </ol>
+                                    </div>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_aper_ocu_hc_01">
+                                        <input type="number" class="aper_ocul_hc_01 form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
+                                    </div>
                                 </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_aper_ocu_hc_01">
-                                    <input type="number" class="aper_ocul_hc_01 form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
+                                <div class="col-md-4">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="background: #ccc; padding: 10px; border-radius: 3px;">Respuesta verbal:</label>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                        <ol>
+                                            <li value="1">Ninguna</li>
+                                            <li>Incomprensible</li>
+                                            <li>Inapropiada</li>
+                                            <li>Confusa</li>
+                                            <li>Orientada</li>
+                                        </ol>
+                                    </div>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_resp_verb_hc_01">
+                                        <input type="number" class="resp_verb_hc_01 form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="background: #ccc; padding: 10px; border-radius: 3px;">Respuesta verbal:</label>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <ol>
-                                        <li value="1">Ninguna</li>
-                                        <li>Incomprensible</li>
-                                        <li>Inapropiada</li>
-                                        <li>Confusa</li>
-                                        <li>Orientada</li>
-                                        <li></li>
-                                    </ol>
-                                </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_resp_verb_hc_01">
-                                    <input type="number" class="resp_verb_hc_01 form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="background: #ccc; padding: 10px; border-radius: 3px;">Apertura Motora:</label>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <ol>
-                                        <li value="1">Ninguna</li>
-                                        <li>Descerebracion</li>
-                                        <li>Decorticacion</li>
-                                        <li>Retira</li>
-                                        <li>Localiza</li>
-                                        <li>Obedece orden</li>
-                                    </ol>
-                                </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_resp_moto_hc_01">
-                                    <input type="number" class="resp_moto_hc_01 form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
+                                <div class="col-md-4">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="background: #ccc; padding: 10px; border-radius: 3px;">Apertura Motora:</label>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                        <ol>
+                                            <li value="1">Ninguna</li>
+                                            <li>Descerebracion</li>
+                                            <li>Decorticacion</li>
+                                            <li>Retira</li>
+                                            <li>Localiza</li>
+                                            <li>Obedece orden</li>
+                                        </ol>
+                                    </div>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_resp_moto_hc_01">
+                                        <input type="number" class="resp_moto_hc_01 form-control col-md-12 col-sm-12 col-xs-12" maxlength="1" data-orden="1">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="signosFaltantes" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <div class="col-md-12" id="fase_signosF1_hc_01">
-                            <div class="col-md-4">
-                                <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">P.Tor:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input type="number" class="ptor_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="4" data-orden="1">
+    
+    <div id="signosFaltantes" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="col-md-12" id="fase_signosF1_hc_01">
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">P.Tor:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input type="number" class="ptor_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="4" data-orden="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">P.Abdo:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input type="number" class="pabdo_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="4" data-orden="2">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Sv02:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input type="number" class="sv02_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="3">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">P.Abdo:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input type="number" class="pabdo_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="4" data-orden="2">
+                            <div class="salto-linea"></div>
+                            <div class="col-md-12" id="fase_signosF2_hc_01">
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Perim. Cefalico:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input type="number"  class="perim_cefalico_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="5" data-orden="1">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Sv02:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input type="number" class="sv02_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="3">
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Perim. Braquial:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input type="number" class="perim_braquial_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="2">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Perim. Mudeca:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input type="number" class="perim_mudeca_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="3">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="salto-linea"></div>
-                        <div class="col-md-12" id="fase_signosF2_hc_01">
-                            <div class="col-md-4">
-                                <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Perim. Cefalico:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input type="number"  class="perim_cefalico_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="5" data-orden="1">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Perim. Braquial:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input type="number" class="perim_braquial_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="2">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-md-4 col-sm-4 col-xs-12" style="float: none;">Perim. Mudeca:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input type="number" class="perim_mudeca_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="3">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="agudezaVisual" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <div class="col-md-12" id="fase_ojoIzquierdo_hc_01">
-                            <div class="col-md-12 no-padding"><label class="uppercase bold">Ojo izquierdo</label></div>
-                            <div class="col-md-6">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Estructuras oculares:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input class="est_izq_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+    
+    <div id="agudezaVisual" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="col-md-12" id="fase_ojoIzquierdo_hc_01">
+                                <div class="col-md-12 no-padding"><label class="uppercase bold">Ojo izquierdo</label></div>
+                                <div class="col-md-6">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Estructuras oculares:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input class="est_izq_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Nivel de vision snellen:</label>
+                                    <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-right: 2px;">
+                                        <input type="number" class="agud_visual_oi_1_hc_01 form-control col-md-12 col-sm-12 col-xs-12 "
+                                               maxlength="3" data-orden="1">
+                                    </div>
+                                    <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-left: 2px;">
+                                        <input type="number" class="agud_visual_oi_2_hc_01 form-control col-md-12 col-sm-12 col-xs-12 "
+                                               maxlength="3" data-orden="2">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Nivel de vision snellen:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-right: 2px;">
-                                    <input type="number" class="agud_visual_oi_1_hc_01 form-control col-md-12 col-sm-12 col-xs-12 "
-                                           maxlength="3" data-orden="1">
+                            <div class="salto-linea"></div>
+                            <div class="col-md-12" id="fase_ojoDerecho_hc_01">
+                                <div class="col-md-12 no-padding"><label class="uppercase bold">Ojo derecho</label></div>
+                                <div class="col-md-6">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Estructuras oculares:</label>
+                                    <div class="input-group col-md-8 col-sm-8 col-xs-12">
+                                        <input class="est_der_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                    </div>
                                 </div>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-left: 2px;">
-                                    <input type="number" class="agud_visual_oi_2_hc_01 form-control col-md-12 col-sm-12 col-xs-12 "
-                                           maxlength="3" data-orden="2">
+                                <div class="col-md-6">
+                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Nivel de vision snellen:</label>
+                                    <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-right: 2px;">
+                                        <input type="number" class="agud_visual_od_1_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="1">
+                                    </div>
+                                    <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-left: 2px;">
+                                        <input type="number" class="agud_visual_od_2_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="2">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="salto-linea"></div>
-                        <div class="col-md-12" id="fase_ojoDerecho_hc_01">
-                            <div class="col-md-12 no-padding"><label class="uppercase bold">Ojo derecho</label></div>
-                            <div class="col-md-6">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Estructuras oculares:</label>
-                                <div class="input-group col-md-8 col-sm-8 col-xs-12">
-                                    <input class="est_der_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Nivel de vision snellen:</label>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-right: 2px;">
-                                    <input type="number" class="agud_visual_od_1_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="1">
-                                </div>
-                                <div class="input-group col-md-5 col-sm-5 col-xs-12" style="float: left; margin-left: 2px;">
-                                    <input type="number" class="agud_visual_od_2_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="3" data-orden="2">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="barthel" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <div class="col-md-12">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Primera valoracion:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_hc_01">
-                                        <input type="text" class="valoracion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+    
+    <div id="barthel" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="col-md-12">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Primera valoracion:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_hc_01">
+                                            <input type="text" class="valoracion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Revaloracion:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_hc_01">
+                                            <input type="text" class="revaloracion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Revaloracion:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_hc_01">
-                                        <input type="text" class="revaloracion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12 margin-bottom-10">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Comer:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="comer_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Lavarse/Bañarse:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="lavarse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 margin-bottom-10">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Vestirse:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="vestirse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Arreglarse:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="arreglarse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 margin-bottom-10">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Deposicion:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="deposicion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Miccion/Valorar la situacion en la semana previa:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="miccion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 margin-bottom-10">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Ir al baño:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="baño_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Trasladarse del sillon a la cama:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="trasladarse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 margin-bottom-10">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Deambulacion:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="deambulacion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Subir y bajar escaleras:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="escaleras_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12 margin-bottom-10">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Puntaje total:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="puntaje_total_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Tipo de dependencia:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="ttal_tipo_dependecia_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12 margin-bottom-10">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Comer:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="comer_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Lavarse/Bañarse:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="lavarse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 margin-bottom-10">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Vestirse:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="vestirse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Arreglarse:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="arreglarse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 margin-bottom-10">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Deposicion:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="deposicion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Miccion/Valorar la situacion en la semana previa:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="miccion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 margin-bottom-10">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Ir al baño:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="baño_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Trasladarse del sillon a la cama:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="trasladarse_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 margin-bottom-10">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Deambulacion:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="deambulacion_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Subir y bajar escaleras:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="escaleras_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12 margin-bottom-10">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Puntaje total:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="puntaje_total_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Tipo de dependencia:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="ttal_tipo_dependecia_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="karnofsky" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <div class="col-md-12">
-                            <strong>Escala de karnofsky para la valoracion funcional</strong>
+    
+    <div id="karnofsky" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="col-md-12">
+                                <strong>Escala de karnofsky para la valoracion funcional</strong>
+                            </div>
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12">
+                                <div class="col-md-4 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Primera valoracion:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_kar_hc_01" >
+                                            <input type="text" class="valoracion_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Revaloracion:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_kar_hc_01">
+                                            <input type="text" class="revaloracion_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Categorias generales:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                                            <input type="text" class="categoria_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12">
+                                <div class="table-scrollable">
+                                    <table class="table table-light table-striped">
+                                        <tbody>
+                                            <tr id="categoria1_hc_01">
+                                                <td style="width: 50%;">Capaz de realizar actividades normales, no re quiere cuidados especiales</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="categoria2_hc_01">
+                                                <td style="width: 50%;">Incapaz de trabajar, puede vivir en casa y auto  cuidarse con ayuda variable</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="categoria3_hc_01">
+                                                <td style="width: 50%;">Incapaz de autocuidarse. Requiere cuidados especiales, susceptible de hospitalizacion, probable avance rapido de enfermedad</td>
+                                                <td>0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Puntaje Total:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_hc_01">
+                                            <input type="text" class="puntaje_total_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Tipo de riesgo:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_hc_01">
+                                            <input type="text" class="ttal_tipo_dependecia_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12">
-                            <div class="col-md-4 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Primera valoracion:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_kar_hc_01" >
-                                        <input type="text" class="valoracion_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Revaloracion:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_kar_hc_01">
-                                        <input type="text" class="revaloracion_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 " maxlength="1" data-orden="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Categorias generales:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="categoria_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12">
-                            <div class="table-scrollable">
-                                <table class="table table-light table-striped">
-                                    <tbody>
-                                        <tr id="categoria1_hc_01">
-                                            <td style="width: 50%;">Capaz de realizar actividades normales, no re quiere cuidados especiales</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="categoria2_hc_01">
-                                            <td style="width: 50%;">Incapaz de trabajar, puede vivir en casa y auto  cuidarse con ayuda variable</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="categoria3_hc_01">
-                                            <td style="width: 50%;">Incapaz de autocuidarse. Requiere cuidados especiales, susceptible de hospitalizacion, probable avance rapido de enfermedad</td>
-                                            <td>0</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Puntaje Total:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_hc_01">
-                                        <input type="text" class="puntaje_total_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Tipo de riesgo:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_hc_01">
-                                        <input type="text" class="ttal_tipo_dependecia_kar_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="dependenciafuncional" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <div class="col-md-12">
-                            <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Nivel de secuelas o consecuencias:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_secuelas_hc_01">
-                                <textarea id="secuelas_hc_01" rows="1" maxlength="50" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Actividades que necesitan ayuda de un tercero:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_ayuda_act_hc_01">
-                                <textarea id="ayuda_act_hc_01" rows="2" maxlength="475" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Dependencia Funcional:</label>
-                            <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_depend_funcional_hc_01">
-                                <textarea id="depend_funcional_hc_01" rows="1" maxlength="50" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div style="clear:both;"></div>
-</div>
-
-<div id="formatoHeridas" class="hidden">
-    <div class="col-md-12">
-        <div class="portlet light no-padding">
-            <div class="portlet-body">
-                <form class="form-horizontal" onsubmit="return false;">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <div class="col-md-12">
-                            <strong>Escala de valoracion para determinacion de paquetes de atencion clinica de heridas</strong>
-                        </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12">
-                            <div class="table-scrollable">
-                                <table class="table table-light table-striped">
-                                    <tbody>
-                                        <tr id="clasificacion_hc_01">
-                                            <td style="width: 50%;">1. Clasificacion de la herida</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="dimension_hc_01">
-                                            <td style="width: 50%;">2. Dimension de la herida</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="profundidad_hc_01">
-                                            <td style="width: 50%;">3. Profunidad/Tejidos afectados</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="comorbilidad_hc_01">
-                                            <td style="width: 50%;">4. Comorbilidad</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="estado_her_hc_01">
-                                            <td style="width: 50%;">5. Estado de la herida</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="infeccion_hc_01">
-                                            <td style="width: 50%;">6. Infeccion</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="tiempo_trat_hc_01">
-                                            <td style="width: 50%;">7. Tiempo de evolucion en tratamiento con clinica de heridas</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr id="registro_foto_hc_01">
-                                            <td style="width: 50%;">8. Registro fotografico</td>
-                                            <td>0</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <hr style="border: 1px solid #ccc;">
-                        <div class="col-md-12">
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Puntaje Total:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_hc_01">
-                                        <input type="text" class="puntaje_total_her_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
+    
+    <div id="dependenciafuncional" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="col-md-12">
+                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Nivel de secuelas o consecuencias:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_secuelas_hc_01">
+                                    <textarea id="secuelas_hc_01" rows="1" maxlength="50" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-6 margin-bottom-5">
-                                <div class="inline-inputs">
-                                    <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Tipo de paquete:</label>
-                                    <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_hc_01">
-                                        <input type="text" class="ttal_tipo_dependecia_her_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
-                                    </div>
+                            <div class="col-md-12">
+                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Actividades que necesitan ayuda de un tercero:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_ayuda_act_hc_01">
+                                    <textarea id="ayuda_act_hc_01" rows="2" maxlength="475" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Dependencia Funcional:</label>
+                                <div class="input-group col-md-12 col-sm-12 col-xs-12" id="fase_depend_funcional_hc_01">
+                                    <textarea id="depend_funcional_hc_01" rows="1" maxlength="50" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1"></textarea>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-            
         </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
-
-
-
-
-
-
-<!--script src="../dist/js/consult_hc.js" type="text/javascript"></script-->
-<script src="../scripts/HC-01.js" type="text/javascript"></script>
+    
+    <div id="formatoHeridas" class="hidden">
+        <div class="col-md-12">
+            <div class="portlet light no-padding">
+                <div class="portlet-body">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="col-md-12">
+                                <strong>Escala de valoracion para determinacion de paquetes de atencion clinica de heridas</strong>
+                            </div>
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12">
+                                <div class="table-scrollable">
+                                    <table class="table table-light table-striped">
+                                        <tbody>
+                                            <tr id="clasificacion_hc_01">
+                                                <td style="width: 50%;">1. Clasificacion de la herida</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="dimension_hc_01">
+                                                <td style="width: 50%;">2. Dimension de la herida</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="profundidad_hc_01">
+                                                <td style="width: 50%;">3. Profunidad/Tejidos afectados</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="comorbilidad_hc_01">
+                                                <td style="width: 50%;">4. Comorbilidad</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="estado_her_hc_01">
+                                                <td style="width: 50%;">5. Estado de la herida</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="infeccion_hc_01">
+                                                <td style="width: 50%;">6. Infeccion</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="tiempo_trat_hc_01">
+                                                <td style="width: 50%;">7. Tiempo de evolucion en tratamiento con clinica de heridas</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr id="registro_foto_hc_01">
+                                                <td style="width: 50%;">8. Registro fotografico</td>
+                                                <td>0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr style="border: 1px solid #ccc;">
+                            <div class="col-md-12">
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Puntaje Total:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_1era_valoracion_hc_01">
+                                            <input type="text" class="puntaje_total_her_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 margin-bottom-5">
+                                    <div class="inline-inputs">
+                                        <label class="col-md-12 col-sm-12 col-xs-12" style="float: none;">Tipo de paquete:</label>
+                                        <div class="input-group col-md-6 col-sm-6 col-xs-6" id="fase_revaloracion_hc_01">
+                                            <input type="text" class="ttal_tipo_dependecia_her_hc_01 form-control col-md-12 col-sm-12 col-xs-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <script src="../../HICLIN/scripts/HC-01.js" type="text/javascript"></script>
