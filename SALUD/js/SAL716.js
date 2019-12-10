@@ -20,7 +20,6 @@ function _ventanaConvenios716(e) {
         .then((data) => {
             loader("hide");
             $_CONVENIO_715 = data;
-            console.log($_CONVENIO_715, '$_CONVENIO_715')
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE CONVENIOS",
@@ -30,12 +29,8 @@ function _ventanaConvenios716(e) {
                         $("#codgOrig_716").focus();
                     },
                     callback: function (data) {
-                        console.log(data)
                         $('#codgOrig_716').val(data.COD);
                         $('#decripOrg716').val(data.DESCRIP.trim());
-                        // document.getElementById('codigo_715').value = data.COD;
-                        // document.getElementById('descrip715').value = data.DESCRIP;
-
                         _enterInput('#codgOrig_716');
                     }
                 });
@@ -64,11 +59,9 @@ function _validacionesorigen_716() {
     $codigo716 = $('#codgOrig_716').val();
 
     if ($codigo716.trim() == '') {
-        console.log('origen')
         CON851('01', '01', null, 'error', 'error');
         _validarOrigen716();
     } else {
-        console.log('evaluar dll')
         LLAMADO_DLL({
             dato: [$codigo716],
             callback: _dataCONSULTANOMTAR_716,
@@ -79,11 +72,9 @@ function _validacionesorigen_716() {
 }
 
 function _dataCONSULTANOMTAR_716(data) {
-    console.log(data, 'SAL715-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPNOMTAR_716 = date[1].trim();
-    console.log($_DESCRIPNOMTAR_716, '$_DESCRIPNOMTAR_715')
     if (swinvalid == "00") {
         $('#decripOrg716').val($_DESCRIPNOMTAR_716);
         datoDesti716();
@@ -97,7 +88,6 @@ function _dataCONSULTANOMTAR_716(data) {
 }
 
 function datoDesti716() {
-    console.log('destino')
     validarInputs(
         {
             form: '#destino716',
@@ -124,11 +114,9 @@ function _validaciondestino_716() {
    
 }
 function _dataCONSULTADESTINO_716(data) {
-    console.log(data, 'SAL715-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPDESTINO_716 = date[1].trim();
-    console.log($_DESCRIPNOMTAR_716, '$_DESCRIPNOMTAR_715')
     if (swinvalid == "00") {
         if($codigo716 == $codigoDst716){
             
@@ -156,14 +144,11 @@ function validacionCodigos716() {
 }
 
 function validador716(data) {
-    console.debug(data);
     var date = data.split('|');
-
     $_CODTAB716 = date[1].trim();
 
     if (date[0].trim() == '00') {
         if ($codigoDst716 == $_CODTAB716) {
-            console.debug('repetido 5F')
             CON851('5F', '5F', null, 'error', 'Error');
             CON851P('07', _validarOrigen716, envioDatos716)
         }
@@ -178,7 +163,6 @@ function validador716(data) {
 }
 
 function envioDatos716() {
-    console.log('ultimo dll')
     LLAMADO_DLL({
         dato: [$codigoDst716],
         callback: registroDatos716,
@@ -188,7 +172,6 @@ function envioDatos716() {
 }
 
 function registroDatos716(data) {
-    console.debug('registro',data)
     var date = data.split('|');
     var swinvalid = date[0].trim();
     

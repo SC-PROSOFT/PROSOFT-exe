@@ -1751,15 +1751,12 @@ function _evaluarclasif_con110c() {
 }
 function _datoclasifclien_con110c() {
     $_CLASIFTERCEW = $("#clasifclien_110c").val();
-    console.log($_CLASIFTERCEW, '$_CLASIFTERCEW')
-    console.log(datosEnvio(), 'datos envio')
     let datos_envio = datosEnvio();
     datos_envio += '|'
     datos_envio += $_CLASIFTERCEW;
     SolicitarDll({ datosh: datos_envio }, _dataCON110C_01_1_110C, get_url('/APP/CONTAB/CON110C_01_1.DLL'));
 }
 function _dataCON110C_01_1_110C(data) {
-    console.log('data'. data)
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPCLASIFTERW = date[1];
@@ -2783,7 +2780,6 @@ function _consultadatos_con110c() {
 }
 
 function _dataCON110C_02(data) {
-    console.log(data, 'mostrar datos')
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_CODTERCEROW = date[1].trim();
@@ -2819,8 +2815,8 @@ function _dataCON110C_02(data) {
     $_FECHAMODTERCEW = date[30].trim();
     $_ADMINMODTERCEW = date[31].trim();
     $_FACTORTERCEW = date[32].trim();
-    $_PORCICATER2W = $_FACTORTERCEW.substring(0, 1);
-    $_PORCRETTER2W = $_FACTORTERCEW.substring(2, 5);
+    $_PORCICATER2W = $_FACTORTERCEW.substring(0, 3);
+    $_PORCRETTER2W = $_FACTORTERCEW.substring(3, 5);
 
     $_CUPOTERCEW = date[33].trim();
     $_VENDTERCEW = date[34].trim();
@@ -2841,28 +2837,21 @@ function _dataCON110C_02(data) {
     $_REGIVATERCEW = date[47].trim();
     $_CALIFITERCEW = date[48].trim();
     $_GRANCONTRIBTERCEW = date[49].trim();
-    console.log($_GRANCONTRIBTERCEW, '$_GRANCONTRIBTERCEW')
     $_RETETERCEW = date[50].trim();
-    console.log($_RETETERCEW, '$_RETETERCEW')
     $_VLRBASERETTERCEW = date[51].trim();
-    console.log($_VLRBASERETTERCEW, '$_VLRBASERETTERCEW')
     $_RETIVACOMPTERCEW = date[52].trim();
-    console.log($_RETIVACOMPTERCEW, '$_RETIVACOMPTERCEW')
     $_RETIVATERCEW = date[53].trim();
-    console.log($_RETIVATERCEW, '$_RETIVATERCEW')
     $_EXENTRETTERCEW = date[54].trim();
-    console.log($_EXENTRETTERCEW, '$_EXENTRETTERCEW')
     $_SEGUROTERCEW = date[55].trim();
-    console.log($_SEGUROTERCEW, '$_SEGUROTERCEW')
     $_DATACRETERCEW = date[56].trim();
     $_ACUEPAGOTERCEW = date[57].trim();
     $_CAPITADOTERCEW = date[58].trim();
-    $_NITCLITERCEW = date[60].trim();
-    $_RETICAVTERCEW = date[61].trim();
-    $_BLOQTERCEW = date[62].trim();
-    $_EXIVATERCEW = date[63].trim();
-    $_MARCATERCEW = date[64].trim();
-    $_EMPRESAVEHTERCEW = date[65].trim();
+    $_NITCLITERCEW = date[59].trim();
+    $_RETICAVTERCEW = date[60].trim();
+    $_BLOQTERCEW = date[61].trim();
+    $_EXIVATERCEW = date[62].trim();
+    $_MARCATERCEW = date[63].trim();
+    $_EMPRESAVEHTERCEW = date[64].trim();
 
     if (swinvalid == '00') {
 
@@ -2879,7 +2868,6 @@ function _dataCON110C_02(data) {
 }
 
 function _dataCON110C_03(data) {
-    console.log(data, 'mostrar datos 02')
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_NROVEHTERCEW = date[1].trim();
@@ -2965,8 +2953,6 @@ function _mostrardatos_con110c() {
     $_MESCUMPLETERCEW = $_FECHACUMPTERCEW.substring(6, 8);
     $('#cumple_con110').val($_DIACUMPLETERCEW + '/' + $_MESCUMPLETERCEW + '/' + $_AÑOCUMPLETERCEW);
     $('#nombres_con110c').val($_DESCRIPTERW);
-    // $('#2doapellido_con110c').val();
-    // $('#nombres_con110c').val();
     $('#direcc_con110c').val($_DIRECCTERCEW);
     $('#ciudad_con110c').val($_CODCIUTERCEW);
     $('#ciudadd_con110c').val($_DESCRIPCIUTERW);
@@ -3005,9 +2991,9 @@ function _mostrardatos_con110c() {
     $('#smvm_con110c').val($_CUPOTERCEW);
 
     $('#vendedor_con110').val($_VENDTERCEW);
-    // $('#descripvendedor_con110c').val();
     $('#formapago_110c').val($_PAGOTERCEW);
-    $('#plazo_110c').val($_PLAZOTERCEW);
+    // $('#plazo_110c').val($_PLAZOTERCEW);
+    plazoUnitMask_110c.typedValue = $_PLAZOTERCEW; 
     $('#zona_110c').val($_CODZONAW);
     $('#zonad_110c').val($_DESCRIPZONAW);
     $('#ruta_110c').val($_CODRUTAW);
@@ -3015,8 +3001,10 @@ function _mostrardatos_con110c() {
 
     $('#orden_110c').val($_ORDENTERCEW);
     $('#actica_110c').val($_ACTIVICATERCEW);
-    $('#porcetica_110c').val($_PORCICATERCEW);
-    $('#porcentreten_110c').val($_PORCRETTERCEW);
+    // $('#porcetica_110c').val($_PORCICATERCEW);
+    porcentica_110cMask.typedValue = $_PORCICATERCEW; 
+    // $('#porcentreten_110c').val($_PORCRETTERCEW);
+    porcentreten_110cMask.typedValue = $_PORCRETTERCEW; 
     $('#grdnegocio_110c').val($_GRADOTERCEW);
     $('#grdnegociod_110c').val($_DESCRIPGRADTERW);
     $('#clasifclien_110c').val($_CLASIFTERCEW);
