@@ -13,6 +13,7 @@
         actual_opciones: [],
         callback_f: null,
         seleccion: null,
+        teclaAlterna: false,
 
         window: function (params, callback) {
             this.array_datos = params.array || false;
@@ -21,6 +22,7 @@
             this.callback_f = params.callback_f || false;
             this.callback = callback || false;
             this.seleccion = params.seleccion || false;
+            this.teclaAlterna = params.teclaAlterna || false;
 
             $.popup._import_css();
             if ($.popup._show()) this._llenarLista();
@@ -43,8 +45,16 @@
                     var id = datos_array[i][indices.id];
                     if (this.seleccion == id) clases = 'active-popup';
 
-                    let idOpcion = this._parseOpcion(parseInt(i) + 1);
-                    this.actual_opciones.push(idOpcion.toString())
+                    var idOpcion = null;
+                    if (this.teclaAlterna) {
+                        idOpcion = id
+                        this.actual_opciones.push(id.toString())
+                    } else {
+                        idOpcion = this._parseOpcion(parseInt(i) + 1);                        
+                        this.actual_opciones.push(idOpcion.toString())
+                    }
+
+
                     $(`<li data-id="${idOpcion}" data-index="${i}" class="${clases}"/>`)
                         .html(`${datos_array[i][indices.id] || idOpcion} - ${datos_array[i][indices.label]}`)
                         .appendTo(`.${$.popup.body_class}_container ol`)
@@ -67,14 +77,14 @@
                         'background': 'rgba(0,0,0,.08)',
                         'cursor': 'pointer'
                     })
-                    .hover(
-                        function () {
-                            $(this).addClass('active-popup')
-                        },
-                        function () {
-                            $(this).removeClass('active-popup')
-                        }
-                    )
+                // .hover(
+                //     function () {
+                //         $(this).addClass('active-popup')
+                //     },
+                //     function () {
+                //         $(this).removeClass('active-popup')
+                //     }
+                // )
             }
 
             this._event('on');
@@ -92,6 +102,23 @@
                     case 16: return 'H';
                     case 17: return 'I';
                     case 18: return 'J';
+                    case 19: return 'K';
+                    case 20: return 'L';
+                    case 21: return 'M';
+                    case 22: return 'N';
+                    case 23: return 'Ñ';
+                    case 24: return 'O';
+                    case 25: return 'P';
+                    case 26: return 'Q';
+                    case 27: return 'R';
+                    case 28: return 'S';
+                    case 29: return 'T';
+                    case 30: return 'U';
+                    case 31: return 'V';
+                    case 32: return 'W';
+                    case 33: return 'X';
+                    case 34: return 'Y';
+                    case 35: return 'Z';
                 }
             } else {
                 return idx;
@@ -169,7 +196,8 @@
             //     console.log($(`.${$.popup.body_class}_container > ol`).offset().top)
             //     console.log($(this).scrollTop())                
             // })
-
+            
+            $('#popup_container').focus()
             return true;
         },
 
@@ -204,8 +232,6 @@
                     let active_first = $('.' + $.popup.body_class + '_container > ol > li').first();
                     active_first.addClass('active-popup');
                 } else {
-                    $(".active-popup").get(0).scrollIntoView();
-
                     switch (key) {
                         case 40:
                             let count_next = obj.next().length;
@@ -214,6 +240,7 @@
                                     .removeClass('active-popup')
                                     .next()
                                     .addClass('active-popup');
+                            $(".active-popup").get(0).scrollIntoView(true);
                             break;
                         case 38:
                             let count_prev = obj.prev().length;
@@ -222,6 +249,7 @@
                                     .removeClass('active-popup')
                                     .prev()
                                     .addClass('active-popup');
+                            $(".active-popup").get(0).scrollIntoView(false);
                             break;
                         case 13:
                             $.popup._seleccion($(obj).data().index)
@@ -261,11 +289,11 @@
                 'font-family': "'Roboto', sans-serif"
             }).css("display", "flex")
                 .hide()
-                .fadeIn();
+                .show();
         },
 
         _hide: function () {
-            $('#' + $.popup.overlay_id).fadeOut('fast', function () {
+            $('#' + $.popup.overlay_id).hide('fast', function () {
                 $(this).remove();
                 $.popup._delete_css();
             });
@@ -287,11 +315,8 @@
     }
 
     POPUP = function (params, callback) {
-        console.log(params)
         if (params.array.length < 1) console.log('error, array indefinido')
         else $.popup.window(params, callback);
-        console.log('-> Popup on')
-
     }
 
 })(jQuery);

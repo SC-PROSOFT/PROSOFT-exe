@@ -57,20 +57,20 @@
                             }, function () { });
 
                             exe(script_bat.nombre_bat, function (err, data) {
-                                if (err) console.error('Error ejecutando bat: \n\n' + err);
-                                else {
-                                    fs.unlink(script_bat.nombre_bat, function (err) {
-                                        if (err) console.error('Error eliminando bat: \n\n' + err);
-                                        else {
-                                            jAlert_close();
-                                            if ($.ventanaMain.callback) {
-                                                $.ventanaMain.callback();
-                                            } else {
-                                                _cargarEventos('on');
-                                            }
+                                // if (err) console.error('Error ejecutando bat: \n\n' + err);
+                                // else {
+                                fs.unlink(script_bat.nombre_bat, function (err) {
+                                    if (err) console.error('Error eliminando bat: \n\n' + err);
+                                    else {
+                                        jAlert_close();
+                                        if ($.ventanaMain.callback) {
+                                            $.ventanaMain.callback();
+                                        } else {
+                                            _cargarEventos('on');
                                         }
-                                    });
-                                }
+                                    }
+                                });
+                                // }
                             });
                         }
                     }
