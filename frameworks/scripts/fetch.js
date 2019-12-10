@@ -11,7 +11,7 @@ function postData(datos, servicio) {
                 })
                 .then(res => {
                     let encode = encodeURI(res), decode, response;
-                    encode = encode.replace(/%0A/g, "")
+                    encode = encode.replace(/%0D%0A/g, "")
                     decode = decodeURI(encode);
                     response = JSON.parse(decode)
                     if (response.STATUS == '00') {
