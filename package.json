@@ -44,10 +44,7 @@
       "files": [
         "!**/node_modules/*",
         "!**/app/*",
-        "!**/nbproject/*",
-        "!**/CEREALES/*",
-        "!**/HICLIN/*",
-        "!**/SALUD/*"
+        "!**/nbproject/*"
       ]
     },
     "nsis": {
