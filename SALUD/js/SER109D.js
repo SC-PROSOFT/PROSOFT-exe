@@ -478,8 +478,8 @@ function _evaluarsubtotalcomp_SER109D() {
                         formato: 'salud/SER109E.html',
                         nombre: 'IMPRESION PRUEBA SER109D'
                     }
-                    _cargandoimpresion('on');
-                    imprimir(opcionesImpresion_SER109D, finImpresion_SER109D)
+                    _cargandoimpresion('on', _cierrefactura_SER109D);
+                    imprimir(opcionesImpresion_SER109D, () => { _cargandoimpresion('off') })
                 } else {
                     if ((SER109D.NIT == '0830092718') || (SER109D.NIT == '0830092719') || (SER109D.NIT == '0900193162')) {
                         console.debug('SER109E.SC4');
@@ -492,27 +492,41 @@ function _evaluarsubtotalcomp_SER109D() {
     )
 }
 
-function finImpresion_SER109D() {
-    _cargandoimpresion('off');
+function _cierrefactura_SER109D() {
     if ((SER109D.ESTADOW == '0') || (SER109D.ESTADOW == '3')) {
         let URL = get_url("APP/SALUD/SAL020I.DLL");
         postData({ datosh: datosEnvio() + SER109D.LLAVEW }, URL)
             .then(data => {
                 console.debug(data);
-                _toggleNav();
-                // _ventana({
-                //     size: small,
-                //     title: 'Desea cerrar la factura?',
-                //     escape: false,
-                //     focus: '#cierrefactura_SER109D',
-                //     form: '#VALIDARVENTANA1_41',
-                //     order: '1',
-                //     global1: SER109D.CIERREW,
-                //     source: '<div class="col-md-12" id="VALIDARVENTANA1_41"> ' +
-                //     '<input id="cierrefactura_SER109D" type="text" class="form-control input-md" data-orden="1" maxlength="1"> ' +
-                //     '</div>',
-                //     mascara: mascaracierreFactura_SER109D
-                // }, _evaluarFechacierre_SER109D, _toggleNav);
+                _ventana({
+                    size: 'small',
+                    title: 'Desea cerrar la factura?',
+                    escape: false,
+                    focus: '#cierrefactura_SER109D',
+                    form: '#VALIDARVENTANA1_41',
+                    order: '1',
+                    global1: SER109D.CIERREW,
+                    source: '<div class="col-md-12" id="VALIDARVENTANA1_41"> ' +
+                        '<input id="cierrefactura_SER109D" type="text" class="form-control input-md" data-orden="1" maxlength="1"> ' +
+                        '</div>',
+                    mascara: mascaracierreFactura_SER109D
+                }, () => {
+                    if (SER109D.CIERREW == 'S') {
+                        $('#ADICIONALES_SER109D').append(
+                            '<div class="col-md-6 col-sm-6 col-xs-12">' +
+                            '<div class="inline-inputs">' +
+                            '<label class="col-md-6 col-sm-6 col-xs-12">FECHA DE CIERRE:</label>' +
+                            '<div class="input-group col-md-6 col-sm-6 col-xs-12" id="VALIDAR10_SER109D">' +
+                            '<input id="fechacierre_SER109D" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="10" data-orden="1">' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+                        );
+                        _evaluarfechacierre_SER109D();
+                    } else {
+                        _toggleNav();
+                    }
+                }, _toggleNav);
             })
             .catch(err => {
                 console.debug(err);
@@ -522,15 +536,100 @@ function finImpresion_SER109D() {
     }
 }
 
-function _evaluarFechacierre_SER109D(){
-    if(SER109D.CIERREW == 'S'){
-      
-    } else {
-        _toggleNav();
-    }
+function _evaluarfechacierre_SER109D() {
+    fechacierreMask_SER109D();
+    validarInputs({
+        form: '#VALIDAR10_SER109D',
+        orden: '1'
+    },
+        () => { _toggleNav() },
+        () => {
+            SER109D.FECHARETNUM = $('#fechacierre_SER109D').val().replace(/-/g, '');
+            if (moment(SER109D.FECHARETNUM).isBefore(SER109D.NUMERACION.FECHAING_NUM)) {
+                CON851('', '37', null, 'error', 'Error');
+                _evaluarfechacierre_SER109D();
+            } else {
+                let URL = get_url("APP/SALUD/SER109D.DLL");
+                postData({ datosh: datosEnvio() + '4|' + $_USUA_GLOBAL[0].COD_CIUD + '|' + SER109D.LLAVEW + '|' + SER109D.OBSERVW.trim() + '|' + SER109D.ANEXOSW.trim() + '|' + SER109D.ESTADOW + '|' + SER109D.SWFECHA + '|' + SER109D.SUCURW + '|' + parseInt(SER109D.NITUSU) + '|' + SER109D.PUCUSU + '|' + SER109D.SWDROG + '|' + SER109D.ADMINW + '|' }, URL)
+                    .then(data => {
+                        console.debug(data);
+                        if ((SER109D.PREFIJOW == 'P') || (SER109D.PREFIJOW == 'T')) {
+                            // INV020C
+                        } else {
+
+                        }
+                    })
+                    .catch(err => {
+                        console.debug(err);
+                    })
+            }
+        }
+    )
 }
 
-function _cargandoimpresion(estado) {
+function SAL020C() {
+    var SAL020C = new Object;
+    switch (SER109D.PUCUSU) {
+        case '1':
+            SAL020C.CTACAJA = '11050500001'
+            break;
+        case '2':
+            SAL020C.CTACAJA = '11050100001'
+            break;
+        case '3':
+            SAL020C.CTACAJA = '11050500001'
+            SAL020C.CTAPEND = '130590PE001'
+            SAL020C.COPAGO = '28150500010'
+            break;
+        case '4':
+            SAL020C.CTACAJA = '11050100001'
+            SAL020C.CTAPEND = '147090PE001'
+            SAL020C.COPAGO = '29050500010'
+            break;
+        case '5':
+            SAL020C.CTACAJA = '11050500001'
+            SAL020C.CTAPEND = '130590PE001'
+            SAL020C.COPAGO = '28150500010'
+            break;
+        case '6':
+            SAL020C.CTACAJA = '11050100001'
+            SAL020C.CTAPEND = '138490PE001'
+            SAL020C.COPAGO = '24070600010'
+            break;
+    }
+    $_USUA_GLOBAL[0].PEDIDO = 'S' ? SAL020C.CTAMEDI = '281510' : SAL020C.CTAMEDI = '';
+    var SEGW = () => {
+        let URL = get_url("APP/CONTAB/CON007BS.DLL");
+        postData({ datosh: datosEnvio() }, URL)
+            .then(data => {
+                console.debug(data);
+                return data
+            })
+            .catch(err => {
+                console.debug(err);
+                return '0'
+            })
+    }
+    if ((SEGW != '0') && (SEGW != '3') && (SEGW != '5')) {
+        // CON851B ERROR SEGW
+    }
+    switch (SER109D.PREFIJOW) {
+        case 'P':
+            SAL020C.LOTEMOV = '40'
+            break;
+        case 'T':
+            SAL020C.LOTEMOV = '30'
+            break;
+    }
+    if(($_USUA_GLOBAL[0].NIT == 800162035) || ($_USUA_GLOBAL[0].NIT == 845000038) || ($_USUA_GLOBAL[0].NIT == 900566047) || ($_USUA_GLOBAL[0].NIT == 900658867) || ($_USUA_GLOBAL[0].NIT == 901120152)){
+        var LOTE2MOV = SER109D.LLAVEW.substring(1,2);
+    }
+    var COMPROBMOV = SER109D.LLAVEW.substring(2,7);
+    
+}
+
+
+function _cargandoimpresion(estado, callback) {
     switch (estado) {
         case 'on':
             var ventanaimpresion = bootbox.dialog({
@@ -540,8 +639,8 @@ function _cargandoimpresion(estado) {
                     confirm: {
                         label: 'Aceptar',
                         className: 'btn-primary',
-                        callback: function () {
-                            _toggleNav();
+                        callback: () => {
+                            setTimeout(callback, 300);
                         }
                     }
                 }
@@ -689,7 +788,7 @@ var originalMask = IMask($("#original_SER109D")[0], {
     }
 });
 
-function mascaracierreFactura_SER109D(){
+function mascaracierreFactura_SER109D() {
     var cierreMask = IMask($("#cierrefactura_SER109D")[0], {
         mask: 'a',
         definitions: {
@@ -701,6 +800,33 @@ function mascaracierreFactura_SER109D(){
         },
         commit: function (value, masked) {
             masked._value = value.toLowerCase()
+        }
+    });
+}
+
+function fechacierreMask_SER109D() {
+    var fechadecierreMask = IMask($("#fechacierre_SER109D")[0], {
+        mask: Date,
+        pattern: 'Y-M-d',
+        lazy: true,
+        overwrite: true,
+        autofix: true,
+        blocks: {
+            Y: { mask: IMask.MaskedRange, placeholderChar: 'y', from: 2000, to: 2030, maxLength: 4 },
+            M: { mask: IMask.MaskedRange, placeholderChar: 'M', from: 01, to: 12, maxLength: 2 },
+            d: { mask: IMask.MaskedRange, placeholderChar: 'd', from: 1, to: 31, maxLength: 2 },
+        },
+        format: function (date) {
+            return moment(date).format("YYYY-MM-DD");
+        },
+        parse: function (str) {
+            var fecha = moment(str).format('YYYY-MM-DD');
+            if (fecha == "Invalid date") {
+                CON851('01', '01', null, 'error', 'error');
+            }
+            else {
+                return str;
+            }
         }
     });
 }
