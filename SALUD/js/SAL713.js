@@ -761,22 +761,20 @@ function _llenarCampos713() {
 function on_datosTbla713(data) {
     console.debug(data);
     var date = data.split('|');
-    $descripcups713 = date[1].trim();
-    $llavetab713 = date[2].trim();
+    $llavetab713 = date[1].trim();
+    $descripcups713 = date[2].trim();
     $liquidar713 = date[3].trim();
     $monto713 = date[4].trim();
-    
-    $increm713 = date[5].trim();
-    // $_CTACONTAB = date[6].trim();
-    $paqint713 = date[7].trim();
-    $codtari_713 = date[8].trim();
-    $insumos_713 = date[9].trim();
-    $cantidaddias713 = date[10].trim();
-    $division_713 = date[11].trim();
-    $descrpdiv_713 = date[12].trim();
-    $descripextensa713 = date[13].trim();
-    $operario = date[14].trim();
-    $fechaact = date[15].trim();
+    $paqint713 = date[5].trim();
+    $codtari_713 = date[6].trim();
+    $insumos_713 = date[7].trim();
+    $cantidaddias713 = date[8].trim();
+    $increm713 = date[9].trim();
+    $division_713 = date[10].trim();
+    $descrpdiv_713 = date[11].trim();
+    $descripextensa713 = date[12].trim();
+    $operario = date[13].trim();
+    $fechaact = date[14].trim();
 
     if (date[0].trim() == '00') {
         _mostrarDatos713()
