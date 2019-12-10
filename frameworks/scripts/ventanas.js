@@ -2,10 +2,12 @@
     $.windowbootbox = {
         callback: null,
         cancel: null,
+        tipo: null,
 
         window: function (params, callback, cancel) {
             $.windowbootbox.callback = callback ? callback : false;
             $.windowbootbox.cancel = cancel ? cancel : false;
+            $.windowbootbox.tipo = params.tipo ? params.tipo = params.tipo : 'evaluar';
 
             if(params.tipo == 'mostrar'){
                 $.windowbootbox._initm(params, callback, cancel);
@@ -19,6 +21,7 @@
                 size: params.size,
                 title: params.title,
                 closeButton: params.escape,
+                animate: false,
                 message: "<div class='row'>" +
                     "<div class='col-md-12 col-sm-12 col-xs-12'>" +
                     params.source +
