@@ -13,6 +13,10 @@ $(document).ready(function () {
         input: 'espec',
         app: '71A',
         funct: _ventanEspec71A
+    }, {
+        input: 'atiende',
+        app: '71A',
+        funct: ventanPersonal71A
     }]);
     // Cargar JSON CUPS
     obtenerDatosCompletos({
@@ -56,6 +60,15 @@ function _ventanEspec71A(e) {
                 _enterInput('#codcups_71A');
             }
         });
+    }
+}
+function ventanPersonal71A(e) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        SER830({ seleccion: SAL71A.ATIENDE_ESCUP }, validarSexoAplica71A, function (data) {
+            SAL71A.ATIENDE_ESCUP = data.COD
+            document.querySelector('#descrPer71A').val = data.DESCRIP;
+            validarEspecialidad71A();
+        })
     }
 }
 
@@ -148,7 +161,7 @@ function on_restriccionCups71A(data) {
         SAL71A.PROCEDIMIENTO_ESCUP = undefined ? document.querySelector('#proced71A').value = '' : document.querySelector('#proced71A').value = SAL71A.PROCEDIMIENTO_ESCUP;
         SAL71A.FINALIDAD_ESCUP == undefined ? document.querySelector('#finalidad71A').value = SAL71A.FINALIDAD_ESCUP = '' : document.querySelector('#finalidad71A').value = SAL71A.FINALIDAD_ESCUP;
         SAL71A.SEXO_ESCUP == undefined ? document.querySelector('#sexo71A').value = '' : document.querySelector('#sexo71A').value = SAL71A.SEXO_ESCUP;
-        SAL71A.ATIENDE == undefined ? document.querySelector('#atiende71A').value = '' : document.querySelector('#atiende71A').value = SAL71A.ATIENDE_ESCUP;
+        SAL71A.ATIENDE == undefined ? document.querySelector('#atiende_71A').value = '' : document.querySelector('#atiende_71A').value = SAL71A.ATIENDE_ESCUP;
         let fuente = [], especialidades = SAL71A.ESPECIALIDADES;
         for (var i = 0; i < especialidades.length; i++) {
             if (especialidades[i].COD_ESP != void 0 || especialidades[i].COD_ESP != null || especialidades[i].COD_ESP != undefined) {
@@ -183,32 +196,19 @@ function validarPYP71A() {
 
 function ventanaTipProced71A() {
     SAL71A.PROCEDIMIENTO_ESCUP = document.getElementById('proced71A').value;
-    SER829({ seleccion: SAL71A.PROCEDIMIENTO_ESCUP }, validarPYP71A, function (data) {
+    SER829(SAL71A.PROCEDIMIENTO_ESCUP, validarPYP71A, (function (data) {
         SAL71A.PROCEDIMIENTO_ESCUP = data.COD;
-        ventanaFinalidad71A()
-    })
+        document.getElementById('proced71A').value = SAL71A.PROCEDIMIENTO_ESCUP + ' - ' + data.DESCRIP;
+
+        SAL71A.FINALIDAD_ESCUP = document.getElementById('finalidad71A').value;
+        SER834({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, function (data) {
+            SAL71A.FINALIDAD_ESCUP = data.COD
+            document.getElementById('finalidad71A').value = SAL71A.FINALIDAD_ESCUP + ' - ' + data.DESCRIP
+            validarSexoAplica71A();
+        })
+    }))
 }
-function ventanaFinalidad71A() {
-    SAL71A.FINALIDAD_ESCUP = document.getElementById('proced71A').value;
-    SER834({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, function (data) {
-        SAL71A.PROCEDIMIENTO_ESCUP = data.COD;
-        document.querySelector('#finalidad71A').value = data.COD;
-        validarSexoAplica71A()
-    })
-}
-function validarTipoProced71A() {
-    validarInputs({
-        form: "#tipoprocedimiento",
-        orden: '1'
-    },
-        validarPYP71A,
-        function () {
-            console.debug('ir a finalidad', 'finalidad')
-            SAL71A.FINALIDAD_ESCUP = document.getElementById('finalidad71A').value; SAL71A.FINALIDAD_ESCUP ? SAL71A.FINALIDAD_ESCUP : false;
-            SER834({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, () => { SAL71A.FINALIDAD_ESCUP = data.COD; validarSexoAplica71A() });
-        }
-    )
-}
+
 
 function validarSexoAplica71A() {
     validarInputs({
@@ -217,25 +217,25 @@ function validarSexoAplica71A() {
     },
         validarPYP71A,
         function () {
-            SAL71A.SEXO_ESCUP = document.getElementById('sexo71A').value; SAL71A.SEXO_ESCUP ? SAL71A.SEXO_ESCUP : false;
-            if (SAL71A.SEXO_ESCUP) { document.getElementById('sexo71A').value = 'N'; validarPersonalAtiende71A() } else if (['M', 'm', 'F', 'f'].find(b => SAL71A.SEXO != b)) {
+            SAL71A.SEXO_ESCUP = document.getElementById('sexo71A').value; SAL71A.SEXO_ESCUP.length > 0 ? SAL71A.document.getElementById('sexo71A').value = SAL71A.SEXO_ESCUP : SAL71A.SEXO_ESCUP = false;
+            if (!SAL71A.SEXO_ESCUP) { document.getElementById('sexo71A').value = 'N'; validarPersonalatiende_71A() } else if (['M', 'm', 'F', 'f'].find(b => SAL71A.SEXO != b)) {
                 CON851('03', '03', validarSexoAplica71A(), 'error', 'error');
-            } else validarPersonalAtiende71A();
+            } else validarPersonalatiende_71A();
         }
     )
 }
 
-function validarPersonalAtiende71A() {
+function validarPersonalatiende_71A() {
     validarInputs({
         form: "#personal71A",
         orden: '1'
     }, validarSexoAplica71A, function () {
-        SAL71A.ATIENDE_ESCUP = document.getElementById('atiende71A').value; SAL71A.ATIENDE_ESCUP ? SAL71A.ATIENDE_ESCUP : false;
+        SAL71A.ATIENDE_ESCUP = document.getElementById('atiende_71A').value; SAL71A.ATIENDE_ESCUP ? SAL71A.ATIENDE_ESCUP : false;
         let personal = consult_atiendProf(SAL71A.ATIENDE_ESCUP)
         if (personal) {
             document.querySelector('#descrPer71A').value = SAL71A.ATIENDE_ESCUP + ' - ' + personal;
 
-        } else CON851('03', '03', validarPersonalAtiende71A(), 'error', 'error');
+        } else CON851('03', '03', validarPersonalatiende_71A(), 'error', 'error');
     })
 }
 
@@ -244,7 +244,7 @@ function validarIdEspec71A() {
     validarInputs({
         form: "#idespecialidad_71A",
         orden: '1'
-    }, validarPersonalAtiende71A, function () {
+    }, validarPersonalatiende_71A, function () {
         SAL71A.ID_ESP = document.getElementById('espec_71A').value
         if (SAL71A.ID_ESP >= 1 && SAL71A.ID_ESP <= 50) {
             validarEspecialidad71A();
@@ -256,7 +256,7 @@ function validarEspecialidad71A() {
     validarInputs({
         form: "#numespecialidad",
         orden: '1'
-    }, validarPersonalAtiende71A, function () {
+    }, validarPersonalatiende_71A, function () {
         SAL71A.ESPECSELEC = document.getElementById('espec_71A').value; SAL71A.ESPECSELEC.length > 0 ? SAL71A.ESPECSELEC : false;
         if (_especialidades71A.find(espec => SAL71A.ESPECSELEC == espec.CODIGO)) {
             if (SAL71A.NOVEDADW == '7') addfilaTablaEsp71A(); else editfilaTabla71A();
@@ -319,31 +319,76 @@ function _Especialidad71A(datos) {
     }
 }
 function grabar71A() {
-    let especialidades_envio,datos_envio;
+    let especialidades_envio, datos_envio;
     $('#tablaEspecialidades tbody').parents("tr").find("td")[1].each(function () {
         especialidades_envio += $(this).html() + ",";
     });
     console.debug(especialidades_envio + '|');
-    datos_envio = datosEnvio() + SAL71A.COD_CUP.padEnd(15, ' ');
-    console.debug('datos_envio', datos_envio)
-    
-    switch (parseInt(SAL71A['NOVEDADW'])) {
+    var parametros, msj, respuesta;
+    switch (parseInt(SAL71A['NOVEDAW'])) {
         case 7:
-                datos_envio=datosEnvio()+SAL71A.COD_CUP+'|'+
-        case 8:
-        case 9:
-            if (res.INVALID_ESCUPS == '00' && res.INVALID_CUPS == '00') on_restriccionCups71A(res); else CON851('01', '01', validarCodCup71A(), 'error', 'error');
+            SAL714A.FECHA_ESPCUP = moment().format("YYYYMMDD");
+            parametros = SAL71A.COD_CUP + '|' + SAL71A.FECHA_ESPCUP + '|' + SAL71A.SEXO_ESCUP
+                + '|' + SAL71A.ATIENDE_ESCUP + '|' + SAL71A.PYP + '|' + SAL71A.PROCEDIMIENTO_ESCUP + '|' +
+                SAL71A.FINALIDAD_ESCUP + '|' + especialidades_envio + '|'
+            msj = '¿DESEA GRABAR LOS DATOS?'
+            respuesta = "Datos grabados corectamente"
             break;
+        case 8:
+            SAL714A.FECHA_ESPCUP = moment(SAL714A.FECHA_ESPCUP).format("YYYYMMDD");
+            parametros = SAL71A.COD_CUP + '|' + SAL71A.FECHA_ESPCUP + '|' + SAL71A.SEXO_ESCUP
+                + '|' + SAL71A.ATIENDE_ESCUP + '|' + SAL71A.PYP + '|' + SAL71A.PROCEDIMIENTO_ESCUP + '|' +
+                SAL71A.FINALIDAD_ESCUP + '|' + especialidades_envio + '|'
+            msj = '¿DESEA MODIFICAR EL REGISTRO?'
+            respuesta = "Datos modificados corectamente"
+            break;
+        case 9:
+            parametros = SAL71A.COD_CUP + '|'
+            msj = '¿DESEA ELIMINAR EL REGISTRO?'
+            respuesta = "El registro se eliminó con exito"
+            break;
+
         default:
-            _toggleNav();
             break;
     }
-    
+    bootbox.confirm({
+        size: "small",
+        onEscape: false,
+        message: msj,
+        buttons: {
+            confirm: {
+                label: 'Si',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if (result == true) {
+                on_actualizar71A(parametros, SAL9714['NOVEDADW'], respuesta);
+
+            } else {
+                validarEspecialidad71A();
+            }
+        }
+    });
+
+
+}
+function on_actualizar71A(parametros, novedad, respuesta) {
     postData({
-        datosh: datos_envio
+        datosh: novedad + '|' + parametros
     }, get_url("APP/SALUD/SAL71A-02.DLL"))
         .then((data) => {
-            let res = data['SAL71A_01'][0];
+            if (data[0] == "00") {
+                Alert({ titulo: 'Notificacion', mensaje: respuesta })
+                limpiarCajas71A()
+            } else {
+                CON851('ERROR', 'ERROR AL ACTUALIZAR', validarEspecialidad71A(), 'error', 'error');
+            };
+
         })
         .catch((error) => {
             console.log(error)

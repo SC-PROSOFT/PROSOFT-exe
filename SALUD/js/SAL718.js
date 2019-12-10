@@ -64,9 +64,10 @@ function _ventanaGrupo718(e) {
             data: $_gruposer,
             callback_esc: () => { _validarGrpo718() },
             callback: (data) => {
+                console.debug(data,'data')
                 SAL718.COD_SER = data.COD; SAL718.DESCRIP_SER = data.DESCRIP;
-                document.querySelector('#grupoSal_718').value = data.COD_CUP;
-                document.querySelector('#grupoSadescrpGrupo718l_718').value = data.DESCRIP_SER;
+                document.querySelector('#grupoSal_718').value = data.COD;
+                document.querySelector('#descrpGrupo718').value = data.DESCRIP;
                 _enterInput('#grupoSal_718');
             }
         });
@@ -240,8 +241,8 @@ function _validarGrpo718() {
                     default:
                         let datos = $_gruposer.filter(grupo => grupo.COD.trim() == $grupo718.trim());
                         if (datos.length > 0) {
-                            $('#grupoSal_718').val(datos.COD.trim())
-                            $('#descrpGrupo718').val(datos.DESCRIP.trim())
+                            $('#grupoSal_718').val(datos.COD)
+                            $('#descrpGrupo718').val(datos.DESCRIP)
                             _validarCUPS718()
                         } else {
                             CON851('01', '01', null, 'error', 'Error');
