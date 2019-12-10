@@ -2576,6 +2576,7 @@ function _dataSAL7767_045(data) {
 
 function datodesplazado_7767() {
     if ((($_REGIMENPACIW == 'D') || ($_REGIMENPACIW == 'E') || ($_REGIMENPACIW == 'G')) && ($_TIPOAFILPACIW == '1')) {
+        jAlert({ titulo: 'Error ', mensaje: 'Atenc1ion! actualizar en la opcion Poblacion Desplazada' }, _evaluarentidadafiliada_7767);
         /// LLAMA OTRO PROGRAMA SER110D
     } else {
         _evaluarentidadafiliada_7767();
