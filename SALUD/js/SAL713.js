@@ -702,13 +702,14 @@ function _evaluardescripext() {
 
 
 function enviarDatos713() {
-    $descripextensa = $('#descrpexten_713').val();
+    $descripextensa713 = $('#descrpexten_713').val();
     $fechaact = moment().format('YYMMDD');
     $operario = $_ADMINW;
     console.log($operario)
 
     LLAMADO_DLL({
-        dato: [$_NovedSal713, $llavetab713, $descripcups713, $liquidar713, $monto713, $paqint713, $codtari_713, $insumos_713, $cantidaddias713, $increm713, $division_713, $descripextensa, $operario, $fechaact],
+        dato: [$_NovedSal713, $llavetab713, $descripcups713, $liquidar713, $monto713, $paqint713, $codtari_713,
+               $insumos_713, $cantidaddias713, $increm713, $division_713, $descripextensa713, $operario, $fechaact],
         callback: validargrabado713,
         nombredll: 'SAL713-02',
         carpeta: 'SALUD'
@@ -764,6 +765,7 @@ function on_datosTbla713(data) {
     $llavetab713 = date[2].trim();
     $liquidar713 = date[3].trim();
     $monto713 = date[4].trim();
+    
     $increm713 = date[5].trim();
     // $_CTACONTAB = date[6].trim();
     $paqint713 = date[7].trim();
@@ -772,7 +774,7 @@ function on_datosTbla713(data) {
     $cantidaddias713 = date[10].trim();
     $division_713 = date[11].trim();
     $descrpdiv_713 = date[12].trim();
-    $descripextensa = date[13].trim();
+    $descripextensa713 = date[13].trim();
     $operario = date[14].trim();
     $fechaact = date[15].trim();
 
@@ -802,7 +804,7 @@ function _mostrarDatos713() {
     $('#divis_713').val($division_713);
     $('#cantidaddias713').val($cantidaddias713);
     $('#descrpdiv_713').val($descrpdiv_713);
-    $('#descrpexten_713').val($descripextensa);
+    $('#descrpexten_713').val($descripextensa713);
     $('#oper_713').val($operario);
     $('#fechat_713').val($fechaact);
 
