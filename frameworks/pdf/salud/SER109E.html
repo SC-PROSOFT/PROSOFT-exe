@@ -6,104 +6,109 @@
         remote = require('electron').remote;
     window.$ = window.jQuery = require('jquery');
 </script>
-<table>
-    <thead>
-        <tr>
-            <th>
-                <div class="encabezado_SER109E">
-                    <a class="nombre_SER109E"> HOSPITAL LOCAL SAN MARTIN ESE</a>
-                    <a class="nitusu_SER109E">NIT 892,000,458</a>
-                    <div class="datos_usu_SER109E">
-                        <a class="direccionusu_SER109E"> CL 4 7 34</a>
-                        <a class="telefonousu_SER109E">Tel: 6483035</a>
-                        <a class="ciudadusu_SER109E">SAN MARTIN</a>
-                    </div>
-                    <a class="copia_SER109E">** COPIA **</a>
-                    <div class="primeralinea_SER109E">
-                        <a class="fechafactura_SER109E"> FECHA: Noviembre 22 de 2019</a>
-                        <a class="fechavence_SER109E"> FECHA: Noviembre 22 de 2019</a>
-                        <a class="facturaventa_SER109E"> FACTURA DE VENTA No: P27040</a>
-                    </div>
-                    <div class="segundalinea_SER109E">
-                        <a class="cliente_SER109E">CLIENTE: CAPITAL SALUD EPSS</a>
-                        <a class="nitcliente_SER109E">NIT: 900,298,372 9</a>
-                    </div>
-                    <div class="terceralinea_SER109E">
-                        <a class="direccion_SER109E">Direccion: CRA 38 NO.33A-37 B/O 7 DE</a>
-                        <a class="telefono_SER109E">TEL: 6614700</a>
-                        <a class="ciudad_SER109E">CIUDAD: VILLAVICENCIO</a>
-                    </div>
-                    <div class="cuartalinea_SER109E">
-                        <a class="paciente_SER109E">PACIENTE: CAPITAL SALUD EPSS</a>
-                        <a class="idpaciente_SER109E">ID: 1,120,504,800</a>
-                        <a class="edad_SER109E">EDAD: A023</a>
-                    </div>
-                    <div class="quintalinea_SER109E">
-                        <a class="convenio_SER109E">SOAT MAS INCREMENTO 2423</a>
-                    </div>
-                    <div class="sextalinea_SER109E">
-                        <a class="observaciones_SER109E"> Observac: ANEXO</a>
-                    </div>
-                    <div class="septimalinea_SER109E">
-                        <a class="anexos_SER109E">Anexos:</a>
-                    </div>
-                    <div class="salto-linea"></div>
-                    <div class="headertabla_SER109E">
-                        <table class="tablaheader_SER109E table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width: 1%;font-size:9px;">Comp.</th>
-                                    <th style="width: 2%;font-size:9px;">Fecha</th>
-                                    <th style="width: 12%;font-size:9px;">Descripcion</th>
-                                    <th style="width: 1%;font-size:9px;">Edad</th>
-                                    <th style="width: 1%;font-size:9px;">Sx.</th>
-                                    <th style="width: 10%;font-size:9px;">Concepto</th>
-                                    <th style="width: 1%;font-size:9px;">Cant</th>
-                                    <th style="width: 2%;font-size:9px;">Valor</th>
-                                    <th style="width: 1%;font-size:9px;">Copagos</th>
-                                    <th style="width: 3%;font-size:9px;">Autor.</th>
-                                    <th style="width: 1%;font-size:9px;">Cod.serv</th>
-                                </tr>
-                            </thead>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div class="page-header" style="text-align: center">
+        I'm The Header
+        <br />
+        <button type="button" onClick="window.print()" style="background: pink">
+            PRINT ME!
+        </button>
+    </div>
+
+    <div class="page-footer">
+        I'm The Footer
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <td>
+                    <!--place holder for the fixed-position header-->
+                    <div class="page-header-space"></div>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <!--*** CONTENT GOES HERE ***-->
+                    <div class="page">PAGE 1</div>
+                    <div class="page">PAGE 2</div>
+                    <div class="page">
+                        <table class="tablacodservicio_SER109E">
+                            <tbody>
+                            </tbody>
                         </table>
                     </div>
-                </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <table class="tablacodservicio_SER109E table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <td>
-                                <div class="tablaencabezado_SER109E"></div>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr>
-                                            <th style="width: 1%;">102396</th>
-                                            <td style="width: 2%;">2019/03/10</td>
-                                            <td style="width: 12%;"></td>
-                                            <td style="width: 1%;">A023</td>
-                                            <td style="width: 1%;">M</td>
-                                            <td style="width: 10%;">DROGAS</td>
-                                            <td style="width: 1%;">1</td>
-                                            <td style="width: 2%;">10,000</td>
-                                            <td style="width: 1%;">12</td>
-                                            <td style="width: 3%;">00909090099</td>
-                                            <td style="width: 1%;">874510</td>
-                                        </tr> -->
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<a class="cantidadenletras_SER109E">SON: TRESCIENTOS OCHENTA Y UN MIL CIENTO TRIENTA Y NUEVE PESOS M/CTE</a>
-<style type="text/css">
+                </td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td>
+                    <!--place holder for the fixed-position footer-->
+                    <div class="page-footer-space"></div>
+                </td>
+            </tr>
+        </tfoot>
+
+    </table>
+
+</body>
+
+</html>
+
+<style>
+    .page-header,
+    .page-header-space {
+        height: 100px;
+    }
+
+    .page-footer,
+    .page-footer-space {
+        height: 50px;
+
+    }
+
+    .page-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid black;
+        /* for demo */
+        background: yellow;
+        /* for demo */
+    }
+
+    .page-header {
+        position: fixed;
+        top: 0mm;
+        width: 100%;
+        border-bottom: 1px solid black;
+        /* for demo */
+        background: yellow;
+        /* for demo */
+    }
+
+    .page {
+        page-break-after: always;
+    }
+
+    @page {
+        margin: 20mm
+    }
+
     @media print {
         thead {
             display: table-header-group;
@@ -112,186 +117,247 @@
         tfoot {
             display: table-footer-group;
         }
-    }
 
-    @media screen {
-        thead {
-            display: block;
+        button {
+            display: none;
         }
 
-        tfoot {
-            display: block;
+        body {
+            margin: 0;
         }
     }
 </style>
+
+
+
+<!-- <div id="contenido">
+    <div class="encabezado_SER109E">
+        <a class="nombre_SER109E"> HOSPITAL LOCAL SAN MARTIN ESE</a>
+        <a class="nitusu_SER109E">NIT 892,000,458</a>
+        <div class="datos_usu_SER109E">
+            <a class="direccionusu_SER109E"> CL 4 7 34</a>
+            <a class="telefonousu_SER109E">Tel: 6483035</a>
+            <a class="ciudadusu_SER109E">SAN MARTIN</a>
+        </div>
+        <a class="copia_SER109E">** COPIA **</a>
+        <div class="primeralinea_SER109E">
+            <a class="fechafactura_SER109E"> FECHA: Noviembre 22 de 2019</a>
+            <a class="fechavence_SER109E"> FECHA: Noviembre 22 de 2019</a>
+            <a class="facturaventa_SER109E"> FACTURA DE VENTA No: P27040</a>
+        </div>
+        <div class="segundalinea_SER109E">
+            <a class="cliente_SER109E">CLIENTE: CAPITAL SALUD EPSS</a>
+            <a class="nitcliente_SER109E">NIT: 900,298,372 9</a>
+        </div>
+        <div class="terceralinea_SER109E">
+            <a class="direccion_SER109E">Direccion: CRA 38 NO.33A-37 B/O 7 DE</a>
+            <a class="telefono_SER109E">TEL: 6614700</a>
+            <a class="ciudad_SER109E">CIUDAD: VILLAVICENCIO</a>
+        </div>
+        <div class="cuartalinea_SER109E">
+            <a class="paciente_SER109E">PACIENTE: CAPITAL SALUD EPSS</a>
+            <a class="idpaciente_SER109E">ID: 1,120,504,800</a>
+            <a class="edad_SER109E">EDAD: A023</a>
+        </div>
+        <div class="quintalinea_SER109E">
+            <a class="convenio_SER109E">SOAT MAS INCREMENTO 2423</a>
+        </div>
+        <div class="sextalinea_SER109E">
+            <a class="observaciones_SER109E"> Observac: ANEXO</a>
+        </div>
+        <div class="septimalinea_SER109E">
+            <a class="anexos_SER109E">Anexos:</a>
+        </div>
+        <div class="salto-linea"></div>
+        <div class="headertabla_SER109E">
+            <table class="tablaheader_SER109E">
+                <thead>
+                    <tr>
+                        <th style="width: 1%;font-size:9px;">Comp.</th>
+                        <th style="width: 2%;font-size:9px;">Fecha</th>
+                        <th style="width: 12%;font-size:9px;">Descripcion</th>
+                        <th style="width: 1%;font-size:9px;">Edad</th>
+                        <th style="width: 1%;font-size:9px;">Sx.</th>
+                        <th style="width: 10%;font-size:9px;">Concepto</th>
+                        <th style="width: 1%;font-size:9px;">Cant</th>
+                        <th style="width: 2%;font-size:9px;">Valor</th>
+                        <th style="width: 1%;font-size:9px;">Copagos</th>
+                        <th style="width: 3%;font-size:9px;">Autor.</th>
+                        <th style="width: 1%;font-size:9px;">Cod.serv</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <table class="tablacodservicio_SER109E">
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<a class="cantidadenletras_SER109E">SON: TRESCIENTOS OCHENTA Y UN MIL CIENTO TRIENTA Y NUEVE PESOS M/CTE</a>
 <style>
-    .encabezado_SER109E,
-    .tablaencabezado_SER109E {
-        height: 300px;
-    }
-
-    .encabezado_SER109E {
-        width: 98%;
-        /* position: fixed; */
-    }
-
-    .nombre_SER109E {
-        margin: 0 auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .nitusu_SER109E {
-        margin: 0 auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .copia_SER109E {
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding-bottom: 20px;
-    }
-
-    .datos_usu_SER109E {
-        display: flex;
-        justify-content: space-around;
-        width: 20%;
-        margin: 0 auto;
-    }
-
-    .primeralinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-        border-top: black solid 0.1px;
-    }
-
-    .facturaventa_SER109E {
-        font-size: larger;
-        font-weight: bolder;
-    }
-
-    .segundalinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-    }
-
-    .terceralinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-    }
-
-    .cuartalinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-    }
-
-    .quintalinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-    }
-
-    .sextalinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-        ;
-    }
-
-    .septimalinea_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-        border-bottom: black solid 0.1px;
-    }
-
-    .remite_SER109E {
-        margin: 0 auto;
-        display: flex;
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 10px;
+@media print {
+    #contenido{
+        display: block;
     }
 
     .tablacodservicio_SER109E {
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .tablacodservicio_SER109E thead {
-        border-top: black solid 0.1px;
-        display: table-header-group;
-    }
-
-    .tablacodservicio_SER109E tbody {
-        text-align: center;
-
-    }
-
-    .headertabla_SER109E {
-        margin: 0 auto;
-        width: 100%;
-        border-top: black solid 0.1px;
-        border-left: black solid 0.1px;
-        border-right: black solid 0.1px;
-        border-bottom: black solid 0.1px;
-    }
-
-    .cuerpo_SER109E {
         padding-top: 320px;
-        width: 99%;
-        height: 60%;
-        display: table-row-group;
+        border-collapse: collapse;
     }
 
-    .tablaheader_SER109E {
-        margin: 0 auto;
-        width: 100%;
+    .contenido {
+        display: block;
     }
 
-    .salto-linea {
-        padding-top: 20px;
-    }
-</style>
-<style type="text/css" media="print">
-    thead {
-        display: table-header-group;
+    @page {
+        @top-left {
+            content: element(pageHeader);
+        }
     }
 
-    tfoot {
-        display: table-footer-group;
+    .encabezado_SER109E {
+        position: running(pageHeader);
+        page-break-after  : avoid;
+        position: fixed;
     }
-</style>
+} -->
+
+
+/* .encabezado_SER109E {
+width: 98%;
+/* position: fixed; */
+/* } */
+
+
+/* .nombre_SER109E {
+margin: 0 auto;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.nitusu_SER109E {
+margin: 0 auto;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.copia_SER109E {
+margin: 0 auto;
+display: flex;
+align-items: center;
+width: 100%;
+padding-bottom: 20px;
+}
+
+.datos_usu_SER109E {
+display: flex;
+justify-content: space-around;
+width: 20%;
+margin: 0 auto;
+}
+
+.primeralinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+border-top: black solid 0.1px;
+}
+
+.facturaventa_SER109E {
+font-size: larger;
+font-weight: bolder;
+}
+
+.segundalinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+}
+
+.terceralinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+}
+
+.cuartalinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+}
+
+.quintalinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+}
+
+.sextalinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+;
+}
+
+.septimalinea_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+justify-content: space-between;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+border-bottom: black solid 0.1px;
+}
+
+.remite_SER109E {
+margin: 0 auto;
+display: flex;
+width: 100%;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+.headertabla_SER109E {
+margin: 0 auto;
+width: 100%;
+border-top: black solid 0.1px;
+border-left: black solid 0.1px;
+border-right: black solid 0.1px;
+border-bottom: black solid 0.1px;
+}
+
+.tablaheader_SER109E {
+margin: 0 auto;
+width: 100%;
+}
+
+.salto-linea {
+padding-top: 20px;
+}
+</style> */
 
 <script>
     var SER109E = [];
