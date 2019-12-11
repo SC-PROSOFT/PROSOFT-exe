@@ -6125,27 +6125,19 @@
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL71D.html"
                 },
-                {
+				{
                   "Id": "0971E",
                   "Descripcion": "Equivalencia operad. Datalab",
-                  "Tipo": "RM",
-                  "Params": [
-                    {
-                      "formulario": "SER11E",
-                      "dll": "SALUD\\SER11E"
-                    }
-                  ]
+                  "Opc-segu": "IS1E",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71E.html"
                 },
-                {
+				{
                   "Id": "0971G",
                   "Descripcion": "Actualiza paquete integral",
-                  "Tipo" : "RM",
-                  "Params":[
-                    {
-                      "formulario" : "SER115",
-                      "dll" : "SALUD\\SER115"
-                    }
-                  ]
+                  "Opc-segu": "IS1G",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL71G.html"
                 },
                 {
                   "Id": "0971H",
