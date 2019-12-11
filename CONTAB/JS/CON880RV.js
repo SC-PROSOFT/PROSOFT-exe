@@ -6,7 +6,7 @@ CON880RV.ORIGEN_RECORW = ['OPER_ORIGW', 'FECHA_ORIGW', 'HORA_ORIGW', 'MENSAJE1W'
 console.log("CALL CON899")
 
 // *MUESTRA LOS RECORDATORIOS POR USUARIO.
-function get_Recordatorios_CON880RV(campo, callback) {
+function get_Recordatorios_CON880RV(callback) {
 	// Abrir notificaciones
 	datos_envio = datosEnvio() + localStorage['Usuario'] + "|";
 	//LEER RECORDATORIOS
@@ -16,37 +16,51 @@ function get_Recordatorios_CON880RV(campo, callback) {
 		}, URL)
 		.then((data) => {
 			// MOSTRAR DATOS
-			_ventanaDatos({
-				titulo: `RECORDATORIOS DEL USUARIO${localStorage['Usuario']}`,
-				columnas: [
-					"FECHA_ORIGEN",
-					"HORA_ORIGEN",
-					"IDOPERADOR_ORIGEN",
-					"NOMBREOPER_ORIGEN",
-					"ESTADO",
-					"MENSAJE"
-				],
-				data: data['RECORDATORIOS'],
-				orden: false,
-				callback_esc: function () {
-					document.getElementById("campo").focus();
-				},
-				callback: function (data) {
-					let params = {
-						size: 1,
-						titulo: 'Recordatorios: ' + localStorage['Usuario'],
-						datos: data,
-						function: callback,
-						campo: campo
+			data.RECORDATORIOS.length > 0 ?
+				_ventanaDatos({
+					titulo: `${localStorage['Usuario']}  TIENE RECORDATORIOS`,
+					columnas: [
+						"FECHA_ORIGEN",
+						"HORA_ORIGEN",
+						"IDOPERADOR_ORIGEN",
+						"NOMBREOPER_ORIGEN",
+						"ESTADO",
+						"MENSAJE"
+					],
+					data: data['RECORDATORIOS'],
+					orden: false,
+					callback_esc: function () {
+						document.getElementById("campo").focus();
+					},
+					callback: function (data) {
+						let params = {
+							size: 1,
+							titulo: 'Recordatorios: ' + localStorage['Usuario'],
+							datos: data,
+							function: callback
+						}
+						ventanaRecordatorios(params);
 					}
-					ventanaRecordatorios(params);
-				}
-			})
+				}) : callback
 		})
 		.catch((error) => {
 			console.log(error)
 		});
 }
+
+// IF FNF1 CALL "CON880R" USING ADMIN-W OPER-ORIG-RECOR
+// GO TO ACEPTAR-OPCION
+// ELSE
+// IF FNF5
+// GO TO OCULTAR-MENSAJE
+// ELSE
+// IF FNF2
+// PERFORM MOSTRAR-PDF
+// ELSE
+// GO TO APLAZAR-FECHA
+// END-IF
+// END-IF
+// END-IF.
 
 function ventanaRecordatorios(parametros) {
 	var boxRecordatorios = bootbox.dialog({
@@ -81,9 +95,7 @@ function ventanaRecordatorios(parametros) {
 			main: {
 				label: 'Aceptar',
 				className: 'btn-primary',
-				callback: function () {
-					document.getElementById(parametros.campo).focus();
-				}
+				callback: parametros.function
 			}
 		}
 	});
