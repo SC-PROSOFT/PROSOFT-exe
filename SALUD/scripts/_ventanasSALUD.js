@@ -122,7 +122,7 @@ function SER819H(data, esccallback, callback) {
             esccallback();
         });
 }
-function SER829(seleccion, esccallback, callback) {
+async function SER829(seleccion, esccallback, callback) {
     var SER829 = [];
     SER829.PROCEDIMIENTOS = [{ "COD": "1", "DESCRIP": "DIAGNOSTICO" }, { "COD": "2", "DESCRIP": "TERAPEUTICO" }, { "COD": "3", "DESCRIP": "PROTECION ESPECIFICA" }, { "COD": "4", "DESCRIP": "DETEC. TEMPRANA ENF. GENER" }, { "COD": "5", "DESCRIP": "DET. TEMPRANA ENF.PROF" }, { "COD": "9", "DESCRIP": "NO APLICA" }]
     POPUP({
@@ -134,9 +134,9 @@ function SER829(seleccion, esccallback, callback) {
         }],
         seleccion: seleccion,
         callback_f: esccallback
-    }, callback)
+    },callback)
 }
-function SER834(data, esccallback, callback) {
+async function SER834(data, esccallback, callback) {
     var SER834 = { NIT: data.NITUSU ? data.NITUSU : false, NACI: data.FECHANACI ? data.FECHANACI : false, SEXO: data.SEXOPACI ? data.SEXOPACI : false }
     SER834.DATOSV = [];
 

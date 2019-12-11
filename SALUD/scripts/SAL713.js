@@ -53,6 +53,7 @@ $(document).ready(function () {
 
         }, function (data) {
             $_GRUPOSER_703 = data.CODIGOS;
+            $_GRUPOSER_703.pop()
             obtenerDatosCompletos({
                 nombreFd: 'TABLAS'
 
@@ -77,7 +78,6 @@ function _ventanaNomtarif(e) {
         .then((data) => {
             loader("hide");
             $_CONVENIO_713 = data;
-            console.log($_CONVENIO_713, '$_CONVENIO_715')
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: "VENTANA DE NOMDRE TARIFAS",
@@ -87,7 +87,6 @@ function _ventanaNomtarif(e) {
                         $("#codtar_713").focus();
                     },
                     callback: function (data) {
-                        console.log(data)
                         $('#codtar_713').val(data.COD);
                         $('#descptar_713').val(data.DESCRIP.trim());
 
@@ -112,7 +111,6 @@ function _ventanaGruposer(e) {
                 $("#grupo_713").focus();
             },
             callback: function (data) {
-                console.debug(data);
                 $('#grupo_713').val(data.COD.trim())
                 $('#descrgrp_103').val(data.DESCRIP.trim())
                 _enterInput('#grupo_713');
@@ -127,13 +125,12 @@ function _ventanaTablatarif(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "VENTANA TABLAS DE TARIFA",
-            columnas: ["COD", "TIPO", 'COD_SER',"DESCRIP"],
+            columnas: ["COD", "TIPO", 'COD_SER', "DESCRIP"],
             data: $_TABLA_703,
             callback_esc: function () {
                 ('#cups_713').focus()
             },
             callback: function (data) {
-                console.debug(data);
                 var cod713 = data.COD_SER
                 $('#cups_713').val(cod713.substring(2, 15));
                 $('#descrpcups_103').val(data.DESCRIP.trim());
@@ -186,7 +183,6 @@ function _ventanaContab(e) {
                 $("#contab_713").focus();
             },
             callback: function (data) {
-                console.debug(data);
                 $('#contab_713').val(data.CTA_MAY.trim() + data.SUB_CTA.trim() + data.AUX_MAE.trim() + data.TIPO_MAE.trim())
                 $('#descontab_713').val(data.NOMBRE_MAE.trim())
                 _enterInput('#contab_713');
@@ -226,11 +222,9 @@ function _validacionestarifa_713() {
     $codigo713 = $('#codtar_713').val();
 
     if ($codigo713.trim() == '') {
-        console.log('origen')
         CON851('01', '01', null, 'error', 'error');
         _validarDato713()
     } else {
-        console.log('evaluar dll')
         LLAMADO_DLL({
             dato: [$codigo713],
             callback: _dataCONSULTANOMTAR_713,
@@ -241,11 +235,9 @@ function _validacionestarifa_713() {
 }
 
 function _dataCONSULTANOMTAR_713(data) {
-    console.log(data, 'SAL713-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPNOMTAR_713 = date[1].trim();
-    console.log($_DESCRIPNOMTAR_713, '$_DESCRIPNOMTAR_715')
     if (swinvalid == "00") {
         $('#descptar_713').val($_DESCRIPNOMTAR_713);
         tipoSer_713()
@@ -313,10 +305,8 @@ function grupoTar713() {
 }
 
 function validacionesgrupo_713() {
-    console.log('validar grupo')
     $grupo713 = $('#grupo_713').val();
     if ($grupo713.trim() == '') {
-        console.log('grupo en espacios')
         CON851('02', '02', null, 'error', 'error');
         grupoTar713();
     } else {
@@ -330,7 +320,6 @@ function validacionesgrupo_713() {
     }
 }
 function _dataCONSULTAGRUPO_715(data) {
-    console.log(data, 'SAL715-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPGRUPOTAR_713 = date[1].trim();
@@ -351,7 +340,6 @@ function _dataCONSULTAGRUPO_715(data) {
     }
 }
 function _validarCodig() {
-    console.log('evaluaciones COD TABLA')
     validarInputs(
         {
             form: "#codcups",
@@ -362,7 +350,6 @@ function _validarCodig() {
     )
 }
 function _validacionescodtabla_713() {
-    console.log('validar CODIGO TABLA')
     $codigocups713 = $('#cups_713').val();
 
     if ($codigocups713.trim() == '') {
@@ -380,7 +367,6 @@ function _validacionescodtabla_713() {
     }
 }
 function _datavalidarcups_713(data) {
-    console.log(data, 'SAL713-03')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $descripcups713 = date[1].trim();
@@ -401,46 +387,35 @@ function _datavalidarcups_713(data) {
 }
 
 function consultatabla_713() {
-    console.log('CONSULTA TABLA')
     $llavetab713 = $codigo713 + $_tiposer713 + $grupo713 + $codigocups713;
-
     LLAMADO_DLL({
         dato: [$llavetab713],
         callback: _datavalidartabla_713,
         nombredll: 'SAL713-01',
         carpeta: 'SALUD'
     });
-
 }
 function _datavalidartabla_713(data) {
-    console.log(data, 'SAL713-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
-
     if (($_NovedSal713 == '7') && (swinvalid == '01')) {
-        console.log('novedad 7 error 01')
         _descriptabla()
     }
     else if (($_NovedSal713 == '7') && (swinvalid == '00')) {
-        console.log('novedad 7 error 00')
         CON851('00', '00', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
     else if (($_NovedSal713 == '8') && (swinvalid == '00')) {
-        console.log('novedad 8 error 00')
         _llenarCampos713();
     }
     else if (($_NovedSal713 == '8') && (swinvalid == '01')) {
-        console.log('novedad 8 error 01')
         CON851('01', '01', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
     else if (($_NovedSal713 == '9') && (swinvalid == '00')) {
-        console.log('novedad 9 error 00')
         _llenarCampos713();
     }
     else if (($_NovedSal713 == '9') && (swinvalid == '01')) {
-        console.log('novedad 9 error 01')
         CON851('01', '01', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
@@ -513,10 +488,9 @@ function _evaluarmonto_713() {
     )
 }
 function _validacionesrliquida() {
-    // $monto713 = $('#monto_713').val();
     $monto713 = vlrmonto_713Mask.unmaskedValue;
 
-    if (($liquidar713 != '3') && ($monto713 == 0)) {
+    if (($liquidar713 != '3') && ($monto713 == '0')) {
         _evaluarmonto_713();
     } else if ($liquidar713 == '4') {
         $_valor = ($_SALMINUSU / 30) * $monto713
@@ -653,7 +627,6 @@ function _validaciondivision() {
     }
 }
 function _dataCONSULTAGRUPO_713(data) {
-    console.log(data, 'SAL713-03')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $descrpdiv_713 = date[1].trim();
@@ -680,36 +653,325 @@ function _evaluarcantdias_713() {
 }
 function _evaluardescripext() {
     $cantidaddias713 = $('#cantidaddias713').val();
-    
-    if($cantidaddias713.trim() == ''){
-        $cantidaddias713 = '0'; 
+
+    if ($cantidaddias713.trim() == '') {
+        $cantidaddias713 = '0';
         $('#cantidaddias713').val($cantidaddias713);
-    }else{
+    } else {
         $('#cantidaddias713').val($cantidaddias713);
     }
-    
+
     validarInputs(
         {
             form: "#extensa",
             orden: '1'
         },
-        function () { _descriptabla() },
-        enviarDatos713
+        function () { _evaluarcantdias_713() },
+        _evaluarfinalidades713
     )
 }
+function _evaluarfinalidades713() {
+    $descripextensa713 = $('#descrpexten_713').val();
+    if ($_tiposer713 == '7') {
+        _evaluarprimerfinalidad();
+    } else {
+        $primerfinal713 = '';
+        $segundfinal713 = '';
+        $tercefinal713 = '';
+        $cuartafinal713 = '';
+        enviarDatos713();
+    }
+}
+function _evaluarprimerfinalidad() {
+    validarInputs(
+        {
+            form: "#primerfinalidad",
+            orden: '1'
+        },
+        function () { _evaluardescripext() },
+        _validarprimerfinalidad
+    )
+}
+function _validarprimerfinalidad() {
+    $primerfinal713 = $('#fina1_713').val();
 
+    if ($primerfinal713.trim() == '') {
+        $primerfinal713 = '99';
+        $descripprimerfinal = 'TODAS LAS FINALIDADES';
+        $('#fina1_713').val($primerfinal713);
+        $('#descripfina1_713').val($descripprimerfinal);
+        enviarDatos713();
+    } else {
+        switch ($primerfinal713) {
+            case '01':
+                $('#descripfina1_713').val("ATENCION PARTO");
+                _evaluarsegunfinalidad()
+                break;
+            case '02':
+                $('#descripfina1_713').val("ATENCION REC.NACI");
+                _evaluarsegunfinalidad()
+                break;
+            case '03':
+                $('#descripfina1_713').val("ATENC.PLANIF.FAMI");
+                _evaluarsegunfinalidad()
+                break;
+            case '04':
+                $('#descripfina1_713').val("PRIMERA INFANCIA");
+                _evaluarsegunfinalidad()
+                break;
+            case '05':
+                $('#descripfina1_713').val("ADOLESCENCIA");
+                _evaluarsegunfinalidad()
+                break;
+            case '06':
+                $('#descripfina1_713').val("DET.ALT.EMBARAZO");
+                _evaluarsegunfinalidad()
+                break;
+            case '07':
+                $('#descripfina1_713').val("ADULTEZ");
+                _evaluarsegunfinalidad()
+                break;
+            case '08':
+                $('#descripfina1_713').val("DET.ALT.AGUD.VISU");
+                _evaluarsegunfinalidad()
+                break;
+            case '09':
+                $('#descripfina1_713').val("DET.ENFERM.PROFES");
+                _evaluarsegunfinalidad()
+                break;
+            case '10':
+                $('#descripfina1_713').val("NO APLICA");
+                _evaluarsegunfinalidad()
+                break;
+            case '11':
+                $('#descripfina1_713').val("PATOLOGIA CRONICA");
+                _evaluarsegunfinalidad()
+                break;
+            case '99':
+                $('#descripfina1_713').val("TODAS LAS FINALID");
+                enviarDatos713();
+                break;
+            default:
+                _evaluarprimerfinalidad();
+                break;
+        }
+    }
+}
+
+function _evaluarsegunfinalidad() {
+    validarInputs(
+        {
+            form: "#segundfinalidad",
+            orden: '1'
+        },
+        function () { _evaluarprimerfinalidad() },
+        _validarsegundfinalidad
+    )
+}
+function _validarsegundfinalidad() {
+    $segundfinal713 = $('#fina2_713').val();
+
+    switch ($segundfinal713) {
+        case '01':
+            $('#descripfina2_713').val("ATENCION PARTO");
+            _evaluartercefinalidad()
+            break;
+        case '02':
+            $('#descripfina2_713').val("ATENCION REC.NACI");
+            _evaluartercefinalidad()
+            break;
+        case '03':
+            $('#descripfina2_713').val("ATENC.PLANIF.FAMI");
+            _evaluartercefinalidad()
+            break;
+        case '04':
+            $('#descripfina2_713').val("PRIMERA INFANCIA");
+            _evaluartercefinalidad()
+            break;
+        case '05':
+            $('#descripfina2_713').val("ADOLESCENCIA");
+            _evaluartercefinalidad()
+            break;
+        case '06':
+            $('#descripfina2_713').val("DET.ALT.EMBARAZO");
+            _evaluartercefinalidad()
+            break;
+        case '07':
+            $('#descripfina2_713').val("ADULTEZ");
+            _evaluartercefinalidad()
+            break;
+        case '08':
+            $('#descripfina2_713').val("DET.ALT.AGUD.VISU");
+            _evaluartercefinalidad()
+            break;
+        case '09':
+            $('#descripfina2_713').val("DET.ENFERM.PROFES");
+            _evaluartercefinalidad()
+            break;
+        case '10':
+            $('#descripfina2_713').val("NO APLICA");
+            _evaluartercefinalidad()
+            break;
+        case '11':
+            $('#descripfina2_713').val("PATOLOGIA CRONICA");
+            _evaluartercefinalidad()
+            break;
+        case '00':
+            $('#descripfina2_713').val(" ");
+            _evaluartercefinalidad()
+            break;
+        default:
+            _evaluarsegunfinalidad();
+            break;
+    }
+}
+
+function _evaluartercefinalidad() {
+    validarInputs(
+        {
+            form: "#tercerfinalidad",
+            orden: '1'
+        },
+        function () { _evaluarsegunfinalidad() },
+        _validartercefinalidad
+    )
+}
+function _validartercefinalidad() {
+    $tercefinal713 = $('#fina3_713').val();
+
+    switch ($tercefinal713) {
+        case '01':
+            $('#descripfina3_713').val("ATENCION PARTO");
+            _evaluarcuartafinalidad()
+            break;
+        case '02':
+            $('#descripfina3_713').val("ATENCION REC.NACI");
+            _evaluarcuartafinalidad()
+            break;
+        case '03':
+            $('#descripfina3_713').val("ATENC.PLANIF.FAMI");
+            _evaluarcuartafinalidad()
+            break;
+        case '04':
+            $('#descripfina3_713').val("PRIMERA INFANCIA");
+            _evaluarcuartafinalidad()
+            break;
+        case '05':
+            $('#descripfina3_713').val("ADOLESCENCIA");
+            _evaluarcuartafinalidad()
+            break;
+        case '06':
+            $('#descripfina3_713').val("DET.ALT.EMBARAZO");
+            _evaluarcuartafinalidad()
+            break;
+        case '07':
+            $('#descripfina3_713').val("ADULTEZ");
+            _evaluarcuartafinalidad()
+            break;
+        case '08':
+            $('#descripfina3_713').val("DET.ALT.AGUD.VISU");
+            _evaluarcuartafinalidad()
+            break;
+        case '09':
+            $('#descripfina3_713').val("DET.ENFERM.PROFES");
+            _evaluarcuartafinalidad()
+            break;
+        case '10':
+            $('#descripfina3_713').val("NO APLICA");
+            _evaluarcuartafinalidad()
+            break;
+        case '11':
+            $('#descripfina3_713').val("PATOLOGIA CRONICA");
+            _evaluarcuartafinalidad()
+            break;
+        case '00':
+            $('#descripfina3_713').val(" ");
+            _evaluarcuartafinalidad()
+            break;
+        default:
+            _evaluartercefinalidad();
+            break;
+    }
+}
+function _evaluarcuartafinalidad() {
+    validarInputs(
+        {
+            form: "#cuartafinalidad",
+            orden: '1'
+        },
+        function () { _evaluartercefinalidad() },
+        _validarcuartafinalidad
+    )
+}
+function _validarcuartafinalidad() {
+    $cuartafinal713 = $('#fina4_713').val();
+
+    switch ($cuartafinal713) {
+        case '01':
+            $('#descripfina4_713').val("ATENCION PARTO");
+            enviarDatos713();
+            break;
+        case '02':
+            $('#descripfina4_713').val("ATENCION REC.NACI");
+            enviarDatos713();
+            break;
+        case '03':
+            $('#descripfina4_713').val("ATENC.PLANIF.FAMI");
+            enviarDatos713();
+            break;
+        case '04':
+            $('#descripfina4_713').val("PRIMERA INFANCIA");
+            enviarDatos713();
+            break;
+        case '05':
+            $('#descripfina4_713').val("ADOLESCENCIA");
+            enviarDatos713();
+            break;
+        case '06':
+            $('#descripfina4_713').val("DET.ALT.EMBARAZO");
+            enviarDatos713();
+            break;
+        case '07':
+            $('#descripfina4_713').val("ADULTEZ");
+            enviarDatos713();
+            break;
+        case '08':
+            $('#descripfina4_713').val("DET.ALT.AGUD.VISU");
+            enviarDatos713();
+            break;
+        case '09':
+            $('#descripfina4_713').val("DET.ENFERM.PROFES");
+            enviarDatos713();
+            break;
+        case '10':
+            $('#descripfina4_713').val("NO APLICA");
+            enviarDatos713();
+            break;
+        case '11':
+            $('#descripfina4_713').val("PATOLOGIA CRONICA");
+            enviarDatos713();
+            break;
+        case '00':
+            $('#descripfina4_713').val(" ");
+            enviarDatos713();
+            break;
+        default:
+            _evaluarcuartafinalidad();
+            break;
+    }
+}
 ///////////////////////GRABAR////////
 
 
 function enviarDatos713() {
-    $descripextensa713 = $('#descrpexten_713').val();
+
     $fechaact = moment().format('YYMMDD');
     $operario = $_ADMINW;
-    console.log($operario)
 
     LLAMADO_DLL({
         dato: [$_NovedSal713, $llavetab713, $descripcups713, $liquidar713, $monto713, $paqint713, $codtari_713,
-               $insumos_713, $cantidaddias713, $increm713, $division_713, $descripextensa713, $operario, $fechaact],
+            $insumos_713, $cantidaddias713, $increm713, $division_713, $descripextensa713, $primerfinal713,
+            $segundfinal713, $tercefinal713, $cuartafinal713, $operario, $fechaact],
         callback: validargrabado713,
         nombredll: 'SAL713-02',
         carpeta: 'SALUD'
@@ -717,7 +979,6 @@ function enviarDatos713() {
 }
 
 function validargrabado713(data) {
-    console.log(data, 'data')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -759,12 +1020,12 @@ function _llenarCampos713() {
 }
 
 function on_datosTbla713(data) {
-    console.debug(data);
     var date = data.split('|');
     $llavetab713 = date[1].trim();
     $descripcups713 = date[2].trim();
     $liquidar713 = date[3].trim();
     $monto713 = date[4].trim();
+    $monto_713 = $monto713.substring(0, 12)
     $paqint713 = date[5].trim();
     $codtari_713 = date[6].trim();
     $insumos_713 = date[7].trim();
@@ -773,8 +1034,12 @@ function on_datosTbla713(data) {
     $division_713 = date[10].trim();
     $descrpdiv_713 = date[11].trim();
     $descripextensa713 = date[12].trim();
-    $operario = date[13].trim();
-    $fechaact = date[14].trim();
+    $primerfinal713 = date[13].trim();
+    $segundfinal713 = date[14].trim();
+    $tercefinal713 = date[15].trim();
+    $cuartafinal713 = date[16].trim();
+    $operario = date[17].trim();
+    $fechaact = date[18].trim();
 
     if (date[0].trim() == '00') {
         _mostrarDatos713()
@@ -793,16 +1058,26 @@ function _mostrarDatos713() {
 
     $('#descrpcups_103').val($descripcups713);
     $('#liquidar_713').val($liquidar713);
-    $('#monto_713').val($monto713);
+    vlrmonto_713Mask.typedValue = $monto713;
+    if ($liquidar713 == '4') {
+        $_valor = ($_SALMINUSU / 30) * $monto_713
+        $('#valortotal_713').val($_valor);
+    } else {
+        $_valor = '';
+        $('#valortotal_713').val($_valor);
+    }
     $('#incrementar_713').val($increm713);
     $('#integ_713').val($paqint713);
     $('#insumos_713').val($insumos_713);
     $('#codtari_713').val($codtari_713);
-    // $('#contab_713').val($_CTACONTAB);
     $('#divis_713').val($division_713);
     $('#cantidaddias713').val($cantidaddias713);
     $('#descrpdiv_713').val($descrpdiv_713);
     $('#descrpexten_713').val($descripextensa713);
+    $('#fina1_713').val($primerfinal713);
+    $('#fina2_713').val($segundfinal713);
+    $('#fina3_713').val($tercefinal713);
+    $('#fina4_713').val($cuartafinal713);
     $('#oper_713').val($operario);
     $('#fechat_713').val($fechaact);
 

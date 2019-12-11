@@ -78,12 +78,10 @@ function _evaluarCON850_SAL71A(novedad) {
     SAL71A['NOVEDADW'] = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
-            console.log("nuevo")
             validarCodCup71A();
             break;
         case 8:
         case 9:
-            console.log("Modificar | Eliminar")
             validarCodCup71A();
             break;
         default:
@@ -115,7 +113,6 @@ function evaluarCodCup71A() {
         CON851('03', '03', validarCodCup71A(), 'error', 'error');
     } else {
         datos_envio = datosEnvio() + SAL71A.COD_CUP.padEnd(15, ' ');
-        console.debug('datos_envio', datos_envio)
         postData({
             datosh: datos_envio
         }, get_url("APP/SALUD/SAL71A-01.DLL"))
@@ -196,21 +193,17 @@ function validarPYP71A() {
 
 function ventanaTipProced71A() {
     SAL71A.PROCEDIMIENTO_ESCUP = document.getElementById('proced71A').value;
-    SER829(SAL71A.PROCEDIMIENTO_ESCUP, validarPYP71A, (function (data) {
-        SAL71A.PROCEDIMIENTO_ESCUP = data.COD;
-        document.getElementById('proced71A').value = SAL71A.PROCEDIMIENTO_ESCUP + ' - ' + data.DESCRIP;
 
+    SER829(SAL71A.PROCEDIMIENTO_ESCUP, validarPYP71A, function (data) {
+        SAL71A.PROCEDIMIENTO_ESCUP = data.COD;
         SAL71A.FINALIDAD_ESCUP = document.getElementById('finalidad71A').value;
-        SER834({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, function (data) {
-            SAL71A.FINALIDAD_ESCUP = data.COD
-            document.getElementById('finalidad71A').value = SAL71A.FINALIDAD_ESCUP + ' - ' + data.DESCRIP
-            validarSexoAplica71A();
-        })
-    }))
+        setTimeout((SER834({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, (data) => { console.debug('funciona') })), 400)
+    })
 }
 
-
-function validarSexoAplica71A() {
+function validarSexoAplica71A(data) {
+    SAL71A.FINALIDAD_ESCUP = data.COD
+    document.getElementById('finalidad71A').value = SAL71A.FINALIDAD_ESCUP + ' - ' + data.DESCRIP
     validarInputs({
         form: "#sexoaplica",
         orden: '1'
@@ -295,7 +288,6 @@ function addfilaTablaEsp71A() {
 
 function editfilaTabla71A() {
     let nfila = parseInt($id_fila71A) - 1;
-    // console.debug($_Nfila);
     let fila = $('#tablaEspecialidades tbody tr:eq(' + nfila + ')');
     let html = '<td>' + $('#especialidad_71A').val() +
         '</td><td>' + $('#espec_71A').val() +

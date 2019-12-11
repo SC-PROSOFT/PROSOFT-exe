@@ -568,64 +568,7 @@ function _evaluarfechacierre_SER109D() {
 }
 
 function SAL020C() {
-    var SAL020C = new Object;
-    switch (SER109D.PUCUSU) {
-        case '1':
-            SAL020C.CTACAJA = '11050500001'
-            break;
-        case '2':
-            SAL020C.CTACAJA = '11050100001'
-            break;
-        case '3':
-            SAL020C.CTACAJA = '11050500001'
-            SAL020C.CTAPEND = '130590PE001'
-            SAL020C.COPAGO = '28150500010'
-            break;
-        case '4':
-            SAL020C.CTACAJA = '11050100001'
-            SAL020C.CTAPEND = '147090PE001'
-            SAL020C.COPAGO = '29050500010'
-            break;
-        case '5':
-            SAL020C.CTACAJA = '11050500001'
-            SAL020C.CTAPEND = '130590PE001'
-            SAL020C.COPAGO = '28150500010'
-            break;
-        case '6':
-            SAL020C.CTACAJA = '11050100001'
-            SAL020C.CTAPEND = '138490PE001'
-            SAL020C.COPAGO = '24070600010'
-            break;
-    }
-    $_USUA_GLOBAL[0].PEDIDO = 'S' ? SAL020C.CTAMEDI = '281510' : SAL020C.CTAMEDI = '';
-    var SEGW = () => {
-        let URL = get_url("APP/CONTAB/CON007BS.DLL");
-        postData({ datosh: datosEnvio() }, URL)
-            .then(data => {
-                console.debug(data);
-                return data
-            })
-            .catch(err => {
-                console.debug(err);
-                return '0'
-            })
-    }
-    if ((SEGW != '0') && (SEGW != '3') && (SEGW != '5')) {
-        // CON851B ERROR SEGW
-    }
-    switch (SER109D.PREFIJOW) {
-        case 'P':
-            SAL020C.LOTEMOV = '40'
-            break;
-        case 'T':
-            SAL020C.LOTEMOV = '30'
-            break;
-    }
-    if(($_USUA_GLOBAL[0].NIT == 800162035) || ($_USUA_GLOBAL[0].NIT == 845000038) || ($_USUA_GLOBAL[0].NIT == 900566047) || ($_USUA_GLOBAL[0].NIT == 900658867) || ($_USUA_GLOBAL[0].NIT == 901120152)){
-        var LOTE2MOV = SER109D.LLAVEW.substring(1,2);
-    }
-    var COMPROBMOV = SER109D.LLAVEW.substring(2,7);
-    
+
 }
 
 
