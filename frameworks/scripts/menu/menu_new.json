@@ -4637,7 +4637,7 @@
                     "8"
                   ],
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/PAGINAS/SAL41.html"
+                  "Href": "../../SALUD/paginas/SAL41.html"
                 }
               ]
             }
@@ -6360,7 +6360,7 @@
                       ],
                       "Opc-segu": "IS41",
                       "Tipo": "HTML",
-                      "Href": "../../SALUD/PAGINAS/SAL7411.html"
+                      "Href": "../../SALUD/paginas/SAL7411.html"
                     },
                     {
                       "Id": "097412",
@@ -10008,7 +10008,7 @@
                       "Descripcion": "Actualizar citas",
                       "Opc-segu": "ISC11",
                       "Tipo": "HTML",
-                      "Href": "../../SALUD/PAGINAS/SAL7C11.html"
+                      "Href": "../../SALUD/paginas/SAL7C11.html"
                     },
                     {
                       "Id": "097C12",
