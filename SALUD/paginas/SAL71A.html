@@ -11,6 +11,12 @@
         display: inline-block;
     }
 
+    #tablaEspecialidades tbody td> {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
     #tablaEspecialidades tbody td,
     #tablaEspecialidades thead>tr>th,
     #tablaEspecialidades tfoot>tr>td {
@@ -42,18 +48,38 @@
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
 
                         <div class="col-md-12 col-sm-12 col-xs-12" style="display: flex">
-                            <div class="col-md-6 col-sm-8 col-xs-12 inline-inputs">
-                                <label class="col-md-6 col-sm-6 col-xs-6">Novedad:</label>
-                                <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="novSer71A" type="text"
-                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="inline-inputs">
+                                    <label class="col-md-12 col-sm-12 col-xs-12">Novedad:</label>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                        <input id="novSer71A" type="text"
+                                            class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4" style="display:flex;">
+                                <div class="col-md-12 inline-inputs">
+                                    <label class="col-md-12 col-sm-12 col-xs-12">Operador:</label>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                        <input id="oper_ser17A" type="text" maxlength="4"
+                                            class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="inline-inputs">
+                                    <label class="col-md-12 col-sm-12 col-xs-12">Fecha:</label>
+                                    <div class="input-group col-md-12 col-sm-12 col-xs-12">
+                                        <input id="fecha_ser17A" type="text" maxlength="6"
+                                            class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                <div class="col-md-9 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
 
                         <div class="col-md-4 col-sm-4 col-xs-4">
@@ -64,7 +90,7 @@
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                                 <button type="button" id="codcupsBtn_71A"
-                                    class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                    class="btn f8-Btn btn-default col-md-2 col-sm-2 col-xs-2">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
@@ -81,7 +107,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                <div class="col-md-9 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="inline-inputs">
@@ -115,7 +141,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                <div class="col-md-9 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-2 col-sm-12 col-xs-12">
                             <div class="inline-inputs">
@@ -134,7 +160,7 @@
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                                 <button type="button" id="atiendeBtn_71A"
-                                    class="btn btn-default col-md-1 col-sm-1 col-xs-1">
+                                    class="btn f8-Btn btn-default col-md-1 col-sm-1 col-xs-1">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
@@ -147,7 +173,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                <div class="col-md-9 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="salto-linea"></div>
                         <div class="col-md-2 col-sm-3 col-xs-3">
@@ -160,14 +186,14 @@
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-3 col-xs-3">
-                            <div class="inline-inputs" id="consulta">
+                            <div class="inline-inputs">
                                 <label class="col-md-8 col-sm-5 col-xs-5">Especialidad:</label>
                                 <div class="input-group col-md-6 col-sm-3 col-xs-3" id="numespecialidad">
-                                    <input id="espec_71A" type="text" maxlength="2" data-orden="1"
+                                    <input id="espec_71A" type="text" maxlength="3" data-orden="1"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                                 <button type="button" id="Btnespec_71A"
-                                    class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                    class="btn f8-Btn btn-default col-md-2 col-sm-2 col-xs-2">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </div>
@@ -176,17 +202,17 @@
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
                                 <div class="inline-inputs">
                                     <input id="DescEsp_71A" type="text"
-                                        class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1">
+                                        class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-7 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
+                <div class="col-md-9 col-sm-12 col-xs-12" style="float: none; margin: 0 auto;">
                     <div class="salto-linea"></div>
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                        <div style="text-align:left;" class="col-md-12 col-sm-12 col-xs-12 ">
+                        <div style="text-align:center;" class="col-md-12 col-sm-12 col-xs-12 ">
                             <label>Especialidades</label>
                             <br><br>
                         </div>
