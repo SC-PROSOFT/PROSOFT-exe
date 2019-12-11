@@ -758,7 +758,7 @@ function _dataCON003_41_01(data) {
         _Datosucursal2_41();
     }
     else if (($_ADMINW == "GEBC") || ($_ADMINW == "ADMI")) {
-        _datosucursal2();
+        _Datosucursal2();
     }
     else {
         switch ($_NITUSU) {
