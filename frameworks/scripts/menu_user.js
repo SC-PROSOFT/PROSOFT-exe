@@ -13,12 +13,20 @@ $(function () {
 $(document).ready(function () {
 
     _cargarUsuario();
+    // _validarArchivos_SC();
 
     $('#cerrar_menu_user').click(function () {
         var url = path.join(__dirname, '../../login/login.html');
         window.location.href = url;
     });
 });
+
+function _validarArchivos_SC() {
+    postData({ datosh: datosEnvio() }, get_url("app/CONTAB/ARCHIVOS-SC.DLL"))
+        .then(data => {
+            console.log(data);
+        })
+}
 
 function _cargarUsuario() {
     var url = localStorage.Modulo == 'BOM' || localStorage.Contab == 'TOPALXE19' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
@@ -220,42 +228,42 @@ function _toggleNav() {
     //     ipcRenderer.send('ventana2', { param: vector });
     // }
     // else {
-        // if (widthScreen > 992) { // Pantalla grande
-        if (visible) {
-            if (widthScreen > 992) {
-                nav.hide('slide', function () {
-                    $(this).attr('style', 'display:none!important;');
-                });
+    // if (widthScreen > 992) { // Pantalla grande
+    if (visible) {
+        if (widthScreen > 992) {
+            nav.hide('slide', function () {
+                $(this).attr('style', 'display:none!important;');
+            });
 
-                $('.page-fixed-main-content').animate({
-                    'margin-left': '0'
-                });
-            } else {
-                nav.slideToggle('slow', function () {
-                    $(this).attr('style', 'display:none!important;');
-                });
-            }
-
-            _cargarEventos('off');
+            $('.page-fixed-main-content').animate({
+                'margin-left': '0'
+            });
         } else {
-            if (widthScreen > 992) {
-                nav.show('slide', function () {
-                    $(this).removeAttr('style');
-                });
-
-                $('.page-fixed-main-content').animate({
-                    'margin-left': '280px'
-                });
-            } else {
-                nav.slideToggle('slow', function () {
-                    $(this).attr('style', 'display:block!important;');
-                });
-            }
-            _cargarEventos('on');
-            $('#body_main').html('')
+            nav.slideToggle('slow', function () {
+                $(this).attr('style', 'display:none!important;');
+            });
         }
 
-        $("html, body").animate({ scrollTop: 0 }, "slow");
+        _cargarEventos('off');
+    } else {
+        if (widthScreen > 992) {
+            nav.show('slide', function () {
+                $(this).removeAttr('style');
+            });
+
+            $('.page-fixed-main-content').animate({
+                'margin-left': '280px'
+            });
+        } else {
+            nav.slideToggle('slow', function () {
+                $(this).attr('style', 'display:block!important;');
+            });
+        }
+        _cargarEventos('on');
+        $('#body_main').html('')
+    }
+
+    $("html, body").animate({ scrollTop: 0 }, "slow");
     // }
 }
 

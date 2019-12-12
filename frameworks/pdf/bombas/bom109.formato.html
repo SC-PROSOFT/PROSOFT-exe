@@ -254,9 +254,9 @@
 
 
     function montarImpresion_109() {
-        $('#nombreEmpresa').html($_TOTALES[14].trim())
-        $('#nitEmpresa').html('Nit: ' + $_TOTALES[15].trim())
-        $('#comprobanteIniPdf').html($_TOTALES[16].trim())
+        $('#nombreEmpresa').html($_TOTALES[14].toString().trim())
+        $('#nitEmpresa').html('Nit: ' + $_TOTALES[15].toString().trim())
+        $('#comprobanteIniPdf').html($_TOTALES[16].toString().trim())
 
         var listado = $_LISTADO;
 

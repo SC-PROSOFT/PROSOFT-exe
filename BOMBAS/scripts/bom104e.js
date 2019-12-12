@@ -14,7 +14,7 @@ var $_SURTIDORES_104E,
 
 var numAnterior = new IMask(
     document.getElementById('numAnter'),
-    { mask: Number, min:-9999999999, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
+    { mask: Number, min: -9999999999, max: 9999999999, scale: 2, thousandsSeparator: ',', radix: '.' }
 );
 
 var numActual = new IMask(
@@ -353,7 +353,9 @@ function _reset_104e() {
         + '#vendedor_104e,'
         + '#sucursal,'
         + '#sucursalNom,'
-        + '#turno').val();
+        + '#turno').val('');
+
+    _validarComprobante_104e()
 }
 
 function _init_104e() {
@@ -391,6 +393,10 @@ function on_validarComprobante_104e(data) {
             null,
             function (data) {
                 $_SURTIDORES_104E = data['SURTIDORES'];
+                $_SURTIDORES_104E.map(e => {
+                    e.CANTID = e.CANTID.replace(/\,/g, '');
+                })
+
                 $_SURTIDORES_104E.pop();
                 $_VALES_104E = data['TBLA-DEUD'];
                 $_INFO_COMP_104E = res;
@@ -495,7 +501,7 @@ function _llenarTablaSurtidores_104e() {
 
             $_DATOS_TABLA_104E.push({
                 itemSurtidor: item,
-                galonaje: $_SURTIDORES_104E[i].CANTID.trim() || "0",
+                galonaje: $_SURTIDORES_104E[i].CANTID.trim().replace(/\,/g, '') || "0",
                 valor: $_SURTIDORES_104E[i].VALOR.trim() || "0",
                 codProducto: $_SURTIDORES_104E[i].ARTICU.trim(),
                 descrProducto: "0",
@@ -1266,10 +1272,10 @@ function _escribirTemp_104e() {
 
             $_DATOS_TABLA_104E[i].codProducto = espaciosDer($_DATOS_TABLA_104E[i].codProducto, 18);
 
-            let galonaje = parseFloat($_DATOS_TABLA_104E[i].galonaje).toFixed(3).replace(/\./g, '');
+            let galonaje = parseFloat($_DATOS_TABLA_104E[i].galonaje.toString().replace(/\,/g, '')).toFixed(3).replace(/\./g, '');
             $_DATOS_TABLA_104E[i].galonaje = cerosIzq(galonaje, 15);
 
-            let valorAnterior = parseFloat($_DATOS_TABLA_104E[i].valorAnterior.replace(/\,/g, '')).toFixed(3).replace(/\./g, '');
+            let valorAnterior = parseFloat($_DATOS_TABLA_104E[i].valorAnterior.toString().replace(/\,/g, '')).toFixed(3).replace(/\./g, '');
             $_DATOS_TABLA_104E[i].valorAnterior = cerosIzq(valorAnterior, 15);
 
             let numeroActual = parseFloat($_DATOS_TABLA_104E[i].numeroActual).toFixed(3).replace(/\./g, '');
@@ -1501,13 +1507,13 @@ function on_enviarImpresion_104e(data) {
         res.push(nombreEmpresa);
         res.push(nitEmpresa);
         res.push(comprobanteInicial);
-        res.push($_USUA_GLOBAL[0].RUTA_LOGO);
+        res.push($_USUA_GLOBAL[0].NIT.toString().padStart(10, "0"));
 
         var opcionesImpresiones = {
             datos: get_url('temp/SC-LISTVENT-' + localStorage.Sesion + '.JSON'),
             extra: { totales: res },
             tipo: '',
-            formato: 'bom109.formato.html',
+            formato: 'bombas/bom109.formato.html',
             nombre: 'LISTADO-VENT-COMBUST-' + localStorage.Sesion
         };
 
