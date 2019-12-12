@@ -62,13 +62,8 @@
               "Id": "0115",
               "Descripcion": "Actualizar sucursales",
               "Opc-segu": "C115",
-              "Tipo": "POWER",
-              "Params": [
-                {
-                  "formulario": "CON110L1",
-                  "dll": "CONTAB\\CON110L1.dll"
-                }
-              ]
+              "Tipo": "HTML",
+              "Href": "../../CONTAB/paginas/CON110L1.html"
             },
             {
               "Id": "0116",
