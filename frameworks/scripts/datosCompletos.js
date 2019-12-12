@@ -126,7 +126,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
             break;
         case 'USO':
             programa = "INVENT/INV806"
-        // SI REQUIERE FILTRO
+            // SI REQUIERE FILTRO
             break;
         case 'POLIT':
             programa = "INVENT/INV807"
@@ -162,6 +162,18 @@ function obtenerDatosCompletos(data, callbackSucces) {
             break;
         case 'GRCAPITA':
             programa = "SALUD/SER871"
+            // NO REQUIERE FILTRO
+            break;
+        case 'COMUNIDADES':
+            programa = "SALUD/SER116A"
+            // NO REQUIERE FILTRO
+            break;
+        case 'RESGUARDOS':
+            programa = "SALUD/SER117A"
+            // NO REQUIERE FILTRO
+            break;
+        case 'EQUIOPERADOR':
+            programa = "SALUD/SER11V"
             // NO REQUIERE FILTRO
             break;
         case 'PROFESION':
