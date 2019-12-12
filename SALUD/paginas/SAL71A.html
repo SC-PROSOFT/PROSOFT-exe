@@ -1,4 +1,8 @@
 <style>
+ #tablaEspecialidades{
+     border: 1px solid black;
+ }
+
     #tablaEspecialidades thead,
     #tablaEspecialidades tfoot {
         width: 100%;
@@ -9,6 +13,26 @@
         overflow-y: scroll;
         width: 100%;
         display: inline-block;
+    }
+    #tablaEspecialidades td:nth-child(1),
+    #tablaEspecialidades th:nth-child(1){
+        width: 33px;
+        padding: 0;
+        text-align: center;
+    }
+   
+    #tablaEspecialidades td:nth-child(2),
+    #tablaEspecialidades th:nth-child(2) {
+        width: 124px;
+        padding: 0;
+        text-align: center;
+    }
+
+    #tablaEspecialidades td:nth-child(3),
+    #tablaEspecialidades th:nth-child(3) {
+        width: 680px;
+        padding: 0;
+        text-align: left;
     }
 
     #tablaEspecialidades tbody td> {
@@ -22,7 +46,6 @@
     #tablaEspecialidades tfoot>tr>td {
         float: left;
         border-bottom-width: 0;
-        width: 172px;
     }
 </style>
 <div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
@@ -216,11 +239,12 @@
                             <label>Especialidades</label>
                             <br><br>
                         </div>
-                        <table id="tablaEspecialidades" class="table table-light table-striped" data-orden="1">
+                        <table id="tablaEspecialidades" cellspacing:0; cellpadding:0;
+                            class="table table-light table-striped table-bordered" data-orden="1">
                             <thead>
-                                <th>Id</th>
-                                <th>Cod Especialidad</th>
-                                <th>Nombre Especialidad</th>
+                                <th style="text-align:left">#</th>
+                                <th style="text-align:left">Cod Especialidad</th>
+                                <th style="text-align:left">Nombre Especialidad</th>
                             </thead>
                             <tbody></tbody>
 

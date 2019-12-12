@@ -110,6 +110,8 @@ function CON851P_MSG(code) {
         case "90": msj = "Licencia proxima a expirar";
             break;
         case "54": msj = "Desea eliminar registro ?";
+        break;
+        case "55": msj = "Desea modificar el campo ?";
             break;
         default: msj = "Error falta actualizar contab";
             break;
