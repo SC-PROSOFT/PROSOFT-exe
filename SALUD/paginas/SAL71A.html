@@ -1,7 +1,7 @@
 <style>
- #tablaEspecialidades{
-     border: 1px solid black;
- }
+    #tablaEspecialidades {
+        border: 1px solid black;
+    }
 
     #tablaEspecialidades thead,
     #tablaEspecialidades tfoot {
@@ -14,13 +14,14 @@
         width: 100%;
         display: inline-block;
     }
+
     #tablaEspecialidades td:nth-child(1),
-    #tablaEspecialidades th:nth-child(1){
+    #tablaEspecialidades th:nth-child(1) {
         width: 33px;
         padding: 0;
         text-align: center;
     }
-   
+
     #tablaEspecialidades td:nth-child(2),
     #tablaEspecialidades th:nth-child(2) {
         width: 124px;
@@ -110,7 +111,8 @@
                                 <label class="col-md-5 col-sm-5 col-xs-5">Codigo CUPS:</label>
                                 <div class="input-group col-md-5 col-sm-5 col-xs-5" id="codigoscups">
                                     <input id="codcups_71A" type="text" maxlength="12" data-orden="1"
-                                        class="form-control col-md-12 col-sm-12 col-xs-12">
+                                        class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        onkeyup="this.value = this.value.toUpperCase();">
                                 </div>
                                 <button type="button" id="codcupsBtn_71A"
                                     class="btn f8-Btn btn-default col-md-2 col-sm-2 col-xs-2">
@@ -122,7 +124,7 @@
                             <div class="inline-inputs">
                                 <label class="col-md-5 col-sm-5 col-xs-5">Descripcion:</label>
                                 <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="descrip71A" type="text"
+                                    <input id="descrip71A" type="text" onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
@@ -136,7 +138,8 @@
                             <div class="inline-inputs">
                                 <label class="col-md-6 col-sm-6 col-xs-6 text-label">PYP?:</label>
                                 <div class="input-group col-md-6 col-sm-6 col-xs-6" id="pyp">
-                                    <input id="pyp_71A" type="text" maxlength="2" data-orden="1"
+                                    <input id="pyp_71A" type="text" maxlength="1" data-orden="1"
+                                        onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
@@ -145,7 +148,7 @@
                             <div class="inline-inputs">
                                 <label class="col-md-6 col-sm-6 col-xs-6 text-label">Tip procedimiento:</label>
                                 <div class="input-group col-md-6 col-sm-6 col-xs-6">
-                                    <input id="proced71A" type="text"
+                                    <input id="proced71A" type="text" onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
@@ -155,6 +158,7 @@
                                 <label class="col-md-5 col-sm-5 col-xs-5 text-label">Finalidad:</label>
                                 <div class="input-group col-md-8 col-sm-8 col-xs-8">
                                     <input id="finalidad71A" type="text"
+                                        onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
@@ -170,7 +174,7 @@
                             <div class="inline-inputs">
                                 <label class="col-md-7 col-sm-7 col-xs-7">Sexo Aplica:</label>
                                 <div class="input-group col-md-4 col-sm-4 col-xs-4" id="sexoaplica">
-                                    <input id="sexo71A" type="text" maxlength="2" data-orden="1"
+                                    <input id="sexo71A" type="text" maxlength="1" data-orden="1"type="text" onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
@@ -179,7 +183,8 @@
                             <div class="inline-inputs" id="personal71A">
                                 <label class="col-md-7 col-sm-7 col-xs-7">Persona Atiende:</label>
                                 <div class="input-group col-md-4 col-sm-12 col-xs-12">
-                                    <input id="atiende_71A" type="text" maxlength="2" data-orden="1"
+                                    <input id="atiende_71A" type="text" maxlength="1" data-orden="1"
+                                        onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                                 <button type="button" id="atiendeBtn_71A"
@@ -190,7 +195,8 @@
                         </div>
                         <div class="input-group col-md-5 col-sm-12 col-xs-12">
                             <div class="inline-inputs">
-                                <input id="descrPer71A" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="descrPer71A" type="text" onkeyup="this.value = this.value.toUpperCase();"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
@@ -224,7 +230,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
                                 <div class="inline-inputs">
-                                    <input id="DescEsp_71A" type="text"
+                                    <input id="DescEsp_71A" type="text" onkeyup="this.value = this.value.toUpperCase();"
                                         class="form-control col-md-12 col-sm-12 col-xs-12">
                                 </div>
                             </div>
