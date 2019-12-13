@@ -1282,6 +1282,7 @@ function _leerarticulo() {
     }
     else {
         // $_NUMEROARTW = $('#codigo_103').val();
+        //////OPCION DE PAQUETE INTEGRALES 971G/// USA ESTA COSULTA
         $_CODARTW = $_LLAVEGRUPOARTW + $_NUMEROARTW + $_CLASEARTW;
         LLAMADO_DLL({
             dato: [$_CODARTW],

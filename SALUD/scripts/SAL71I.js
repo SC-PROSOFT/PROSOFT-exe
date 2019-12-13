@@ -8,8 +8,6 @@ $(document).ready(function () {
     _toggleF8([
         { input: 'codigo', app: '71I', funct: _ventanaResgard }
     ]);
-
-    // loader('hide');
     CON850(_evaluarCON850);
 
 });
@@ -34,8 +32,9 @@ function _ventanaResgard(e) {
                         $("#codigo_71I").focus();
                     },
                     callback: function (data) {
+                    
                         document.getElementById('codigo_71I').value = data.COD;
-                        document.getElementById('descripSer71I').value = data.DESCRIP;
+                        // document.getElementById('descripSer71I').value = data.DESCRIP;
                         _enterInput('#codigo_71I');
 
                     }
@@ -78,7 +77,6 @@ function _validarDato71I() {
 }
 function _validarcodigores_71I() {
     $codigo_71I = $('#codigo_71I').val();
-
     LLAMADO_DLL({
         dato: [$codigo_71I],
         callback: _dataSAL71I_res,
@@ -88,13 +86,12 @@ function _validarcodigores_71I() {
 }
 
 function _dataSAL71I_res(data){
-   
+    console.log(data, 'consulta')
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $_CODRESGU = date[1].trim();
-    $_NOMRESGU = date[2].trim();
+    $_CODRESGU = date[1];
+    $_NOMRESGU = date[2];
     if (($_NovedSer71I == '7') && (swinvalid == '01')) {
-        
         detalle71I()
     }
     else if (($_NovedSer71I == '7') && (swinvalid == '00')) {
@@ -180,6 +177,7 @@ function envioDatSer71I() {
 }
 
 function _data71I_02(data) {
+    console.log(data, 'grabar')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {

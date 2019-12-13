@@ -36,19 +36,19 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6">
-                        <div class="inline-inputs" id="CONVENIO_71G">
+                        <div class="inline-inputs">
                             <label class="col-md-3 col-sm-3 col-xs-3">Covenio:</label>
-                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                                <input id="convenio_71G" type="text" data-orden="1" maxlength="30" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    onkeyup="this.value = this.value.toUpperCase();">
-                            </div>
-                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
-                                <input id="descripconv_71G" type="text" data-orden="1" maxlength="30" class="form-control col-md-12 col-sm-12 col-xs-12"
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9" id="CONVENIO_71G">
+                                <input id="convenio_71G" type="text" data-orden="1" maxlength="2" class="form-control col-md-12 col-sm-12 col-xs-12"
                                     onkeyup="this.value = this.value.toUpperCase();">
                             </div>
                             <button type="button" id="convenioBtn_71G" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                 <i class="icon-magnifier"></i>
                             </button>
+                            <div class="input-group col-md-9 col-sm-9 col-xs-9">
+                                <input id="descripconv_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                    onkeyup="this.value = this.value.toUpperCase();">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,8 @@
                         <div class="inline-inputs" id='GRUPO_71G'>
                             <label class="col-md-6 col-sm-9 col-xs-9">Grupo:</label>
                             <div class="input-group col-md-8 col-sm-3 col-xs-3">
-                                <input id="grupos_71G" type="text" maxlength="2" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="grupos_71G" type="text" maxlength="2" data-orden="1" 
+                                class="form-control col-md-12 col-sm-12 col-xs-12" onkeyup="this.value = this.value.toUpperCase();">
                             </div>
                             <button type="button" id="gruposBtn_71G" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
                                 <i class="icon-magnifier"></i>
@@ -83,62 +84,74 @@
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-6 col-xs-6 text-label">Observac:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="observ_71G" type="text" maxlength="50" data-orden="1" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="observ_71G" type="text" maxlength="50" data-orden="1" 
+                                class="form-control col-md-12 col-sm-12 col-xs-12" onkeyup="this.value = this.value.toUpperCase();">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-md-2 col-sm-2 col-xs-2" id="VALOR_71G">
                         <div class="inline-inputs">
                             <label class="col-md-6 col-sm-6 col-xs-6 text-label">Valor:</label>
                             <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                <input id="valor_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="valor_71G" maxlength="14" data-orden="1" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
+                    <div class="salto-linea"></div>
 
-                    <div class="col-md-2 col-sm-3 col-xs-6" id="ITEM_71G">
-                        <label>Item</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="item_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                maxlength="3" data-orden="1" >
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-6 col-xs-9" id="CL_71G">
-                        <label>Cl:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="cl_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="1"
-                                data-orden="1">
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-9" id="CODIGO_71C">
-                        <label>Codigo:</label>
-                        <div class="inline-inputs">
-                            <div class="input-group col-md-6 col-sm-12 col-xs-12">
-                                <input id="codigo_71c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="10" data-orden="1">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="display: flex">
+                        <div class="col-md-12 col-sm-12 col-xs-12 inline-inputs">
+
+                            <div class="col-md-2 col-sm-4 col-xs-4" id="ITEM_71G">
+                                <div class="inline-inputs">
+                                    <label class="col-md-4 col-sm-5 col-xs-5">Item</label>
+                                    <div class="input-group col-md-8 col-sm-5 col-xs-5">
+                                        <input id="item_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            maxlength="3" data-orden="1" required="true" disabled="disabled">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="input-group col-md-6 col-sm-12 col-xs-12">
-                                <input id="codigoseg_71c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    maxlength="7">
+                            <div class="col-md-2 col-sm-4 col-xs-4" id="CL_71G">
+                                <div class="inline-inputs">
+                                    <label class="col-md-3 col-sm-5 col-xs-5">Cl</label>
+                                    <div class="input-group col-md-4 col-sm-5 col-xs-5">
+                                        <input id="cl_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            maxlength="1" data-orden="1" >
+                                    </div>
+                                    <div class="input-group col-md-5 col-sm-5 col-xs-5">
+                                        <input id="cldescrip_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-4 col-xs-4">
+                                <div class="inline-inputs">
+                                    <label class="col-md-3 col-sm-5 col-xs-5">Codigo</label>
+                                    <div class="input-group col-md-2 col-sm-5 col-xs-5" id="CODIGO_71C">
+                                        <input id="codigo_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            maxlength="17" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
+                                    </div>
+                                    <button type="button" id="codigoBtn_71G" class="btn btn-default col-md-2 col-sm-2 col-xs-2">
+                                        <i class="icon-magnifier"></i>
+                                    </button>
+                                    <div class="input-group col-md-10 col-sm-5 col-xs-5">
+                                        <input id="descripcod_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-4 col-xs-4" id="CANTIDAD_71G">
+                                <div class="inline-inputs">
+                                    <label class="col-md-4 col-sm-6 col-xs-6">Cantidad</label>
+                                    <div class="input-group col-md-8 col-sm-6 col-xs-6">
+                                        <input id="cantidad_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                            maxlength="3" data-orden="1" disabled="disabled">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-9">
-                        <label>Descripcion:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="ciudadsucu_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                maxlength="5">
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-sm-6 col-xs-9" id="cantidad_71G">
-                        <label>Cantidad:</label>
-                        <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                            <input id="cantidad_71G" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                maxlength="3" data-orden="1" >
-                        </div>
-                    </div>
+
                     <div style="clear:both;"></div>
                     <hr>
                     <div class="salto-linea"></div>
@@ -147,8 +160,8 @@
                             <tr>
                                 <th>Item</th>
                                 <th>Cl</th>
-                                <th>Codigo</th>
                                 <th></th>
+                                <th>Codigo</th>
                                 <th>Descripcion</th>
                                 <th>Cantidad</th>
                             </tr>
