@@ -105,7 +105,7 @@ function validarCodCup71A() {
         evaluarCodCup71A
     )
 }
-// let res = data.split('|');
+
 function evaluarCodCup71A() {
     SAL71A.COD_CUP = document.getElementById('codcups_71A').value.trim();
     if (typeof SAL71A.COD_CUP == "undefined" || SAL71A.COD_CUP == void 0 || SAL71A.COD_CUP.length == 0) {
@@ -144,7 +144,7 @@ function on_restriccionCups71A(data) {
     SAL71A.DESCRIP_CUP = data.DESCRIP_CUP;
     SAL71A.FECHA_ESPCUP = data.FECHA;
     SAL71A.FINALIDAD_ESCUP = data.FINALIDAD == undefined ? SAL71A.FINALIDAD_ESCUP = '' : SAL71A.FINALIDAD_ESCUP = data.FINALIDAD;
-    SAL71A.OPER_CUP = data.OPER;
+    SAL71A.OPER_ESCUP = data.OPER;
     SAL71A.SEXO_ESCUP = data.SEXO;
     SAL71A.ATIENDE_ESCUP = data.ATIENDE;
     SAL71A.PYP = data.PYP;
@@ -168,7 +168,7 @@ function on_restriccionCups71A(data) {
     } else {
         document.getElementById('codcups_71A').value = SAL71A.COD_CUP;
         document.getElementById('descrip71A').value = SAL71A.DESCRIP_CUP;
-
+        SAL71A.OPER_ESCUP = localStorage['Usuario'];
     }
     validarPYP71A()
 }
@@ -244,6 +244,7 @@ function validarIdEspec71A() {
         orden: '1'
     }, validarPersonalatiende_71A, function () {
         SAL71A.ID_ESP = cerosIzq(document.getElementById('especialidad_71A').value, 2)
+        document.getElementById('especialidad_71A').value = cerosIzq(SAL71A.ID_ESP, 2);
         if (SAL71A.ID_ESP > 0 && SAL71A.ID_ESP <= 50) {
             validarEspecialidad71A();
         } else { CON851('03', '03', validarIdEspec71A(), 'error', 'error') }
@@ -276,7 +277,6 @@ function validarEspecialidad71A() {
 
 function addfilaTablaEsp71A() {
     let existe_registro = validarExistenciaRegistro71A();
-    console.log('existe?', existe_registro)
     if (!existe_registro) {
         var fuente = `<tr>` +
             `<td style="text-align:left">${cerosIzq($('#especialidad_71A').val(), 2)}</td>` +
@@ -307,21 +307,21 @@ function validarExistenciaRegistro71A() {
     return found;
 }
 function editfilaTabla71A() {
-    console.log('editar tabla')
-    let nfila = parseInt($id_fila71A) - 1;
-    let fila = $('#tablaEspecialidades tbody tr:eq(' + nfila + ')');
-    let html = '<td>' + cerosIzq($('#especialidad_71A').val(), 2) +
-        '</td><td>' + $('#espec_71A').val() +
-        '</td><td>' + $('#DescEsp_71A').val() +
-        '</td>';
-    fila.html(html);
-
-    validarTablaEspec71A();
-
-
+    let existe_registro = validarExistenciaRegistro71A();
+    if (!existe_registro) {
+        var fuente = `<tr>` +
+            `<td style="text-align:left">${cerosIzq($('#especialidad_71A').val(), 2)}</td>` +
+            `<td style="text-align:left">${$('#espec_71A').val()}</td>` +
+            `<td style="text-align:left">${$('#DescEsp_71A').val()}</td>` +
+            `</tr>`;
+        $('#tablaEspecialidades > tbody > tr .tablaActivo').append(fuente);
+        validarTablaEspec71A();
+        // validarIdEspec71A();
+    } else {
+        corregirEspecialidad71A(existe_registro);
+    }
 }
 function validarTablaEspec71A(orden) {
-    console.log('validartabla')
     validarTabla(
         {
             tabla: '#tablaEspecialidades',
@@ -338,7 +338,6 @@ function validarTablaEspec71A(orden) {
 }
 
 function _Especialidad71A(datos) {
-    console.log('mover dentro tabla')
     var tabla = datos;
     $id_fila71A = tabla.rowIndex;
     if (SAL71A.NOVEDADW == '7') {
@@ -367,7 +366,7 @@ function corregirEspecialidad71A(registro) {
                 document.getElementById('espec_71A').value = SAL71A.ESPECSELEC_COD;
                 document.getElementById('DescEsp_71A').value = SAL71A.ESPECSELEC_DESCRIP;
                 switch (SAL71A.NOVEDADW) {
-                    case '7': corregirfilaTablaEsp71A(registro); break;
+                    case '7': case '8': corregirfilaTablaEsp71A(registro); break;
                     default: break;
                 }
             } else CON851('03', '03', validarEspecialidad71A(), 'error', 'error');
@@ -376,7 +375,6 @@ function corregirEspecialidad71A(registro) {
 }
 function corregirfilaTablaEsp71A(registro) {
     let existe_registro = validarRegistroExistente71A(registro);
-    console.log('existe?', existe_registro)
     if (!existe_registro) {
         registro[0].textContent = cerosIzq($('#especialidad_71A').val());
         registro[1].textContent = $('#espec_71A').val();
@@ -408,23 +406,30 @@ function llenarEspecialidades71A() {
         }
     }
     let especialidades = SAL71A.ESPECIALIDADES;
-    for (especialidad in especialidades) { especialidades_envio += especialidades[especialidad].COD_ESP + ',' }
+    for (especialidad in especialidades) { if (especialidades[especialidad].COD_ESP.trim() != void 0) { especialidades_envio += cerosIzq(especialidades[especialidad].COD_ESP, 2) + ';' } }
     on_guardar71A(especialidades_envio);
 }
 function on_guardar71A(especialidades_envio) {
     switch (SAL71A.NOVEDADW) {
         case '7':
             SAL71A.FECHA_ESPCUP = moment().format("YYYYMMDD");
-            SAL71A.PARAMS = SAL71A.COD_CUP + '|' + SAL71A.FECHA_ESPCUP + '|' + SAL71A.SEXO_ESCUP
-                + '|' + SAL71A.ATIENDE_ESCUP + '|' + SAL71A.PYP + '|' + SAL71A.PROCEDIMIENTO_ESCUP + '|' +
+
+            SAL71A.PARAMS =
+            SAL71A.COD_CUP.padEnd(12,' ') + '|' + SAL71A.FECHA_ESPCUP + '|' + SAL71A.SEXO_ESCUP +
+                '|' + SAL71A.ATIENDE_ESCUP + '|' + SAL71A.PYP + '|' + SAL71A.OPER_ESCUP + '|' + SAL71A.PROCEDIMIENTO_ESCUP + '|' +
                 SAL71A.FINALIDAD_ESCUP + '|' + especialidades_envio + '|'
+
             CON851P('01', validarEspecialidad71A, on_actualizar71A)
             break;
         case '8':
-            SAL71A.FECHA_ESPCUP = moment(SAL71A.FECHA_ESPCUP).format("YYYYMMDD");
-            SAL71A.PARAMS = SAL71A.COD_CUP + '|' + SAL71A.FECHA_ESPCUP + '|' + SAL71A.SEXO_ESCUP
-                + '|' + SAL71A.ATIENDE_ESCUP + '|' + SAL71A.PYP + '|' + SAL71A.PROCEDIMIENTO_ESCUP + '|' +
+            $fecha = SAL71A.FECHA_ESPCUP;
+            SAL71A.FECHA_ESPCUP = $fecha;
+
+            SAL71A.PARAMS =
+                SAL71A.COD_CUP.padEnd(12,' ') + '|' + SAL71A.FECHA_ESPCUP + '|' + SAL71A.SEXO_ESCUP
+                + '|' + SAL71A.ATIENDE_ESCUP + '|' + SAL71A.PYP + '|' + SAL71A.OPER_ESCUP + '|' + SAL71A.PROCEDIMIENTO_ESCUP + '|' +
                 SAL71A.FINALIDAD_ESCUP + '|' + especialidades_envio + '|'
+
             CON851P('01', validarEspecialidad71A, on_actualizar71A)
             break;
         case '9':
@@ -437,14 +442,15 @@ function on_guardar71A(especialidades_envio) {
     }
 }
 function on_actualizar71A() {
-    let datos_envio=datosEnvio()+SAL71A.NOVEDADW+'|'+SAL71A.PARAMS;
-    console.debug('Lo que envio xD',datos_envio)
+    let datos_envio = datosEnvio() + SAL71A.NOVEDADW + '|' + SAL71A.PARAMS;
+    console.debug('datos_envio', datos_envio)
     postData({
         datosh: datos_envio
     }, get_url("APP/SALUD/SAL71A-02.DLL"))
         .then((data) => {
-            if (data[0] == "00") {
-                CON851(data[0], data[1], limpiarCajas71A, 'success', 'success');
+            console.debug('respuesta guardado', data)
+            if (data.split('|')[0] == "00") {
+                CON851(data.split('|')[0], data.split('|')[1], limpiarCajas71A, 'success', 'success');
                 limpiarCajas71A()
             } else {
                 CON851('ERROR', 'ERROR AL ACTUALIZAR', validarEspecialidad71A(), 'error', 'error');
