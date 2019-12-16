@@ -340,9 +340,10 @@ ipcMain.on('another', (e, m) => {
 
   segundaventana.setBounds({ y: 40 });
   segundaventana.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
+  var primeraventana =  segundaventana.getParentWindow();
   segundaventana.webContents.on('did-finish-load', () => {
     var dir = path.join(__dirname, m);
-    segundaventana.webContents.send('finish', dir);
+    segundaventana.webContents.send('finish', [dir, primeraventana]);
   })
 });
 
