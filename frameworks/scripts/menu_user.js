@@ -5,6 +5,7 @@ const { BrowserWindow } = require('electron').remote;
 $CONEXION_BD = {},
     $CONTROL = '',
     $_USUA_GLOBAL = '';
+    $_PARENT = false;
 
 $(function () {
     $('.header-v2').attr('style', `background: url(../../imagenes/header-${localStorage.Modulo.toLowerCase()}.webp)`)
@@ -222,14 +223,14 @@ function _toggleNav() {
     let Window = BrowserWindow.getAllWindows();
     console.debug(Window);
 
-    if (Window.length > 0) {
-        if ($_PARENT){
-            var { ipcRenderer } = require('electron');
-            let vector = ['salir', 'ejemplo']
-            ipcRenderer.send('ventana2', { param: vector });
-        }
-    }
-    else {
+    // if (Window.length > 1) {
+    //     if ($_PARENT){
+    //         var { ipcRenderer } = require('electron');
+    //         let vector = ['salir', 'ejemplo']
+    //         ipcRenderer.send('ventana2', { param: vector });
+    //     }
+    // }
+    // else {
         if (widthScreen > 992) { // Pantalla grande
             if (visible) {
                 if (widthScreen > 992) {
@@ -267,7 +268,7 @@ function _toggleNav() {
 
             $("html, body").animate({ scrollTop: 0 }, "slow");
         }
-    }
+    // }
 }
 
 function _inputControl(set) {

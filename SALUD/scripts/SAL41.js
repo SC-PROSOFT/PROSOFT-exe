@@ -179,7 +179,15 @@ $(document).ready(function () {
         ]
     }
     _Revisardato_41();
+    // setTimeout(FAC135, 500);
 });
+
+// function FAC135() {
+//     let { ipcRenderer } = require("electron");
+//     ipcRenderer.send('another', 'SALUD/PAGINAS/FAC135C.html');
+//     vector = ['on', 'Actualizando maestro de pacientes...']
+//     _EventocrearSegventana(vector, _Revisardato_41);
+// }
 
 ///////////////////////////////// F8 /////////////////////////////////////////////////
 function _ventanaClases_41(e) {
