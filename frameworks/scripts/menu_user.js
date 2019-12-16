@@ -11,9 +11,9 @@ $(function () {
 });
 
 $(document).ready(function () {
-
+    if (localStorage.Modulo == "SAL") _validarArchivos_SC();
     _cargarUsuario();
-    // _validarArchivos_SC();
+
 
     $('#cerrar_menu_user').click(function () {
         var url = path.join(__dirname, '../../login/login.html');
@@ -29,7 +29,7 @@ function _validarArchivos_SC() {
 }
 
 function _cargarUsuario() {
-    var url = localStorage.Modulo == 'BOM' || localStorage.Contab == 'TOPALXE19' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
+    var url = localStorage.Modulo == 'TAX' || localStorage.Modulo == 'BOM' || localStorage.Contab == 'TOPALXE19' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
     var datos_envio = localStorage.Sesion + '|' + localStorage.Contab + '|' + localStorage.Mes + '|' + localStorage.Usuario;
     SolicitarDll({ datosh: datos_envio }, _onCargarUsuario, url);
 }
@@ -222,49 +222,52 @@ function _toggleNav() {
     let Window = BrowserWindow.getAllWindows();
     console.debug(Window);
 
-    // if (Window.length > 1) {
-    //     var { ipcRenderer } = require('electron');
-    //     let vector = ['salir', 'ejemplo']
-    //     ipcRenderer.send('ventana2', { param: vector });
-    // }
-    // else {
-    // if (widthScreen > 992) { // Pantalla grande
-    if (visible) {
-        if (widthScreen > 992) {
-            nav.hide('slide', function () {
-                $(this).attr('style', 'display:none!important;');
-            });
-
-            $('.page-fixed-main-content').animate({
-                'margin-left': '0'
-            });
-        } else {
-            nav.slideToggle('slow', function () {
-                $(this).attr('style', 'display:none!important;');
-            });
+    if (Window.length > 0) {
+        if ($_PARENT){
+            var { ipcRenderer } = require('electron');
+            let vector = ['salir', 'ejemplo']
+            ipcRenderer.send('ventana2', { param: vector });
         }
-
-        _cargarEventos('off');
-    } else {
-        if (widthScreen > 992) {
-            nav.show('slide', function () {
-                $(this).removeAttr('style');
-            });
-
-            $('.page-fixed-main-content').animate({
-                'margin-left': '280px'
-            });
-        } else {
-            nav.slideToggle('slow', function () {
-                $(this).attr('style', 'display:block!important;');
-            });
-        }
-        _cargarEventos('on');
-        $('#body_main').html('')
     }
+    else {
+        if (widthScreen > 992) { // Pantalla grande
+            if (visible) {
+                if (widthScreen > 992) {
+                    nav.hide('slide', function () {
+                        $(this).attr('style', 'display:none!important;');
+                    });
 
-    $("html, body").animate({ scrollTop: 0 }, "slow");
-    // }
+                    $('.page-fixed-main-content').animate({
+                        'margin-left': '0'
+                    });
+                } else {
+                    nav.slideToggle('slow', function () {
+                        $(this).attr('style', 'display:none!important;');
+                    });
+                }
+
+                _cargarEventos('off');
+            } else {
+                if (widthScreen > 992) {
+                    nav.show('slide', function () {
+                        $(this).removeAttr('style');
+                    });
+
+                    $('.page-fixed-main-content').animate({
+                        'margin-left': '280px'
+                    });
+                } else {
+                    nav.slideToggle('slow', function () {
+                        $(this).attr('style', 'display:block!important;');
+                    });
+                }
+                _cargarEventos('on');
+                $('#body_main').html('')
+            }
+
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        }
+    }
 }
 
 function _inputControl(set) {
