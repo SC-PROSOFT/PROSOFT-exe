@@ -1926,6 +1926,7 @@ function _datociudad_7767() {
             _evaluarciudad_7767();
         }
     } else {
+        //////SER110D UTILIZA ESTA CONSULTA 
         LLAMADO_DLL({
             dato: [$_CIUPACIW],
             callback: _dataSAL7767_04,
@@ -2457,7 +2458,7 @@ function _evaluartipoafiliado_7767() {
             label: 'DESCRIP'
         }],
         seleccion: $_TIPOAFILPACIW,
-        callback_f: _evaluarestrato_7767,
+        callback_f: _evaluarcolegio_7767,
         teclaAlterna: true
     },
         _seleccionartipoafiliado_7767);
@@ -2476,7 +2477,7 @@ function _seleccionartipoafiliado_7767(afiliado) {
             _validacionestipoafiliado_7767();
             break;
         default:
-            _evaluarestrato_7767();
+            _evaluarcolegio_7767();
             break;
     }
     $("#tipoafil_110c").val(afiliado.COD + " - " + afiliado.DESCRIP);
@@ -2578,6 +2579,12 @@ function datodesplazado_7767() {
     if ((($_REGIMENPACIW == 'D') || ($_REGIMENPACIW == 'E') || ($_REGIMENPACIW == 'G')) && ($_TIPOAFILPACIW == '1')) {
         jAlert({ titulo: 'Error ', mensaje: 'Atenc1ion! actualizar en la opcion Poblacion Desplazada' }, _evaluarentidadafiliada_7767);
         /// LLAMA OTRO PROGRAMA SER110D
+
+        let { ipcRenderer } = require("electron");
+        ipcRenderer.send('another', 'SALUD/PAGINAS/SER110D.html');
+        vector = ['on', 'Actualizando maestro de desplazados...']
+        _EventocrearSegventana(vector, _evaluarentidadafiliada_7767);
+
     } else {
         _evaluarentidadafiliada_7767();
     }

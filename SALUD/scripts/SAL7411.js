@@ -60,7 +60,6 @@ function _ventanaFacturacion(e) {
             f8data: 'NUMERACION',
             columnas: [{ title: 'COD' }, { title: 'NOM_PAC' }, { title: 'DESCRIP' }, { title: 'FECHA_ING' }, { title: 'CONVENIO' }],
             callback: (data) => {
-                console.log('data', data)
                 document.querySelector("#factura_108").value = data.COD;
                 document.querySelector("#factura_108").focus();
             },
@@ -94,7 +93,6 @@ function _ventanaTerceros(e) {
                     callback: function () {
                         $("#nit_108").focus();
                     }, callback: function (data) {
-                        console.log(data, 'data.COD;')
                         $_NITW = data.COD.trim();
                         $_NITW = $_NITW.padStart(10, "0");
                         $('#nit_108').val($_NITW);
@@ -386,147 +384,6 @@ function _ventanaTercerosautoriza(e) {
         });
 }
 
-//////////////////////////////////// MASCARAS //////////////////////////////////////////
-
-var $_FECHAACTUAL = moment().format('YYYYMMDD');
-$_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
-$_MESACTUALW = $_FECHAACTUAL.substring(4, 6);
-$_DIAACTUAL = $_FECHAACTUAL.substring(6, 8);
-
-var momentFormatingresopac = "YYYY-MM-DD";
-var momentMaskfechaingreso = IMask($("#fechaing_108")[0], {
-    mask: Date,
-    pattern: momentFormatingresopac,
-    lazy: true,
-    min: new Date(2009, 0, 1),
-    max: new Date(2025, 0, 1),
-
-    format: function (date) {
-        return moment(date).format(momentFormatingresopac);
-    },
-    parse: function (str) {
-        return moment(str, momentFormatingresopac);
-    },
-
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 2009,
-            to: 2025
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-
-});
-
-var momentFormatsalidapac = "YYYY-MM-DD";
-var momentMaskfechasalida = IMask($("#fechasal_108")[0], {
-    mask: Date,
-    pattern: momentFormatsalidapac,
-    lazy: true,
-    min: new Date(2010, 0, 1),
-    max: new Date(2025, 0, 1),
-
-    format: function (date) {
-        return moment(date).format(momentFormatsalidapac);
-    },
-    parse: function (str) {
-        return moment(str, momentFormatsalidapac);
-    },
-
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 2010,
-            to: 2025
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-
-});
-
-var momentFormatentradapac = "YYYY-MM-DD";
-var momentMaskfechaentrada = IMask($("#fechaing_108")[0], {
-    mask: Date,
-    pattern: momentFormatentradapac,
-    lazy: true,
-    min: new Date(2010, 0, 1),
-    max: new Date(2025, 0, 1),
-
-    format: function (date) {
-        return moment(date).format(momentFormatentradapac);
-    },
-    parse: function (str) {
-        return moment(str, momentFormatentradapac);
-    },
-
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 2010,
-            to: 2025
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-
-});
 
 
 function _leerusuario() {
@@ -798,11 +655,9 @@ function _validarfactura() {
 }
 
 function _infoCOON007_01() {
-    console.log($_SECUNUM, '$_SECUNUM')
     let URL = get_url("APP/CONTAB/CON007.DLL");
     postData({ datosh: datosEnvio() + $_SECUNUM }, URL)
         .then(data => {
-            console.debug(data, 'data');
             var data = data.split("|");
             $_ULTFECHA = data[2].trim();
             $_NUMEROCTL = data[1].substring(3, 9);
@@ -901,7 +756,7 @@ function _infoSER108F_01() {
 function _datainfoSER108F_01(data) {
     var date = data.split("|");
     var swinvalid = date[0];
-    if (swinvalid < "00") {
+    if (swinvalid > "00") {
         CON851(swinvalid, swinvalid, null, 'error', 'error');
         _toggleNav();
     }
@@ -2124,12 +1979,10 @@ function _validarnrocapit() {
         _evaluarnrocapit_SAL7411();
     }
     else if ($_FACTCAPITW == $_LLAVEW) {
-        console.log('$_FACTCAPITW == $_LLAVEW')
         $("#capit_108").val($_NROCAPITW);
         _evaluardatored_SAL7411();
     }
     else {
-        console.log('otro')
         LLAMADO_DLL({
             dato: [$_PREFIJOW, $_FACTCAPITW, $_NITW, $_FECHAINGNUM, $_FECHASALNUM],
             callback: _dataSER108C_01,
@@ -2157,7 +2010,6 @@ function _dataSER108C_01(data) {
 }
 
 function _evaluardatored_SAL7411() {
-    console.log('evaluar rex externa')
     validarInputs({
         form: "#REDEXT_108",
         orden: "1"
@@ -3453,7 +3305,6 @@ function _grabarnumero() {
     let URL = get_url("APP/CONTAB/CON007X.DLL");
     postData({ datosh: datosEnvio() + $_SECUNUM + '|' + fechacre + '|' + $_FACT + '|' }, URL)
         .then(data => {
-            console.debug(data, 'data');
             toastr.success('Se ha guardado', 'APERTURA DE FACTURACION');
             _inputControl('reset');
             _validarimpresion();
@@ -3473,11 +3324,9 @@ function _imprimirfactura_SAL7411() {
 
     var datos_envio = datosEnvio();
     datos_envio += $_LLAVEW + '|' + $_NITUSU + '|' + $_NOMBREUSU + '|' + $_ADMINW
-    console.debug(datos_envio);
     let URL = get_url("APP/SALUD/SER108-15.DLL");
     postData({ datosh: datos_envio }, URL)
         .then(function (data) {
-            console.debug(data);
             SAL7411.FACTURAS = data.FACTURAS[0];
             _impresion_SAL7411();
         })
@@ -4243,3 +4092,145 @@ function _Calcularedad2_7767() {
 
     }
 }
+
+//////////////////////////////////// MASCARAS //////////////////////////////////////////
+
+var $_FECHAACTUAL = moment().format('YYYYMMDD');
+$_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
+$_MESACTUALW = $_FECHAACTUAL.substring(4, 6);
+$_DIAACTUAL = $_FECHAACTUAL.substring(6, 8);
+
+var momentFormatingresopac = "YYYY-MM-DD";
+var momentMaskfechaingreso = IMask($("#fechaing_108")[0], {
+    mask: Date,
+    pattern: momentFormatingresopac,
+    lazy: true,
+    min: new Date(2009, 0, 1),
+    max: new Date(2025, 0, 1),
+
+    format: function (date) {
+        return moment(date).format(momentFormatingresopac);
+    },
+    parse: function (str) {
+        return moment(str, momentFormatingresopac);
+    },
+
+    blocks: {
+        YYYY: {
+            mask: IMask.MaskedRange,
+            from: 2009,
+            to: 2025
+        },
+        MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12
+        },
+        DD: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 31
+        },
+        HH: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 23
+        },
+        mm: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 59
+        }
+    }
+
+});
+
+var momentFormatsalidapac = "YYYY-MM-DD";
+var momentMaskfechasalida = IMask($("#fechasal_108")[0], {
+    mask: Date,
+    pattern: momentFormatsalidapac,
+    lazy: true,
+    min: new Date(2010, 0, 1),
+    max: new Date(2025, 0, 1),
+
+    format: function (date) {
+        return moment(date).format(momentFormatsalidapac);
+    },
+    parse: function (str) {
+        return moment(str, momentFormatsalidapac);
+    },
+
+    blocks: {
+        YYYY: {
+            mask: IMask.MaskedRange,
+            from: 2010,
+            to: 2025
+        },
+        MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12
+        },
+        DD: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 31
+        },
+        HH: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 23
+        },
+        mm: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 59
+        }
+    }
+
+});
+
+var momentFormatentradapac = "YYYY-MM-DD";
+var momentMaskfechaentrada = IMask($("#fechaing_108")[0], {
+    mask: Date,
+    pattern: momentFormatentradapac,
+    lazy: true,
+    min: new Date(2010, 0, 1),
+    max: new Date(2025, 0, 1),
+
+    format: function (date) {
+        return moment(date).format(momentFormatentradapac);
+    },
+    parse: function (str) {
+        return moment(str, momentFormatentradapac);
+    },
+
+    blocks: {
+        YYYY: {
+            mask: IMask.MaskedRange,
+            from: 2010,
+            to: 2025
+        },
+        MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12
+        },
+        DD: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 31
+        },
+        HH: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 23
+        },
+        mm: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 59
+        }
+    }
+
+});
