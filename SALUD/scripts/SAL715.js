@@ -175,7 +175,8 @@ function envioDatos715() {
 
 function registroDatos715(data) {
     var temp = data.split('|')
-    if (temp[0].trim() == '00') {
+    var swinvalid = datedate[0].trim();
+    if (swinvalid == '00') {
         jAlert({ titulo: 'Notificacion', mensaje: "Guardado Correctamente" })
         _inputControl('reset');
         _validarCodigo715(); 

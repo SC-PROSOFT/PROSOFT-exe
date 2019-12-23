@@ -1408,6 +1408,7 @@ function _validacionesedad7767() {
 function _buscarduplicado_7767() {
     $_APEL_PACIW = $_APELLIDO1PACW.padEnd(15, ' ') + '|' + $_APELLIDO2PACW.padEnd(15, ' ');
     $_NOMB_PACIW = $_NOMBRE1PACW.padEnd(12, ' ') + '|' + $_NOMBRE2PACW.padEnd(12, ' ');
+    console.log(datosEnvio() + $_APEL_PACIW.toUpperCase() + '|' + $_NOMB_PACIW.toUpperCase() + '|' + $_CODPACIW + '|' + $_NACIMPACIW, 'envio')
     if ($_NOVEDAD7767 == '7') {
         var datos_envio = datosEnvio() + $_APEL_PACIW.toUpperCase() + '|' + $_NOMB_PACIW.toUpperCase() + '|' + $_CODPACIW + '|' + $_NACIMPACIW;
         postData({
@@ -2577,7 +2578,7 @@ function _dataSAL7767_045(data) {
 
 function datodesplazado_7767() {
     if ((($_REGIMENPACIW == 'D') || ($_REGIMENPACIW == 'E') || ($_REGIMENPACIW == 'G')) && ($_TIPOAFILPACIW == '1')) {
-        jAlert({ titulo: 'Error ', mensaje: 'Atenc1ion! actualizar en la opcion Poblacion Desplazada' }, _evaluarentidadafiliada_7767);
+        
         /// LLAMA OTRO PROGRAMA SER110D
 
         let { ipcRenderer } = require("electron");

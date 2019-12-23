@@ -42,7 +42,6 @@ $(document).ready(function () {
                 obtenerDatosCompletos({
                     nombreFd: 'ARTICULOS'
                 }, function (data) {
-                    console.log(data)
                     $_ART_71G = data.ARTICULOS;
                     CON850(_evaluarCON850);
                 })
@@ -160,7 +159,6 @@ function _ventanaarticulos71G(e) {
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
-    console.log('novedad')
     $_Novedad71G = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
@@ -300,7 +298,6 @@ function _validargrupos_71G() {
     }
 }
 function _datavalidarcups_71G(data) {
-    console.log('cups', data)
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_descripgrupo71G = date[1].trim();
@@ -330,14 +327,12 @@ function _leerpaquete_71G() {
         datosh: datosEnvio() + $llavepaquete + '|'
     }, get_url("APP/SALUD/SAL71G-01.DLL"))
         .then((data) => {
-            console.debug(data);
+           
             $_PAQINT = data['PAQINTEGRAL'];
-            console.log($_PAQINT, 'arreglo')
             swinvalid = $_PAQINT[0].ESTADO;
             $observaciones71G = $_PAQINT[0].OBSERVACION;
             $valor71G = $_PAQINT[0].VALOR;
             $tabla_paq = $_PAQINT[0].TAB_PAQINT;
-            console.log($tabla_paq, 'tabla')
 
             if (($_Novedad71G == '7') && (swinvalid == '01')) {
                 _evaluarobservacion_71G();
@@ -364,7 +359,6 @@ function _leerpaquete_71G() {
         })
         .catch((error) => {
             console.log(error);
-            console.debug('actualizacion de pacientes');
         });
 
 }
@@ -391,7 +385,6 @@ function _evaluarvalor_71G() {
 }
 function _validarvalor_71G() {
     $valor71G = valor71G_Mask.unmaskedValue;
-    console.log('CL ')
 
     if($_Novedad71G == '7'){
         SAL71G.CONTEO = 1;
@@ -427,7 +420,6 @@ function _evaluarcl_71G() {
 }
 
 function _validarcl_71G() {
-    console.log('ingreso CL')
     $cl71G = $('#cl_71G').val();
     switch ($cl71G) {
         case "0":
@@ -453,7 +445,6 @@ function _validarcl_71G() {
 }
 
 function _evaluarcupsart_71G() {
-    console.log('codigo cups')
     validarInputs({
         form: '#CODIGO_71C',
         orden: '1'
@@ -466,10 +457,8 @@ function _validarartcups_71G() {
     $codigoartcups_71G = $('#codigo_71G').val();
 
     if ($codigoartcups_71G.trim() == '') {
-        console.log('vacio')
         _evaluarcl_71G();
     } else {
-        console.log('consulta dll')
         LLAMADO_DLL({
             dato: [$codigoartcups_71G],
             callback: _validarcupsart_71G,
@@ -497,7 +486,6 @@ function _validarcupsart_71G(data) {
 
 
 function _evaluarcodigoart_71G() {
-    console.log('codigoart')
     validarInputs({
         form: '#CODIGO_71C',
         orden: '1'
@@ -507,14 +495,10 @@ function _evaluarcodigoart_71G() {
     )
 }
 function _validarcodigoart_71G() {
-    console.log('codigo articulo')
     $codigoart_71G = $('#codigo_71G').val();
-    // $('#codigo_71G').val($codigoart_71G.substring(1,15));
     if ($codigoart_71G.trim() == '') {
-        console.log('vacio')
         _evaluarcl_71G();
     } else {
-        console.log('consulta dll')
         LLAMADO_DLL({
             dato: [$codigoart_71G],
             callback: _dataarticulo_71G,
@@ -524,7 +508,6 @@ function _validarcodigoart_71G() {
     }
 }
 function _dataarticulo_71G(data) {
-    console.log(data, 'articulos')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $descripart_71G = date[1].trim();
@@ -542,7 +525,6 @@ function _dataarticulo_71G(data) {
     }
 }
 function _evaluarcantidad_71G() {
-    console.log('cantidad')
     cantidadart71G_Mask.updateValue();
     validarInputs({
         form: '#CANTIDAD_71G',
@@ -642,7 +624,6 @@ function _paquetes(datos) {
 
 function _ubicargrabar_71G() {
     CON851P('01', _evaluarcl_71G, _tablapaquetetxt)
-    console.log('funcion para grabar')
 }
 function _tablapaquetetxt() {
     tabla = '';
@@ -687,11 +668,9 @@ function _tablapaquetetxt() {
         else {
             $_PAQUETETXT = nombrearchivo;
             if ($_Novedad71G == '9') {
-                console.log('eliminar datos')
                 _eliminardatos_71G();
             }
             else {
-                console.log('grabar datos')
                 _grabardatos_71G();
             }
         }
@@ -699,8 +678,6 @@ function _tablapaquetetxt() {
 }
 
 function _eliminardatos_71G() {
-    console.log('ingresa a eliminar datos')
-
     if ($_Novedad71G == '8') {
         $fechamod_71G = moment().format('YYMMDD');
         $opermod_71G = $_ADMINW;
@@ -736,7 +713,6 @@ function _grabardatos_71G() {
     });
 }
 function _grabaropcion(data) {
-    console.log('resultado guardado', data)
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {

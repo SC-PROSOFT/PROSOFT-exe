@@ -55,93 +55,7 @@ var valorfinal_103Mask = new IMask(document.getElementById('vlrfinal_103'),
 var cantidadart_103Mask = new IMask(document.getElementById('cantidad_103'),
     { mask: Number, min: 0, max: 999, radix: '.', scale: 4, padFractionalZeros: true });
 
-var momentFormat = 'YYYY/MM/DD HH:mm';
-var momentMaskFecha = IMask($("#fecha_103")[0], {
-    mask: Date,
-    pattern: momentFormat,
-    lazy: true,
-    min: new Date(2009, 0, 1),
-    max: new Date(2030, 0, 1),
 
-    format: function (date) {
-
-        return moment(date).format(momentFormat);
-    },
-    parse: function (str) {
-        return moment(str, momentFormat);
-    },
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 2009,
-            to: 2030
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-});
-
-var momentMaskFechacompra = IMask($("#fechacompra_103")[0], {
-    mask: Date,
-    pattern: momentFormat,
-    lazy: true,
-    min: new Date(2009, 0, 1),
-    max: new Date(2080, 0, 1),
-
-    format: function (date) {
-        return moment(date).format(momentFormat);
-    },
-    parse: function (str) {
-        return moment(str, momentFormat);
-    },
-
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 2009,
-            to: 2080
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-
-});
 var $_ARTICULOS_INV103 = [];
 var $_USO_103 = [];
 var $_GRUPOS_103 = [];
@@ -3974,3 +3888,91 @@ function _seleccionarconversion(cantconver) {
     }
     $("#convers_103").val(cantconver.COD + " - " + cantconver.DESCRIP);
 }
+//////////////////MASCARAS DE FECHA/////////////////////////
+var momentFormat = 'YYYY/MM/DD HH:mm';
+var momentMaskFecha = IMask($("#fecha_103")[0], {
+    mask: Date,
+    pattern: momentFormat,
+    lazy: true,
+    min: new Date(2009, 0, 1),
+    max: new Date(2030, 0, 1),
+
+    format: function (date) {
+
+        return moment(date).format(momentFormat);
+    },
+    parse: function (str) {
+        return moment(str, momentFormat);
+    },
+    blocks: {
+        YYYY: {
+            mask: IMask.MaskedRange,
+            from: 2009,
+            to: 2030
+        },
+        MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12
+        },
+        DD: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 31
+        },
+        HH: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 23
+        },
+        mm: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 59
+        }
+    }
+});
+
+var momentMaskFechacompra = IMask($("#fechacompra_103")[0], {
+    mask: Date,
+    pattern: momentFormat,
+    lazy: true,
+    min: new Date(2009, 0, 1),
+    max: new Date(2080, 0, 1),
+
+    format: function (date) {
+        return moment(date).format(momentFormat);
+    },
+    parse: function (str) {
+        return moment(str, momentFormat);
+    },
+
+    blocks: {
+        YYYY: {
+            mask: IMask.MaskedRange,
+            from: 2009,
+            to: 2080
+        },
+        MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12
+        },
+        DD: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 31
+        },
+        HH: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 23
+        },
+        mm: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 59
+        }
+    }
+
+});

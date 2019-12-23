@@ -145,7 +145,7 @@ function validacionCodigos716() {
 
 function validador716(data) {
     var date = data.split('|');
-    $_CODTAB716 = date[1].trim();
+    $_CODTAB716 = date[1];
 
     if (date[0].trim() == '00') {
         if ($codigoDst716 == $_CODTAB716) {
