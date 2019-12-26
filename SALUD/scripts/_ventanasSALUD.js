@@ -42,7 +42,7 @@ function SER836(data, esccallback, callback) {
                 if (SER836[0].LLAVE_CIT.trim() != '') {
                     _ventanaDatos({
                         titulo: '',
-                        columnas: ["FECHA_CITA", "TIPO_FACT_CITA", "HORA_CIT", "NOMBRE_PROFESIONAL", "OBSER_CIT", "NOMBRE_CUP"],
+                        columnas: ["FECHA_CITA", "OBSER_CIT", "HORA_CIT", "NOMBRE_PROFESIONAL", "NOMBRE_CUP", "TIPO_FACT_CITA"],
                         data: SER836,
                         callback_esc: () => {
                             CON851P('04', esccallback, esccallback);

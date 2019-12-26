@@ -129,15 +129,7 @@ function _eventoBotones() {
             jAlert({ titulo: 'Error', mensaje: `<b>Mensaje: </b> ${msj}` })
         } else if (data.Tipo == 'POWER' || data.Tipo == 'RM'
             || data.Href || data.Tipo == 'JS') {
-            if (localStorage['Modulo'] == 'MIG') {
-                if (data.Tipo == 'JS') {
-                    loadScript(data.Js)
-                } else {
-                    load_contenido(data.Href);
-                }
-            } else {
-                _validarVentanaMain(data);
-            }
+            _validarVentanaMain(data);
         } else {
             console.error('Programa sin definir')
         }
@@ -174,34 +166,62 @@ function _infoRm_bat(data) {
         usuario = espaciosDer(localStorage.Usuario, 4),
         clave = localStorage.Clave ? espaciosDer(localStorage.Clave, 8) : '########',
         cbl = data.params[0].dll;
-        
+
 
 
     var argumentos = `${usuario}-${cbl}`;
-    
+    var programa = 'MAIN';
+
     console.log(cbl);
-    switch (cbl){              
-        case 'SALUD\\SER109H':                
-            opc_segu = data.opc_segu.padStart(6,"#");
+    switch (cbl) {
+        case 'SALUD\\SER109H':
+            opc_segu = data.opc_segu.padStart(6, "#");
 
             argumentos = `${argumentos}-${opc_segu}`;
             break;
-        case 'HICLIN\\HC004':                    
-            argumentos = `${argumentos}-${$_REG_HC.id_paciente}-${$_REG_HC.suc_folio_hc}-${$_REG_HC.nro_folio_hc}-${$_REG_HC.edad_hc.unid_edad}-${$_REG_HC.edad_hc.vlr_edad}-${$_REG_PROF.datos_prof.IDENTIFICACION}`;
+        case 'HICLIN\\HC004':            
+        case 'HICLIN\\MENUH03':
+        case 'HICLIN\\HC002':
+        case 'HICLIN\\HC012':
+        case 'HICLIN\\HC002F':
+        case 'HICLIN\\HC044':
+        case 'HICLIN\\HC003':
+        case 'SALUD\\SER120':
+        case 'SALUD\\SER604':
+        case 'HICLIN\\HC003A':
+        case 'HICLIN\\HC522':
+        case 'HICLIN\\HC523':
+        case 'HICLIN\\HC524':
+        case 'HICLIN\\HC525':        
+        case 'HICLIN\\HC526':        
+        case 'HICLIN\\HC527':        
+        case 'HICLIN\\HC528':        
+        case 'HICLIN\\HC529':                                        
+        case 'HICLIN\\HC52A':        
+        case 'HICLIN\\AIEPI000':               
+        case 'HICLIN\\VACUNAS':        
+        case 'HICLIN\\VACUNASI':
+        case 'HICLIN\\PYP1':
+        case 'HICLIN\\PYP1I':
+        case 'HICLIN\\HC003C':
+            
+            programa = "MENU-HIS-ELECTRON"
+            argumentos = `${argumentos}-${$_REG_HC.id_paciente}-${$_REG_HC.suc_folio_hc}-${$_REG_HC.nro_folio_hc}-`;
+            console.log(argumentos);
             break;
 
     }
-    
-       
+
+
 
     var batch = `
     ECHO OFF\r\n
     TITLE MAIN_ELECT\r\n
     ${localStorage.Unidad}:\r\n
-    CD \\${localStorage.Contab}\\${ mes }\r\n
-    set p1=${ argumentos.padEnd(100, '*') } \r\n
+    CD \\${localStorage.Contab}\\${mes}\r\n
+    set p1=${ argumentos.padEnd(100, '*')} \r\n
     SET RUNPATH=\\NEWCOBOL\\MAIN\\;\\NEWCOBOL\\HICLIN\\;\\NEWCOBOL\\SALUD\\;\\NEWCOBOL\\CONTAB\\;\\NEWCOBOL\\INVENT\\;EXPORT RUNPATH\r\n
-    runcobol MAIN k c=${localStorage.Unidad}:\\rmcobol\\windows.cfg A %p1%\r\n
+    runcobol ${programa} k c=${localStorage.Unidad}:\\rmcobol\\windows.cfg A %p1%\r\n
         `;
 
 
@@ -271,19 +291,19 @@ function _validarScript_bat(data) {
     switch (modulo) {
         case 'NOM':
             batch = "ECHO OFF\r\n"
-                + localStorage.Unidad +":\r\n"
+                + localStorage.Unidad + ":\r\n"
                 + "CD\\" + contab + "\\NOMINA\\" + localStorage.Nomina + "\r\n"
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
         case 'PRS':
             batch = "ECHO OFF\r\n"
-                + localStorage.Unidad +":\r\n"
+                + localStorage.Unidad + ":\r\n"
                 + "CD\\" + contab + "\\PRE" + "\r\n"
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
         default:
             batch = "ECHO OFF\r\n"
-                + localStorage.Unidad +":\r\n"
+                + localStorage.Unidad + ":\r\n"
                 + "CD\\" + contab + "\\" + mes + "\r\n"
                 + "START C:\\PWCOBOL\\MAIN.EXE " + params + titulo + "\r\n";
             break;
@@ -333,7 +353,7 @@ function _eventoTeclas(e) {
     else if (key == "76") opcion = "L";
     else if (key == "77") opcion = "M";
     else if (key == "78") opcion = "N";
-    
+
     else if (key == "70" || key == "27") opcion = "regresar";
     else if (key == "83" || key == "87") salir_modulo()
     else { opcion = null; console.error('Tecla no definida'); }
