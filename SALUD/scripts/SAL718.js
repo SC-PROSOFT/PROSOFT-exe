@@ -1,1092 +1,1265 @@
 /* NOMBRE RM --> SER102C // NOMBRE ELECTR --> SAL718 */
-
-var $_NovSal718; var $nitterc718 = '0'; var $ingrTerc718 = '0'; var $_PUCUSU718; var $llavemae718 = '0', $_gruposer;
-var SAL718 = [], $_cups, $_costos, $_ctamayor, $_terceros, $_cuentas, $_divisiones;
-
-
+/* PO - PABLO OLGUIN 16/12/2019 -> AJUSTES*/
+/* PO - PABLO OLGUIN 17/12/2019 -> Rediseño formulario, reestructuracion codigo*/
+var SAL718 = [], $_divisiones718 = '', $_planCuentas718 = '', $_costos718 = '', $_cups718 = '', $_grServicios718 = '', $_terceros718;
+SAL718.CUPS = []; SAL718.COSTO = []; SAL718.TERCEROS = []; SAL718.GRUPOSER = []; SAL718.MAESTROS = [];
 $(document).ready(function () {
-    loader('hide');
-    _toggleF8([
-        { input: 'grupoSal', app: '718', funct: _ventanaGrupo718 },
-        { input: 'codCup', app: '718', funct: _ventanaCups718 },
-        { input: 'centrCost', app: '718', funct: _ventanaCentrCosto718 },
-        { input: 'cuentaTerc', app: '718', funct: _ventanaContab718 },
-        { input: 'nitTerc', app: '718', funct: ventanaTerceros718 },
-        { input: 'codPuc', app: '718', funct: _ventanaPUC718 },
-        { input: 'divSal1', app: '718', funct: _ventanaDivisUno718 },
-        { input: 'divSal2', app: '718', funct: _ventanaDivisDos718 }
+	loader('hide');
+	_inputControl('reset'); _inputControl('disabled');
+	_toggleF8([
+		{ input: 'codgrupo', app: '718', funct: _ventanaGrupo718 },
+		{ input: 'codcups', app: '718', funct: _ventanaCups718 },
+		{ input: 'centrocosto', app: '718', funct: _ventanaCentrCosto718 },
+		{ input: 'ctaingrTercer', app: '718', funct: _ventanaPlanCuentas718 },
+		{ input: 'nitTercer', app: '718', funct: _ventanaTerceros718 },
+		{ input: 'codPuc', app: '718', funct: _ventanaPlanCuentas718 },
+		{ input: 'codCoop', app: '718', funct: _ventanaPlanCuentas718 },
+		{ input: 'codOficial', app: '718', funct: _ventanaPlanCuentas718 },
+		{ input: 'division1', app: '718', funct: _ventanaDivision718 },
+		{ input: 'division2', app: '718', funct: _ventanaDivision718 }
+	]);
+	iniciarObjetosFNF8();
+	ocultCajas718();
 
-    ]);
-    obtenerDatosCompletos({
-        nombreFd: 'GRUPO-SER'
-    }, (data) => {
-        $_gruposer = data.CODIGOS
-        obtenerDatosCompletos({
-            nombreFd: 'CUPS'
-        }, (data) => {
-            $_cups = data.CODIGOS
-            obtenerDatosCompletos({
-                nombreFd: 'COSTOS'
-            }, (data) => {
-                $_costos = data.COSTO
-                obtenerDatosCompletos({
-                    nombreFd: 'CTA-MAYOR'
-                }, (data) => {
-                    $_cuentas = data.MAESTROS
-                    obtenerDatosCompletos({
-                        nombreFd: 'TERCEROS'
-                    }, (data) => {
-                        $_terceros = data.TERCEROS
-                        obtenerDatosCompletos({
-                            nombreFd: 'DIVISION'
-                        }, (data) => {
-                            $_divisiones = data.CODIGOS
-                            // ocultCajas718();
-                            setTimeout(CON850(_evaluarCON850), 250)
-
-                        })
-                    })
-                })
-            })
-        })
-
-    })
 });
-function on_datos718(){
-    document.querySelector('#grupoSal_718').value
+
+function iniciarObjetosFNF8() {
+	let objetos = ['GRUPO-SER', 'CUPS', 'COSTOS', 'CTA-MAYOR', 'TERCEROS', 'DIVISION'], i = 0;
+	for (let objeto in objetos) {
+		obtenerDatosCompletos({ nombreFd: objetos[objeto] }, (data) => {
+			switch (objetos[objeto]) {
+				case 'GRUPO-SER': $_grServicios718 = data.CODIGOS; break;
+				case 'CUPS': $_cups718 = data.CODIGOS; break;
+				case 'COSTOS': $_costos718 = data.COSTO; break;
+				case 'CTA-MAYOR': $_planCuentas718 = data.MAESTROS; break;
+				case 'TERCEROS': $_terceros718 = data.TERCEROS; break;
+				case 'DIVISION': $_divisiones718 = data.DIVISIONES; break;
+			}
+		})
+		i++
+		if (i == objetos.length) { setTimeout(() => { CON850(_evaluarCON850_718) }, 400); }
+	}
 }
+
+//------------------------ Funciones FNF8 -----------------------------------//
 // F8 GRUPO-SERVICIO //
 function _ventanaGrupo718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA DE GRUPOS DE SERVICIOS",
-            columnas: ["COD", "DESCRIP"],
-            data: $_gruposer,
-            callback_esc: () => { _validarGrpo718() },
-            callback: (data) => {
-                console.debug(data,'data')
-                SAL718.COD_SER = data.COD; SAL718.DESCRIP_SER = data.DESCRIP;
-                document.querySelector('#grupoSal_718').value = data.COD;
-                document.querySelector('#descrpGrupo718').value = data.DESCRIP;
-                _enterInput('#grupoSal_718');
-            }
-        });
-    }
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		_ventanaDatos({
+			titulo: "VENTANA DE GRUPOS DE SERVICIOS",
+			columnas: ["COD", "DESCRIP"],
+			data: $_grServicios718,
+			callback_esc: () => { _validarGrupo718() },
+			callback: (data) => {
+				SAL718.GRUPOSER.COD = data.COD; SAL718.GRUPOSER.DESCRIP = data.DESCRIP;
+				document.querySelector('#codgrupo_718').value = data.COD + ' ' + data.DESCRIP;
+				_enterInput('#codgrupo_718');
+			}
+		});
+	}
 }
-
 // F8 CODCUPS //
 function _ventanaCups718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA DE CODIGOS CUPS",
-            columnas: ["LLAVE", "DESCRIP", "INGR_CLIN", "INGR_TERC", "COD_CONTAB"],
-            data: $_cups,
-            callback_esc: () => { _validarCUPS718() },
-            callback: (data) => {
-                SAL718.COD_CUP = data.LLAVE; SAL718.DESCRIP_CUP = data.DESCRIP;
-                document.querySelector('#codCup_718').value = data.COD_CUP;
-                document.querySelector('#descrpCups718').value = data.DESCRIP_SER;
-                _enterInput('#codCup_718');
-            }
-        });
-    }
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		$_cups718 = $_cups718.filter(cups_gr => cups_gr.LLAVE.substring(0, 2).toString().trim() == SAL718.GRUPOSER.COD.toString().trim());
+		_ventanaDatos({
+			titulo: "VENTANA DE CODIGOS CUPS",
+			columnas: ["LLAVE", "DESCRIP"],
+			data: $_cups718,
+			callback_esc: () => { _validarCUPS718() },
+			callback: (data) => {
+				data.GRUPO = data.LLAVE.substring(0, 2);
+				SAL718.CUPS.LLAVE = data.LLAVE.toString().trim(); SAL718.CUPS.DESCRIP = data.DESCRIP;
+				document.querySelector('#codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
+				document.querySelector('#descripCup_718').value = SAL718.CUPS.DESCRIP;
+				_enterInput('#codcups_718');
+			}
+		});
+	}
 }
-
 // F8 CENTRO-COSTO //
 function _ventanaCentrCosto718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA CENTRO DE COSTO",
-            columnas: ["COD", "NOMBRE"],
-            data: $_costos,
-            callback_esc: () => { _validaCentroCost718() },
-            callback: (data) => {
-                SAL718.COD_COSTO = data.COD; SAL718.DESCRIP_COSTO = data.NOMBRE;
-                $('#centrCost_718').val(data.COD.trim())
-                $('#descCosto718').val(data.NOMBRE.trim())
-                _enterInput('#centrCost_718');
-            }
-        });
-    }
-}
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		_ventanaDatos({
+			titulo: "VENTANA CENTRO DE COSTO",
+			columnas: ["COD", "NOMBRE"],
+			data: $_costos718,
+			callback_esc: () => { _validarCentroCost718() },
+			callback: (data) => {
+				SAL718.COSTO.COD = data.COD; SAL718.COSTO.NOMBRE = data.NOMBRE;
+				if (SAL718.COSTO.COD.trim().length > 0) {
+					SAL718.COSTO.COD = SAL718.COSTO.COD
+				} else {
+					$('#centrocosto_718').val(data.COD.toString().trim() + ' ' + data.NOMBRE.toString().trim())
+				}
 
-// F8 CUENTA-MAYOR //
-function _ventanaContab718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA CUENTA MAYOR",
-            columnas: ["COD", "NOMBRE"],
-            data: $_cuentas,
-            callback_esc: () => { cuentTercero718() },
-            callback: (data) => {
-                SAL718.COD_CTAMAYOR = data.COD; SAL718.DESCRIP_CTAMAYOR = data.NOMBRE;
-                $('#centrCost_718').val(data.COD.trim())
-                $('#descCosto718').val(data.NOMBRE.trim())
-                _enterInput('#centrCost_718');
-            }
-        });
-    }
+			_enterInput('#centrocosto_718');
+			}
+		});
+	}
 }
-
-// F8 TERCEROS //
-function ventanaTerceros718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA DE TERCEROS",
-            columnas: ["COD", "NOMBRE"],
-            data: $_terceros,
-            callback_esc: () => { terceroNit718() },
-            callback: (data) => {
-                $("#nitTerc_718").val(cedula)
-                $("#nombreTer718").val(data.NOMBRE);
-                _enterInput('#nombreTer718');
-            }
-        });
-    }
+// F8 PLAN DE CUENTAS
+function _ventanaPlanCuentas718(e) {
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		_ventanaDatos({
+			titulo: "VENTANA CUENTA MAYOR",
+			columnas: ["LLAVE_MAE", "NOMBRE_MAE"],
+			data: $_planCuentas718,
+			callback_esc: () => { cuentTercero718() },
+			callback: (data) => {
+				let caja = e.currentTarget.id;
+				evaluarCodigoContable718(caja, data);
+			}
+		});
+	}
 }
-
-// F8 PLAN DE CUENTAS //
-function _ventanaPUC718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        let data = _ventanaContab718(e)
-        $('#codPuc_718').val(data.CTA_MAY + ' - ' + data.NOMBRE_MAE)
-        _enterInput('#codPuc_718');
-    }
+function _ventanaTerceros718(e) {
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		_ventanaDatos({
+			titulo: "VENTANA DE TERCEROS",
+			columnas: ["COD", "NOMBRE"],
+			data: $_terceros,
+			callback_esc: () => { terceroNit718() },
+			callback: (data) => {
+				SAL718.TERCEROS.COD = data.COD; SAL718.TERCEROS.DESCRIP = data.DESCRIP;
+				$("#nitTercer_718").val(data.COD);
+				$("#descripTercer_718").val(data.DESCRIP);
+				_enterInput('#nitTercer_718');
+			}
+		});
+	}
 }
-
 // F8 DIVISION //
-function _ventanaDivisUno718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA DE DIVISIONES",
-            columnas: ["COD", "NOMBRE"],
-            data: $_divisiones,
-            callback_esc: () => { _validarDato() },
-            callback: (data) => {
-                $('#divSal1_718').val(data.COD);
-                $('#descpCups1_718').val(data.DESCRIP);
-                _enterInput('#divSal1_718');
-            }
+function _ventanaDivision718(e) {
+	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+		_ventanaDatos({
+			titulo: "VENTANA DE DIVISIONES",
+			columnas: ["COD", "NOMBRE"],
+			data: $_divisiones718,
+			callback_esc: () => { _validarDato() },
+			callback: (data) => {
+				SAL718.DIVISION.COD = data.COD; SAL718.DIVISION.DESCRIP = data.DESCRIP;
+				let caja = e.currentTarget.id;
+				if (caja == 'division1') {
+					$('#division1_718').val(data.COD + ' ' + data.DESCRIP);
+					_enterInput('#division1_718');
+				} else {
+					$('#division2_718').val(data.COD + ' ' + data.DESCRIP);
+					_enterInput('#division2_718');
+				}
+			}
 
-        });
-    }
+		});
+	}
 }
 
-function _ventanaDivisDos718(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        data = _ventanaDivisUno718(e);
-        $('#divSal2_718').val(data.COD);
-        $('#descpCups2_718').val(data.DESCRIP);
-        _enterInput('#divSal2_718');
-    }
+function _evaluarCON850_718(novedad) {
+	_inputControl('reset'); _inputControl('disabled');
+	SAL718.CUPS = []; SAL718.COSTO = []; SAL718.TERCEROS = []; SAL718.GRUPOSER = []; SAL718.MAESTROS = [];
+	SAL718.NOVEDADW = novedad.id;
+	document.getElementById('oper718').value = localStorage.Usuario + ' - ' + localStorage.Nombre;
+	document.getElementById('fecha718').value = moment().format('YYYY/MM/DD');
+	switch (parseInt(novedad.id)) {
+		case 7:
+			_validarGrupo718();
+			break;
+		case 8:
+		case 9:
+			_validarGrupo718();
+			break;
+		default:
+			_toggleNav();
+			break;
+	}
+	$('#novedad718').val(novedad.id + ' - ' + novedad.descripcion)
+
 }
 
+function _validarGrupo718() {
+	validarInputs({
+		form: "#grupo718",
+		orden: '1'
+	},
+		function () {
+			CON850(_evaluarCON850_718);
+		},
+		evaluarGrupo718
+	)
+}
+function evaluarGrupo718() {
+	SAL718.GRUPOSER.COD = (document.getElementById('codgrupo_718').value).toString().trim();
+	if (SAL718.GRUPOSER.COD.trim().length > 0) {
+		SAL718.GRUPOSER.COD = SAL718.GRUPOSER.COD
+	} else {
+		SAL718.GRUPOSER.COD = (document.getElementById('codgrupo_718').value).toString().trim()
+		SAL718.GRUPOSER.COD = cerosIzq(SAL718.GRUPOSER.COD, 2);
+	}
+	if (typeof SAL718.GRUPOSER.COD == "undefined" || SAL718.GRUPOSER.COD == void 0 ||
+		SAL718.GRUPOSER.COD.length == 0) { CON851('03', '03', _validarGrupo718(), 'error', 'error'); }
+	else {
+		document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD;
+		let datos_envio = datosEnvio() + SAL718.GRUPOSER.COD + '|' + 'GRUPOSER';
+		postData({
+			datosh: datos_envio
+		}, get_url("APP/SALUD/SAL718-01.DLL"))
+			.then((data) => {
+
+				let res = data['SAL718_GRUPOSER'][0]; SAL718.GRUPOSER = res;
+				_onrestricciones718({ invalid: SAL718.GRUPOSER.ESTADO, seccion: 'GRUPOSER' })
+
+			})
+			.catch((error) => {
+				console.debug(error)
+			});
+	}
+}
+function _validarCUPS718() {
+	console.debug('validando cups')
+	validarInputs({
+		form: "#cups718",
+		orden: '1'
+	},
+		function () {
+			CON850(_evaluarCON850_718);
+		},
+		evaluarCups718
+	)
+}
+function evaluarCups718(data) {
+	console.debug(data, 'data cupss')
+	SAL718.CUPS.LLAVE = SAL718.GRUPOSER.COD + (document.getElementById('codcups_718').value).toString().trim();
+	if (SAL718.CUPS.LLAVE.trim().length > 0) {
+		SAL718.CUPS.LLAVE = SAL718.CUPS.LLAVE
+	} else {
+		SAL718.CUPS.LLAVE = (document.getElementById('codcups_718').value).toString().trim()
+	}
+	if (typeof SAL718.CUPS.LLAVE == "undefined" || SAL718.CUPS.LLAVE.padEnd(12, ' ') == void 0 ||
+		SAL718.CUPS.LLAVE.length == 0) { CON851('03', '03', _validarCUPS718(), 'error', 'error'); }
+	else {
+		document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
+		let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE + '|' + 'CUPS'.padEnd(11, ' ');
+		postData({
+			datosh: datos_envio
+		}, get_url("APP/SALUD/SAL718-01.DLL"))
+			.then((data) => {
+
+				let res = data['SAL718_CUP'][0]; SAL718.CUPS = res;
+				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
+
+			})
+			.catch((error) => {
+				console.debug(error)
+			});
+	}
+}
+
+function _validarDescripcion718() {
+	validarInputs({
+		form: "#descripcioncups718",
+		orden: '1'
+	},
+		_validarCUPS718,
+		function () {
+			let data = [
+				{ 'COD': '01', 'DESCRIP': 'CIRUGIAS' },
+				{ 'COD': '02', 'DESCRIP': 'LABORATORIO' }
+			]
+			if ($_USUA_GLOBAL[0].NIT == 800156469) {
+				data.push(
+					{ 'COD': '03', 'DESCRIP': 'ECOGRAFIAS, DOPPLER, T.A.C, RESONACIA NUCLEAR' },
+					{ 'COD': '04', 'DESCRIP': 'ESTANCIA Y OTROS' },
+					{ 'COD': '05', 'DESCRIP': 'CONSULTA Y TERAPIAS' },
+					{ 'COD': '06', 'DESCRIP': 'PATOLOGIA Y CITOLOGIA' },
+					{ 'COD': '07', 'DESCRIP': 'PROMOCION Y PREVENCION' })
+			} else {
+				data.push(
+					{ 'COD': '03', 'DESCRIP': 'RX iMAGENEOLOGIA' },
+					{ 'COD': '04', 'DESCRIP': 'ESTANCIA Y OTROS' },
+					{ 'COD': '05', 'DESCRIP': 'CONSULTA Y TERAPIAS' },
+					{ 'COD': '06', 'DESCRIP': 'PATOLOGIA Y CITOLOGIA' },
+					{ 'COD': '07', 'DESCRIP': 'PROMOCION Y PREVENCION' })
+			}
+			TIPOSERVICIOS({ array: data, seleccion: SAL718.TIPOSER_CUP }, _validarGrupo718, function (data) {
+				SAL718.TIPOSER_CUP = data.COD;
+				document.getElementById('tipocups_718').value = data.COD + ' ' + data.DESCRIP
+				_validarCodAbr718();
+			});
+		}
+	)
+}
+
+function _validarCodAbr718() {
+	validarInputs({
+		form: "#codabreviado718",
+		orden: '1'
+	},
+		_validarDescripcion718,
+		function () {
+			SAL718.CUPS.LLAVE_ALT[1] = (document.getElementById('codabrev_718').value).toString().trim();
+			if (SAL718.CUPS.LLAVE_ALT[1].trim().length > 0) {
+				SAL718.CUPS.LLAVE_ALT[1] = SAL718.CUPS.LLAVE_ALT[1]
+			} else {
+				SAL718.CUPS.LLAVE_ALT[1] = (document.getElementById('codabrev_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.LLAVE_ALT[1].toString().trim() == "undefined" ||
+				SAL718.CUPS.LLAVE_ALT[1].toString().trim() == void 0 || SAL718.CUPS.LLAVE_ALT[1].toString().trim().length == 0) {
+				CON851('03', '03', _validarCodAbr718(), 'error', 'error');
+			} else { document.getElementById('codabrev_718').value = SAL718.CUPS.LLAVE_ALT[1].toString().trim(); validarNivelComp718(); }
+
+		}
+	)
+}
+function validarNivelComp718() {
+	validarInputs({
+		form: "#nivcomplejidad718",
+		orden: '1'
+	},
+		_validarCodAbr718,
+		function () {
+			SAL718.CUPS.NIVEL = (document.getElementById('nivcompl_718').value).toString().trim();
+			if (SAL718.CUPS.NIVEL.trim().length > 0) {
+				SAL718.CUPS.NIVEL = SAL718.CUPS.NIVEL
+			} else {
+				SAL718.CUPS.NIVEL = (document.getElementById('nivcompl_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.NIVEL == "undefined" ||
+				SAL718.CUPS.NIVEL.toString().trim() == void 0 || SAL718.CUPS.NIVEL.toString().trim().length == 0
+				|| (isNaN(SAL718.CUPS.NIVEL) || (parseInt(SAL718.CUPS.NIVEL) > 5))) {
+				CON851('03', '03', validarNivelComp718(), 'error', 'error');
+			} else { document.getElementById('nivcompl_718').value = SAL718.CUPS.NIVEL.toString().trim(); validarDuracion718(); }
+		}
+	)
+}
+function validarDuracion718() {
+	validarInputs({
+		form: "#duracionproc718",
+		orden: '1'
+	},
+		validarNivelComp718,
+		function () {
+			SAL718.CUPS.DURACION = (document.getElementById('duracion_718').value).toString().trim();
+			if (SAL718.CUPS.DURACION.trim().length > 0) {
+				SAL718.CUPS.DURACION = SAL718.CUPS.DURACION
+			} else {
+				SAL718.CUPS.DURACION = (document.getElementById('duracion_718').value).toString().trim()
+			}
+			if (
+				typeof SAL718.CUPS.DURACION == "undefined" || SAL718.CUPS.DURACION.toString().trim() == void 0
+				|| SAL718.CUPS.DURACION.toString().trim().length == 0 || (isNaN(SAL718.CUPS.DURACION))
+				|| ([5, 15, 45].find(n => n == SAL718.CUPS.DURACION) == -1) || (SAL718.CUPS.DURACION > 180)
+			) {
+				CON851('03', '03', validarDuracion718(), 'error', 'error');
+			} else {
+				document.getElementById('duracion_718').value = SAL718.CUPS.DURACION; validarCopago718();
+			}
+
+		}
+	)
+}
+function validarCopago718() {
+	SER822B({ seleccion: SAL718.CUPS.COPAGO }, validarDuracion718, function (data) {
+		SAL718.CUPS.COPAGO = data.COD;
+		document.getElementById('pagoPaci_718').value = SAL718.CUPS.COPAGO + ' ' + data.DESCRIP;
+		validarDatoNopos718();
+	})
+}
+function validarDatoNopos718() {
+	validarInputs({
+		form: "#procedencianopos718",
+		orden: '1'
+	},
+		validarNivelComp718,
+		function () {
+			SAL718.CUPS.NOPOS = (document.getElementById('proced_718').value).toString().trim();
+			if (SAL718.CUPS.NOPOS.trim().length > 0) {
+				SAL718.CUPS.NOPOS = SAL718.CUPS.NOPOS
+			} else {
+				SAL718.CUPS.NOPOS = (document.getElementById('proced_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.NOPOS == "undefined" || SAL718.CUPS.NOPOS.toString().trim() == void 0 || SAL718.CUPS.NOPOS.toString().trim().length == 0) {
+				document.getElementById('proced_718').value = 'N';
+				let cis = document.getElementById('cis_718').style.display;
+				if (cis == '') { validarCis718(); } else { validarHl7718(); }
+
+			} else if (['s', 'S', 'n', 'N'].find(n => n == SAL718.CUPS.NOPOS) != -1) {
+				document.getElementById('proced_718').value = SAL718.CUPS.NOPOS.toString().trim();
+				let cis = document.getElementById('cis_718').style.display;
+				if (cis == '') { validarCis718(); } else { validarHl7718(); }
+			} else {
+				document.getElementById('proced_718').value = 'N';
+				let cis = document.getElementById('cis_718').style.display;
+				if (cis == '') { validarCis718(); } else { validarHl7718(); }
+			}
+
+		}
+	)
+}
+
+function validarCis718() {
+	validarInputs({
+		form: "#cis718",
+		orden: '1'
+	},
+		validarDatoNopos718, function () {
+			SAL718.CUPS.CIS = (document.getElementById('cis_718').value).toString().trim();
+			if (SAL718.CUPS.CIS.trim().length > 0) {
+				SAL718.CUPS.CIS = SAL718.CUPS.CIS
+			} else {
+				SAL718.CUPS.CIS = (document.getElementById('cis_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.CIS == "undefined" || SAL718.CUPS.CIS.toString().trim() == void 0 || SAL718.CUPS.CIS.toString().trim().length == 0) {
+				document.getElementById('cis_718').value = 'N';
+				_validarCentroCost718();
+			} else if (['s', 'S', 'n', 'N'].find(n => n == SAL718.CUPS.CIS) == -1) {
+				CON851('03', '03', validarCis718(), 'error', 'error');
+			} else {
+				_validarCentroCost718();
+			}
+		}
+	)
+}
+
+function validarHl7718() {
+	validarInputs({
+		form: "#actHl718",
+		orden: '1'
+	},
+		validarDatoNopos718, function () {
+			SAL718.CUPS.CIS = (document.getElementById('actHl_718').value).toString().trim();
+			if (SAL718.CUPS.CIS.trim().length > 0) {
+				SAL718.CUPS.CIS = SAL718.CUPS.CIS
+			} else {
+				SAL718.CUPS.CIS = (document.getElementById('actHl_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.CIS == "undefined" || SAL718.CUPS.CIS.toString().trim() == void 0 || SAL718.CUPS.CIS.toString().trim().length == 0) {
+				document.getElementById('actHl_718').value = 'N';
+				_validarCentroCost718();
+			} else if (['s', 'S', 'n', 'N'].find(n => n == SAL718.CUPS.CIS) == -1) {
+				CON851('03', '03', validarHl7718(), 'error', 'error');
+			} else {
+				_validarCentroCost718();
+			}
+		})
+}
+
+function _validarCentroCost718() {
+	validarInputs({
+		form: "#centrocosto718",
+		orden: '1'
+	},
+		function () {
+			let cis = document.getElementById('cis_718').style.display;
+			if (cis == '') { validarCis718(); } else { validarHl7718(); }
+		}, evaluarCostos718)
+}
+
+function evaluarCostos718() {
+
+	SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim();
+	if (SAL718.COSTO.COD.trim().length > 0) {
+		SAL718.COSTO.COD = SAL718.COSTO.COD
+	} else {
+		SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim()
+	}
+	if (typeof SAL718.COSTO.COD == "undefined" || SAL718.COSTO.COD == void 0 ||
+		SAL718.COSTO.COD.length == 0) { CON851('03', '03', _validarCentroCost718(), 'error', 'error'); }
+	else {
+		let datos_envio = datosEnvio() + SAL718.COSTO.COD + '|' + 'COSTOS'.padEnd(11, ' ');
+		postData({
+			datosh: datos_envio
+		}, get_url("APP/SALUD/SAL718-01.DLL"))
+			.then((data) => {
+
+				let res = data['SAL718_CCOSTO'][0]; SAL718.COSTO = res;
+				_onrestricciones718({ invalid: SAL718.COSTO.ESTADO, seccion: 'COSTO' })
+
+			})
+			.catch((error) => {
+				console.debug(error)
+			});
+	}
+}
+
+function validarEdadMin718() {
+	validarInputs({
+		form: "#edadminima718",
+		orden: '1'
+	},
+		_validarCentroCost718, function () {
+
+			SAL718.CUPS.EDAD_MIN = document.getElementById('edadminima_718').value.toString().strim();
+			if (SAL718.CUPS.EDAD_MIN.trim().length > 0) {
+				SAL718.CUPS.EDAD_MIN = SAL718.CUPS.EDAD_MIN
+			} else {
+				SAL718.CUPS.EDAD_MIN = (document.getElementById('edadminima_718').value).toString().trim()
+			}
+			if (SAL718.CUPS.EDAD_MIN > 100 || (isNaN(SAL718.CUPS.EDAD_MIN))) { CON851('03', '03', validarEdadMin718(), 'error', 'error'); }
+			else {
+				document.getElementById('edadminima_718').value = SAL718.CUPS.EDAD_MIN;
+				validarEdadMax718();
+			}
+		})
+}
+
+function validarEdadMax718() {
+	validarInputs({
+		form: "#edadmaxima718",
+		orden: '1'
+	},
+		validarEdadMin718, function () {
+
+			SAL718.CUPS.EDAD_MAX = document.getElementById('edadmaxima_718').value.toString().strim();
+			if (SAL718.CUPS.EDAD_MAX.trim().length > 0) {
+				SAL718.CUPS.EDAD_MAX = SAL718.CUPS.EDAD_MAX
+			} else {
+				SAL718.CUPS.EDAD_MAX = (document.getElementById('edadmaxima_718').value).toString().trim()
+			}
+			if (SAL718.CUPS.EDAD_MAX < SAL718.CUPS.EDAD_MIN || isNaN(SAL718.CUPS.EDAD_MAX)) { CON851('03', '03', validarEdadMax718(), 'error', 'error'); }
+			else {
+				document.getElementById('edadmaxima_718').value = SAL718.CUPS.EDAD_MAX;
+				validarUndEdad718();
+			}
+		})
+}
+
+function validarUndEdad718() {
+	validarInputs({
+		form: "#undedad718",
+		orden: '1'
+	},
+		validarEdadMax718, function () {
+			SAL718.CUPS.UND_EDAD = document.getElementById('undedad_718').value.toString().strim();
+			if (SAL718.CUPS.UND_EDAD.trim().length > 0) {
+				SAL718.CUPS.UND_EDAD = SAL718.CUPS.UND_EDAD
+			} else {
+				SAL718.CUPS.UND_EDAD = (document.getElementById('undedad_718').value).toString().trim()
+			}
+			if (['A', 'D', 'M', 'm', 'a', 'd'].find(n => n == SAL718.CUPS.UND_EDAD.toString().trim()) == -1) { CON851('03', '03', validarUndEdad718(), 'error', 'error'); }
+			else {
+				if (SAL718.CUPS.UND_EDAD.toString().trim() == void 0) {
+					document.getElementById('undedad_718').value = 'N';
+					SAL718.CUPS.UND_EDAD = 'N';
+				} else {
+					document.getElementById('undedad_718').value = SAL718.CUPS.UND_EDAD;
+				}
+				validarSexo718();
+			}
+		})
+}
+
+function validarSexo718() {
+	validarInputs({
+		form: "#sexo718",
+		orden: '1'
+	},
+		validarUndEdad718, function () {
+			SAL718.CUPS.SEXO = document.getElementById('sexo_718').value.toString().strim();
+			if (SAL718.CUPS.SEXO.trim().length > 0) {
+				SAL718.CUPS.SEXO = SAL718.CUPS.SEXO
+			} else {
+				SAL718.CUPS.SEXO = (document.getElementById('sexo_718').value).toString().trim()
+			}
+			if (['m', 'M', 'F', 'f'].find(b == SAL718.CUPS.SEXO.trim()) == -1) { CON851('03', '03', validarSexo718(), 'error', 'error'); }
+			else {
+				if (SAL718.CUPS.SEXO.toString().trim() == void 0) {
+					document.getElementById('sexo_718').value = 'N';
+					SAL718.CUPS.UND_EDAD = 'N';
+				} else {
+					document.getElementById('sexo_718').value = SAL718.CUPS.SEXO;
+				}
+				validarDiagnostico718();
+			}
+
+		})
+}
+
+function validarDiagnostico718() {
+	validarInputs({
+		form: "#pregRips718",
+		orden: '1'
+	},
+		validarUndEdad718, function () {
+			SAL718.CUPS.DIAGN = document.getElementById('pregRips_718').value.toString().strim();
+			if (SAL718.CUPS.DIAGN.trim().length > 0) {
+				SAL718.CUPS.DIAGN = SAL718.CUPS.DIAGN
+			} else {
+				SAL718.CUPS.DIAGN = (document.getElementById('pregRips_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.DIAGN == "undefined" || SAL718.CUPS.DIAGN == void 0 ||
+				SAL718.CUPS.DIAGN.length == 0) { document.getElementById('pregRips_718').value = 'N'; evaluarDiagn718() }
+			else { evaluarDiagn718() }
+		})
+}
+
+function evaluarDiagn718() {
+	if (SAL718.GRUPOSER.COD < 87) {
+		if (SAL718.CUPS.LLAVE_ALT[0] == 2 || SAL718.CUPS.LLAVE_ALT[0] == 3 || SAL718.CUPS.LLAVE_ALT[0] == 4)
+			document.getElementById('pregRips_718').value = 'N'; validar100Med();
+	} else { document.getElementById('pregRips_718').value = 'S'; validar100Med(); }
+}
+
+function validar100Med() {
+	validarInputs({
+		form: "#porcmedico718",
+		orden: '1'
+	},
+		validarUndEdad718, function () {
+			SAL718.CUPS.MED_100 = document.getElementById('porcmedico_718').value.toString().strim();
+			if (SAL718.CUPS.MED_100.trim().length > 0) {
+				SAL718.CUPS.MED_100 = SAL718.CUPS.MED_100
+			} else {
+				SAL718.CUPS.MED_100 = (document.getElementById('porcmedico_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.MED_100 == "undefined" || SAL718.CUPS.MED_100 == void 0 ||
+				SAL718.CUPS.MED_100.length == 0 || ['n', 'N', 's', 'S'].find(n == SAL718.CUPS.MED_100.String().trim() == -1)) {
+				document.getElementById('porcmedico_718').value = 'N';
+				validarPorcentaje718();
+			}
+			else {
+				document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
+				validarPorcentaje718();
+			}
+
+		})
+}
+function validarPorcentaje718() {
+	validarInputs({
+		form: "#ingrclinica718",
+		orden: '1'
+	},
+		validar100Med, function () {
+			SAL718.CUPS.PORC_CL = document.getElementById('ingrclinica_718').value.toString().strim();
+			if (SAL718.CUPS.PORC_CL.trim().length > 0) {
+				SAL718.CUPS.PORC_CL = SAL718.CUPS.PORC_CL
+			} else {
+				SAL718.CUPS.PORC_CL = (document.getElementById('ingrclinica_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.PORC_CL == "undefined" || SAL718.CUPS.PORC_CL == void 0 ||
+				SAL718.CUPS.PORC_CL.length == 0) { CON851('03', '03', validarPorcentaje718(), 'error', 'error'); }
+			else {
+				document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
+				validarPorcentajeTer718();
+			}
+
+		})
+
+}
+
+function validarPorcentajeTer718() {
+	validarInputs({
+		form: "#ingrtercer718",
+		orden: '1'
+	},
+		validarPorcentaje718, function () {
+			SAL718.CUPS.PORC_OTR = document.getElementById('ingrtercer_718').value.toString().strim();
+			if (SAL718.CUPS.PORC_OTR.trim().length > 0) {
+				SAL718.CUPS.PORC_OTR = SAL718.CUPS.PORC_OTR
+			} else {
+				SAL718.CUPS.PORC_OTR = (document.getElementById('ingrtercer_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.PORC_OTR == "undefined" || SAL718.CUPS.PORC_OTR == void 0 ||
+				SAL718.CUPS.PORC_OTR.length == 0) { CON851('03', '03', validarPorcentaje718(), 'error', 'error'); }
+			else {
+				document.getElementById('ingrtercer_718').value = SAL718.CUPS.PORC_OTR;
+				evaluarPorcentajeTer718();
+			}
+		})
+
+}
+
+function evaluarPorcentajeTer718() {
+	if ((SAL718.CUPS.PORC_CL + SAL718.CUPS.PORC_OTR) > 100) {
+		CON851('03', '03', validarPorcentajeTer718(), 'error', 'error')
+	} else { validarCtaTercero718() }
+}
+
+function validarCtaTercero718() {
+	validarInputs({
+		form: "#ctaingrTercer718",
+		orden: '1'
+	},
+		validarPorcentaje718, evaluarCtaTercero718)
+}
+
+function evaluarCtaTercero718() {
+
+	SAL718.MAESTROS.LLAVE_MAE = document.getElementById('ctaingrTercer_718').value.toString().trim();
+	if (SAL718.MAESTROS.LLAVE_MAE.trim().length > 0) {
+		SAL718.MAESTROS.LLAVE_MAE = SAL718.MAESTROS.LLAVE_MAE
+	} else {
+		SAL718.MAESTROS.LLAVE_MAE = (document.getElementById('ctaingrTercer_718').value).toString().trim()
+	}
+	if (typeof SAL718.MAESTROS.LLAVE_MAE == "undefined" || SAL718.MAESTROS.LLAVE_MAE.padEnd(12, ' ') == void 0 ||
+		SAL718.MAESTROS.LLAVE_MAE.length == 0) { CON851('03', '03', validarCtaTercero718(), 'error', 'error'); }
+	else {
+		document.getElementById('ctaingrTercer_718').value = SAL718.MAESTROS.LLAVE_MAE;
+		let datos_envio = datosEnvio() + SAL718.MAESTROS.LLAVE_MAE + '|' + 'PLANCUENTAS'.padEnd(11, ' ');
+		postData({
+			datosh: datos_envio
+		}, get_url("APP/SALUD/SAL718-01.DLL"))
+			.then((data) => {
+
+				let res = data['SAL718_MAEST'][0]; SAL718.MAESTROS = res;
+				_onrestricciones718({ invalid: SAL718.MAESTROS.ESTADO, seccion: 'MAESTROS' })
+			})
+			.catch((error) => {
+				console.debug(error)
+			});
+	}
+
+}
+function validarTercero718() {
+	validarInputs({
+		form: "#nitTercer718",
+		orden: '1'
+	},
+		validarPorcentaje718, evaluarCtaTercero718)
+}
+
+function evaluarTercero718() {
+	SAL718.TERCEROS.COD = document.getElementById('nitTercer_718').value.toString().trim();
+	if (SAL718.TERCEROS.COD.trim().length > 0) {
+		SAL718.TERCEROS.COD = SAL718.TERCEROS.COD
+	} else {
+		SAL718.TERCEROS.COD = (document.getElementById('nitTercer_718').value).toString().trim()
+	}
+	if (typeof SAL718.TERCEROS.COD == "undefined" || SAL718.TERCEROS.COD.padEnd(12, ' ') == void 0 ||
+		SAL718.TERCEROS.COD.length == 0) { CON851('03', '03', validarCtaTercero718(), 'error', 'error'); }
+	else {
+		document.getElementById('nitTercer_718').value = SAL718.TERCEROS.COD;
+		let datos_envio = datosEnvio() + SAL718.TERCEROS.COD + '|' + 'TERCEROS'.padEnd(11, ' ');
+		postData({
+			datosh: datos_envio
+		}, get_url("APP/SALUD/SAL718-01.DLL"))
+			.then((data) => {
+
+				let res = data['SAL718_TERCE'][0]; SAL718.TERCEROS = res;
+				_onrestricciones718({ invalid: SAL718.TERCEROS.ESTADO, seccion: 'TERCEROS' })
+			})
+			.catch((error) => {
+				console.debug(error)
+			});
+	}
+}
+//-------------------------------------------------------------------------------------------//
+
+function validarCodHeon718() {
+	validarInputs({
+		form: "#codHeon718",
+		orden: '1'
+	},
+		validarCtaTercero718, function () {
+			SAL718.CUPS.NIT_OTR = document.getElementById('codHeon_718').value.toString().strim();
+			if (SAL718.CUPS.NIT_OTR.trim().length > 0) {
+				SAL718.CUPS.NIT_OTR = SAL718.CUPS.NIT_OTR
+			} else {
+				SAL718.CUPS.NIT_OTR = (document.getElementById('codHeon_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.NIT_OTR == "undefined" || SAL718.CUPS.NIT_OTR == void 0 ||
+				SAL718.CUPS.NIT_OTR.length == 0) { CON851('03', '03', validarCtaTercero718(), 'error', 'error'); }
+			else {
+				document.getElementById('codHeon_718').value = SAL718.CUPS.NIT_OTR;
+				validarCupsPrincipal718();
+			}
+		})
+}
+
+function validarCupsPrincipal718() {
+	validarInputs({
+		form: "#cupPrinc718",
+		orden: '1'
+	},
+		validarCodHeon718,
+		function () {
+			SAL718.CUPS.LLAVE = document.getElementById('cupPrinc_718').value.toString().strim();
+			if (SAL718.CUPS.LLAVE.trim().length > 0) {
+				SAL718.CUPS.LLAVE = SAL718.CUPS.LLAVE
+			} else {
+				SAL718.CUPS.LLAVE = (document.getElementById('cupPrinc_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.LLAVE == "undefined" || SAL718.CUPS.LLAVE == void 0 ||
+				SAL718.CUPS.LLAVE.length == 0) { CON851('03', '03', validarCtaTercero718(), 'error', 'error'); }
+			else {
+				document.getElementById('cupPrinc_718').value = SAL718.CUPS.LLAVE;
+				evaluarCodigoContable718('cupPrinc718', false)
+			}
+		})
+}
+
+//-------------------------------------------------------------------------------------------//
+function validarCodPuc718() {
+	validarInputs({
+		form: "#codPuc718",
+		orden: '1'
+	},
+		function () {
+			let caja = document.getElementById('codHeon718').style.display;
+			if (caja == '') {
+				validarCodHeon718();
+			} else {
+				validarTercero718()
+			}
+		},
+		function () {
+			SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = document.getElementById('codPuc_718').value.toString().strim();
+			SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = document.getElementById('codPuc_718').value.toString().strim();
+			if (SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP.trim().length > 0) {
+				SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP
+			} else {
+				SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = (document.getElementById('codPuc_718').value).toString().trim()
+			}
+			if (SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP.trim().length > 0) {
+				SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP
+			} else {
+				SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = (document.getElementById('codPuc_718').value).toString().trim()
+			}
+			if ((typeof SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP == "undefined" || SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP == void 0 ||
+				SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP.length == 0) ||
+				typeof SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP == "undefined" || SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP == void 0 ||
+				SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP.length == 0) {
+				CON851('03', '03', validarCodPuc718(), 'error', 'error');
+			}
+			else {
+				if (SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP != 'undefined') {
+					document.getElementById('codPuc_718').value = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP;
+					if ($_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]) != -1) {
+						validarDivision718();
+					} else { CON851('01', '01', validarCodPuc718(), 'error', 'error'); }
+				} else {
+					document.getElementById('codPuc_718').value = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP;
+					if ($_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]) != -1) {
+						validarDivision718();
+					} else { CON851('01', '01', validarCodPuc718(), 'error', 'error'); }
+				}
+				validarDivision718();
+			}
+		}
+	)
+}
+
+function validarCodCoop718() {
+	validarInputs({
+		form: "#codCoop718",
+		orden: '1'
+	},
+		function () {
+			let caja = document.getElementById('codHeon718').style.display;
+			if (caja == '') {
+				validarCodHeon718();
+			} else {
+				validarTercero718()
+			}
+		},
+		function () {
+			SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = document.getElementById('codCoop_718').value.toString().strim();
+			if (SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP.trim().length > 0) {
+				SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP
+			} else {
+				SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = (document.getElementById('codCoop_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == "undefined" || SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == void 0 ||
+				SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP.length == 0) {
+				CON851('03', '03', validarCodCoop718(), 'error', 'error');
+			}
+			else {
+				document.getElementById('codCoop_718').value = SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP;
+				if ($_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[1]) != -1) {
+					validarDivision718();
+				} else { CON851('01', '01', validarCodCoop718(), 'error', 'error'); }
+			}
+		}
+	)
+}
+
+function validarcodOficial718() {
+	validarInputs({
+		form: "#codOficial718",
+		orden: '1'
+	},
+		function () {
+			let caja = document.getElementById('codHeon718').style.display;
+			if (caja == '') {
+				validarCodHeon718();
+			} else {
+				validarTercero718()
+			}
+		},
+		function () {
+			SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = document.getElementById('codOficial_718').value.toString().strim();
+			if (SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP.trim().length > 0) {
+				SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP
+			} else {
+				SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = (document.getElementById('codOficial_718').value).toString().trim()
+			}
+			if (typeof SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == "undefined" || SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == void 0 ||
+				SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP.length == 0) {
+				CON851('03', '03', validarcodOficial718(), 'error', 'error');
+			}
+			else {
+				document.getElementById('codOficial_718').value = SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP;
+				if ($_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[1]) != -1) {
+					validarDivision718();
+				} else { CON851('01', '01', validarcodOficial718(), 'error', 'error'); }
+			}
+		}
+
+	)
+}
+
+function validarDivision718() {
+	validarInputs({
+		form: "#division1718",
+		orden: '1'
+	},
+		() => {
+			switch ($_USUA_GLOBAL[0].PUC) {
+				case '1': validarCodPuc718(); break;
+				case '2': validarCodCoop718(); break;
+				case '3': validarCodPuc718(); break;
+				case '4': validarcodOficial718(); break;
+				case '6': validarCodPuc718(); break;
+				default: validarCodPuc718(); break;
+			}
+		}, evaluarDivision718)
+}
+
+function evaluarDivision718() {
+	SAL718.CUPS.DIV1 = SAL718.DIVISION.COD;
+	SAL718.CUPS.DIV1 = document.getElementById('division1_718').value.toString().trim();
+	if (SAL718.CUPS.DIV1.trim().length > 0) {
+		SAL718.CUPS.DIV1 = SAL718.CUPS.DIV1
+	} else {
+		SAL718.CUPS.DIV1 = (document.getElementById('division1_718').value).toString().trim()
+	}
+	if (typeof SAL718.CUPS.DIV1 == "undefined" || SAL718.CUPS.DIV1 == void 0 ||
+		SAL718.CUPS.DIV1.length == 0) { CON851('03', '03', validarDivision718(), 'error', 'error'); }
+	else {
+		document.getElementById('division1_718').value = SAL718.CUPS.DIV1;
+		let sw_invalid = $_divisiones718.find(n => n.COD == SAL718.CUPS.DIV1);
+		if (sw_invalid == -1) { SAL718.DIVISION.ESTADO == 01; CON851('01', '01', validarDivision718(), 'error', 'error'); }
+		else { SAL718.DIVISION.ESTADO == 00; validarDivision2718(); }
+	}
+
+}
+
+function validarDivision2718() {
+	validarInputs({
+		form: "#division2718",
+		orden: '1'
+	},
+		validarDivision718,
+		evaluarDivision2718)
+}
+
+function evaluarDivision2718() {
+	SAL718.CUPS.DIV2 = SAL718.DIVISION.COD;
+	SAL718.CUPS.DIV2 = document.getElementById('division2_718').value.toString().trim();
+	if (SAL718.CUPS.DIV2.trim().length > 0) {
+		SAL718.CUPS.DIV2 = SAL718.CUPS.DIV2
+	} else {
+		SAL718.CUPS.DIV2 = (document.getElementById('division2_718').value).toString().trim()
+	}
+	if (typeof SAL718.CUPS.DIV2 == "undefined" || SAL718.CUPS.DIV2 == void 0 ||
+		SAL718.CUPS.DIV2.length == 0) { CON851('03', '03', validarDivision2718(), 'error', 'error'); }
+	else {
+		document.getElementById('division2_718').value = SAL718.CUPS.DIV2;
+		let sw_invalid = $_divisiones718.find(n => n.COD == SAL718.CUPS.DIV2);
+		if (sw_invalid == -1) { SAL718.DIVISION.ESTADO == 01; CON851('01', '01', validarDivision718(), 'error', 'error'); }
+		else { SAL718.DIVISION.ESTADO == 00; Actualizar718(); }
+	}
+
+}
+
+
+function Actualizar718() {
+	let i = 0, cuenta;
+	for (CUENTA in SAL718.CTA_CONTAB) if (SAL718.CTA_CONTAB[CUENTA].CTA_CONTAB_CUP.toString().trim() > 0) { i++ };
+	switch (i) {
+		case '1': cuenta = SAL718.CTA_CONTAB.CTA_CONTAB_CUP[i - 1]; break;
+		case '2': cuenta = SAL718.CTA_CONTAB.CTA_CONTAB_CUP[i - 1]; break;
+		case '3': cuenta = SAL718.CTA_CONTAB.CTA_CONTAB_CUP[i - 1]; break;
+	}
+
+	switch (SAL718.NOVEDADW) {
+		case '7':
+		case '8':
+			SAL718.PARAMS =
+				SAL718.CUPS.LLAVE.padEnd(12, ' ') + '|' + SAL718.CUPS.DESCRIP.padEnd(80, ' ') + '|' + SAL718.CUPS.LLAVE_ALT[0] + '|' + SAL718.CUPS.LLAVE_ALT[1].padEnd(5, ' ')
+				+ '|' + SAL718.CUPS.NIVEL + '|' + cerosIzq(SAL718.CUPS.DURACION, 3) + '|' + SAL718.CUPS.COPAGO + '|' + '|' + SAL718.CUPS.NOPOS
+				+ '|' + SAL718.CUPS.CIS + '|' + SAL718.CUPS.COSTO + '|' + SAL718.CUPS.COSTO + '|' + SAL718.CUPS.EDAD_MIN + '|' + SAL718.CUPS.EDAD_MAX
+				+ '|' + SAL718.CUPS.UND_EDAD + '|' + SAL718.CUPS.SEXO + '|' + SAL718.CUPS.DIAGN + '|' + SAL718.CUPS.MED_100 + '|' + SAL718.CUPS.PORC_CL
+				+ '|' + SAL718.CUPS.PORC_OTR + '|' + SAL718.CUPS.NIT_OTR + '|' + cuenta.padEnd(11, ' ') + '|' + $_USUA_GLOBAL[0].PUC
+				+ '|' + SAL718.CUPS.DIV1 + '|' + SAL718.CUPS.DIV2 + '|' + SAL718.CUPS.OPER_ELAB + '|' + SAL718.CUPS.FECHA_ELAB + '|' + SAL718.CUPS.HORA_ELAB
+				+ '|' + SAL718.CUPS.OPER_MOD + '|' + SAL718.CUPS.FECHA_MOD + '|' + SAL718.CUPS.HORA_MOD;
+			CON851P('01', validarDivision718, on_grabar718)
+			break;
+		case '9':
+			_eliminarCups718(_validarGrupo718);
+			break;
+
+		default:
+			break;
+	}
+}
+
+function on_grabar718() {
+	let datos_envio = datosEnvio() + SAL718.NOVEDADW + '|' + SAL718.PARAMS;
+	postData({
+		datosh: datos_envio
+	}, get_url("APP/SALUD/SAL718-02.DLL"))
+		.then((data) => {
+			if (data.split('|')[0] == "00") {
+				CON851(data.split('|')[0], data.split('|')[1], limpiarCajas718, 'success', 'success');
+				limpiarCajas718()
+			} else {
+				CON851('ERROR', 'ERROR AL ACTUALIZAR', validarDivision718(), 'error', 'error');
+			};
+
+		})
+		.catch((error) => {
+			console.log(error)
+		});
+}
+
+function _eliminarCups718(escCallback) {
+	SAL71A.PARAMS = SAL718.CUPS.LLAVE + '|'
+	CON851P('54', escCallback, validarDivision718)
+	let datos_envio = datosEnvio() + SAL71A.NOVEDADW + '|' + SAL718.PARAMS;
+	postData({
+		datosh: datos_envio
+	}, get_url("APP/SALUD/SAL71A-02.DLL"))
+		.then((data) => {
+			if (data.split('|')[0] == "00") {
+				CON851(data.split('|')[0], data.split('|')[1], limpiarCajas718, 'success', 'success');
+			} else {
+				CON851('ERROR', 'ERROR AL ACTUALIZAR', validarDivision718(), 'error', 'error');
+			};
+
+		})
+		.catch((error) => {
+			console.log(error)
+		});
+}
+
+//------------- FUNCIONES DOM HTML --------------------- //
+function limpiarCajas718() {
+	_inputControl('reset');
+	_inputControl('disabled');
+	CON850(_evaluarCON850_718);
+}
+
+function evaluarCodigoContable718(caja, data) {
+	caja == 'undefined' ? caja = false : caja = caja;
+	data == 'undefined' ? data = false : data = data;
+	switch ($_USUA_GLOBAL[0].PUC) {
+		case '1': if (caja) {
+			_enterInput('#codPuc_718');
+		}
+		else { _enterInput('#' + caja); document.getElementById('codPuc_718').value = data.LLAVE_MAE }
+			break;
+		case '2': if (caja) {
+			_enterInput('#codCoop_718');
+		}
+		else { _enterInput('#' + caja); document.getElementById('codCoop_718').value = data.LLAVE_MAE }
+			break;
+		case '3': if (caja) {
+			_enterInput('#codPuc_718');
+		}
+		else { _enterInput('#' + caja); document.getElementById('codPuc_718').value = data.LLAVE_MAE }
+			break;
+		case '4': if (caja) {
+			_enterInput('#codOficial_718');
+		}
+		else { _enterInput('#' + caja); _enterInput('#' + caja); document.getElementById('codOficial_718').value = data.LLAVE_MAE }
+			break;
+		case '6': if (caja) {
+			_enterInput('#codPuc_718');
+		}
+		else { _enterInput('#' + caja); _enterInput('#' + caja); document.getElementById('codOficial_718').value = data.LLAVE_MAE }
+			break;
+		default: if (caja) {
+			document.getElementById('codPuc_718').value = SAL718.MAESTROS.LLAVE_MAE;
+			_enterInput('#codPuc_718');
+		}
+		else { _enterInput('#' + caja); document.getElementById('codPuc_718').value = data.LLAVE_MAE }
+			break;;
+	}
+
+}
 
 // CONDICION POR NIT PARA CAMBIO DE CAJAS //
 function ocultCajas718() {
-    if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
-        document.getElementById('cis_718').style.display = 'none';
-        document.getElementById('HL_718').style.display = '';
+	if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
+		document.getElementById('cis718').style.display = 'none';
+		document.getElementById('actHl718').style.display = '';
 
-        document.getElementById('nitTerce718').style.display = 'none';
-        document.getElementById('codgHeon718').style.display = '';
-        CON850(_evaluarCON850);
+		document.getElementById('codTerce718').style.display = 'none';
+		document.getElementById('nomTerce718').style.display = 'none';
 
-    } else {
-        document.getElementById('cis_718').style.display = '';
-        document.getElementById('HL_718').style.display = 'none';
+		document.getElementById('codHeon718').style.display = '';
+		document.getElementById('cupPrinc718').style.display = '';
+		CON850(_evaluarCON850_718);
+	} else {
+		document.getElementById('cis718').style.display = '';
+		document.getElementById('actHl718').style.display = 'none';
 
-        document.getElementById('nitTerce718').style.display = '';
-        document.getElementById('codgHeon718').style.display = 'none';
-        CON850(_evaluarCON850);
-    }
+		document.getElementById('codTerce718').style.display = '';
+		document.getElementById('nomTerce718').style.display = '';
+
+		document.getElementById('codHeon718').style.display = 'none';
+		document.getElementById('cupPrinc718').style.display = 'none';
+		CON850(_evaluarCON850_718);
+	}
 }
+function on_llenarFormCups718() {
+	SAL718.GRUPOSER.COD == 'undefined' ? document.getElementById('codgrupo_718').value = ' ' : document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD;
+	SAL718.CUPS.LLAVE.substring(2, 12) == 'undefined' ? document.getElementById('codcups_718').value = ' ' : document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
+	SAL718.CUPS.LLAVE_ALT[0] == 'undefined' ? document.getElementById('tipocups_718').value = ' ' : document.getElementById('tipocups_718').value = SAL718.CUPS.LLAVE_ALT[0];
+	SAL718.CUPS.DESCRIP.toString().trim() == 'undefined' ? document.getElementById('descripCup_718').value = ' ' : document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
+	SAL718.CUPS.LLAVE_ALT[1] == 'undefined' ? document.getElementById('codabrev_718').value = ' ' : document.getElementById('codabrev_718').value = SAL718.CUPS.LLAVE_ALT[1];
+	SAL718.CUPS.NIVEL == 'undefined' ? document.getElementById('nivcompl_718').value = ' ' : document.getElementById('nivcompl_718').value = SAL718.CUPS.NIVEL
+	SAL718.CUPS.DURACION == 'undefined' ? document.getElementById('duracion_718').value = ' ' : document.getElementById('duracion_718').value = SAL718.CUPS.DURACION
+	SAL718.CUPS.COPAGO == 'undefined' ? document.getElementById('pagoPaci_718').value = ' ' : document.getElementById('pagoPaci_718').value = SAL718.CUPS.COPAGO
+	SAL718.CUPS.NOPOS == 'undefined' ? document.getElementById('proced_718').value = ' ' : document.getElementById('proced_718').value = SAL718.CUPS.NOPOS
 
-// NOVEDAD //
-function _evaluarCON850(novedad) {
-    _inputControl('reset');
-    _inputControl('disabled');
-    console.debug(novedad)
+	if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
+		SAL718.CUPS.LLAVEHEON == 'undefined' ? document.getElementById('codHeon718').value = ' ' : document.getElementById('codHeon718').value = SAL718.CUPS.LLAVEHEON;
+		SAL718.CUPS.LLAVE == 'undefined' ? document.getElementById('cupPrinc718').value = ' ' : document.getElementById('cupPrinc718').value = SAL718.CUPS.LLAVE;
+		SAL718.CUPS.CIS == 'undefined' ? document.getElementById('actHl718').value = ' ' : document.getElementById('actHl718').value = SAL718.CUPS.CIS;
+	} else {
+		SAL718.CUPS.CIS == 'undefined' ? document.getElementById('cis718').value = ' ' : document.getElementById('cis718').value = SAL718.CUPS.CIS;
+		SAL718.CUPS.NIT_OTR == 'undefined' ? document.getElementById('codTerce718').value = ' ' : document.getElementById('codTerce718').value = SAL718.CUPS.NIT_OTR;
+		SAL718.CUPS.NIT_OTR == 'undefined' ? document.getElementById('nomTerce718').value = ' ' : document.getElementById('nomTerce718').value = $_terceros718.filter(tercero => tercero.COD.toString().trim() == SAL718.CUPS.NIT_OTR).NOMBRE;
+	}
 
-    $_NovSal718 = novedad.id;
-    switch (parseInt(novedad.id)) {
-        case 7:
-        case 8:
-        case 9:
-            _validarGrpo718();
-            break;
-        default:
-            _toggleNav();
-            break;
-    }
-    $('#novedSal718').val(novedad.id + ' - ' + novedad.descripcion)
-}
+	SAL718.CUPS.COSTO == 'undefined' ? document.getElementById('centrocosto_718').value = ' ' : document.getElementById('centrocosto_718').value = SAL718.CUPS.COSTO;
+	SAL718.CUPS.EDAD_MIN == 'undefined' ? document.getElementById('edadminima_718').value = ' ' : document.getElementById('edadminima_718').value = SAL718.CUPS.EDAD_MIN;
+	SAL718.CUPS.EDAD_MAX == 'undefined' ? document.getElementById('edadmaxima_718').value = ' ' : document.getElementById('edadmaxima_718').value = SAL718.CUPS.EDAD_MIN;
+	SAL718.CUPS.UND_EDAD == 'undefined' ? document.getElementById('undedad_718').value = ' ' : document.getElementById('undedad_718').value = SAL718.CUPS.UND_EDAD;
+	SAL718.CUPS.SEXO == 'undefined' ? document.getElementById('sexo_718').value = ' ' : document.getElementById('sexo_718').value = SAL718.CUPS.SEXO;
+	SAL718.CUPS.DIAGN == 'undefined' ? document.getElementById('pregRips_718').value = ' ' : document.getElementById('pregRips_718').value = SAL718.CUPS.DIAGN;
+	SAL718.CUPS.MED_100 == 'undefined' ? document.getElementById('porcmedico_718').value = ' ' : document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
+	SAL718.CUPS.MED_100 == 'undefined' ? document.getElementById('porcmedico_718').value = ' ' : document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
+	SAL718.CUPS.PORC_CL == 'undefined' ? document.getElementById('ingrclinica_718').value = ' ' : document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
+	SAL718.CUPS.PORC_CL == 'undefined' ? document.getElementById('ingrclinica_718').value = ' ' : document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
+	SAL718.CUPS.PORC_OTR == 'undefined' ? document.getElementById('ingrtercer_718').value = ' ' : document.getElementById('ingrtercer_718').value = SAL718.CUPS.PORC_OTR;
 
-function _validarGrpo718() {
-    validarInputs(
-        {
-            form: "#validarGrupo718",
-            orden: '1'
-        },
-        function () { CON850(_evaluarCON850); },
-        function () {
-            $grupo718 = $('#grupoSal_718').val();
+	switch ($_USUA_GLOBAL.PUC) {
+		case '1':
+			SAL718.CUPS.CTA_CONTAB_CUP[0] == 'undefined' ?
+				document.getElementById('ctaDescripTercer_718').value = ' ' :
+				document.getElementById('ctaDescripTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
 
-            if ($grupo718.trim().length > 0) {
-                switch ($grupo718) {
-                    case false:
-                        CON851('01', '01', null, 'error', 'error');
-                        _validarCUPS718()
-                        break;
-                    default:
-                        let datos = $_gruposer.filter(grupo => grupo.COD.trim() == $grupo718.trim());
-                        if (datos.length > 0) {
-                            $('#grupoSal_718').val(datos.COD)
-                            $('#descrpGrupo718').val(datos.DESCRIP)
-                            _validarCUPS718()
-                        } else {
-                            CON851('01', '01', null, 'error', 'Error');
-                            _validarGrpo718()
-                        }
-                        break;
-                }
-            }
-        })
-}
-function _validarCUPS718() {
-    validarInputs(
-        {
-            form: "#validarCUPS718",
-            orden: '1'
-        },
-        function () { _validarGrpo718(); },
-        function () {
-            $grupoCups718 = $('#codCup_718').val();
-
-            $LLAVECUP = $grupo718 + $grupoCups718;
-
-            if ($grupoCups718.trim().length > 0) {
-                switch ($grupoCups718) {
-                    case false:
-                        CON851('01', '01', null, 'error', 'error');
-                        _validarCUPS718()
-                        break;
-                    default:
-                        let datos = $_cups.filter(grupo => grupo.COD.trim() == $grupoCups718.trim());
-                        if ($_NovSal718 == '7') {
-                            registroNuevo718()
-                        } else {
-                            _validarCUPS718()
-                        }
-                        if ($_NovSal718 == '8' || $_NovSal718 == '8') {
-                            if (datos.length > 0) {
-                                consultDatos718()
-                            } else {
-                                CON851('01', '01', null, 'error', 'Error');
-                                _validarCUPS718()
-                            }
-                            break;
-                        }
-                }
-            }
-        })
-}
-
-
-function consultDatos718() {
-    let datos_envio = datosEnvio()
-    datos_envio += '|'
-    datos_envio += $LLAVECUP
-    SolicitarDll({ datosh: datos_envio }, mostrarDatos718, get_url('/APP/SALUD/SAL718C.DLL'));
-}
-
-function mostrarDatos718(data) {
-    console.debug(data);
-    var date = data.split('|');
-
-    $DESCRP718 = date[2].trim();
-    $TIPOSERV718 = date[3].trim();
-    $CODABREV718 = date[4].trim();
-    $DURACION718 = date[5].trim();
-    $NIVE718 = date[6].trim();
-    $COPAGO718 = date[7].trim();
-    $NOPOS718 = date[8].trim();
-    $CIS718 = date[9].trim();
-    $EDADMIN718 = date[10].trim();
-    $EDADMAX718 = date[11].trim();
-    $UNIDMED718 = date[12].trim();
-    $SEXO718 = date[13].trim();
-    $DIAGN718 = date[14].trim();
-    $COSTO718 = date[15].trim();
-    $NOMCOSTO718 = date[16].trim();
-    $MEDICO718 = date[17].trim();
-    $PORC_CLIN718 = date[18].trim();
-    $PORC_OTR718 = date[19].trim();
-    $CTA_OTR718 = date[20].trim();
-    $NIT_OTR718 = date[21].trim();
-    $CTA_1CONT718 = date[22].trim();
-    $CTA_2CONT718 = date[23].trim();
-    $CTA_3CONT718 = date[24].trim();
-    $DIVIS718 = date[25].trim();
-    $DIVIS2718 = date[26].trim();
-    $OPERAD718 = date[27].trim();
-    $FECHA718 = date[28].trim();
-    $_PUCUSU718 = date[29].trim();
-
-    if (date[0].trim() == '00') {
-        if ($_NovSal718 == '7') {
-            CON851('00', '00', null, 'error', 'Error');
-            _validarCUPS718();
-        }
-        else {
-            datosCompl718()
-        }
-    }
-    else if (date[0].trim() == '01') {
-        if ($_NovSal718 == '7') {
-            registroNuevo718();
-        }
-        else {
-            CON851('01', '01', null, 'error', 'Error');
-            _validarCUPS718();
-        }
-    }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
-    }
+			SAL718.CUPS.CTA_CONTAB_CUP[0] == 'undefined' ?
+				document.getElementById('ctaDescripTercer_718').value = ' ' :
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
+			break;
+		case '2':
+			SAL718.CUPS.CTA_CONTAB_CUP[1] == 'undefined' ?
+				document.getElementById('ctaDescripTercer_718').value = ' ' :
+				document.getElementById('ctaDescripTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[1];
+			document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[1]);
+			break;
+		case '3':
+			SAL718.CUPS.CTA_CONTAB_CUP[0] == 'undefined' ?
+				document.getElementById('ctaDescripTercer_718').value = ' ' : document.getElementById('ctaDescripTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
+			document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
+			break;
+		case '4':
+			SAL718.CUPS.CTA_CONTAB_CUP[2] == 'undefined' ?
+				document.getElementById('ctaDescripTercer_718').value = ' ' :
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
+			break;
+		case '6':
+			SAL718.CUPS.CTA_CONTAB_CUP[2] == 'undefined' ?
+				document.getElementById('ctaDescripTercer_718').value = ' ' :
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
+			break;
+		default:
+			break;
+	}
+	_validarCodAbr718();
 
 }
+function _onrestricciones718(params) {
+	console.debug('PARAMSINVALID', params.invalid)
+	switch (params.seccion) {
 
+		case 'GRUPOSER':
+			if (SAL718.GRUPOSER.COD.toString().trim() == '89' && $_USUA_GLOBAL[0].PUC == '5') {
+				toastr.warning('Para consulta de medicina especializada \n use la cta 411027 que el sistema reclasifica x especialidad')
+			}
+			if (params.invalid == '00') {
+				document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD + ' ' + SAL718.GRUPOSER.DESCRIP;
+				_validarCUPS718();
+			} else { CON851('01', '01', _validarGrupo718(), 'error', 'error'); }
+			break;
+		//-----------------------------------------//
+		case 'CUPS':
+			switch (SAL718.NOVEDADW) {
+				case '7':
+					console.debug('invalid', params.invalid)
+					if (params.invalid == '00') { CON851('00', '00', _validarCUPS718(), 'error', 'error'); }
+					else {
+						if (SAL718.CUPS.LLAVE.substring(0, 2) != SAL718.GRUPOSER.COD) {
+							CON851('03', '03', _validarCUPS718(), 'error', 'error');
+						} else {
+							let d = new Date();
+							SAL718.CUPS.OPER_ELAB = localStorage['Usuario']; SAL718.CUPS.FECHA_ELAB = moment().format('YYYYMMDD'); SAL718.CUPS.HORA_ELAB = d.getHours()
+							document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
+							_validarDescripcion718();
+						}
+					}
+					break;
+				case '8':
+					if (params.invalid == '01') { CON851('01', '01', _validarCUPS718(), 'error', 'error'); }
+					else {
+						SAL718.CUPS.OPER_MOD = localStorage['Usuario']; SAL718.CUPS.FECHA_MOD = moment().format('YYYYMMDD'); SAL718.CUPS.HORA_MOD = d.getHours()
+					} document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP; on_llenarFormCups718();
+				case '9':
+					if (params.invalid == '01') { CON851('01', '01', _validarCUPS718(), 'error', 'error'); }
+					else { _eliminarCups718() }
+					break;
+			}
+			break;
 
-function datosCompl718() {
-    $('#descrpCups718').val($DESCRP718);
-    $('#tipoServ718').val($TIPOSERV718);
-    $('#codAbrev718').val($CODABREV718);
-    $('#duracion718').val($DURACION718);
-    $('#nivelComple718').val($NIVE718);
-    $('#pagoPacient718').val($COPAGO718);
-    $('#procedNO718').val($NOPOS718);
-    $('#cis718').val($CIS718);
-    $('#centrCost_718').val($COSTO718);
-    $('#descCosto718').val($NOMCOSTO718);
-    $('#edadMin718').val($EDADMIN718);
-    $('#edadMax718').val($EDADMAX718);
-    $('#undEdad718').val($UNIDMED718);
-    $('#sexo718').val($SEXO718);
-    $('#diagnt718').val($DIAGN718);
-    $('#distrib718').val($MEDICO718);
-    $('#ingrClin718').val($PORC_CLIN718);
-    $('#ingreTerc718').val($PORC_OTR718);
-    $('#cuentaTerc_718').val($CTA_OTR718);
+		//-----------------------------------------//
+		case 'COSTO':
+			if (params.invalid == '01') { CON851('01', '01', _validarCentroCost718(), 'error', 'error'); }
+			else {
+				document.getElementById('centrocosto_718').value = SAL718.COSTO.COD + ' ' + SAL718.COSTO.NOMBRE; validarEdadMin718();
+			}
+			break;
 
-    if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
-        var datosep = $FECHA718
-        $('#codHeon_718').val($OPERAD718 + ' ' + datosep.substring(2, 8))
-    } else {
-        $('#nitTerc_718').val($NIT_OTR718);
-    }
+		//-----------------------------------------//
 
-    $('#codPuc_718').val($CTA_1CONT718);
-    $('#codCoop_718').val($CTA_3CONT718);
-    $('#codOfic_718').val($CTA_2CONT718);
-    $('#divSal1_718').val($DIVIS718);
-    $('#divSal2_718').val($DIVIS2718);
-    $('#operador718').val($OPERAD718);
-    var fechac718 = $FECHA718
-    $('#fecha718').val(fechac718.substring(2, 8))
+		case 'TERCEROS':
+			if (params.invalid == '01') { CON851('01', '01', validarTercero718(), 'error', 'error'); }
+			else {
+				document.getElementById('nitTercer_718').value = SAL718.TERCEROS.COD;
+				SAL718.CUPS.NIT_OTR = SAL718.TERCEROS.COD;
+				document.getElementById('descripTercer_718').value = SAL718.TERCEROS.NOMBRE;
+				evaluarCodigoContable718('nitTercer_718', false);
+			}
+			break;
+		//-----------------------------------------//
 
-    // tipoSer718()
-    continuarRegistro718()
+		case 'MAESTROS':
+			if (params.invalid == '01') { CON851('01', '01', validarCtaTercero718(), 'error', 'error'); }
+			else {
+				let caja = document.getElementById('codHeon718').style.display;
+				if (caja == '') {
+					document.getElementById('ctaingrTercer_718').value = SAL718.MAESTROS.LLAVE_MAE
+					document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
+				} else {
+					document.getElementById('codHeon_718').value = SAL718.CUPS.NIT_OTR;
+					document.getElementById('cupPrinc_718').value = SAL718.CUPS.LLAVE.trim();
+				}
+				validarDivision718();
+			}
+			break;
+		//-----------------------------------------//
+		default:
+			break;
+	}
 }
-
-
-function continuarRegistro718() {
-    switch (parseInt($_NovSal718)) {
-        case 8:
-            tipoSer718();
-            break;
-        case 9:
-            CON851P('54', _validarCUPS718, eliminarReg718)
-            break;
-    }
-}
-
-
-function eliminarReg718() {
-
-    LLAMADO_DLL({
-        dato: [$_NovSal718, $LLAVECUP],
-        callback: function (data) {
-            actualBD718(data, $LLAVECUP)
-        },
-        nombredll: 'SAL718-G',
-        carpeta: 'SALUD'
-    })
-}
-
-
-// NOVEDAD 7 //
-function registroNuevo718() {
-    // $grpCps718 = $('#codCup_718').val()
-    $dcpCps718 = $('#descrpCups718').val()
-
-    tipoSer718();
-}
-
-// NOVEDAD 8 //
-function tipoSer718() {
-
-    if ($_USUA_GLOBAL[0].NIT == 800156469) {
-        var datoTipoEcoNit718 = [
-            { "COD": "1", "DESCRIP": "Cirugias" },
-            { "COD": "2", "DESCRIP": "Ecografias" },
-            { "COD": "3", "DESCRIP": "Doppler" },
-            { "COD": "4", "DESCRIP": "T.A.C" },
-            { "COD": "5", "DESCRIP": "Resonancia Nuclear" },
-            { "COD": "6", "DESCRIP": "Patologia y Citologia" },
-            { "COD": "7", "DESCRIP": "Promocion y Prevencion" }
-        ]
-
-        POPUP({
-            array: datoTipoEcoNit718,
-            titulo: 'Tipo de Servicio?',
-            indices: [
-                { id: 'COD', label: 'DESCRIP' }
-            ],
-            callback_f: _validarCUPS718
-        }, function (data) {
-            switch (data.COD.trim()) {
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                    $('#tipoServ718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
-                    $_SERV718 = data.COD.trim()
-                    _validarAbrev718()
-                    break;
-            }
-        })
-    } else {
-        var datoTipoServ718 = [
-            { "COD": "1", "DESCRIP": "Cirugias" },
-            { "COD": "2", "DESCRIP": "Laboratorio y Otros diag." },
-            { "COD": "3", "DESCRIP": "RX Imagenologia" },
-            { "COD": "4", "DESCRIP": "Estancia y Otros" },
-            { "COD": "5", "DESCRIP": "Consulta y Terapias" },
-            { "COD": "6", "DESCRIP": "Patologia y Citologia" },
-            { "COD": "7", "DESCRIP": "Promocion y Prevencion" }
-        ]
-
-        POPUP({
-            array: datoTipoServ718,
-            titulo: 'Tipo de Servicio?',
-            indices: [
-                { id: 'COD', label: 'DESCRIP' }
-            ],
-            callback_f: _validarCUPS718
-        }, function (data) {
-            switch (data.COD.trim()) {
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                    $('#tipoServ718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
-                    $_SERV718 = data.COD.trim()
-                    _validarAbrev718()
-                    break;
-            }
-        })
-    }
-}
-
-function _validarAbrev718() {
-    validarInputs(
-        {
-            form: "#validarCodAbrev718",
-            orden: '1'
-        },
-        function () { tipoSer718(); },
-        function () {
-            $ABREV718 = $('#codAbrev718').val()
-            _nivelAcompl718();
-        }
-    )
-}
-
-
-function _nivelAcompl718() {
-    validarInputs(
-        {
-            form: "#validarNivel718",
-            orden: '1'
-        },
-        function () { tipoSer718(); },
-        function () {
-            $NIVELAC = $('#nivelComple718').val()
-
-            if ($NIVELAC == 1 || $NIVELAC == 2 || $NIVELAC == 3 || $NIVELAC == 4 || $NIVELAC == 5) {
-                pagoPacient718();
-            } else {
-                CON851('03', '03', null, 'error', 'error');
-                _nivelAcompl718()
-            }
-
-        }
-    )
-}
-
-
-function pagoPacient718() {
-    var datoPago718 = [
-        { "COD": "1", "DESCRIP": "Co-Pago" },
-        { "COD": "2", "DESCRIP": "Cuota Moderada" },
-        { "COD": "3", "DESCRIP": "No Aplica" }
-    ]
-
-    POPUP({
-        array: datoPago718,
-        titulo: 'Tipo de Pago',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: _validarAbrev718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-            case '3':
-                $('#pagoPacient718').val(data.COD.trim() + ' - ' + data.DESCRIP.trim())
-                $_PAGO718 = data.COD.trim()
-                setTimeout(procedNOPOS718, 300);
-                break;
-        }
-    })
-}
-
-
-function procedNOPOS718() {
-    var datoProcedm718 = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datoProcedm718,
-        titulo: 'Procedimiento NO POS',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: pagoPacient718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#procedNO718').val(data.DESCRIP.trim())
-                $_NOPOS718 = data.DESCRIP.trim()
-                if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
-                    setTimeout(activarHL_718, 300);
-                } else {
-                    setTimeout(datoCIS718, 300);
-                }
-                break;
-        }
-    })
-}
-
-function activarHL_718() {
-    var datoHL718 = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datoHL718,
-        titulo: 'Activar HL7?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: procedNOPOS718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#actHl718').val(data.DESCRIP.trim())
-                $ACTHL = data.DESCRIP.trim()
-                setTimeout(_validaCentroCost718, 300);
-                break;
-        }
-    })
-}
-
-function datoCIS718() {
-    var datCIS718 = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datCIS718,
-        titulo: 'C.I.S?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: procedNOPOS718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#cis718').val(data.DESCRIP.trim())
-                $_CIS718 = data.DESCRIP.trim()
-                setTimeout(_validaCentroCost718, 300);
-                break;
-        }
-    })
-}
-
-
-function _validaCentroCost718() {
-    validarInputs(
-        {
-            form: "#CentroCost718",
-            orden: '1'
-        },
-        function () { datoCIS718(); },
-        function () {
-
-            $centroCosto718 = $('#centrCost_718').val();
-
-            if ($centroCosto718.trim().length > 0) {
-                switch ($centroCosto718) {
-                    case false:
-                        CON851('01', '01', null, 'error', 'error');
-                        _validaCentroCost718()
-                        break;
-                    default:
-                        _consultaSql({
-                            sql: `SELECT * FROM sc_archcos  WHERE codigo = '${$centroCosto718}'`,
-                            db: $CONTROL,
-                            callback: function (error, results, fields) {
-                                if (error) throw error;
-                                else {
-                                    var datos = results[0]
-                                    console.log(datos)
-                                    if (results.length > 0) {
-                                        $('#centrCost_718').val(datos.codigo.trim())
-                                        $('#descCosto718').val(datos.descripcion.trim())
-                                        datosEdad718()
-                                    }
-                                }
-                            }
-                        })
-                        break;
-                }
-            }
-        }
-    )
-}
-
-function datosEdad718() {
-    validarInputs(
-        {
-            form: "#edadMinim718",
-            orden: '1'
-        },
-        function () { _validaCentroCost718(); },
-        function () { unidadMedida718() }
-    )
-}
-
-function unidadMedida718() {
-    var unidadMed718 = [
-        { "COD": "1", "DESCRIP": "Años" },
-        { "COD": "2", "DESCRIP": "Meses" },
-        { "COD": "3", "DESCRIP": "Dias" },
-        { "COD": "4", "DESCRIP": "No aplica" }
-    ]
-    POPUP({
-        array: unidadMed718,
-        titulo: 'Unidad de Medida',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: datosEdad718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-            case '3':
-                $('#undEdad718').val(data.DESCRIP.trim())
-                $UNIDMED718 = data.DESCRIP.trim()
-                setTimeout(sexoPaciente718, 300);
-                break;
-        }
-    })
-}
-
-function sexoPaciente718() {
-    var datoSexo718 = [
-        { "COD": "1", "DESCRIP": "Femenino" },
-        { "COD": "2", "DESCRIP": "Masculino" }
-    ]
-    POPUP({
-        array: datoSexo718,
-        titulo: 'Sexo',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: datosEdad718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#sexo718').val(data.DESCRIP.trim())
-                $_SEXOPAC718 = data.DESCRIP.trim()
-                setTimeout(diagnostRips718, 300);
-                break;
-        }
-    })
-}
-
-function diagnostRips718() {
-    var datoRips718 = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datoRips718,
-        titulo: 'RIPS?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: datosEdad718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-            case '2':
-                $('#diagnt718').val(data.DESCRIP.trim())
-                $DIAGNRIPS718 = data.DESCRIP.trim()
-                setTimeout(ingresoMedico718, 300);
-                break;
-        }
-    })
-}
-
-function ingresoMedico718() {
-    var datoMedico718 = [
-        { "COD": "1", "DESCRIP": "Si" },
-        { "COD": "2", "DESCRIP": "No" }
-    ]
-    POPUP({
-        array: datoMedico718,
-        titulo: 'Ingreso 100% para el medico?',
-        indices: [
-            { id: 'COD', label: 'DESCRIP' }
-        ],
-        callback_f: diagnostRips718
-    }, function (data) {
-        switch (data.COD.trim()) {
-            case '1':
-                $('#distrib718').val(data.DESCRIP.trim())
-                $INGRESMED718 = data.DESCRIP.trim()
-                setTimeout(validarPUC718, 300);
-                break;
-            case '2':
-                $('#distrib718').val(data.DESCRIP.trim())
-                $INGRESMED718 = data.DESCRIP.trim()
-                ingresoClinica718();
-                break;
-        }
-    })
-}
-
-function ingresoClinica718() {
-    validarInputs(
-        {
-            form: "#ingreClinco718",
-            orden: '1'
-        },
-        function () { ingresoMedico718(); },
-        function () { validarIngTercer718() }
-    )
-}
-
-function validarIngTercer718() {
-    $ingrClinc718 = $('#ingrClin718').val();
-    validarInputs(
-        {
-            form: "#ingresoTercer718",
-            orden: '1'
-        },
-        function () { ingresoClinica718(); },
-        function () {
-            $ingrTerc718 = $('#ingreTerc718').val();
-            console.debug($ingrTerc718);
-            if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162 && parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
-                codigoHeon718()
-            } else if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
-                cuentTercero718();
-            }
-            if (parseFloat($ingrTerc718) == 0 || parseFloat($ingrTerc718) == '') {
-                validarPUC718()
-            } else {
-                cuentTercero718()
-            }
-        }
-    )
-}
-
-function cuentTercero718() {
-    validarInputs(
-        {
-            form: "#cuentaIngreso718",
-            orden: '1'
-        },
-        function () { validarIngTercer718(); },
-        function () {
-            $llavemae718 = $('#cuentaTerc_718').val();
-
-            if ($llavemae718.trim().length > 0) {
-                switch ($llavemae718) {
-                    case false:
-                        CON851('01', '01', null, 'error', 'error');
-                        _validarCUPS718()
-                        break;
-                    default:
-                        _consultaSql({
-                            sql: `SELECT * FROM sc_archmae  WHERE llave_mae = '${$llavemae718}'`,
-                            db: $CONTROL,
-                            callback: function (error, results, fields) {
-                                if (error) throw error;
-                                else {
-                                    var datos = results[0]
-                                    console.log(datos)
-                                    if (results.length = !results.length) {
-                                        CON851('01', '01', null, 'error', 'Error');
-                                        cuentTercero718()
-                                    } else {
-                                        $('#cuentaTerc_718').val(datos.llave_mae.trim())
-                                        $('#descrCta718').val(datos.nombre_mae.trim())
-                                        terceroNit718()
-                                    }
-                                }
-                            }
-                        })
-                        break;
-                }
-            }
-        }
-    )
-}
-
-function terceroNit718() {
-    validarInputs(
-        {
-            form: "#nitTerce718",
-            orden: '1'
-        },
-        function () { cuentTercero718(); },
-        function () {
-            $nitterc718 = parseFloat($('#nitTerc_718').val())
-            // parseFloat($ingrTerc718);
-            if ($nitterc718.trim().length > 0) {
-                switch ($nitterc718) {
-                    case false:
-                        CON851('01', '01', null, 'error', 'error');
-                        _validarCUPS718()
-                        break;
-                    default:
-                        _consultaSql({
-                            sql: `SELECT * FROM sc_archter  WHERE cod_ter = '${$nitterc718}'`,
-                            db: $CONTROL,
-                            callback: function (error, results, fields) {
-                                if (error) throw error;
-                                else {
-                                    var datos = results[0]
-                                    console.log(datos)
-                                    if (results.length = !results.length) {
-                                        CON851('01', '01', null, 'error', 'Error');
-                                        terceroNit718()
-                                    } else {
-                                        $('#nitTerc_718').val(datos.cod_ter)
-                                        $('#nombreTer718').val(datos.descrip_ter)
-                                        validarPUC718()
-                                    }
-                                }
-                            }
-                        })
-                        break;
-                }
-            }
-        }
-    )
-}
-
-function codigoHeon718() {
-    validarInputs(
-        {
-            form: "#codgHeon718",
-            orden: '1'
-        },
-        function () { validarIngTercer718(); },
-        function () { validarPUC718() }
-    )
-}
-
-
-function validarPUC718() {
-    validarInputs(
-        {
-            form: "#codigoPUC718",
-            orden: '1'
-        },
-        function () { ingresoClinica718(); },
-        function () {
-            if ($_SERV718 == 6) {
-                $('#codPuc_718').val('41250400050');
-                $('#codOfic_718').val('43124800001');
-            }
-            validarPucUsu718();
-            // } else {
-            //     division718()
-            // }
-        }
-    )
-}
-
-
-function validarPucUsu718() {
-    // alert($_PUCUSU718)
-    switch ($_PUCUSU718) {
-        case '1':
-            $('#codPuc_718').val($CTA_1CONT718);
-            division718();
-            break;
-        case '2':
-            $('#codCoop_718').val($CTA_3CONT718);
-            division718();
-            break;
-        case '3':
-            $('#codPuc_718').val(CTA_1CONT718);
-            division718();
-            break;
-        case '4':
-            $('#codOfic_718').val(CTA_2CONT718);
-            division718();
-            break;
-        case '6':
-            $('#codOfic_718').val(CTA_2CONT718);
-            division718();
-            break;
-    }
-}
-
-
-
-function division718() {
-    validarInputs(
-        {
-            form: "#divis718",
-            orden: '1'
-        },
-        function () { validarPUC718(); },
-        function () {
-            $divUno718 = $('#divSal1_718').val();
-            divisionDos718();
-        }
-    )
-}
-
-function divisionDos718() {
-    validarInputs(
-        {
-            form: "#divisDos718",
-            orden: '1'
-        },
-        function () { division718(); },
-        function () {
-            $divDos718 = $('#divSal2_718').val();
-            // psre();
-            envioDatos718()
-        }
-    )
-}
-
-
-function envioDatos718() {
-
-    var DESCRIP718 = espaciosDer($('#descrpCups718').val(), 80)
-    var DURAC718 = cerosIzq($('#duracion718').val(), 3)
-    var NOPOS718 = $_NOPOS718.substring(0, 1)
-    var DATCIS718 = $_CIS718.substring(0, 1)
-    var $EdadMin718 = cerosIzq($('#edadMin718').val(), 3)
-    var $EdadMax718 = cerosIzq($('#edadMax718').val(), 3)
-    var MEDIDA718 = $UNIDMED718.substring(0, 1)
-    var SEXO718 = $_SEXOPAC718.substring(0, 1)
-    var DIAGN718 = $DIAGNRIPS718.substring(0, 1)
-    var INTRGMED718 = $INGRESMED718.substring(0, 1)
-    var $INGCLIN718 = $('#ingrClin718').val();
-    var NITTERC718 = cerosIzq($nitterc718.trim(), 10);
-    var $CODPUC718 = cerosIzq($('#codPuc_718').val(), 11);
-    var $CODCOOP718 = cerosIzq($('#codCoop_718').val(), 11);
-    var $CODOFIC718 = cerosIzq($('#codOfic_718').val(), 11);
-
-    LLAMADO_DLL({
-        dato: [$_NovSal718, $LLAVECUP, DESCRIP718, $_SERV718, $ABREV718, DURAC718, $NIVELAC, $_PAGO718, NOPOS718, DATCIS718,
-            $centroCosto718, $EdadMin718, $EdadMax718, MEDIDA718, SEXO718, DIAGN718, INTRGMED718, $INGCLIN718, $ingrTerc718,
-            $llavemae718, NITTERC718, $CODPUC718, $CODCOOP718, $CODOFIC718, $divUno718, $divDos718],
-        callback: function (data) {
-            actualizar718(data)
-        },
-        nombredll: 'SAL718-G',
-        carpeta: 'SALUD'
-    })
-
-}
-
-
-function actualizar718(data) {
-    loader('hide');
-    var rdll = data.split('|');
-    console.log(rdll[0])
-    if (rdll[0].trim() == '00') {
-        switch (parseInt($_NovSal718)) {
-            case 7:
-                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                    function () {
-                        terminar718();
-                    });
-                // error
-                terminar718();
-                break;
-            case 8:
-                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                    function () {
-                        terminar718();
-                    });
-                // error
-                terminar718();
-                break;
-            case 9:
-                jAlert({ titulo: 'Notificacion', mensaje: 'DATO CREADO CORRECTAMENTE' },
-                    function () {
-                        terminar718();
-                    });
-                // error
-                terminar718();
-                break;
-        }
-    } else {
-        CON852(rdll[0], rdll[1], rdll[2], _toggleNav);
-    }
-}
-
-function terminar718() {
-    _toggleNav();
-    _inputControl('reset');
-    _inputControl('disabled');
-
-}
-

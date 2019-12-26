@@ -134,7 +134,7 @@ async function SER829(seleccion, esccallback, callback) {
         }],
         seleccion: seleccion,
         callback_f: esccallback
-    },callback)
+    }, callback)
 }
 async function SER834(data, esccallback, callback) {
     var SER834 = { NIT: data.NITUSU ? data.NITUSU : false, NACI: data.FECHANACI ? data.FECHANACI : false, SEXO: data.SEXOPACI ? data.SEXOPACI : false }
@@ -286,6 +286,37 @@ function SER830(data, esccallback, callback) {
         seleccion: data.seleccion,
         callback_f: esccallback,
         teclaAlterna: true
+    }, callback)
+}
+function SER822B(data, esccallback, callback) {
+    var SER822B = [];
+    SER822B = [
+        { 'COD': '01', 'DESCRIP': 'COPAGO' },
+        { 'COD': '02', 'DESCRIP': 'CUOTA MODERADORA' },
+        { 'COD': '03', 'DESCRIP': 'NO APLICA' }
+    ]
+    POPUP({
+        array: SER822B,
+        titulo: 'TIPO DE PAGO',
+        indices: [{
+            id: 'COD',
+            label: 'DESCRIP'
+        }],
+        seleccion: data.seleccion,
+        callback_f: esccallback
+    }, callback)
+}
+
+function TIPOSERVICIOS(data, esccallback, callback) {
+    POPUP({
+        array: data.array,
+        titulo: 'Tipo servicios',
+        indices: [{
+            id: 'COD',
+            label: 'DESCRIP'
+        }],
+        seleccion: data.seleccion,
+        callback_f: esccallback
     }, callback)
 }
 /////////// FUNCIONES PARA VENTANAS SALUD//////////
