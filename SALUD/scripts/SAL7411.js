@@ -191,7 +191,7 @@ function _ventanaServicio(e) {
         });
 }
 
-function _ventanacontratos(e){
+function _ventanacontratos(e) {
     var $_CONTRATO_108 = [];
     let URL = get_url("APP/" + "SALUD/SER872" + ".DLL");
     postData({
@@ -209,8 +209,8 @@ function _ventanacontratos(e){
                         $("#ctrlcont_108").focus();
                     },
                     callback: function (data) {
-                        document.getElementById('ctrlcont_108').value = data.CUENTA; 
-                        
+                        document.getElementById('ctrlcont_108').value = data.CUENTA;
+
                         _enterInput('#ctrlcont_108');
                     }
                 });
@@ -388,6 +388,7 @@ function _ventanaTercerosautoriza(e) {
 
 function _leerusuario() {
     $_ANOLNK = $_FECHA_LNK.substring(0, 2);
+
     if (parseInt($_ANOLNK) > 90) {
         $_ANOALFA = $_ANOLNK + 1900;
         CON850(_dato_novedad_SAL7411);
@@ -1025,7 +1026,7 @@ function _evaluarestado_SAL7411() {
         }
     } else if (($_NITUSU == "0844001287") && ($_NOVEDAD == "8")) {
         $_OPERBLOQNUM = "GEBC";
-        $("#modificado_108").val($_OPERMODNUM);
+        $("#bloqueo_108").val($_OPERBLOQNUM);
         _mostrarestado_SAL7411();
 
     } else if (($_NOVEDAD == "8") && ($_ESTADONUM == "1") && ($_OPERBLOQNUM != $_ADMINW)) {
@@ -1122,13 +1123,10 @@ function _dataCON904_05(data) {
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
         if (($_NOVEDAD == "8") && ($_ESTADOW != $_ESTADONUM) && ($_AÑOPACI_RET7411 > 0)) {
-
             if (($_ANOALFA != $_AÑOPACI_RET7411) || ($_MESLNK != $_MESPACI_RET7411)) {
-
                 CON851('91', '91', null, 'error', 'error');
                 if (($_MESLNK == "01") || ($_ADMINW == "GEBC") || ($_ADMINW == "ADMIN") || (($_ADMINW == "JAPV"))) {
                     _mostrarestado_SAL7411();
-
                 }
                 else {
                     $_ESTADOW = $_ESTADONUM;
@@ -1772,7 +1770,7 @@ function validar_fechaing_7411() {
             _evaluarservicio_SAL7411();
         }
     } else {
-        $_FECHAINGNUM = 20 + $_FECHAINGNUM; 
+        $_FECHAINGNUM = 20 + $_FECHAINGNUM;
         $_HORAINGNUMW = moment().format('HH:mm');
         $("#horaing_108").val($_HORAINGNUMW);
         _evaluarfechasalida_7411();
@@ -2035,11 +2033,11 @@ function _validarred() {
         else {
             _evaluardiv_SAL7411();
         }
-    } else if($_REDEXTERW.trim() == ''){
-        $_REDEXTERW = 'N'; 
+    } else if ($_REDEXTERW.trim() == '') {
+        $_REDEXTERW = 'N';
         $("#redext_108").val();
         _evaluardiv_SAL7411();
-    }else {
+    } else {
         _evaluardatored_SAL7411();
     }
 }
@@ -2245,7 +2243,7 @@ function _dataSER108_12(data) {
         if ($_ESTADOCNCAP == "1") {
             CON851('13', '13', null, 'error', 'error');
             _evaluarcontrolcap();
-        }else if ($_NITUSU == "0800251482") {
+        } else if ($_NITUSU == "0800251482") {
             // _RELEERNIT_SAL7411(); 
             if ($_NITCNCAP != $_NITW) {
                 if ($_NITCNCAP == $_NITCONTW) {
@@ -3253,23 +3251,91 @@ function _evaluarobservacionaper() {
 
 function _validarinformacion() {
     $_OBSERAPERW = $("#obserapertura_108").val();
-    CON851P('01', _evaluardetalle, _grabardatos)
+    if ($_NOVEDAD == '8') {
+        CON851P('01', _evaluardetalle, _grabarcambio)
+    } else {
+        CON851P('01', _evaluardetalle, _grabarregistro)
+    }
 }
 
-function _grabardatos() {
-    if ($_NOVEDAD == '8') {
-        $_FECHAMODNUM = moment().format('YYYYMMDD');
-        $_OPERMODNUM = $_ADMINW;
-        $_FECHACRENUM = $_ANOCRENUM + $_MESCRENUM + $_DIACRENUM;
-        $_NITW = $_NITNUM;
-        $_DESCRIPW = $_DESCRIPNUM;
+function _grabarregistro() {
+    // if ($_NOVEDAD == '8') {
+    //     $_FECHAMODNUM = moment().format('YYYYMMDD');
+    //     $_OPERMODNUM = $_ADMINW;
+    //     $_FECHACRENUM = $_ANOCRENUM + $_MESCRENUM + $_DIACRENUM;
+    //     $_NITW = $_NITNUM;
+    //     $_DESCRIPW = $_DESCRIPNUM;
 
-    } else {
-        $_FECHACRENUM = moment().format('YYYYMMDD');
-        $_OPERNUM = $_ADMINW;
-        $_FECHAMODNUM = ' ';
-        $_OPERMODNUM = ' ';
+    // } else {
+    $_FECHACRENUM = moment().format('YYYYMMDD');
+    $_OPERNUM = $_ADMINW;
+    $_FECHAMODNUM = ' ';
+    $_OPERMODNUM = ' ';
+    // }
+    $_FACTCAPITW = $_PRECAPITW + $_NROCAPITW;
+    $_FECHAINGNUM = $_FECHAINGNUM.replace(/-/g, '');
+    $_HORASALW = $_HORASALW.replace(/:/, '');
+    $_HORAINGNUMW = $_HORAINGNUMW.replace(/:/, '')
+
+    LLAMADO_DLL({
+        dato: [$_NOVEDAD, $_LLAVEW, $_NITW, $_DESCRIPW, $_CONVENIOW, $_ESTADOW, $_PORCRETENCW, $_SEGRIPSW, $_CTAPICW, $_IDPACW, $_TIPOFACTW, $_HABW, $_PORCENCOPAGOW, $_FECHAINGNUM, $_FECHASALNUM, $_HORAINGNUMW, $_HORASALW, $_SERVICIOW, $_REDEXTERW, $_CONTRATOW, $_DIVISIONW, $_FACTCAPITW, $_FORMACOPAGW, $_CCOSTOW, $_ENVIOW, $_CONTROLCAPW, $_OBSERVW, $_TIPOPACIW, $_DETALLEW, $_CTLNROPACIW, $_CISW, $_MYTW, $_CONTROLXSERVW, $_CONTROLCL0, $_CONTROLCL1, $_CONTROLCL2, $_CONTROLCL3, $_CONTROLCL4, $_CONTROLCL5, $_CONTROLCL6, $_CONTROLCL7, $_ARTIVAW, $_NROPOLW, $_RUTAW, $_ESTW, $_CLASIFW, $_ENTRAREMITW, $_ORIGREMIT, $_TIPOEVENTOW, $_CIUDADW, $_FUNCAUTORINGW, $_NROAUTORIZACIONW, $_OBSERAPERW, $_OPERNUM, $_FECHACRENUM, $_FECHAMODNUM, $_OPERMODNUM, $_OPERBLOQNUM],
+        callback: _dataSER108_nuevo,
+        nombredll: 'SER108-02',
+        carpeta: 'SALUD'
+    });
+}
+
+function _dataSER108_nuevo(data) {
+    var date = data.split('|');
+    var swinvalid = date[0];
+    if (swinvalid == "00") {
+        // if ($_NOVEDAD == '7') {
+        BUSCARNUMERO(_grabarnumero);
+
+        // } else {
+        //     if ($_ESTADOW == '0') {
+        //         $_OPERBLOQNUM = '';
+        //         $("#bloqueo_108").val($_OPERBLOQNUM);
+
+        //     } else if ($_CONVENIONUM == $_CONVENIOACTUAL) {
+        //         if ($_NITNUM == $_NITACTUAL) {
+        //             //// CONTINUE 
+        //             if (($_PREFIJONUM = "P" || "T" || "A" || "B" || "D" ||
+        //                 "F" || "G" || "H" || "I" || "J" || "K" || "L" || "M"
+        //                 || "N" || "O" || "Q" || "R" || "S" || "W" || "X" ||
+        //                 "Y" || "Z") && ()) {
+
+        //             } else {
+
+        //             }
+        //             // _validarimpresion();
+        //         } else {
+        //             CON851P('50', _leerusuario, _reliquidarcomprob_7411)
+        //         }
+        //     } else {
+        //         CON851P('50', _leerusuario, _reliquidarcomprob_7411)
+        //     } 
+        // }
     }
+    else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
+
+function _grabarcambio() {
+    // if ($_NOVEDAD == '8') {
+    $_FECHAMODNUM = moment().format('YYYYMMDD');
+    $_OPERMODNUM = $_ADMINW;
+    $_FECHACRENUM = $_ANOCRENUM + $_MESCRENUM + $_DIACRENUM;
+    $_NITW = $_NITNUM;
+    $_DESCRIPW = $_DESCRIPNUM;
+
+    // } else {
+    //     $_FECHACRENUM = moment().format('YYYYMMDD');
+    //     $_OPERNUM = $_ADMINW;
+    //     $_FECHAMODNUM = ' ';
+    //     $_OPERMODNUM = ' ';
+    // }
 
     $_FACTCAPITW = $_PRECAPITW + $_NROCAPITW;
     $_FECHAINGNUM = $_FECHAINGNUM.replace(/-/g, '');
@@ -3278,36 +3344,171 @@ function _grabardatos() {
 
     LLAMADO_DLL({
         dato: [$_NOVEDAD, $_LLAVEW, $_NITW, $_DESCRIPW, $_CONVENIOW, $_ESTADOW, $_PORCRETENCW, $_SEGRIPSW, $_CTAPICW, $_IDPACW, $_TIPOFACTW, $_HABW, $_PORCENCOPAGOW, $_FECHAINGNUM, $_FECHASALNUM, $_HORAINGNUMW, $_HORASALW, $_SERVICIOW, $_REDEXTERW, $_CONTRATOW, $_DIVISIONW, $_FACTCAPITW, $_FORMACOPAGW, $_CCOSTOW, $_ENVIOW, $_CONTROLCAPW, $_OBSERVW, $_TIPOPACIW, $_DETALLEW, $_CTLNROPACIW, $_CISW, $_MYTW, $_CONTROLXSERVW, $_CONTROLCL0, $_CONTROLCL1, $_CONTROLCL2, $_CONTROLCL3, $_CONTROLCL4, $_CONTROLCL5, $_CONTROLCL6, $_CONTROLCL7, $_ARTIVAW, $_NROPOLW, $_RUTAW, $_ESTW, $_CLASIFW, $_ENTRAREMITW, $_ORIGREMIT, $_TIPOEVENTOW, $_CIUDADW, $_FUNCAUTORINGW, $_NROAUTORIZACIONW, $_OBSERAPERW, $_OPERNUM, $_FECHACRENUM, $_FECHAMODNUM, $_OPERMODNUM, $_OPERBLOQNUM],
-        callback: _dataSER108_02,
+        callback: _dataSER108_cambio,
         nombredll: 'SER108-02',
         carpeta: 'SALUD'
     });
 }
-function _dataSER108_02(data) {
-    var date = data.split('|');
-    var swinvalid = date[0];
-    if (swinvalid == "00") {
-        if ($_NOVEDAD == '7') {
-            BUSCARNUMERO(_grabarnumero);
+
+function _dataSER108_cambio(data) {
+
+    if (($_ESTADOW != $_ESTADONUM) && ($_ESTADONUM == '1') && ($_ESTADONUM == '2')) {
+        $_SWESTADO = '1';
+    } else {
+        if ($_ESTADONUM == '0') {
+            $_SWESTADO = '1';
         } else {
-            toastr.success('Se ha guardado', 'APERTURA DE FACTURACION');
-            _inputControl('reset');
-            _validarimpresion();
+            $_SWESTADO = '0';
         }
     }
-    else {
-        CON852(date[0], date[1], date[2], _toggleNav);
+    _grabarauditoria2_7411();
+}
+
+function _grabarauditoria2_7411() {
+    $_TIPOAUDW = "IS41";
+    $_NOVEDADAUDW = $_NOVEDAD;
+    $_SUCAUDW = $_PREFIJOUSU;
+    LLAMADO_DLL({
+        dato: [$_NITUSU, $_ANOLNK, $_MESLNK, $_ADMINW, $_TIPOAUDW, $_SUCAUDW, $_NOVEDADAUDW],
+        callback: respuestaauditoria2_7411,
+        nombredll: 'CON090',
+        carpeta: 'CONTAB'
+    });
+}
+
+function respuestaauditoria2_7411(data) {
+    console.log(data, 'respuesta auditoria cambio 2')
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == '00') {
+        if ($_ESTADOW == '0') {
+            console.log('estado = 0 - validar')
+            console.log($_NITANT, 'nitactual')
+            $_OPERBLOQNUM = '';
+            $("#bloqueo_108").val($_OPERBLOQNUM);
+            if ($_CONVENIOW == $_CONVENIOACTUAL) {
+                if ($_NITW == $_NITACTUAL) {
+                    if (($_PREFIJONUM = "P" || "T" || "A" || "B" || "D" || "F" || "G" || "H" || "I" || "J" || "K" || "L" || "M" || "N" || "O" || "Q" || "R" || "S" || "W" || "X" || "Y" || "Z")
+                        && ($_SWESTADO == '1') && ($_AÑOPACI_RET7411 > '1999')) {
+                        console.log('consulta INV020E')
+                        LLAMADO_DLL({
+                            dato: [$_LLAVENUM],
+                            callback: respuestaanulafact_7411,
+                            nombredll: 'INV020E',
+                            carpeta: 'INVENT'
+                        });
+
+                    } else if ($_NITNUM != $_NITANT) {
+                        console.log('consulta SER168A')
+                        LLAMADO_DLL({
+                            dato: [$_LLAVENUM, $_NITNUM, $_FECHAINGNUM],
+                            callback: respuestacambianit_7411,
+                            nombredll: 'SER168A',
+                            carpeta: 'SALUD'
+                        });
+                    } else {
+                        console.log('sigue normal')
+                        otrocodigo_7411();
+                    }
+                } else {
+                    CON851P('50', otrocodigo_7411, _reliquidarcomprob_7411)
+                }
+            } else {
+                CON851P('50', otrocodigo_7411, _reliquidarcomprob_7411)
+            }
+        } else {
+
+            console.log('estado = 2,3 - validar')
+            $_OPERBLOQNUM = '';
+            $("#bloqueo_108").val($_OPERBLOQNUM);
+            if ($_CONVENIOW == $_CONVENIOACTUAL) {
+                if ($_NITW == $_NITACTUAL) {
+                    if (($_PREFIJONUM = "P" || "T" || "A" || "B" || "D" || "F" || "G" || "H" || "I" || "J" || "K" || "L" || "M" || "N" || "O" || "Q" || "R" || "S" || "W" || "X" || "Y" || "Z")
+                        && ($_SWESTADO == '1') && ($_AÑOPACI_RET7411 > '1999')) {
+                        LLAMADO_DLL({
+                            dato: [$_LLAVENUM],
+                            callback: respuestaanulafact_7411,
+                            nombredll: 'INV020E',
+                            carpeta: 'INVENT'
+                        });
+
+                    } else if ($_NITNUM != $_NITANT) {
+                        LLAMADO_DLL({
+                            dato: [$_LLAVENUM, $_NITNUM, $_FECHAINGNUM],
+                            callback: respuestacambianit_7411,
+                            nombredll: 'SER168A',
+                            carpeta: 'SALUD'
+                        });
+                    } else {
+                        otrocodigo_7411();
+                    }
+                } else {
+                    CON851P('50', otrocodigo_7411, _reliquidarcomprob_7411)
+                }
+            } else {
+                CON851P('50', otrocodigo_7411, _reliquidarcomprob_7411)
+            }
+
+        }
+    } else {
+        jAlert({ titulo: 'Error ', mensaje: 'No cargo cambios en el log de auditoria' }, otrocodigo_7411);
     }
 }
-function _grabarnumero() {
-    var fechacre = moment().format('YYMMDD');
-    $_FACT = $_NROW.substring(1, 7)
-    let URL = get_url("APP/CONTAB/CON007X.DLL");
-    postData({ datosh: datosEnvio() + $_SECUNUM + '|' + fechacre + '|' + $_FACT + '|' }, URL)
+
+function _reliquidarcomprob_7411() {
+    console.log('datos-envio', datosEnvio() + $_LLAVENUM + '|' + $_ADMINW + '|')
+    let URL = get_url("APP/SALUD/SER612R.DLL");
+    postData({ datosh: datosEnvio() + $_LLAVENUM + '|' + $_ADMINW + '|' }, URL)
         .then(data => {
-            toastr.success('Se ha guardado', 'APERTURA DE FACTURACION');
-            _inputControl('reset');
-            _validarimpresion();
+            console.log(data, 'respuesta')
+            $_COMPROBANTE = data['RELIQUIDA'];  
+            swinvalid = $_COMPROBANTE[0].ESTADO;
+            
+            if (swinvalid == '08') {
+                CON851('08', '08', null, 'error', 'error');
+                otrocodigo_7411();
+
+            } else if (swinvalid == '01') {
+                    var ventanaDuplicado = bootbox.dialog({
+                        title: 'RELIQUIDANDO FACT:' + $_LLAVENUM,
+                        message: '<style type="text/css">' + '.modal-footer {' +
+                            +'padding: 10px;' +
+                            'text-align: right;' +
+                            'margin-top:38px;' +
+                            'border-top: 1px solid #e5e5e5;}' +
+                            '</style>' +
+                            '<div class="table-scrollable">' +
+                            '<table class="table table-striped table-hover">' +
+                            '<thead><tr>' +
+                            '<th>Estado</th>' +
+                            '</tr></thead>' +
+                            '<tbody>' +
+                            //registro existente
+                            '<tr class="encontrado">' +
+                            `<td>"ERROR NO EXISTE CONVENIO"</td></tr>` +
+                            '</tbody>' +
+                            '</table>' +
+                            '</div>' //cierrra portlety
+                        ,
+                        buttons: {
+                            Aceptar: {
+                                span: 'Aceptar',
+                                className: 'btn-primary',
+                                callback: function () {
+                                    ventanaDuplicado.off('show.bs.modal');
+                                    otrocodigo_7411();
+                                }
+                            }
+                        }
+                    })
+               
+            } else {
+
+                ////////// ESPERAR CAMBIOS
+                otrocodigo_7411();
+            }
+
+
         })
         .catch(err => {
             console.debug(err);
@@ -3315,7 +3516,95 @@ function _grabarnumero() {
 }
 
 
-function _validarimpresion() {
+function respuestacambianit_7411(data) {
+    console.log('respuestacambianit', data)
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == '00') {
+        otrocodigo_7411();
+    } else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+
+}
+
+function respuestaanulafact_7411(data) {
+    console.log("anula factura pensionado y accidente ", data)
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == '00') {
+        otrocodigo_7411();
+    } else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+}
+
+function _grabarnumero() {
+    var fechacre = moment().format('YYMMDD');
+    $_FACT = $_NROW.substring(1, 7)
+    let URL = get_url("APP/CONTAB/CON007X.DLL");
+    postData({ datosh: datosEnvio() + $_SECUNUM + '|' + fechacre + '|' + $_FACT + '|' }, URL)
+        .then(data => {
+            _grabarauditoria1_7411();
+
+            // _validarimpresion();
+        })
+        .catch(err => {
+            console.debug(err);
+        })
+}
+
+function _grabarauditoria1_7411() {
+    console.log('grabar auditoria', $_ANOLNK)
+    $_TIPOAUDW = "IS41";
+    $_NOVEDADAUDW = $_NOVEDAD;
+    $_SUCAUDW = $_PREFIJOUSU;
+
+    LLAMADO_DLL({
+        dato: [$_NITUSU, $_ANOLNK, $_MESLNK, $_ADMINW, $_TIPOAUDW, $_SUCAUDW, $_NOVEDADAUDW],
+        callback: respuestaauditoria_7411,
+        nombredll: 'CON090',
+        carpeta: 'CONTAB'
+    });
+}
+
+function respuestaauditoria_7411(data) {
+    console.log(data, 'respuesta auditoria')
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == '00') {
+        if (($_NITUSU == '0844003225') || ($_NITUSU == '0800037021')) {
+            // PERFORM GRABAR-FACT-TRIAGE2
+        } else {
+            otrocodigo_7411();
+        }
+    } else {
+        jAlert({ titulo: 'Error ', mensaje: 'No cargo cambios en el log de auditoria' }, otrocodigo_7411);
+    }
+}
+function otrocodigo_7411() {
+    console.log('otro codigo')
+    if (($_REDEXTERW == 'S') && ($_NITUSU == "0800162035")) {
+        $_REDEXTERW = 'N';
+        $("#redext_108").val($_REDEXTERW);
+        BUSCARNUMERO(_grabarnumero);
+        //////// VERIFICAR BIEN ESTE CICLO 
+
+    } else if ($_NOVEDAD == '9') {
+        _infoCON007B_01();
+    } else {
+        if ($_NITUSU == '0900264583') {
+            _grabarcorresponsalia();
+            // GO TO ABRIR-SERVICIOS-HOSP
+        } else {
+            toastr.success('Se ha guardado', 'APERTURA DE FACTURACION');
+            _inputControl('reset');
+            _validarimpresion_SER1089();
+        }
+    }
+}
+
+function _validarimpresion_SER1089() {
     CON851P('00', _toggleNav, _imprimirfactura_SAL7411)
 }
 
@@ -3379,6 +3668,9 @@ function _cargandoimpresion(estado) {
     }
 }
 
+
+
+
 ///////////////////// RETIRAR FACTURA /////////////////////////////
 
 function _retirarfactura_SAL7411() {
@@ -3400,7 +3692,8 @@ function consultamostrardatos_SAL7411() {
 function _dataSER108_01(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $_LLAVEW = date[1].trim();
+    $_LLAVENUM = date[1].trim();
+    $_PREFIJONUM = $_LLAVENUM.substring(0, 1)
     $_NITNUM = date[2].trim();
     $_DESCRIPNUM = date[3].trim();
     $_CONVENIONUM = date[4].trim();
@@ -3487,10 +3780,13 @@ function _dataSER108_01(data) {
 
 function _mostrardatos_SAL7411() {
 
-    $("#factura_108").val($_LLAVEW);
+    $("#factura_108").val($_LLAVENUM);
     $("#nit_108").val($_NITNUM);
     $("#nitd_108").val($_DESCRIPNUM);
     $("#convenio_108").val($_CONVENIONUM);
+    $_CONVENIOACTUAL = $_CONVENIONUM;
+    $_NITACTUAL = $_NITNUM;
+    $_NITANT = $_NITNUM;
     $("#conveniod_108").val($_DESCRIPTAR);
     $("#estado_108").val($_ESTADONUM);
     $("#retencion_108").val($_PORCRETENCNUM);
@@ -3503,22 +3799,18 @@ function _mostrardatos_SAL7411() {
     $("#tipo_108").val($_TIPOFACTNUM);
     $("#habit_108").val($_HABNUM);
     $("#porcent_108").val($_PORCENCOPAGONUM);
-
     $_AÑOPACI_ING7411 = $_FECHAINGNUM.substring(0, 4);
     $_MESPACI_ING7411 = $_FECHAINGNUM.substring(4, 6);
     $_DIAPACI_ING7411 = $_FECHAINGNUM.substring(6, 8);
     $_HORAPACI_ING7411 = $_HORAINGNUMW.substring(0, 2)
     $_MINPACI_ING7411 = $_HORAINGNUMW.substring(2, 4)
-
     $_AÑOPACI_RET7411 = $_FECHASALNUM.substring(0, 4);
     $_MESPACI_RET7411 = $_FECHASALNUM.substring(4, 6);
     $_DIAPACI_RET7411 = $_FECHASALNUM.substring(6, 8);
     $_HORAPACI_RET7411 = $_HORARETNUMW.substring(0, 2)
     $_MINPACI_RET7411 = $_HORARETNUMW.substring(2, 4)
-
     $("#fechaing_108").val($_AÑOPACI_ING7411 + '-' + $_MESPACI_ING7411 + '-' + $_DIAPACI_ING7411);
     $("#fechasal_108").val($_AÑOPACI_RET7411 + '-' + $_MESPACI_RET7411 + '-' + $_DIAPACI_RET7411);
-
     $("#horaing_108").val($_HORAPACI_ING7411 + ':' + $_MINPACI_ING7411);
     $("#horasal_108").val($_HORAPACI_RET7411 + ':' + $_MINPACI_RET7411);
     $("#servicio_108").val($_SERVICIONUM);
@@ -3584,7 +3876,30 @@ function _mostrardatos_SAL7411() {
 
 function _retiroregistro() {
 
-    CON851P('54', _grabarcorresponsalia, _evaluarfactura)
+    CON851P('54', _evaluarfactura, _grabarauditoria3_7411)
+}
+
+function _grabarauditoria3_7411(){
+    $_TIPOAUDW = "IS41";
+    $_NOVEDADAUDW = $_NOVEDAD;
+    $_SUCAUDW = $_PREFIJOUSU;
+    LLAMADO_DLL({
+        dato: [$_NITUSU, $_ANOLNK, $_MESLNK, $_ADMINW, $_TIPOAUDW, $_SUCAUDW, $_NOVEDADAUDW],
+        callback: respuestaauditoria3_7411,
+        nombredll: 'CON090',
+        carpeta: 'CONTAB'
+    });
+}
+
+function respuestaauditoria3_7411(data){
+    console.log(data, 'respuesta auditoria cambio 2')
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    if (swinvalid == '00') {
+        _grabarcorresponsalia(); 
+    } else {
+        jAlert({ titulo: 'Error ', mensaje: 'No cargo cambios en el log de auditoria' }, _grabarcorresponsalia);
+    }
 }
 
 function _grabarcorresponsalia() {

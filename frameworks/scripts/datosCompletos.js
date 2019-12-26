@@ -17,7 +17,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
         }
     })
     ventanaimpresion.init($('.modal-footer').hide());
-
+//REVISION PABLO
     switch (nombreFD) {
         case 'ENFERMEDADES':
             programa = "SALUD/SER851"
@@ -76,7 +76,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
             programa = "SALUD/SER802"
             break;
         case 'GRUPO-SER':
-            programa = "SALUD/SAL711-01"
+            programa = "SALUD/SER801"
             break;
         case 'CTA-MAYOR':
             programa = "CONTAB/CON801"
@@ -96,6 +96,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
         case 'CLASIPACI':
             programa = "SALUD/SER868"
             break;
+//REVISION DIANA            
         case 'PREFIJOS':
             programa = "INVENT/INV109"
             // NO REQUIERE FILTRO
@@ -176,6 +177,14 @@ function obtenerDatosCompletos(data, callbackSucces) {
             programa = "SALUD/SER11V"
             // NO REQUIERE FILTRO
             break;
+        case 'TARIFAS':
+            programa = "SALUD/SER804"
+            // NO REQUIERE FILTRO
+            break;
+        case 'DESPLAZADO':
+            programa = "SALUD/SER810D"
+            // NO REQUIERE FILTRO
+            break;
         case 'PROFESION':
             objLocal = {
                 'PROFESION': [
@@ -211,9 +220,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
                 _toggleNav
             );
             break;
-        // pendiente por terminar de cuadrar
-        // case 'MACRO-EVOL': programa = "HICLIN/HC107"
-        //     break;
+      
     }
 
     if (objLocal == '') {
@@ -229,6 +236,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
 
         let URL = get_url("APP/" + programa + ".DLL");
 
+
         postData({
             datosh: datos_envio_DC
         }, URL)
@@ -238,7 +246,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
             })
             .catch(error => {
                 console.error(error)
-                _toggleNav()
+                // _toggleNav()
             });
     } else {
         $('.btn-success').click();
