@@ -1,0 +1,333 @@
+<script>
+    const { ipcRenderer } = require('electron'),
+        fs = require('fs'),
+        exec = require('child_process').exec,
+        path = require('path'),
+        remote = require('electron').remote;
+    window.$ = window.jQuery = require('jquery');
+</script>
+
+<body>
+
+    <div class="page-header">
+        <div class="encabezado_FAC145">
+            <div class="imageusu_FAC145">
+            </div>
+            <div class="informacionusu_FAC145">
+                <a class="nombreusu_FAC145" style="font-size:12px;">X1X2X3X4X5X6X7X8X9X0X1X2X3X4X5</a>
+                <a class="copago_FAC145" style="font-size:12px;">LT</a>
+                <a class="sucursal_FAC145" style="font-size:12px;">SUC: PP</a>
+                <a class="nitusu_FAC145" style="font-size:12px;">N1N2N3N4N5N6</a>
+                <a class="nombrelote_FAC145" style="font-size:12px;">L1L2L3L4L5L6L7L8L9L0</a>
+                <a class="comprobante_FAC145" style="font-size:12px;">No.NNNNNN</a>
+                <a class="direccionusu_FAC145" style="font-size:12px;">D1D2D3D4D5D6D7D8D9D0D1D2D3D4D5</a>
+                <a class="telfonousu_FAC145" style="font-size:12px;">T1T1T1T1T1T1T1T</a>
+                <a class="fecha_FAC145" style="font-size:12px;">Fecha: F1F2F3F4F5F6F7F8F9F0</a>
+                <a class="nombreciu_FAC145" style="font-size:12px;">C1C2C3C4C5C6C7C8C9C0</a>
+                <a class="descripvalor_FAC145" style="font-size:12px;">VALOR $</a>
+                <a class="valor_FAC145" style="font-size:12px;">V1V1V1V1V1V1V1V</a>
+            </div>
+        </div>
+        <div class="salto-linea"></div>
+        <div class="encabezado2_FAC145">
+            <a class="recibi_FAC145" style="font-size:12px;">RECIBI DE :
+                P1P2P3P4P5P6P7P8P9P0P1P2P3P4P5P6P7P8P9P0P1P2P3P4P5P6P7</a>
+            <a class="idter_FAC145" style="font-size:12px;">ID : N1N2N3N4N5N6</a>
+            <a class="direccionter_FAC145" style="font-size:12px;">DIRECCION : D1D2D3D4D5D6D7D8D9D0D1D2D3D4D5</a>
+            <a class="telter_FAC145" style="font-size:12px;">TEL : T1T1T1T1T1</a>
+            <a class="cantidad_FAC145" style="font-size:12px;">LA SUMA DE :
+                V1V2V3V4V5V6V7V8V9V0V1V2V3V4V5V6V7V8V9V0V1V2V3V4V5V6V7V8V9V0V1V2V3V4V5V</a>
+            <a class="cuentade_FAC145" style="font-size:12px;">A CUENTA DE : X1X2X3X4X5X6X7X8X9X0X1X2X3X4X5</a>
+            <a class="idpac_FAC145" style="font-size:12px;">ID : N1N2N3N4N5N6</a>
+            <a class="detalle_FAC145" style="font-size:12px;">DETALLE :
+                D1D2D3D4D5D6D7D8D9D0D1D2D3D4D5D6D7D8D9D0D1D2D3D4D5</a>
+            <a class="formadepago_FAC145" style="font-size:12px;">F.PAGO : P1P1P1 D1D1D1D1D1D1D1D</a>
+            <a class="tipocomp_FAC145" style="font-size:12px;">T1T2T3T4T5T6T7T8T9T0</a>
+        </div>
+        <div class="salto-linea"></div>
+        <div class="headertabla_FAC145">
+            <table class="tablaheader_FAC145">
+                <thead>
+                    <tr>
+                        <th style="width: 2%;font-size:12px;">CODIGO</th>
+                        <th style="width: 8%;font-size:12px;">NOMBRE DE LA CUENTA</th>
+                        <th style="width: 3%;font-size:12px;">DOCUMENTO</th>
+                        <th style="width: 3%;font-size:12px;">DEBITOS</th>
+                        <th style="width: 3%;font-size:12px;">CREDITOS</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <table style="width: 100%;">
+
+        <thead>
+            <tr>
+                <td>
+                    <!--place holder for the fixed-position header-->
+                    <div class="page-header-space"></div>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <!--*** CONTENT GOES HERE ***-->
+                    <div class="page">
+                        <table class="tablacopagos_FAC145" style="text-align: center;">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a style="display: inline-flex; width: 100%;font-size:12px;">Recibi, ______________________________</a>
+    <a class="operador_FAC145" style="display: inline-flex; width: 100%;font-size:12px;">0101</a>
+</body>
+
+<style>
+    .page-header,
+    .page-header-space {
+        height: 200px;
+    }
+
+    .page-header {
+        position: fixed;
+        top: 0mm;
+        width: 99%;
+    }
+
+    .page {
+        page-break-after: always;
+        width: 100%;
+    }
+
+    @page {
+        margin: 20mm
+    }
+
+    @media print {
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
+
+        button {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+        }
+    }
+
+    .salto-linea {
+        padding-top: 10px;
+    }
+
+    .encabezado_FAC145 {
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+        display: flex;
+    }
+
+    .imageusu_FAC145 {
+        width: 20%;
+    }
+
+    .nombreusu_FAC145 {
+        width: 80%;
+        display: inline-flex;
+    }
+
+    .copago_FAC145 {
+        width: 5%;
+        display: inline-flex;
+    }
+
+    .sucursal_FAC145 {
+        width: 14%;
+        display: inline-flex;
+    }
+
+    .nitusu_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .nombrelote_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .combrobante_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .direccionusu_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .telfonousu_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .fecha_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .nombreciu_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .descripvalor_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .valor_FAC145 {
+        width: 32%;
+        display: inline-flex;
+    }
+
+    .recibi_FAC145 {
+        width: 70%;
+        display: inline-flex;
+    }
+
+    .idter_FAC145 {
+        width: 29%;
+        display: inline-flex;
+    }
+
+    .direccionter_FAC145 {
+        width: 70%;
+        display: inline-flex;
+    }
+
+    .telter_FAC145 {
+        width: 29%;
+        display: inline-flex;
+    }
+
+    .cantidad_FAC145 {
+        width: 99%;
+        display: inline-flex;
+    }
+
+    .cuentade_FAC145 {
+        width: 70%;
+        display: inline-flex;
+    }
+
+    .idpac_FAC145 {
+        width: 29%;
+        display: inline-flex;
+    }
+
+    .detalle_FAC145 {
+        width: 99%;
+        display: inline-flex;
+    }
+
+    .formadepago_FAC145 {
+        width: 70%;
+        display: inline-flex;
+    }
+
+    .tipocomp_FAC145 {
+        width: 29%;
+        display: inline-flex;
+    }
+
+    .encabezado2_FAC145 {
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+
+    .headertabla_FAC145 {
+        border-left: black solid 0.1px;
+        border-right: black solid 0.1px;
+        border-top: black solid 0.1px;
+        border-bottom: black solid 0.1px;
+    }
+    .tablacopagos_FAC145{
+        width: 99%;
+    }
+</style>
+<script>
+    var FAC145 = [];
+    ipcRenderer.on('ping', (e, data) => {
+        FAC145 = data.datos;
+        $('.nombreusu_FAC145').text(FAC145.NOMBREUSU);
+        $('.copago_FAC145').text(FAC145.LOTE);
+        $('.sucursal_FAC145').text('SUC : ' + FAC145.SUCURSAL);
+        $('.nitusu_FAC145').text(FAC145.NITUSU);
+        $('.nombrelote_FAC145').text(FAC145.NOMBRELOTE);
+        $('.comprobante_FAC145').text('No. ' + FAC145.COMPROBANTE);
+        $('.direccionusu_FAC145').text(FAC145.DIRECCIONUSU);
+        $('.telfonousu_FAC145').text(FAC145.TELEFONOUSU);
+        $('.fecha_FAC145').text(FAC145.FECHAMOV);
+        $('.nombreciu_FAC145').text(FAC145.NOMBRECIU);
+        // $('.descripvalor_FAC145').text();
+        $('.valor_FAC145').text(FAC145.NETO);
+        $('.recibi_FAC145').text('RECIBI DE :' + FAC145.NOMBREPACI);
+        $('.idter_FAC145').text('ID : ' + FAC145.IDPAC);
+        $('.direccionter_FAC145').text('DIRECCION : ' + FAC145.DIRECCPACI);
+        $('.telter_FAC145').text('TEL : ' + FAC145.TELEFONOPACI);
+        $('.cantidad_FAC145').text('LA SUMA DE : ' + FAC145.VALORENLETRAS);
+        $('.cuentade_FAC145').text('A CUENTA DE : ' + FAC145.NOMBREUSU);
+        $('.idpac_FAC145').text('ID : ' + FAC145.NITUSU);
+        $('.detalle_FAC145').text('DETALLE : ' + FAC145.DETALLEMOV);
+        $('.formadepago_FAC145').text('F.PAGO : ' + FAC145.REFERMOV + FAC145.OTROMOV);
+        $('.tipocomp_FAC145').text(FAC145.TIPOCOMP);
+        $('.operador_FAC145').text(FAC145.OPERMOV)
+
+        $('.tablacopagos_FAC145').append(
+            '<tr>' +
+            '<td style="width: 3%;font-size:12px;">' + FAC145.CUENTAMOV + '</td>' +
+            '<td style="width: 9%;font-size:12px;">' + FAC145.NOMBREMAE + '</td>' +
+            '<td style="width: 4%;font-size:12px;">' + FAC145.DOCUMMOV + '</td>' +
+            '<td style="width: 4%;font-size:12px;">' + FAC145.TOTALDDB + '</td>' +
+            '<td style="width: 4%;font-size:12px;">' + FAC145.TOTALCR + '</td>' +
+            '</tr>'
+        )
+
+
+        var nit = FAC145.NIT;
+        var url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);
+
+        fs.readFile(url, function (err, data) {
+            if (err) throw err;
+            var dataImg1 = Buffer.from(data).toString('base64');
+            $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg1}`).appendTo('.logo')
+        });
+
+        // var nitprofe = parseInt(RXI02A.IDRADIOLOGO_RX);
+        // var urlprofe = path.join(`P:\\PROG\\DATOS\\17329215.bmp`);
+        // fs.readFile(urlprofe, function (err, data) {
+        //     if (err) throw err;
+        //     var dataImg2 = Buffer.from(data).toString('base64');
+        //     $('<img/>').attr('src', `data:image/jpeg;base64,${dataImg2}`).appendTo('.firmaprofe')
+        // });
+
+    })
+</script>
