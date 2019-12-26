@@ -25,7 +25,7 @@ function postData(datos, servicio) {
 
 
                         if (code == 'SC') {
-                            if (mensaje.length == 2) msj = msjError(code.padStart(2, '0'));
+                            if (mensaje.length == 2) msj = msjError(mensaje.padStart(2, '0'));
                             else msj = mensaje;
                         } else {
                             msj = msjError_con852(code.padStart(2, '0'));
