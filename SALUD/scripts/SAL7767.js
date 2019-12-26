@@ -1427,7 +1427,7 @@ function _buscarduplicado_7767() {
 }
 
 function ventanaDuplicado_7767(data) {
-
+    $_ACTUALIZAPACIX = '1'; 
     $_BUSQ = data['DUPLICADO'][0];
     $_APEL_PACIW = $_APELLIDO1PACW + ' ' + $_APELLIDO2PACW;
     $_NOMB_PACIW = $_NOMBRE1PACW + ' ' + $_NOMBRE2PACW;
