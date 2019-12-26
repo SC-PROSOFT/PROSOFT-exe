@@ -30,6 +30,7 @@ _validarOpcion_0A = function () {
                 ],
                 callback_f: _toggleNav
             }, function (data) {
+                console.debug(data);
                 setTimeout(function () {
                     _CON855A(data.COD, '1')
                 }, 300)
@@ -102,12 +103,14 @@ _validarOpcion_0A = function () {
                 }
             }
         })
+    } else {
+        CON851('','No tiene sucursales',null,'error','Error');
     }
-
 }
 
 _CON855A = function (prefijo, acceso) {
     obtenerDatosCompletos({ nombreFd: 'LOTES' }, (data) => {
+        console.debug(data);
         var lotesFiltrados = []
         var lotesLlegada = data.LOTES
         lotesLlegada.pop()
