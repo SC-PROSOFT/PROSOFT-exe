@@ -17,7 +17,6 @@ function obtenerDatosCompletos(data, callbackSucces) {
         }
     })
     ventanaimpresion.init($('.modal-footer').hide());
-//REVISION PABLO
     switch (nombreFD) {
         case 'ENFERMEDADES':
             programa = "SALUD/SER851"

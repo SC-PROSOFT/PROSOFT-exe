@@ -89,11 +89,11 @@ function _ventanaCentrCosto718(e) {
 				SAL718.COSTO.COD = data.COD; SAL718.COSTO.NOMBRE = data.NOMBRE;
 				if (SAL718.COSTO.COD.trim().length > 0) {
 					SAL718.COSTO.COD = SAL718.COSTO.COD
+					_enterInput('#centrocosto_718');
 				} else {
 					$('#centrocosto_718').val(data.COD.toString().trim() + ' ' + data.NOMBRE.toString().trim())
+					_enterInput('#centrocosto_718');
 				}
-
-			_enterInput('#centrocosto_718');
 			}
 		});
 	}
