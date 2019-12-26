@@ -12,4 +12,5 @@ function _Cargarhtml() {
     console.debug($_MESSAGE);
     $_PARENT = $_MESSAGE[1];
     $('#contenido').load($_MESSAGE[0]);
+    _cargarEventos('off');
 }
