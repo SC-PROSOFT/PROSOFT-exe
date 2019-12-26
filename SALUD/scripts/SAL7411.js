@@ -646,12 +646,18 @@ function _validarfactura() {
         _evaluarfactura();
     }
     else {
+        // LLAMADO_DLL({
+        //     dato: [$_LLAVEW],
+        //     callback: _dataSER108_04,
+        //     nombredll: 'SER108-04',
+        //     carpeta: 'SALUD'
+        // })
         LLAMADO_DLL({
             dato: [$_LLAVEW],
             callback: _dataSER108_04,
-            nombredll: 'SER108-04',
+            nombredll: 'SER108-01',
             carpeta: 'SALUD'
-        })
+        });
     }
 }
 
@@ -690,12 +696,18 @@ function _validarCON007_01() {
         else {
             $("#factura_108").val($_NUMEROCTL);
             $_LLAVEW = $_PREFIJOW + $_NROW;
+            // LLAMADO_DLL({
+            //     dato: [$_LLAVEW],
+            //     callback: _dataSER108_04,
+            //     nombredll: 'SER108-04',
+            //     carpeta: 'SALUD'
+            // })
             LLAMADO_DLL({
                 dato: [$_LLAVEW],
                 callback: _dataSER108_04,
-                nombredll: 'SER108-04',
+                nombredll: 'SER108-01',
                 carpeta: 'SALUD'
-            })
+            });
         }
     }
 }
@@ -1342,7 +1354,6 @@ function _dataSER108_07(data) {
     else if (swinvalid == "01") {
         if ($_SWPAC = '0') {
             $_SWPAC = '1';
-            console.log('LLAMA OPC SER110C MAESTRO DE PACIENTES')
             let { ipcRenderer } = require("electron");
             ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
@@ -3377,7 +3388,6 @@ function _grabarauditoria2_7411() {
 }
 
 function respuestaauditoria2_7411(data) {
-    console.log(data, 'respuesta auditoria cambio 2')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == '00') {
@@ -3407,7 +3417,6 @@ function respuestaauditoria2_7411(data) {
                             carpeta: 'SALUD'
                         });
                     } else {
-                        console.log('sigue normal')
                         otrocodigo_7411();
                     }
                 } else {
@@ -3418,7 +3427,6 @@ function respuestaauditoria2_7411(data) {
             }
         } else {
 
-            console.log('estado = 2,3 - validar')
             $_OPERBLOQNUM = '';
             $("#bloqueo_108").val($_OPERBLOQNUM);
             if ($_CONVENIOW == $_CONVENIOACTUAL) {
@@ -3504,7 +3512,7 @@ function _reliquidarcomprob_7411() {
                
             } else {
 
-                ////////// ESPERAR CAMBIOS
+                console.log('reliquida comprobantes')
                 otrocodigo_7411();
             }
 
@@ -3555,7 +3563,6 @@ function _grabarnumero() {
 }
 
 function _grabarauditoria1_7411() {
-    console.log('grabar auditoria', $_ANOLNK)
     $_TIPOAUDW = "IS41";
     $_NOVEDADAUDW = $_NOVEDAD;
     $_SUCAUDW = $_PREFIJOUSU;
@@ -3569,7 +3576,6 @@ function _grabarauditoria1_7411() {
 }
 
 function respuestaauditoria_7411(data) {
-    console.log(data, 'respuesta auditoria')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == '00') {
@@ -3583,7 +3589,6 @@ function respuestaauditoria_7411(data) {
     }
 }
 function otrocodigo_7411() {
-    console.log('otro codigo')
     if (($_REDEXTERW == 'S') && ($_NITUSU == "0800162035")) {
         $_REDEXTERW = 'N';
         $("#redext_108").val($_REDEXTERW);
@@ -3770,6 +3775,7 @@ function _dataSER108_01(data) {
     $_ANONACPAC7411 = $_FECHANACPAC.substring(0, 4);
     $_MESNACPAC7411 = $_FECHANACPAC.substring(4, 6);
     $_DIANACPAC7411 = $_FECHANACPAC.substring(6, 8);
+    $_TOTALFACT = date[63].trim();
     if (swinvalid == '00') {
         _mostrardatos_SAL7411();
     }
@@ -3875,8 +3881,16 @@ function _mostrardatos_SAL7411() {
 }
 
 function _retiroregistro() {
-
-    CON851P('54', _evaluarfactura, _grabarauditoria3_7411)
+    if($_TOTALFACT == 0){
+        CON851P('54', _evaluarfactura, _grabarauditoria3_7411)
+    }else{
+        if($_NITUSU == '070100111'){
+            CON851P('54', _evaluarfactura, _grabarauditoria3_7411)
+        }else{
+            CON851('52', '52', null, 'error', 'error')
+            _leerusuario(); 
+        }
+    }
 }
 
 function _grabarauditoria3_7411(){
@@ -3892,11 +3906,11 @@ function _grabarauditoria3_7411(){
 }
 
 function respuestaauditoria3_7411(data){
-    console.log(data, 'respuesta auditoria cambio 2')
+
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == '00') {
-        _grabarcorresponsalia(); 
+        _grabarcorresponsalia()
     } else {
         jAlert({ titulo: 'Error ', mensaje: 'No cargo cambios en el log de auditoria' }, _grabarcorresponsalia);
     }
@@ -3916,7 +3930,8 @@ function _dataCON904S_04(data) {
     var date = data.split("|");
     var swinvalid = date[2].trim();
     if (swinvalid == "00") {
-        setTimeout(_ventanacorresponsalia, 500);
+        CON851P('24', _leerusuario, _ventanaactualizarcorresponsalia)
+        // setTimeout(_ventanacorresponsalia, 500);
     }
     else {
         CON851(swinvalid, swinvalid, null, 'error', 'error');
@@ -3924,10 +3939,11 @@ function _dataCON904S_04(data) {
     }
 }
 
-function _ventanacorresponsalia() {
+// function _ventanacorresponsalia() {
 
-    CON851P('24', _eliminarregistro, _ventanaactualizarcorresponsalia)
-}
+
+//     CON851P('24', _eliminarregistro, _ventanaactualizarcorresponsalia)
+// }
 
 function _ventanaactualizarcorresponsalia() {
     console.log("VENTANA CORRESPONSALIA PREGUNTAR ESNEIDER COMO FUNCIONAR");
