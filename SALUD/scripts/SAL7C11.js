@@ -108,6 +108,8 @@ function _ventanaPacientes(e) {
                 title: 'NOMBRE'
             }, {
                 title: 'EPS'
+            },{
+                title:'EDAD'
             }],
             callback: (data) => {
                 document.querySelector("#numero_97C11").value = data.COD;
