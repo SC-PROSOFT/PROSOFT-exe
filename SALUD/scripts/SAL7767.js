@@ -2119,6 +2119,7 @@ function _datoestrato_7767(estrato) {
 }
 
 function _evaluarcopago_7767() {
+    console.log('copago')
     validarInputs({
         form: "#COPAGO_110C",
         orden: "1"
@@ -2131,6 +2132,7 @@ function _evaluarcopago_7767() {
 }
 
 function _datocopago_7767() {
+    console.log('DATO copago',$_COPAGOPACIW)
     $_COPAGOPACIW = $("#copago_110c").val();
     if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) {
         if ($_COPAGOPACIW.trim() == '') {
@@ -2141,7 +2143,7 @@ function _datocopago_7767() {
             _datocopago2_7767();
         }
     } else {
-
+        console.log('DATO copago ELSE',$_COPAGOPACIW)
         if ($_COPAGOPACIW.trim() == '') {
             _evaluarcopago_7767();
         } else {
@@ -2151,11 +2153,13 @@ function _datocopago_7767() {
 }
 
 function _datocopago2_7767() {
-
-    if (($_COPAGOPACIW == 'S') || ($_COPAGOPACIW == 's') || ($_COPAGOPACIW == 'N') || ($_COPAGOPACIW == 'n')) {
+    console.log('DATO copago2',)
+    if (($_COPAGOPACIW == 'S') || ($_COPAGOPACIW == 'N')) {
         swinvalid = '0';
+        console.log('copago si o no ')
         _datoregimen_7767();
     } else {
+        console.log('volver ')
         _evaluarcopago_7767();
     }
 }
@@ -4594,9 +4598,15 @@ function _dataCON904S_04(data) {
     var swinvalid = date[2].trim();
     if (swinvalid == "00") {
         if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
-            setTimeout(_ventanacorresponsalia_7767, 500);
+            if($_ACTUALIZAPACIX == '1'){
+                console.log('primer actualiza doc')
+                CON851P('24', _deseatrasladardoc, _ventanaactualizarcorresponsalia)
+                // _eliminarregistro
+            }else{
+                CON851P('24', _grabardatos_7767, _ventanaactualizarcorresponsalia)
+            }
         } else {
-            setTimeout(_ventanacorresponsalia_7767ret, 500);
+            CON851P('24', _eliminarregistro, _ventanaactualizarcorresponsalia)
         }
 
     } else {
@@ -4606,18 +4616,45 @@ function _dataCON904S_04(data) {
     }
 }
 
-function _ventanacorresponsalia_7767ret() {
-    CON851P('24', _eliminarregistro, _ventanaactualizarcorresponsalia)
+function _deseatrasladardoc(){
+    $_OPSEGU = "IS762"
+    LLAMADO_DLL({
+        dato: [$_ADMINW, $_OPSEGU],
+        callback: _dataCON904S_05,
+        nombredll: 'CON904S',
+        carpeta: 'CONTAB'
+    })
+}
+function _dataCON904S_05(data){
+    var date = data.split("|");
+    var swinvalid = date[2].trim();
+    if ((swinvalid == "00") && ($_ACTUALIZAPACIX == '1')) {
+        CON851P('25', _buscarrestriccion_7767, _buscartrasladodoc_7767)
+
+    } else {
+        CON851(swinvalid, swinvalid, null, 'error', 'error');
+
+        _toggleNav();
+    }
 }
 
-function _ventanacorresponsalia_7767() {
-    CON851P('24', _grabardatos_7767, _ventanaactualizarcorresponsalia)
+function _buscartrasladodoc_7767(){
+    console.log('buscartrasladodoc')
+    let { ipcRenderer } = require("electron");
+        ipcRenderer.send('another', 'SALUD/PAGINAS/SAL77621.html');
+        vector = ['on', 'Unifica movimiento de pacientes...']
+        _EventocrearSegventana(vector, _buscarrestriccion_7767);
+    ////// VENTANA DE TRASLADO 0101DE DOCUMENTO 
 }
 
 function _ventanaactualizarcorresponsalia() {
     console.log("VENTANA CORRESPONSALIA PREGUNTAR ESNEIDER COMO FUNCIONAR");
     if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
-        _grabardatos_7767()
+        if($_ACTUALIZAPACIX == '1'){
+            _deseatrasladardoc(); 
+        }else{
+            _grabardatos_7767()
+        }
     } else {
         _eliminarregistro()
     }

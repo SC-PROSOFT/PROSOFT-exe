@@ -114,12 +114,12 @@ function _validaciondestino_716() {
    
 }
 function _dataCONSULTADESTINO_716(data) {
+    console.log(data, 'consultadestino')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPDESTINO_716 = date[1].trim();
     if (swinvalid == "00") {
         if($codigo716 == $codigoDst716){
-            
             CON851('05', '05', null, 'error', 'error');
             datoDesti716(); 
         }else{
@@ -137,25 +137,44 @@ function _dataCONSULTADESTINO_716(data) {
 
 
 function validacionCodigos716() {
-    let datos_envio = datosEnvio()
-    datos_envio += '|'
-    datos_envio += $codigoDst716
-    SolicitarDll({ datosh: datos_envio }, validador716, get_url('/APP/SALUD/SAL716-TAB.DLL'));
+    console.log('validacioncodigos',$codigoDst716)
+
+    LLAMADO_DLL({
+        dato: [$codigoDst716],
+        callback: validador716,
+        nombredll: 'SAL716-TAB',
+        carpeta: 'SALUD'
+    })
+    
+    // let datos_envio = datosEnvio()
+    // datos_envio += '|'
+    // datos_envio += $codigoDst716
+    // SolicitarDll({ datosh: datos_envio }, validador716, get_url('/APP/SALUD/SAL716-TAB.DLL'));
 }
 
 function validador716(data) {
+    console.log('resultadoscodigos', data)
     var date = data.split('|');
-    $_CODTAB716 = date[1];
+    var swinvalid = date[0]; 
+    console.log('resultadoscodigos', swinvalid)
+    $_CODTAB716 = date[1].trim();
+    console.log('resultadoscodigos', $_CODTAB716)
 
-    if (date[0].trim() == '00') {
+    if (swinvalid == '00') {
+        console.log('ingresa 00')
         if ($codigoDst716 == $_CODTAB716) {
+            console.log('ingresa 5f')
             CON851('5F', '5F', null, 'error', 'Error');
             CON851P('07', _validarOrigen716, envioDatos716)
+        }else{
+            console.log('ingresa otro')
+            datoDesti716(); 
         }
     }
-    else if (date[0].trim() == '01') {
+    else if (swinvalid == '01') {
+        console.log('ingresa 01')
         CON851('01', '01', null, 'error', 'Error');
-        _validarOrigen716();
+        datoDesti716();
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -163,6 +182,7 @@ function validador716(data) {
 }
 
 function envioDatos716() {
+    console.log('envioDatos716')
     LLAMADO_DLL({
         dato: [$codigoDst716],
         callback: registroDatos716,
@@ -172,9 +192,9 @@ function envioDatos716() {
 }
 
 function registroDatos716(data) {
+    console.log(data, 'guardo')
     var date = data.split('|');
-    var swinvalid = date[0].trim();
-    
+    var swinvalid = date[0]
     if (swinvalid == "39") {
         jAlert({ titulo: 'Mensaje 39', mensaje: "El proceso termino satisfactoriamente!" })
         _inputControl('reset');

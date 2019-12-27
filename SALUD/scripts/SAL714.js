@@ -69,7 +69,6 @@ function _ventanaPacientes_9714(e) {
     loader('hide');
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         parametros = {
-            valoresselect: ['Descripcion', 'Identificacion'],
             f8data: 'PACIENTES',
             columnas: [{
                 title: 'COD'
@@ -81,8 +80,6 @@ function _ventanaPacientes_9714(e) {
             callback: (data) => {
                 document.querySelector("#CODPACI_9714").value = cerosIzq(data.COD, 15)
                 _enterInput('#CODPACI_9714');
-
-
             },
             cancel: () => {
                 document.querySelector("#CODPACI_9714").focus()
