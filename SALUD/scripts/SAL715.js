@@ -35,9 +35,6 @@ function _ventanaConvenios715(e) {
                     callback: function (data) {
                         $('#codigo_715').val(data.COD);
                         $('#descrip715').val(data.DESCRIP.trim());
-                        // document.getElementById('codigo_715').value = data.COD;
-                        // document.getElementById('descrip715').value = data.DESCRIP;
-
                         _enterInput('#codigo_715');
                     }
                 });
@@ -174,8 +171,8 @@ function envioDatos715() {
 }
 
 function registroDatos715(data) {
-    var temp = data.split('|')
-    var swinvalid = datedate[0].trim();
+    var date = data.split('|')
+    var swinvalid = date[0].trim();
     if (swinvalid == '00') {
         jAlert({ titulo: 'Notificacion', mensaje: "Guardado Correctamente" })
         _inputControl('reset');

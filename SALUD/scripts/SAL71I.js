@@ -34,7 +34,7 @@ function _ventanaResgard(e) {
                     callback: function (data) {
                     
                         document.getElementById('codigo_71I').value = data.COD;
-                        // document.getElementById('descripSer71I').value = data.DESCRIP;
+                        document.getElementById('descripSer71I').value = data.DESCRIP;
                         _enterInput('#codigo_71I');
 
                     }
