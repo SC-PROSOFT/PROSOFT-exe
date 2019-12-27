@@ -4,6 +4,7 @@ var $_TAX011 = {
     ARTICULOS: []
 };
 
+
 var sostenimiento_011 = new IMask(
     document.getElementById('sostenimiento_011'),
     { mask: Number, min: 0, max: 9999999999, scale: 0, thousandsSeparator: ',', radix: '.' }
