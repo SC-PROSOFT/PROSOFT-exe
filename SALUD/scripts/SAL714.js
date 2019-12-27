@@ -70,13 +70,7 @@ function _ventanaPacientes_9714(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         parametros = {
             f8data: 'PACIENTES',
-            columnas: [{
-                title: 'COD'
-            }, {
-                title: 'NOMBRE'
-            }, {
-                title: 'EPS'
-            }],
+            columnas: [{title:'COD'}, {title:'NOMBRE'}, {title:'EPS'}, {title:'EDAD'}],
             callback: (data) => {
                 document.querySelector("#CODPACI_9714").value = cerosIzq(data.COD, 15)
                 _enterInput('#CODPACI_9714');
