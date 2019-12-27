@@ -212,7 +212,7 @@ function _ventanaNumeroFactura_41(e) {
         var NUMERACION_SAL41 = [];
         let URL = get_url("APP/SALUD/SER808.DLL");
         postData({
-            datosh: datosEnvio() + prefijoMask.value
+            datosh: datosEnvio() + prefijoMask.value + '|'
         }, URL)
             .then((data) => {
                 loader("hide");
@@ -504,10 +504,11 @@ function _ventanaProfesionales_41(e) {
         var PROFESIONALES_SAL41 = [];
         let URL = get_url("APP/SALUD/SER819.DLL");
         postData({
-            datosh: datosEnvio()
+            datosh: datosEnvio() + $_ESPECELAB + '|'
         }, URL)
             .then((data) => {
                 loader("hide");
+                data.ARCHPROF.pop();
                 PROFESIONALES_SAL41 = data.ARCHPROF;
                 console.log(PROFESIONALES_SAL41);
                 if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
@@ -4938,7 +4939,7 @@ function _Permisosalmacen2_41() {
     }
 }
 function _Ventanalote_41() {
-    let datos_envio = datosEnvio()
+    let datos_envio = datosEnvio();
     datos_envio += SAL41.ADMINW + '|' + $_TIPOART + $_GRUPOFACT + '|'
     SolicitarDll({ datosh: datos_envio }, _dataSAL41_17, get_url('APP/SALUD/SAL41-17.DLL'));
 }
@@ -5965,7 +5966,7 @@ function _EvaluarCON820_41(data) {
 }
 
 function _Aceptarespec_41() {
-    if ((($_PREFIJOFACT == 'C') || ($_PREFIJOFACT == 'E')) && ($_ESPECLAB.trim() = '')) {
+    if ((($_PREFIJOFACT == 'C') || ($_PREFIJOFACT == 'E')) && ($_ESPECLAB.trim() == '')) {
         $_ESPECLAB = '385';
     }
     // AGREGAR QUE SEA EL PRIMER ARTFACT
@@ -8114,19 +8115,26 @@ function _Confirmargrabar2_41() {
             $_SECUNUM = '96';
             var datos_envio = datosEnvio();
             datos_envio += $_SECUNUM;
-            SolicitarDll({ datosh: datos_envio }, _dataCON007_03_41, get_url('/CONTAB/APP/CON007.DLL'))
+            // SolicitarDll({ datosh: datos_envio }, _dataCON007_03_41, get_url('/CONTAB/APP/CON007.DLL'))
+            _infoCON007_03_SAL41();
             break;
         case 'E':
             $_SECUNUM = '89';
             var datos_envio = datosEnvio();
             datos_envio += $_SECUNUM;
-            SolicitarDll({ datosh: datos_envio }, _dataCON007_03_41, get_url('/CONTAB/APP/CON007.DLL'))
+            // SolicitarDll({ datosh: datos_envio }, _dataCON007_03_41, get_url('/CONTAB/APP/CON007.DLL'))
+            _infoCON007_03_SAL41();
             break;
         default:
             _Leerfactura_41();
             break;
     }
 }
+
+function _infoCON007_03_SAL41(){
+    
+}
+
 function _dataCON007_03_41(data) {
     console.debug(data);
     let comprobante = $('#compr_SAL41').val();
