@@ -339,6 +339,7 @@ ipcMain.on('another', (e, m) => {
   });
 
   segundaventana.setBounds({ y: 40 });
+  segundaventana.fromId(2);
   segundaventana.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
   var primeraventana =  segundaventana.getParentWindow();
   segundaventana.webContents.on('did-finish-load', () => {
