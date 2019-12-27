@@ -244,10 +244,18 @@
                     datosh: datosEnvio() + '1' + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
                 }, URL)
                     .then(data => {
+                        console.debug(data);
                         $('#cargando_F8cargarndo').remove();
                         var array = data[$.F8LITE.f8data];
                         table = [];
+                        array.forEach(index => {
+                            var edad = calcular_edad(index.NACIMIENTO);
+                            index.EDAD = edad.unid_edad + edad.vlr_edad.toString().padStart(3,'0');
+                        });
+                        console.debug(array);
                         $.F8LITE.datatable = array;
+                        var columnas = $.F8LITE.columnas;
+                        console.debug(columnas);
                         array.forEach(index => {
                             var datatotable = Object.values(index);
                             console.debug(datatotable[0].trim())
@@ -255,7 +263,6 @@
                                 table.push(datatotable);
                             }
                         });
-                        var columnas = $.F8LITE.columnas;
                         $.F8LITE.table = $(`#${$.F8LITE.tabla_id}`).DataTable({
                             data: table,
                             columns: columnas,
