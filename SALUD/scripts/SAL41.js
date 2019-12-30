@@ -4256,8 +4256,12 @@ function _Leerarticulo2_41() {
         $_CLASEART = $_CLASEARTFACT;
         $_GRP1SAL = $_GRUPOFACT.substring(0, 1);
         $_CODART = $_TIPOART + $_GRUPOART + $_NUMEROART.padEnd(13, ' ') + $_CLASEART;
-        _Leerpromedio_41(); // PRUEBA DE LEER PROMEDIO ANTES DE DEBIDO A EJECUCION DE VARIABLES
-        setTimeout(_LlamdoSAL41_06_41, 300);
+        // _Leerpromedio_41(_LlamdoSAL41_06_41); // PRUEBA DE LEER PROMEDIO ANTES DE DEBIDO A EJECUCION DE VARIABLES
+        // setTimeout(_LlamdoSAL41_06_41, 300);
+        let datos_envio = datosEnvio();
+        datos_envio += $_CODART;
+        console.debug(datos_envio);
+        SolicitarDll({ datosh: datos_envio }, _dataSAL41_06, get_url("APP/SALUD/SAL41-06.DLL"));
     }
     else {
         if (($_GRUPOFACT == 'XM') || ($_GRUPOFACT == 'XP') || ($_GRUPOFACT == 'XN')) {
@@ -4278,12 +4282,6 @@ function _Leerarticulo2_41() {
             SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("APP/SALUD/SAL41-07.DLL"));
         }
     }
-}
-function _LlamdoSAL41_06_41() {
-    let datos_envio = datosEnvio();
-    datos_envio += $_CODART;
-    console.debug(datos_envio);
-    SolicitarDll({ datosh: datos_envio }, _dataSAL41_06, get_url("APP/SALUD/SAL41-06.DLL"));
 }
 
 function _dataSAL41_06(data) {
@@ -4362,6 +4360,7 @@ function _dataSAL41_06(data) {
                 $_VLRULTCOMPRA = $_PRECIOCOMPART;
             }
             else {
+                _Leerpromedio_41(_Leerarticulo3_41);
                 $_VLRULTCOMPRA = $_VLRPROMEDW;
             }
         }
@@ -5035,8 +5034,14 @@ function _Buscarsaldo_41() {
     $_GRP1SAL = $_GRUPOFACT.substring(0, 1);
     $_CODLOTESAL = $_CODLOTEFACT;
     if ($_GRP1SAL != '9') {
-        _Leerpromedio_41(); // INV808S
-        // _Calcularmonto_41();
+        let URL = get_url("APP/INVENT/INV808.DLL");
+        postData({ datosh: datosEnvio() + $_ALMFACT + $_CODART + $_CODLOTEFACT + '|' }, URL)
+            .then(data => {
+                console.debug(data);
+            })
+            .catch(err => {
+                console.debug(err);
+            })
     }
     if (($_CLFACT == '0') && ($_TIPODRFACT == '2')) {
         $_VLRUNITW = parseFloat($_VLRDEVOL / $_CANTDEVOL)
@@ -10404,7 +10409,7 @@ function _Almacenartablacirugia_SAL97C11() {
 }
 
 //////////////////////////////////////// LEER  PROMEDIO /////////////////////////////
-function _Leerpromedio_41() {
+function _Leerpromedio_41(callback) {
     if ($_GRP1SAL != '9') {
         let datos_envio = datosEnvio()
         datos_envio += $_ALMPREF + '|' + $_CODART + '|' + $_DIAFACT + '|' + SAL41.PUCUSU + '|'
@@ -10428,7 +10433,7 @@ function _Leerpromedio_41() {
                     '</div>' +
                     '<div class="col-md-12"> ' +
                     '<input id="cantidad2_SAL41" class="form-control input-md"> ' +
-                    '</div>' + 
+                    '</div>' +
                     '<div class="col-md-12"> ' +
                     '<input id="cantidad3_SAL41" class="form-control input-md"> ' +
                     '</div>' +
@@ -10449,7 +10454,7 @@ function _Leerpromedio_41() {
                             label: 'Aceptar',
                             callback: function () {
                                 ventanadetallefactura.off('shown.bs.modal');
-                                _Calcularmonto_41();
+                                callback();
                             },
                             className: 'btn-primary'
                         },

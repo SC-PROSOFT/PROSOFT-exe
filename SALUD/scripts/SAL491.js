@@ -46,8 +46,18 @@ function datoSucursal_491() {
         _Datosucursal2_41();
     }
     else {
-        switch (global_SAL491['NITUSU']) {
-
+        switch (global_SAL491.NITUSU) {
+           // ESE SALUD YOPAL
+           case "0844003225":
+            if ((global_SAL491['SUCOPERW'] == "JL") || (global_SAL491['SUCOPERW'] == "CA") || (global_SAL491['SUCOPERW'] == "CS") || (global_SAL491['SUCOPERW'] == "PV") || (global_SAL491['SUCOPERW'] == "BC") || (global_SAL491['SUCOPERW'] == "LC") || (global_SAL491['SUCOPERW'] == "CV") || (global_SAL491['SUCOPERW'] == "HT") || (global_SAL491['SUCOPERW'] == "EM") || (global_SAL491['SUCOPERW'] == "HY") || (global_SAL491['SUCOPERW'] == "TL") || (global_SAL491['SUCOPERW'] == "MR")) {
+                global_SAL491.PREFIJOUSU = $_PREFIJOUSU;
+                _Datosucursal2_41();
+            }
+            else {
+                _inputControl("disabled");
+                CON852("48", "Sucursal no permitida", "_infodatosucursal", _toggleNav);
+            }
+            break;
         }
     }
 }
