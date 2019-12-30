@@ -39,7 +39,7 @@ function _ventanaGrptar(e) {
 // llamado DLL NOM-TARIF
 function nombreTarf712() {
     data = [];
-    data.nombreFd = "NOM-TAR";
+    data.nombreFd = "GRUPOTAR";
     data.busqueda = '';
     obtenerDatosCompletos(data, function (data) {
         arraytarifas = data.NOMTAR;

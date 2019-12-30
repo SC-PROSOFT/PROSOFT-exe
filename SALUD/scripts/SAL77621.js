@@ -154,8 +154,8 @@ function _datadestinodoc_77621(data) {
 
 function _modificacionesarchivos_77621() {
     console.log('grabar inf')
-    $_FECHACREAPACIW = moment().format('YYMMDD');
-    $_HORACREAPACIW = moment().format('HH:mm');
+    SAL77621.FECHACREAPACIW = moment().format('YYMMDD');
+    SAL77621.HORACREAPACIW = moment().format('HH:mm');
     LLAMADO_DLL({
         dato: [SAL77621.DOCORIGEN],
         callback: _leerdocorigen_77621,
@@ -169,7 +169,7 @@ function _leerdocorigen_77621(data) {
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
         _leerpaciente_77621();
-    } {
+    }else{
         _validardocOrigen_77621();
     }
 }

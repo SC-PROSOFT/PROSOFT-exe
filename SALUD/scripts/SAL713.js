@@ -4,7 +4,8 @@ var $_tiposer713, $liquidar713, $increm713;
 var $_CTAMAYOR_703 = [];
 var $_GRUPOSER_703 = [];
 var $_TABLA_703 = [];
-var $_DESCRIPGRUPOTAR_713, $descrpdiv_713, $descripcups713; 
+var SAL713 = []; 
+// var $_DESCRIPGRUPOTAR_713, $descrpdiv_713, $descripcups713; 
 
 var vlrmonto_713Mask = new IMask(document.getElementById('monto_713'),
     { mask: Number, min: 0, max: 999999999999, scale: 2, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
@@ -195,7 +196,7 @@ function _ventanaContab(e) {
 // NOVEDAD //
 function _evaluarCON850(novedad) {
 
-    $_NovedSal713 = novedad.id;
+    SAL713.$_NovedSal713 = novedad.id;
     switch (parseInt(novedad.id)) {
         case 7:
         case 8:
@@ -220,14 +221,14 @@ function _validarDato713() {
     )
 }
 function _validacionestarifa_713() {
-    $codigo713 = $('#codtar_713').val();
+    SAL713.$codigo713 = $('#codtar_713').val();
 
-    if ($codigo713.trim() == '') {
+    if (SAL713.$codigo713.trim() == '') {
         CON851('01', '01', null, 'error', 'error');
         _validarDato713()
     } else {
         LLAMADO_DLL({
-            dato: [$codigo713],
+            dato: [SAL713.$codigo713],
             callback: _dataCONSULTANOMTAR_713,
             nombredll: 'SAL715_01',
             carpeta: 'SALUD'
@@ -238,10 +239,10 @@ function _validacionestarifa_713() {
 function _dataCONSULTANOMTAR_713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $_DESCRIPNOMTAR_713 = date[1].trim();
+    SAL713.$_DESCRIPNOMTAR_713 = date[1].trim();
     if (swinvalid == "00") {
-        $('#descptar_713').val($_DESCRIPNOMTAR_713);
-        tipoSer_713()
+        $('#descptar_713').val(SAL713.$_DESCRIPNOMTAR_713);
+        tipoSer_713();
 
     } else if (swinvalid == "01") {
         CON851('01', '01', null, 'error', 'error');
@@ -265,7 +266,7 @@ function tipoSer_713() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        seleccion: $_tiposer713,
+        seleccion: SAL713.$_tiposer713,
         callback_f: _validarDato713,
         teclaAlterna: true
 
@@ -273,7 +274,7 @@ function tipoSer_713() {
 }
 
 function _evaluartiposerv_713(datoSerTarif) {
-    $_tiposer713 = datoSerTarif.COD;
+    SAL713.$_tiposer713 = datoSerTarif.COD;
     switch (datoSerTarif.COD) {
         case '0':
         case '1':
@@ -306,13 +307,13 @@ function grupoTar713() {
 }
 
 function validacionesgrupo_713() {
-    $grupo713 = $('#grupo_713').val();
-    if ($grupo713.trim() == '') {
+    SAL713.$grupo713 = $('#grupo_713').val();
+    if (SAL713.$grupo713.trim() == '') {
         CON851('02', '02', null, 'error', 'error');
         grupoTar713();
     } else {
         LLAMADO_DLL({
-            dato: [$grupo713],
+            dato: [SAL713.$grupo713],
             callback: _dataCONSULTAGRUPO_713,
             nombredll: 'SAL713-04',
             carpeta: 'SALUD'
@@ -323,14 +324,14 @@ function validacionesgrupo_713() {
 function _dataCONSULTAGRUPO_713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $_DESCRIPGRUPOTAR_713 = date[1].trim();
+    SAL713.$_DESCRIPGRUPOTAR_713 = date[1].trim();
     if (swinvalid == "00") {
-        $('#descrgrp_103').val($_DESCRIPGRUPOTAR_713);
+        $('#descrgrp_103').val(SAL713.$_DESCRIPGRUPOTAR_713);
         _validarCodig();
     } else if (swinvalid == "01") {
-        if ($grupo713 == 'XX') {
-            $_DESCRIPGRUPOTAR_713 = 'CODIGOS FUERA DE CUPS';
-            $('#descrgrp_103').val($_DESCRIPGRUPOTAR_713);
+        if (SAL713.$grupo713 == 'XX') {
+            SAL713.$_DESCRIPGRUPOTAR_713 = 'CODIGOS FUERA DE CUPS';
+            $('#descrgrp_103').val(SAL713.$_DESCRIPGRUPOTAR_713);
             _validarCodig();
         } else {
             CON851('01', '01', null, 'error', 'error');
@@ -351,15 +352,15 @@ function _validarCodig() {
     )
 }
 function _validacionescodtabla_713() {
-    $codigocups713 = $('#cups_713').val();
+    SAL713.$codigocups713 = $('#cups_713').val();
 
-    if ($codigocups713.trim() == '') {
+    if (SAL713.$codigocups713.trim() == '') {
         CON851('02', '02', null, 'error', 'error');
         _validarCodig();
     } else {
-        $codserr713 = $grupo713 + $codigocups713;
+        SAL713.$codserr713 = SAL713.$grupo713 + SAL713.$codigocups713;
         LLAMADO_DLL({
-            dato: [$codserr713],
+            dato: [SAL713.$codserr713],
             callback: _datavalidarcups_713,
             nombredll: 'SAL713-03',
             carpeta: 'SALUD'
@@ -370,13 +371,13 @@ function _validacionescodtabla_713() {
 function _datavalidarcups_713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $descripcups713 = date[1].trim();
-    $tipocup = date[2].trim();
+    SAL713.$descripcups713 = date[1].trim();
+    SAL713.$tipocup = date[2].trim();
     if (swinvalid == "00") {
-        if (($tipocup != $_tiposer713) && ($_tiposer713 != '7')) {
+        if ((SAL713.$tipocup != SAL713.$_tiposer713) && (SAL713.$_tiposer713 != '7')) {
             jAlert({ titulo: 'Error ', mensaje: 'Atencion! el tipo dado para este proceso, no corresponde con el tipo de los cups' }, _validarCodig);
         } else {
-            $('#descrpcups_103').val($descripcups713);
+            $('#descrpcups_103').val(SAL713.$descripcups713);
             consultatabla_713();
         }
     } else if (swinvalid == "01") {
@@ -388,9 +389,9 @@ function _datavalidarcups_713(data) {
 }
 
 function consultatabla_713() {
-    $llavetab713 = $codigo713 + $_tiposer713 + $grupo713 + $codigocups713;
+    SAL713.$llavetab713 = SAL713.$codigo713 + SAL713.$_tiposer713 + SAL713.$grupo713 + SAL713.$codigocups713;
     LLAMADO_DLL({
-        dato: [$llavetab713],
+        dato: [SAL713.$llavetab713],
         callback: _datavalidartabla_713,
         nombredll: 'SAL713-01',
         carpeta: 'SALUD'
@@ -399,24 +400,24 @@ function consultatabla_713() {
 function _datavalidartabla_713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    if (($_NovedSal713 == '7') && (swinvalid == '01')) {
+    if ((SAL713.$_NovedSal713 == '7') && (swinvalid == '01')) {
         _descriptabla()
     }
-    else if (($_NovedSal713 == '7') && (swinvalid == '00')) {
+    else if ((SAL713.$_NovedSal713 == '7') && (swinvalid == '00')) {
         CON851('00', '00', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
-    else if (($_NovedSal713 == '8') && (swinvalid == '00')) {
+    else if ((SAL713.$_NovedSal713 == '8') && (swinvalid == '00')) {
         _llenarCampos713();
     }
-    else if (($_NovedSal713 == '8') && (swinvalid == '01')) {
+    else if ((SAL713.$_NovedSal713 == '8') && (swinvalid == '01')) {
         CON851('01', '01', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
-    else if (($_NovedSal713 == '9') && (swinvalid == '00')) {
+    else if ((SAL713.$_NovedSal713 == '9') && (swinvalid == '00')) {
         _llenarCampos713();
     }
-    else if (($_NovedSal713 == '9') && (swinvalid == '01')) {
+    else if ((SAL713.$_NovedSal713 == '9') && (swinvalid == '01')) {
         CON851('01', '01', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
@@ -433,8 +434,8 @@ function _descriptabla() {
     )
 }
 function _validacionesdescriptabla_713() {
-    $descripcups713 = $('#descrpcups_103').val();
-    if ($descripcups713.trim() == '') {
+    SAL713.$descripcups713 = $('#descrpcups_103').val();
+    if (SAL713.$descripcups713.trim() == '') {
         CON851('02', '02', null, 'error', 'error');
         _descriptabla()
     } else {
@@ -455,14 +456,14 @@ function _validarformliqui_713() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        seleccion: $liquidar713,
+        seleccion: SAL713.$liquidar713,
         callback_f: _descriptabla
     },
         _evaluarliquidacion);
 }
 
 function _evaluarliquidacion(liquidar) {
-    $liquidar713 = liquidar.COD;
+    SAL713.$liquidar713 = liquidar.COD;
     switch (liquidar.COD) {
         case "1":
         case "2":
@@ -489,13 +490,13 @@ function _evaluarmonto_713() {
     )
 }
 function _validacionesrliquida() {
-    $monto713 = vlrmonto_713Mask.unmaskedValue;
+    SAL713.$monto713 = vlrmonto_713Mask.unmaskedValue;
 
-    if (($liquidar713 != '3') && ($monto713 == '0')) {
+    if ((SAL713.$liquidar713 != '3') && (SAL713.$monto713 == '0')) {
         _evaluarmonto_713();
-    } else if ($liquidar713 == '4') {
-        $_valor = ($_SALMINUSU / 30) * $monto713
-        $('#valortotal_713').val($_valor);
+    } else if (SAL713.$liquidar713 == '4') {
+        SAL713.$_valor = ($_SALMINUSU / 30) * SAL713.$monto713
+        $('#valortotal_713').val(SAL713.$_valor);
         _validacionesincre_713();
     } else {
         _validacionesincre_713();
@@ -511,12 +512,12 @@ function _validacionesincre_713() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        seleccion: $increm713,
+        seleccion: SAL713.$increm713,
         callback_f: _evaluarmonto_713,
         teclaAlterna: true
 
     }, function (incremento) {
-        $increm713 = incremento.COD;
+        SAL713.$increm713 = incremento.COD;
         switch (incremento.COD) {
             case '1':
             case '2':
@@ -526,12 +527,12 @@ function _validacionesincre_713() {
             case '6':
             case '9':
                 $('#incrementar_713').val(incremento.COD + '-' + incremento.DESCRIP)
-                if ($_tiposer713 == '1') {
-                    $paqint713 = '';
+                if (SAL713.$_tiposer713 == '1') {
+                    SAL713.$paqint713 = '';
                     _evaluarcodint_713();
                 } else {
-                    $paqint713 = '';
-                    $('#integ_713').val($paqint713);
+                    SAL713.$paqint713 = '';
+                    $('#integ_713').val(SAL713.$paqint713);
                     _evaluarinsumos_713();
                 }
                 break;
@@ -553,7 +554,7 @@ function _evaluarcodint_713() {
 }
 
 function _evaluarinsumos_713() {
-    $paqint713 = $('#integ_713').val();
+    SAL713.$paqint713 = $('#integ_713').val();
     validarInputs(
         {
             form: "#insumo",
@@ -565,8 +566,8 @@ function _evaluarinsumos_713() {
 }
 
 function _validacioninsumos() {
-    $insumos_713 = $('#insumos_713').val();
-    if (($insumos_713 == 'S') || ($insumos_713 == 'N')) {
+    SAL713.$insumos_713 = $('#insumos_713').val();
+    if ((SAL713.$insumos_713 == 'S') || (SAL713.$insumos_713 == 'N')) {
         _evaluarcodtar_713();
     } else {
         _evaluarinsumos_713();
@@ -583,7 +584,7 @@ function _evaluarcodtar_713() {
     )
 }
 function _validaciontarifa() {
-    $codtari_713 = $('#codtari_713').val();
+    SAL713.$codtari_713 = $('#codtari_713').val();
     _evaluardivision_713();
 }
 
@@ -613,26 +614,26 @@ function _evaluardivision_713() {
     )
 }
 function _validaciondivision() {
-    $division_713 = $('#divis_713').val();
-    if ($division_713.trim() == '') {
-        $descrpdiv_713 = '';
-        $('#descrpdiv_713').val($descrpdiv_713);
+    SAL713.$division_713 = $('#divis_713').val();
+    if (SAL713.$division_713.trim() == '') {
+        SAL713.$descrpdiv_713 = '';
+        $('#descrpdiv_713').val(SAL713.$descrpdiv_713);
         _evaluarcantdias_713();
     } else {
         LLAMADO_DLL({
-            dato: [$division_713],
-            callback: _dataCONSULTAGRUPO_713,
+            dato: [SAL713.$division_713],
+            callback: _dataCONSULTADIVISION_713,
             nombredll: 'SER108-11',
             carpeta: 'SALUD'
         });
     }
 }
-function _dataCONSULTAGRUPO_713(data) {
+function _dataCONSULTADIVISION_713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $descrpdiv_713 = date[1].trim();
+    SAL713.$descrpdiv_713 = date[1].trim();
     if (swinvalid == "00") {
-        $('#descrpdiv_713').val($descrpdiv_713);
+        $('#descrpdiv_713').val(SAL713.$descrpdiv_713);
         _evaluarcantdias_713();
     } else if (swinvalid == "01") {
         CON851('01', '01', null, 'error', 'error');
@@ -653,13 +654,13 @@ function _evaluarcantdias_713() {
     )
 }
 function _evaluardescripext() {
-    $cantidaddias713 = $('#cantidaddias713').val();
+    SAL713.$cantidaddias713 = $('#cantidaddias713').val();
 
-    if ($cantidaddias713.trim() == '') {
-        $cantidaddias713 = '0';
-        $('#cantidaddias713').val($cantidaddias713);
+    if (SAL713.$cantidaddias713.trim() == '') {
+        SAL713.$cantidaddias713 = '0';
+        $('#cantidaddias713').val(SAL713.$cantidaddias713);
     } else {
-        $('#cantidaddias713').val($cantidaddias713);
+        $('#cantidaddias713').val(SAL713.$cantidaddias713);
     }
 
     validarInputs(
@@ -672,14 +673,14 @@ function _evaluardescripext() {
     )
 }
 function _evaluarfinalidades713() {
-    $descripextensa713 = $('#descrpexten_713').val();
-    if ($_tiposer713 == '7') {
+    SAL713.$descripextensa713 = $('#descrpexten_713').val();
+    if (SAL713.$_tiposer713 == '7') {
         _evaluarprimerfinalidad();
     } else {
-        $primerfinal713 = '';
-        $segundfinal713 = '';
-        $tercefinal713 = '';
-        $cuartafinal713 = '';
+        SAL713.$primerfinal713 = '';
+        SAL713.$segundfinal713 = '';
+        SAL713.$tercefinal713 = '';
+        SAL713.$cuartafinal713 = '';
         enviarDatos713();
     }
 }
@@ -694,16 +695,16 @@ function _evaluarprimerfinalidad() {
     )
 }
 function _validarprimerfinalidad() {
-    $primerfinal713 = $('#fina1_713').val();
+    SAL713.$primerfinal713 = $('#fina1_713').val();
 
-    if ($primerfinal713.trim() == '') {
-        $primerfinal713 = '99';
-        $descripprimerfinal = 'TODAS LAS FINALIDADES';
-        $('#fina1_713').val($primerfinal713);
-        $('#descripfina1_713').val($descripprimerfinal);
+    if (SAL713.$primerfinal713.trim() == '') {
+        SAL713.$primerfinal713 = '99';
+        SAL713.$descripprimerfinal = 'TODAS LAS FINALIDADES';
+        $('#fina1_713').val(SAL713.$primerfinal713);
+        $('#descripfina1_713').val(SAL713.$descripprimerfinal);
         enviarDatos713();
     } else {
-        switch ($primerfinal713) {
+        switch (SAL713.$primerfinal713) {
             case '01':
                 $('#descripfina1_713').val("ATENCION PARTO");
                 _evaluarsegunfinalidad()
@@ -770,9 +771,9 @@ function _evaluarsegunfinalidad() {
     )
 }
 function _validarsegundfinalidad() {
-    $segundfinal713 = $('#fina2_713').val();
+    SAL713.$segundfinal713 = $('#fina2_713').val();
 
-    switch ($segundfinal713) {
+    switch (SAL713.$segundfinal713) {
         case '01':
             $('#descripfina2_713').val("ATENCION PARTO");
             _evaluartercefinalidad()
@@ -838,9 +839,9 @@ function _evaluartercefinalidad() {
     )
 }
 function _validartercefinalidad() {
-    $tercefinal713 = $('#fina3_713').val();
+    SAL713.$tercefinal713 = $('#fina3_713').val();
 
-    switch ($tercefinal713) {
+    switch (SAL713.$tercefinal713) {
         case '01':
             $('#descripfina3_713').val("ATENCION PARTO");
             _evaluarcuartafinalidad()
@@ -905,9 +906,9 @@ function _evaluarcuartafinalidad() {
     )
 }
 function _validarcuartafinalidad() {
-    $cuartafinal713 = $('#fina4_713').val();
+    SAL713.$cuartafinal713 = $('#fina4_713').val();
 
-    switch ($cuartafinal713) {
+    switch (SAL713.$cuartafinal713) {
         case '01':
             $('#descripfina4_713').val("ATENCION PARTO");
             enviarDatos713();
@@ -966,13 +967,13 @@ function _validarcuartafinalidad() {
 
 function enviarDatos713() {
 
-    $fechaact = moment().format('YYMMDD');
-    $operario = $_ADMINW;
+    SAL713.$fechaact = moment().format('YYMMDD');
+    SAL713.$operario = $_ADMINW;
 
     LLAMADO_DLL({
-        dato: [$_NovedSal713, $llavetab713, $descripcups713, $liquidar713, $monto713, $paqint713, $codtari_713,
-            $insumos_713, $cantidaddias713, $increm713, $division_713, $descripextensa713, $primerfinal713,
-            $segundfinal713, $tercefinal713, $cuartafinal713, $operario, $fechaact],
+        dato: [SAL713.$_NovedSal713, SAL713.$llavetab713, SAL713.$descripcups713, SAL713.$liquidar713, SAL713.$monto713, SAL713.$paqint713, SAL713.$codtari_713,
+            SAL713.$insumos_713, SAL713.$cantidaddias713, SAL713.$increm713, SAL713.$division_713, SAL713.$descripextensa713, SAL713.$primerfinal713,
+            SAL713.$segundfinal713, SAL713.$tercefinal713, SAL713.$cuartafinal713, SAL713.$operario, SAL713.$fechaact],
         callback: validargrabado713,
         nombredll: 'SAL713-02',
         carpeta: 'SALUD'
@@ -983,7 +984,7 @@ function validargrabado713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
-        if ($_NovedSal713 == '9') {
+        if (SAL713.$_NovedSal713 == '9') {
             toastr.success('Se ha retirado', 'MAESTRO TABLAS');
             _inputControl('reset');
             _inputControl('disabled');
@@ -1004,7 +1005,7 @@ function validargrabado713(data) {
 // ELIMINAR REGISTRO
 function _eliminaDatos713() {
     LLAMADO_DLL({
-        dato: [$_NovedSal713, $_llavetab],
+        dato: [SAL713.$_NovedSal713, SAL713.$_llavetab],
         callback: validargrabado713,
         nombredll: 'SAL713-02',
         carpeta: 'SALUD'
@@ -1013,7 +1014,7 @@ function _eliminaDatos713() {
 /////MOSTRAR DATOS NOVEDAD 8 Y 9 /////////////
 function _llenarCampos713() {
     LLAMADO_DLL({
-        dato: [$llavetab713],
+        dato: [SAL713.$llavetab713],
         callback: on_datosTbla713,
         nombredll: 'SAL713-01',
         carpeta: 'SALUD'
@@ -1022,25 +1023,25 @@ function _llenarCampos713() {
 
 function on_datosTbla713(data) {
     var date = data.split('|');
-    $llavetab713 = date[1].trim();
-    $descripcups713 = date[2].trim();
-    $liquidar713 = date[3].trim();
-    $monto713 = date[4].trim();
-    $monto_713 = $monto713.substring(0, 12)
-    $paqint713 = date[5].trim();
-    $codtari_713 = date[6].trim();
-    $insumos_713 = date[7].trim();
-    $cantidaddias713 = date[8].trim();
-    $increm713 = date[9].trim();
-    $division_713 = date[10].trim();
-    $descrpdiv_713 = date[11].trim();
-    $descripextensa713 = date[12].trim();
-    $primerfinal713 = date[13].trim();
-    $segundfinal713 = date[14].trim();
-    $tercefinal713 = date[15].trim();
-    $cuartafinal713 = date[16].trim();
-    $operario = date[17].trim();
-    $fechaact = date[18].trim();
+    SAL713.$llavetab713 = date[1].trim();
+    SAL713.$descripcups713 = date[2].trim();
+    SAL713.$liquidar713 = date[3].trim();
+    SAL713.$monto713 = date[4].trim();
+    SAL713.$monto_713 = $monto713.substring(0, 12)
+    SAL713.$paqint713 = date[5].trim();
+    SAL713.$codtari_713 = date[6].trim();
+    SAL713.$insumos_713 = date[7].trim();
+    SAL713.$cantidaddias713 = date[8].trim();
+    SAL713.$increm713 = date[9].trim();
+    SAL713.$division_713 = date[10].trim();
+    SAL713.$descrpdiv_713 = date[11].trim();
+    SAL713.$descripextensa713 = date[12].trim();
+    SAL713.$primerfinal713 = date[13].trim();
+    SAL713.$segundfinal713 = date[14].trim();
+    SAL713.$tercefinal713 = date[15].trim();
+    SAL713.$cuartafinal713 = date[16].trim();
+    SAL713.$operario = date[17].trim();
+    SAL713.$fechaact = date[18].trim();
 
     if (date[0].trim() == '00') {
         _mostrarDatos713()
@@ -1059,30 +1060,30 @@ function _mostrarDatos713() {
 
     $('#descrpcups_103').val($descripcups713);
     $('#liquidar_713').val($liquidar713);
-    vlrmonto_713Mask.typedValue = $monto713;
-    if ($liquidar713 == '4') {
-        $_valor = ($_SALMINUSU / 30) * $monto_713
-        $('#valortotal_713').val($_valor);
+    vlrmonto_713Mask.typedValue = SAL713.$monto713;
+    if (SAL713.$liquidar713 == '4') {
+        SAL713.$_valor = ($_SALMINUSU / 30) * SAL713.$monto_713
+        $('#valortotal_713').val(SAL713.$_valor);
     } else {
-        $_valor = '';
-        $('#valortotal_713').val($_valor);
+        SAL713.$_valor = '';
+        $('#valortotal_713').val(SAL713.$_valor);
     }
-    $('#incrementar_713').val($increm713);
-    $('#integ_713').val($paqint713);
-    $('#insumos_713').val($insumos_713);
-    $('#codtari_713').val($codtari_713);
-    $('#divis_713').val($division_713);
-    $('#cantidaddias713').val($cantidaddias713);
-    $('#descrpdiv_713').val($descrpdiv_713);
-    $('#descrpexten_713').val($descripextensa713);
-    $('#fina1_713').val($primerfinal713);
-    $('#fina2_713').val($segundfinal713);
-    $('#fina3_713').val($tercefinal713);
-    $('#fina4_713').val($cuartafinal713);
-    $('#oper_713').val($operario);
-    $('#fechat_713').val($fechaact);
+    $('#incrementar_713').val(SAL713.$increm713);
+    $('#integ_713').val(SAL713.$paqint713);
+    $('#insumos_713').val(SAL713.$insumos_713);
+    $('#codtari_713').val(SAL713.$codtari_713);
+    $('#divis_713').val(SAL713.$division_713);
+    $('#cantidaddias713').val(SAL713.$cantidaddias713);
+    $('#descrpdiv_713').val(SAL713.$descrpdiv_713);
+    $('#descrpexten_713').val(SAL713.$descripextensa713);
+    $('#fina1_713').val(SAL713.$primerfinal713);
+    $('#fina2_713').val(SAL713.$segundfinal713);
+    $('#fina3_713').val(SAL713.$tercefinal713);
+    $('#fina4_713').val(SAL713.$cuartafinal713);
+    $('#oper_713').val(SAL713.$operario);
+    $('#fechat_713').val(SAL713.$fechaact);
 
-    switch (parseInt($_NovedSal713)) {
+    switch (parseInt(SAL713.$_NovedSal713)) {
         case 8:
             _descriptabla();
             break;

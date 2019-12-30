@@ -1957,7 +1957,7 @@ function _datopais_7767() {
     if (($_TIPOPACIW == 'CE') || ($_TIPOPACIW == 'CD') || ($_TIPOPACIW == 'SC') || ($_TIPOPACIW == 'PE') || ($_TIPOPACIW == 'CN') || ($_TIPOPACIW == 'ASI') || ($_TIPOPACIW == 'MSI')) {
         //// CONTINUE 
         obtenerDatosCompletos({
-            nombreFd: 'PAISESRIPS'
+            nombreFd: 'PAISES_RIPS'
         }, _f8paisesrips)
 
     } else {
