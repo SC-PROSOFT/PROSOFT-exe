@@ -252,15 +252,15 @@
                             var edad = calcular_edad(index.NACIMIENTO);
                             index.EDAD = edad.unid_edad + edad.vlr_edad.toString().padStart(3,'0');
                         });
-                        console.debug(array);
                         $.F8LITE.datatable = array;
                         var columnas = $.F8LITE.columnas;
-                        console.debug(columnas);
                         array.forEach(index => {
-                            var datatotable = Object.values(index);
-                            console.debug(datatotable[0].trim())
-                            if (datatotable[0].trim() != ''){
-                                table.push(datatotable);
+                            var contenido = [];
+                            for (var i in columnas){
+                                contenido.push(index[columnas[i].title]);
+                            }
+                            if (contenido[0].trim() != ''){
+                                table.push(contenido);
                             }
                         });
                         $.F8LITE.table = $(`#${$.F8LITE.tabla_id}`).DataTable({
