@@ -1,6 +1,5 @@
-/* NOMBRE RM --> SER11C // NOMBRE ELECTR --> SAL71C */
-
-var $_NovedSer71C, arraygrucap;
+var $_NovedSer71C,  $desc71C, $procedm71C, $laborat71C, $imagen71C, $servicios71C, $consulta71C, $patologia71C, $pyp71C, 
+    $medicamn71C;  
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -67,7 +66,6 @@ function _validarDato71C() {
 
 function validacionescoddivision_71C() {
     $codigo71C = $('#codigo_71C').val();
-
     if ($codigo71C.trim() == '') {
 
         CON851('00', '00', null, 'error', 'error');

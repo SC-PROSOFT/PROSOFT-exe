@@ -10,6 +10,10 @@ var $_CUPS_71G = [];
 var $_ART_71G = [];
 var SAL71G = [];
 var filtroarticulos = []; 
+
+var $_descripgrupo71G, $descrip71G, $convenio71G, $grupos71G, $codigocups71, $llavecod71G, $llavepaquete, $observaciones71G,
+$valor71G, $tabla_paq; 
+
 $(document).ready(function () {
     _inputControl('reset');
     _inputControl('disabled');

@@ -1,6 +1,6 @@
 /* NOMBRE RM --> SER112 // NOMBRE ELECTR --> SAL717 */
 
-var $_NovedSer717, arrayservhsp;
+var $_NovedSer717, arrayservhsp, $_descripcod_717;
 
 $(document).ready(function () {
     _inputControl('reset');

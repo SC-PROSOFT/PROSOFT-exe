@@ -1,6 +1,6 @@
 /* NOMBRE RM --> SER116 // NOMBRE ELECTR --> SAL71H */
 
-var $_NovedSer71H;
+var $_NovedSer71H, $_CODCOMU, $_NOMCOMU, $_COD71H, desc71H;
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -83,7 +83,7 @@ function _validacionescod_71H(){
 }
 
 function _dataSAL71H_comu(data){
-    
+    console.log(data, 'data')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODCOMU = date[1].trim();

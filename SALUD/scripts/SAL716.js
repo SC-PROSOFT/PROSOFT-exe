@@ -1,4 +1,5 @@
 /* NOMBRE RM --> SER103D // NOMBRE ELECTR --> SAL716 */
+var $_CODTAB716,$_DESCRIPDESTINO_716,  $_DESCRIPNOMTAR_716; 
 
 $(document).ready(function () {
 

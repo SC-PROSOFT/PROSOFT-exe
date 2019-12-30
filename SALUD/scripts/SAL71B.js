@@ -1,5 +1,6 @@
 
 var UNSERVICIO = [];
+var $NOMBRECOSTO, $CODSERV, $DESCRIPSERV, $EDADMINSERV, $EDADMAXSERV, $CODCOSTO, $ACTIVARSERV, $_OPERADOR71B, $_FECHAMOD71B; 
 
 $(document).ready(function () {
     _inputControl('reset');

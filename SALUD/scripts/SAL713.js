@@ -4,6 +4,7 @@ var $_tiposer713, $liquidar713, $increm713;
 var $_CTAMAYOR_703 = [];
 var $_GRUPOSER_703 = [];
 var $_TABLA_703 = [];
+var $_DESCRIPGRUPOTAR_713, $descrpdiv_713, $descripcups713; 
 
 var vlrmonto_713Mask = new IMask(document.getElementById('monto_713'),
     { mask: Number, min: 0, max: 999999999999, scale: 2, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
@@ -312,14 +313,14 @@ function validacionesgrupo_713() {
     } else {
         LLAMADO_DLL({
             dato: [$grupo713],
-            callback: _dataCONSULTAGRUPO_715,
+            callback: _dataCONSULTAGRUPO_713,
             nombredll: 'SAL713-04',
             carpeta: 'SALUD'
         });
 
     }
 }
-function _dataCONSULTAGRUPO_715(data) {
+function _dataCONSULTAGRUPO_713(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPGRUPOTAR_713 = date[1].trim();

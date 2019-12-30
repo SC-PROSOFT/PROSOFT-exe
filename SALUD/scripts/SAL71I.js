@@ -1,6 +1,6 @@
 /* NOMBRE RM --> SER116 // NOMBRE ELECTR --> SAL71I */
 
-var $_NovedSer71I, $arraygrpresgu;
+var $_NovedSer71I, $arraygrpresgu, $_CODRESGU, $_NOMRESGU, $codigo_71I, descpr71I;
 
 $(document).ready(function () {
     _inputControl('reset');

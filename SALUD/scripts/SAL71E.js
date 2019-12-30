@@ -1,3 +1,5 @@
+var $operadordat_71E,  $operadorprosf_71E, $idoperador_71E, $nombreoper_71E, $_Novedad_71E; 
+
 $(document).ready(function () {
     _inputControl('reset');
     _inputControl('disabled');
@@ -120,6 +122,7 @@ function _validarleercodigo_71E() {
 
 }
 function _datacodigo_SAL71E(data) {
+    console.log(data, 'consulta')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $operadorprosf_71E = date[1];
