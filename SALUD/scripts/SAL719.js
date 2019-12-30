@@ -9,7 +9,7 @@ var fechaActual119
 var teclaFuncEspec_119;
 var $_NovedSal719
 
-var $impDvd119, $impMenBir119, $impMenNorm119, $asocRad119, $val_Tabla_119
+var $val_Tabla_119
 
 var maskFechas = [];
 var maskHora = [];

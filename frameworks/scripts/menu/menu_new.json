@@ -4633,7 +4633,342 @@
                   ],
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL41.html"
+                },
+                {
+                  "Id": "09422",
+                  "Descripcion": "Reimprimir facturas",
+                  "Opc-segu": "I42",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL42.html"
+                },
+                {
+                  "Id": "09423",
+                  "Descripcion": "Anular facturas",
+                  "Opc-segu": "I43",
+                  "Seg-w": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL43.html"
+                },
+                {
+                  "Id": "09424",
+                  "Descripcion": "Reconsolidar facturas",
+                  "Seg-w": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "Opc-segu": "I44",
+                  "Sub": [
+                    {
+                      "Id": "094241",
+                      "Descripcion": "Reconsol. comp X prefijo",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL44.html"
+                    },
+                    {
+                      "Id": "094242",
+                      "Descripcion": "Reconsol. un comprobante",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL44A.html"
+                    },
+                    {
+                      "Id": "094243",
+                      "Descripcion": "Reconsol. comp X tipo grupo",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL44B.html"
+                    }
+                  ]
+                },
+                {
+                  "Id": "09425",
+                  "Descripcion": "Consulta de historia clinica",
+                  "Opc-segu": "I45",
+                  "Sub": [
+                    {
+                      "Id": "094251",
+                      "Descripcion": "Consulta de historias clinicas",
+                      "Opc-segu": "ISH7",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL451.html"
+                    },
+                    {
+                      "Id": "094252",
+                      "Descripcion": "Informe historias consultadas",
+                      "Opc-segu": "I54",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/PEND.html"
+                    },
+                    {
+                      "Id": "094253",
+                      "Descripcion": "Informe historias consultadas",
+                      "Opc-segu": "I54",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL453.html"
+                    },
+                    {
+                      "Id": "094254",
+                      "Descripcion": "Informe de notificaciones",
+                      "Opc-segu": "I54",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL454.html"
+                    }
+                  ]
+                
+                },
+                {
+                  "Id": "09426",
+                  "Descripcion": "Correccion de facturas",
+                  "Opc-segu": "I46",
+                  "Seg-w": [
+                    "1",
+                    "2",
+                    "4",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL46.html"
+                },
+                {
+                  "Id": "09427",
+                  "Descripcion": "Consulta saldos de cartera",
+                  "Opc-segu": "I47",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL47.html"
+                },
+                {
+                  "Id": "09428",
+                  "Descripcion": "Cinta facturacion P.O.S",
+                  "Opc-segu": "I48",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL48.html"
+                },
+                {
+                  "Id": "09429",
+                  "Descripcion": "Submenu correccion limitada",
+                  "Opc-segu": "I41S",
+                  "Sub": [
+                    {
+                      "Id": "094291",
+                      "Descripcion": "Cambio fact a un comprob",
+                      "Opc-segu": "I4S1",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL491.html"
+                    },
+                    {
+                      "Id": "094292",
+                      "Descripcion": "Cambio tipo a un comprob",
+                      "Opc-segu": "I4S2",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL492.html"
+                    },
+                    {
+                      "Id": "094293",
+                      "Descripcion": "Cambio valor a un comprob",
+                      "Opc-segu": "I4S3",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL493.html"
+                    },
+                    {
+                      "Id": "094294",
+                      "Descripcion": "Cambio numero autorizacion",
+                      "Opc-segu": "I4S4",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL494.html"
+                    },
+                    {
+                      "Id": "094295",
+                      "Descripcion": "Cambio medico a un comprob",
+                      "Opc-segu": "I4S5",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL495.html"
+                    },
+                    {
+                      "Id": "094296",
+                      "Descripcion": "Cambio almacen a un comprob",
+                      "Opc-segu": "I4S6",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL496.html"
+                    },
+                    {
+                      "Id": "094297",
+                      "Descripcion": "Cambio numero de comprob",
+                      "Opc-segu": "I4S7",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL497.html"
+                    },
+                    {
+                      "Id": "094298",
+                      "Descripcion": "Cambio unidad de servicio",
+                      "Opc-segu": "I4S8",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL498.html"
+                    },
+                    {
+                      "Id": "094299",
+                      "Descripcion": "Cambio por remision automatica",
+                      "Opc-segu": "I4S9",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL499.html"
+                    }
+                  ]
+                },
+                {
+                  "Id": "0942A",
+                  "Descripcion": "Elaborar comprob SIN99",
+                  "Opc-segu": "I41S",
+                  "Seg-w": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL4A.html"
+                },
+                {
+                  "Id": "0942B",
+                  "Descripcion": "Impresion masiva comprob",
+                  "Opc-segu": "I41S",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL4B.html"
+                },
+                {
+                  "Id": "0942C",
+                  "Descripcion": "Mercancia pendiente entrega",
+                  "Opc-segu": "I41S",
+                  "Sub": [
+                    {
+                      "Id": "0942C1",
+                      "Descripcion": "Comprob entrega pendiente",
+                      "Opc-segu": "I4S1",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL4C1.html"
+                    },
+                    {
+                      "Id": "0942C2",
+                      "Descripcion": "Reimprimir entrega pendiente",
+                      "Opc-segu": "I4S2",
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL4C2.html"
+                    },
+                    {
+                      "Id": "0942C3",
+                      "Descripcion": "Listado de pendientes",
+                      "Opc-segu": "I4S3",
+                      "Seg-w": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "6",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "HTML",
+                      "Href": "../../SALUD/paginas/SAL4C3.html"
+                    }
+
+                  ]
+                },
+                {
+                  "Id": "0942D",
+                  "Descripcion": "Despacho formulacion auto",
+                  "Opc-segu": "I46",
+                  "Tipo": "HTML",
+                  "Href": "../../SALUD/paginas/SAL4D.html"
                 }
+
               ]
             }
           ]
@@ -9046,13 +9381,8 @@
                           "Id": "0977621",
                           "Descripcion": "Trasl. un documento a otro",
                           "Opc-segu": "IS7621",
-                          "Tipo": "RM",
-                          "Params": [
-                            {
-                              "formulario": "SER7621",
-                              "dll": "SALUD\\SER7621"
-                            }
-                          ]
+                          "Tipo": "HTML",
+                          "Href": "../../SALUD/paginas/SAL77621.html"
                         },
                         {
                           "Id": "0977622",
