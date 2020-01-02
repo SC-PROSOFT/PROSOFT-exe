@@ -85,6 +85,20 @@ function _ventanaCups718(e) {
 					}
 				});
 				break;
+				case '9':
+					$_cups718 = $_cups718.filter(cups_gr => cups_gr.LLAVE.substring(0, 2).toString().trim() == SAL718.GRUPOSER.COD.toString().trim());
+					_ventanaDatos({
+						titulo: "VENTANA DE CODIGOS CUPS",
+						columnas: ["LLAVE", "DESCRIP"],
+						data: $_cups718,
+						callback_esc: () => { _validarCUPS718() },
+						callback: (data) => {
+							data.GRUPO = data.LLAVE.substring(0, 2);
+							SAL718.CUPS.LLAVE = data.LLAVE.toString().trim(); SAL718.CUPS.DESCRIP = data.DESCRIP;
+							_eliminarCups718();
+						}
+					});
+					break;
 		}
 
 	}
@@ -98,8 +112,7 @@ function _ventanaCentrCosto718(e) {
 			data: $_costos718,
 			callback_esc: () => { _validarCentroCost718() },
 			callback: (data) => {
-				SAL718.COSTO.COD = data.COD; SAL718.COSTO.NOMBRE = data.NOMBRE;
-				$('#centrocosto_718').val(data.COD.toString().trim() + ' ' + data.NOMBRE.toString().trim())
+				SAL718.COSTO = data;
 				validarEdadMin718();
 
 			}
@@ -121,7 +134,29 @@ function _ventanaPlanCuentas718(e) {
 					$('#ctaingrTercer_718').val(data.LLAVE_MAE.toString().trim())
 					$('#ctaDescripTercer_718').val(data.NOMBRE_MAE.toString().trim())
 					validarTercero718();
-				} else { evaluarCodigoContable718(caja, data); }
+				} else {
+					switch ($_USUA_GLOBAL[0].PUC) {
+						case '1':
+							document.getElementById('codPuc_718').value = data.LLAVE_MAE + ' ' + data.NOMBRE_MAE;
+							break;
+						case '2':
+							document.getElementById('codCoop_718').value = data.LLAVE_MAE + ' ' + data.NOMBRE_MAE;
+							break;
+						case '3':
+							document.getElementById('codPuc_718').value = data.LLAVE_MAE + ' ' + data.NOMBRE_MAE;
+							break;
+						case '4':
+							document.getElementById('codOficial_718').value = data.LLAVE_MAE + ' ' + data.NOMBRE_MAE;
+							break;
+						case '6':
+							document.getElementById('codPuc_718').value = data.LLAVE_MAE + ' ' + data.NOMBRE_MAE;
+							break;
+						default:
+							document.getElementById('codPuc_718').value = SAL718.MAESTROS.LLAVE_MAE + ' ' + data.NOMBRE_MAE;
+							break;
+					}
+					validarDivision718();
+				}
 			}
 		});
 	}
@@ -184,6 +219,7 @@ function _evaluarCON850_718(novedad) {
 			_validarGrupo718();
 			break;
 		case 8:
+			_validarGrupo718();
 		case 9:
 			_validarGrupo718();
 			break;
@@ -207,15 +243,19 @@ function _validarGrupo718() {
 	)
 }
 function evaluarGrupo718() {
-	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value
+	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value;
+	let res;
 	if (typeof SAL718.GRUPOSER.COD == "undefined" || SAL718.GRUPOSER.COD == '') {
 		CON851('03', '03', _validarGrupo718(), 'error', 'error');
 	} else {
-		let res = $_grServicios718.filter(gruposer => gruposer.COD == document.getElementById('codgrupo_718').value);
-		res[0] == '' ? SAL718.GRUPOSER = SAL718.GRUPOSER : SAL718.GRUPOSER = res[0];
-		SAL718.GRUPOSER.ESTADO = '01';
-		if (res.length > 0) { SAL718.GRUPOSER.ESTADO = '00' } else { SAL718.GRUPOSER.ESTADO = '01'; }
-		_onrestricciones718({ invalid: SAL718.GRUPOSER.ESTADO, seccion: 'GRUPOSER' })
+		res = $_grServicios718.filter(gruposer => gruposer.COD == document.getElementById('codgrupo_718').value);
+		if (res == '') {
+			CON851('03', '03', _validarGrupo718(), 'error', 'error');
+		} else {
+			SAL718.GRUPOSER = res[0]
+			if (res.length > 0 || res != '') { SAL718.GRUPOSER.ESTADO = '00' } else { SAL718.GRUPOSER.ESTADO = '01'; }
+			_onrestricciones718({ invalid: SAL718.GRUPOSER.ESTADO, seccion: 'GRUPOSER' })
+		}
 	}
 }
 function _validarCUPS718() {
@@ -236,7 +276,8 @@ function evaluarCups718() {
 		CON851('03', '03', _validarCUPS718(), 'error', 'error');
 	} else {
 		document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
-		let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE.padEnd(12, ' ');
+		let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE;
+		console.debug(datos_envio, 'data')
 		postData({
 			datosh: datos_envio
 		}, get_url("APP/SALUD/SAL718-01.DLL"))
@@ -255,7 +296,16 @@ function _validarDescripcion718() {
 		form: "#descripcioncups718",
 		orden: '1'
 	},
-		_validarCUPS718,
+		function () {
+			switch (SAL718.NOVEDADW) {
+				case '7':
+					_validarCUPS718();
+					break;
+				case '8':
+					limpiarCajas718();
+					break;
+			}
+		},
 		function () {
 			let data = [
 				{ 'COD': '01', 'DESCRIP': 'CIRUGIAS' },
@@ -409,15 +459,18 @@ function _validarCentroCost718() {
 }
 
 function evaluarCostos718() {
-
+	let res;
 	SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim();
-	if (typeof SAL718.COSTO.COD == "undefined" || SAL718.COSTO.COD == '') { CON851('03', '03', _validarCentroCost718(), 'error', 'error'); }
+	if (typeof SAL718.COSTO.COD == "undefined" || SAL718.COSTO.COD == '' || isNaN(SAL718.COSTO.COD)) { CON851('03', '03', _validarCentroCost718(), 'error', 'error'); }
 	else {
-		let res = $_costos718.filter(costo => costo.COD.toString().trim().padStart('6', '0') == SAL718.COSTO.COD.padStart('6', '0'));
-		res[0] == '' ? SAL718.COSTO = SAL718.COSTO : SAL718.COSTO = res[0];
-		SAL718.COSTO.ESTADO = '01';
-		if (res.length > 0) { SAL718.COSTO.ESTADO = '00'; SAL718.COSTO.DESCRIP = res[0].NOMBRE } else { SAL718.COSTO.ESTADO = '01'; }
-		_onrestricciones718({ invalid: SAL718.COSTO.ESTADO, seccion: 'COSTO' })
+		res = $_costos718.filter(costo => costo.COD.padStart(6, '0') == SAL718.COSTO.COD.padStart(6, '0'));
+		if (res == '') {
+			CON851('03', '03', _validarCentroCost718(), 'error', 'error');
+		} else {
+			SAL718.COSTO = res[0];
+			if (res.length > 0) { SAL718.COSTO.ESTADO = '00'; SAL718.COSTO.DESCRIP = res[0].NOMBRE } else { SAL718.COSTO.ESTADO = '01'; }
+			_onrestricciones718({ invalid: SAL718.COSTO.ESTADO, seccion: 'COSTO' })
+		}
 
 	}
 }
@@ -585,10 +638,10 @@ function validarCtaTercero718() {
 
 function evaluarCtaTercero718() {
 	SAL718.MAESTROS.LLAVE_MAE = document.getElementById('ctaingrTercer_718').value.toString().trim();
-	let cuenta = SAL718.MAESTROS.LLAVE_MAE;
+	let cuenta = SAL718.MAESTROS.LLAVE_MAE, res;
 	if (cuenta == '') {
-		let res = $_planCuentas718.filter(n => n.TIPO_MAE.trim() == '4');
-		if (res.length > 0) {
+		res = $_planCuentas718.filter(n => n.TIPO_MAE.trim() == '4');
+		if (res.length > 0 || res !== '') {
 			SAL718.MAESTROS.NOMBRE_MAE = res[0].NOMBRE_MAE; SAL718.MAESTROS.ESTADO = '00';
 			document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
 			validarTercero718();
@@ -600,8 +653,8 @@ function evaluarCtaTercero718() {
 			validarTercero718();
 		}
 	} else {
-		let res = $_planCuentas718.filter(n => n.LLAVE_MAE.trim() == cuenta.toString().padStart(12, '0'));
-		if (res.length > 0) {
+		res = $_planCuentas718.filter(n => n.LLAVE_MAE.trim() == cuenta.toString().padStart(12, '0'));
+		if (res.length > 0 || res !== '') {
 			SAL718.MAESTROS.NOMBRE_MAE = res[0].NOMBRE_MAE; SAL718.MAESTROS.ESTADO = '00';
 			document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
 			validarTercero718();
@@ -625,13 +678,17 @@ function validarTercero718() {
 
 function evaluarTercero718() {
 	SAL718.TERCEROS.COD = document.getElementById('nitTercer_718').value.toString().trim();
+	let res;
 	if (typeof SAL718.TERCEROS.COD == "undefined" || SAL718.TERCEROS.COD == '') { CON851('03', '03', validarCtaTercero718(), 'error', 'error'); }
 	else {
-		let res = $_terceros718.filter(terce => terce.COD.trim() == SAL718.TERCEROS.COD.trim());
-		res[0] == '' ? SAL718.TERCEROS = SAL718.TERCEROS : SAL718.TERCEROS = res[0];
-		SAL718.TERCEROS.ESTADO = '01'
-		if (res.length > 0) { SAL718.TERCEROS.ESTADO = '00'; SAL718.TERCEROS.NOMBRE = res[0].NOMBRE; } else { SAL718.TERCEROS.ESTADO = '01'; }
-		_onrestricciones718({ invalid: SAL718.TERCEROS.ESTADO, seccion: 'TERCEROS' })
+		res = $_terceros718.filter(terce => terce.COD.trim() == SAL718.TERCEROS.COD.trim());
+		if (res == '') {
+			CON851('03', '03', validarCtaTercero718(), 'error', 'error');
+		} else {
+			SAL718.TERCEROS = res[0];
+			if (res.length > 0) { SAL718.TERCEROS.ESTADO = '00'; SAL718.TERCEROS.NOMBRE = res[0].NOMBRE; } else { SAL718.TERCEROS.ESTADO = '01'; }
+			_onrestricciones718({ invalid: SAL718.TERCEROS.ESTADO, seccion: 'TERCEROS' })
+		}
 	}
 }
 //-------------------------------------------------------------------------------------------//
@@ -689,25 +746,37 @@ function validarCodPuc718() {
 			}
 		},
 		function () {
-			SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = document.getElementById('codPuc_718').value.toString().trim();
-			SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = document.getElementById('codPuc_718').value.toString().trim();
-			let cuenta1 = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP; let cuenta2 = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP;
+			SAL718.MAESTROS.LLAVE_MAE=document.getElementById('codPuc_718').value;
+			SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
+			SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
+			let cuenta1, cuenta2, res1, res2;
+			SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP == '' ? cuenta1 = ' ' : cuenta1 = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP;
+			SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP == '' ? cuenta2 = ' ' : cuenta2 = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP;
 
 			if ((cuenta1 == '' || cuenta2 == '')) { CON851('03', '03', validarCodPuc718(), 'error', 'error'); }
 			else {
-				let res1 = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == cuenta1.toString().padStart(12, '0'));
-				if (res1.length > 0) {
-					SAL718.CUENTA = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP
-					document.getElementById('codPuc_718').value = cuenta1 + ' ' + res1[0].NOMBRE_MAE; validarDivision718();
+				res1 = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == cuenta1).toString().padStart(12, '0');
+				if (res1 == '') {
+					CON851('03', '03', validarCodPuc718(), 'error', 'error');
 				} else {
-					let res2 = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == cuenta2.toString().padStart(12, '0'));
-					if (res2.length > 0) {
-						SAL718.CUENTA = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP
-						document.getElementById('codPuc_718').value = cuenta2 + ' ' + res2[0].NOMBRE_MAE; validarDivision718();
+					if (res1.length > 0) {
+						SAL718.CUENTA = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP
+						document.getElementById('codPuc_718').value = res1[0].LLAVE_MAE + ' ' + res1[0].NOMBRE_MAE; validarDivision718();
 					} else {
-						CON851('01', '01', validarCodPuc718(), 'error', 'error');
+						res2 = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == cuenta2.toString().padStart(12, '0'));
+						if (res2 == '') {
+							CON851('03', '03', validarCodPuc718(), 'error', 'error');
+						} else {
+							if (res2.length > 0) {
+								SAL718.CUENTA = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP
+								document.getElementById('codPuc_718').value = res2[0].LLAVE_MAE + ' ' + res2[0].NOMBRE_MAE; validarDivision718();
+							} else {
+								CON851('01', '01', validarCodPuc718(), 'error', 'error');
+							}
+						}
 					}
 				}
+
 			}
 		})
 }
@@ -726,7 +795,7 @@ function validarCodCoop718() {
 			}
 		},
 		function () {
-			SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = document.getElementById('codCoop_718').value.toString().trim();
+			SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
 			if (typeof SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == "undefined" || SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == '') {
 				CON851('03', '03', validarCodCoop718(), 'error', 'error');
 			}
@@ -754,7 +823,7 @@ function validarcodOficial718() {
 			}
 		},
 		function () {
-			SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = document.getElementById('codOficial_718').value.toString().trim();
+			SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
 			if (typeof SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == "undefined" || SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP == '') {
 				CON851('03', '03', validarcodOficial718(), 'error', 'error');
 			}
@@ -848,7 +917,7 @@ function Actualizar718() {
 
 function on_grabar718() {
 	let datos_envio = datosEnvio() + SAL718.NOVEDADW + '|' + SAL718.PARAMS;
-	console.debug(datos_envio,'datos_env');
+	console.debug(datos_envio, 'datos_env');
 	postData({
 		datosh: datos_envio
 	}, get_url("APP/SALUD/SAL718-02.DLL"))
@@ -865,15 +934,15 @@ function on_grabar718() {
 }
 
 function _eliminarCups718(escCallback) {
-	SAL71A.PARAMS = SAL718.CUPS.LLAVE + '|'
+	SAL718.PARAMS = SAL718.CUPS.LLAVE + '|'
 	CON851P('54', escCallback, validarDivision718)
-	let datos_envio = datosEnvio() + SAL71A.NOVEDADW + '|' + SAL718.PARAMS;
+	let datos_envio = datosEnvio() + SAL718.NOVEDADW + '|' + SAL718.PARAMS;
 	postData({
 		datosh: datos_envio
-	}, get_url("APP/SALUD/SAL71A-02.DLL"))
+	}, get_url("APP/SALUD/SAL718-02.DLL"))
 		.then((data) => {
 			if (data.split('|')[0] == "00") {
-				CON851(data.split('|')[0], data.split('|')[1], limpiarCajas718, 'success', 'success');
+				CON851(data.split('|')[0], data.split('|')[1], limpiarCajas718(), 'success', 'success');
 			} else {
 				CON851('ERROR', 'ERROR AL ACTUALIZAR', validarDivision718(), 'error', 'error');
 			};
@@ -887,46 +956,6 @@ function limpiarCajas718() {
 	_inputControl('reset');
 	_inputControl('disabled');
 	CON850(_evaluarCON850_718);
-}
-
-function evaluarCodigoContable718(caja, data) {
-	caja == 'undefined' ? caja = false : caja = caja;
-	data == 'undefined' ? data = false : data = data;
-
-	switch ($_USUA_GLOBAL[0].PUC) {
-		case '1': if (caja) {
-			_enterInput('#codPuc_718');
-		}
-		else { _enterInput('#' + caja); document.getElementById('codPuc_718').value = data.LLAVE_MAE }
-			break;
-		case '2': if (caja) {
-			_enterInput('#codCoop_718');
-		}
-		else { _enterInput('#' + caja); document.getElementById('codCoop_718').value = data.LLAVE_MAE }
-			break;
-		case '3': if (caja) {
-			_enterInput('#codPuc_718');
-		}
-		else { _enterInput('#' + caja); document.getElementById('codPuc_718').value = data.LLAVE_MAE }
-			break;
-		case '4': if (caja) {
-			_enterInput('#codOficial_718');
-		}
-		else { _enterInput('#' + caja); _enterInput('#' + caja); document.getElementById('codOficial_718').value = data.LLAVE_MAE }
-			break;
-		case '6': if (caja) {
-			_enterInput('#codPuc_718');
-		}
-		else { _enterInput('#' + caja); _enterInput('#' + caja); document.getElementById('codOficial_718').value = data.LLAVE_MAE }
-			break;
-		default: if (caja) {
-			document.getElementById('codPuc_718').value = SAL718.MAESTROS.LLAVE_MAE;
-			_enterInput('#codPuc_718');
-		}
-		else { _enterInput('#' + caja); document.getElementById('codPuc_718').value = data.LLAVE_MAE }
-			break;
-	}
-
 }
 
 // CONDICION POR NIT PARA CAMBIO DE CAJAS //
@@ -1039,7 +1068,7 @@ function _onrestricciones718(params) {
 			break;
 		//-----------------------------------------//
 		case 'CUPS':
-			switch (SAL718.NOVEDADW) {
+			switch (SAL718.NOVEDADW.trim()) {
 				case '7':
 					if (params.invalid == '00') { CON851('00', '00', _validarCUPS718(), 'error', 'error'); }
 					else {
@@ -1052,12 +1081,17 @@ function _onrestricciones718(params) {
 							_validarDescripcion718();
 						}
 					}
-					break;
+					break
 				case '8':
-					if (params.invalid == '01') { CON851('01', '01', _validarCUPS718(), 'error', 'error'); }
+					if (params.invalid == '01') {
+						CON851('01', '01', _validarCUPS718(), 'error', 'error')
+					}
 					else {
+						let d = new Date();
 						SAL718.CUPS.OPER_MOD = localStorage['Usuario']; SAL718.CUPS.FECHA_MOD = moment().format('YYYYMMDD'); SAL718.CUPS.HORA_MOD = d.getHours()
-					} document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP; on_llenarFormCups718();
+						document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP; on_llenarFormCups718();
+					}
+					break;
 				case '9':
 					if (params.invalid == '01') { CON851('01', '01', _validarCUPS718(), 'error', 'error'); }
 					else { _eliminarCups718() }
