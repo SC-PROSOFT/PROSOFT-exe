@@ -152,28 +152,29 @@ function _datadestinodoc_77621(data) {
     }
 }
 
+// function _modificacionesarchivos_77621() {
+//     console.log('modificaciones archivo inf')
+
+//     LLAMADO_DLL({
+//         dato: [SAL77621.DOCORIGEN],
+//         callback: _leerdocorigen_77621,
+//         nombredll: 'SAL7621-01',
+//         carpeta: 'SALUD'
+//     });
+// }
+
+
+// function _leerdocorigen_77621(data) {
+//     var date = data.split('|');
+//     var swinvalid = date[0].trim();
+//     if (swinvalid == "00") {
+//         _confirmarguardado_77621();
+//     }else{
+//         _validardocOrigen_77621();
+//     }
+// }
+
 function _modificacionesarchivos_77621() {
-    console.log('modificaciones archivo inf')
-    
-    LLAMADO_DLL({
-        dato: [SAL77621.DOCORIGEN],
-        callback: _leerdocorigen_77621,
-        nombredll: 'SAL7621-01',
-        carpeta: 'SALUD'
-    });
-}
-
-function _leerdocorigen_77621(data) {
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    if (swinvalid == "00") {
-        _confirmarguardado_77621();
-    }else{
-        _validardocOrigen_77621();
-    }
-}
-
-function _confirmarguardado_77621() {
     SAL77621.FECHACREAPACIW = moment().format('YYMMDD');
     SAL77621.HORACREAPACIW = moment().format('HH:mm');
     SAL77621.HORACREAPACIW = SAL77621.HORACREAPACIW.replace(/:/, '');
@@ -185,6 +186,35 @@ function _confirmarguardado_77621() {
         carpeta: 'SALUD'
     });
 }
-function _leerconfirmacion_77621(data){
+function _leerconfirmacion_77621(data) {
     console.log(data, 'confirmacion')
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    SAL77621.NROFAC = date[1].trim();
+    SAL77621.ESTADOBORRAR = date[2].trim();
+    SAL77621.ESTADOORIGEN = date[3].trim();
+    SAL77621.LLAVELAB = date[4].trim();
+    SAL77621.ESTADOLAB = date[5].trim();
+    SAL77621.LLAVEGLOS = date[6].trim();
+    SAL77621.ESTADOGLOS = date[7].trim();
+    SAL77621.LLAVECIT = date[8].trim();
+    SAL77621.ESTADOCIT = date[9].trim();
+    SAL77621.LLAVEFUR = date[10].trim();
+    SAL77621.ESTADOFURIPS = date[11].trim();
+    SAL77621.CODCAM = date[12].trim();
+    SAL77621.MSJCAM = date[13].trim();
+    SAL77621.NOMPACI = date[14].trim();
+    SAL77621.PACICAM = date[15].trim();
+
+    if (swinvalid == '00') {
+        toastr.success('ACTUALIZACION EXITOSA');
+        CON851('ACTUALIZACION', SAL77621.ESTADOBORRAR, null, 'error', 'error');
+        toastr.success(SAL77621.ESTADOORIGEN);
+        _inputControl('reset');
+        _validardocOrigen_77621();
+
+    } else {
+        CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
+        _inputControl('reset');
+    }
 }
