@@ -749,7 +749,21 @@ function _Validarunidaddeservicio_41() {
 function _Datosucursal_41() {
     let datos_envio = datosEnvio()
     datos_envio += SAL41.ADMINW
-    SolicitarDll({ datosh: datos_envio }, _dataCON003_41_01, get_url('app/CONTAB/CON003.DLL'));
+    // SolicitarDll({ datosh: datos_envio }, _dataCON003_41_01, get_url('app/CONTAB/CON003.DLL'));
+
+    let URL = get_url("app/CONTAB/CON003.DLL");
+
+    postData({
+        datosh: datos_envio
+    }, URL)
+        .then((data) => {
+            loader("hide")
+            _dataCON003_41_01(data)
+        })
+        .catch(error => {
+            console.error(error)
+            _toggleNav()
+        });
 }
 
 function _dataCON003_41_01(data) {
