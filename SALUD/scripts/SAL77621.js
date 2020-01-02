@@ -153,9 +153,8 @@ function _datadestinodoc_77621(data) {
 }
 
 function _modificacionesarchivos_77621() {
-    console.log('grabar inf')
-    SAL77621.FECHACREAPACIW = moment().format('YYMMDD');
-    SAL77621.HORACREAPACIW = moment().format('HH:mm');
+    console.log('modificaciones archivo inf')
+    
     LLAMADO_DLL({
         dato: [SAL77621.DOCORIGEN],
         callback: _leerdocorigen_77621,
@@ -168,28 +167,24 @@ function _leerdocorigen_77621(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
-        _leerpaciente_77621();
+        _confirmarguardado_77621();
     }else{
         _validardocOrigen_77621();
     }
 }
 
-function _leerpaciente_77621() {
+function _confirmarguardado_77621() {
+    SAL77621.FECHACREAPACIW = moment().format('YYMMDD');
+    SAL77621.HORACREAPACIW = moment().format('HH:mm');
+    SAL77621.HORACREAPACIW = SAL77621.HORACREAPACIW.replace(/:/, '');
+
     LLAMADO_DLL({
-        dato: [SAL77621.DOCORIGEN],
-        callback: _leerfacturaserv_77621,
-        nombredll: 'SAL7621-03',
+        dato: [SAL77621.DOCORIGEN, SAL77621.DOCDESTINO, SAL77621.FECHACREAPACIW, SAL77621.HORACREAPACIW],
+        callback: _leerconfirmacion_77621,
+        nombredll: 'SAL7621-04',
         carpeta: 'SALUD'
     });
 }
-
-
-function _leerfacturaserv_77621(data) {
-    var date = data.split('|');
-    var swinvalid = date[0].trim();
-    if (swinvalid == "08") {
-        _borrarorigen_77621();
-    }{
-        _validardocOrigen_77621();
-    }
+function _leerconfirmacion_77621(data){
+    console.log(data, 'confirmacion')
 }
