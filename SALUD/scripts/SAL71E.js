@@ -1,4 +1,4 @@
-var $operadordat_71E,  $operadorprosf_71E, $idoperador_71E, $nombreoper_71E, $_Novedad_71E; 
+var $operadordat_71E, $operadorprosf_71E, $idoperador_71E, $nombreoper_71E, $_Novedad_71E;
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -9,7 +9,7 @@ $(document).ready(function () {
         { input: 'operadorpros', app: '71E', funct: _ventanaoperador_71E },
 
     ]);
-    
+
     CON850(_evaluarCON850_71E);
 
 });
@@ -122,7 +122,6 @@ function _validarleercodigo_71E() {
 
 }
 function _datacodigo_SAL71E(data) {
-    console.log(data, 'consulta')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $operadorprosf_71E = date[1];
@@ -170,12 +169,21 @@ function _validaroperador_71E() {
         CON851('02', '02', null, 'error', 'Error');
         datooperador_713()
     } else {
-        LLAMADO_DLL({
-            dato: [$operadorprosf_71E],
-            callback: _dataCON003_SAL71E,
-            nombredll: 'CON003',
-            carpeta: 'CONTAB'
-        })
+        let datos_envio = datosEnvio()
+        datos_envio += $operadorprosf_71E
+        let URL = get_url("app/CONTAB/CON003.DLL");
+
+        postData({
+            datosh: datos_envio
+        }, URL)
+            .then((data) => {
+                // loader("hide")
+                _dataCON003_SAL71E(data); 
+            })
+            .catch(error => {
+                console.error(error)
+                _toggleNav()
+            });
     }
 }
 function _dataCON003_SAL71E(data) {
@@ -192,20 +200,20 @@ function _dataCON003_SAL71E(data) {
             nombredll: 'SAL71E-03',
             carpeta: 'SALUD'
         })
-        
+
     }
 }
-function _dataconsulta3_sal71E(data){
+function _dataconsulta3_sal71E(data) {
     var date = data.split("|");
     var swinvalid = date[0].trim()
-    if(swinvalid == '00'){
+    if (swinvalid == '00') {
         $('#nomoper_71E').val($nombreoper_71E);
-        $('#id_71E').val($idoperador_71E);   
-        _grabardatos_SAL71E(); 
-    }else if (swinvalid == '05'){
+        $('#id_71E').val($idoperador_71E);
+        _grabardatos_SAL71E();
+    } else if (swinvalid == '05') {
         CON851('05', '05', null, 'error', 'Error');
-        datooperador_713(); 
-    }else{
+        datooperador_713();
+    } else {
         CON852(date[0], date[1], date[2], _toggleNav);
     }
 }
@@ -222,14 +230,25 @@ function _grabardatos_SAL71E() {
 ///////////////////// MOSTRAR 8 Y 9 //////////////////////
 function _llenardatosDATALAB_71E() {
     $('#operadorpros_71E').val($operadorprosf_71E);
-    LLAMADO_DLL({
-        dato: [$operadorprosf_71E],
-        callback: _dataCON003_SAL71E2,
-        nombredll: 'CON003',
-        carpeta: 'CONTAB'
-    })
+
+    let datos_envio = datosEnvio()
+    datos_envio += $operadorprosf_71E
+    let URL = get_url("app/CONTAB/CON003.DLL");
+
+    postData({
+        datosh: datos_envio
+    }, URL)
+        .then((data) => {
+            // loader("hide")
+            _dataCON003_SAL71E2(data);
+        })
+        .catch(error => {
+            console.error(error)
+            _toggleNav()
+        });
+
 }
-function _dataCON003_SAL71E2(data){
+function _dataCON003_SAL71E2(data) {
     var date = data.split("|");
     $nombreoper_71E = date[0].substr(0, 29);
     $idoperador_71E = date[1].trim();

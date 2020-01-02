@@ -1,5 +1,5 @@
-var $_NovedSer71C,  $desc71C, $procedm71C, $laborat71C, $imagen71C, $servicios71C, $consulta71C, $patologia71C, $pyp71C, 
-    $medicamn71C;  
+var $_NovedSer71C, $desc71C, $procedm71C, $laborat71C, $imagen71C, $servicios71C, $consulta71C, $patologia71C, $pyp71C,
+    $medicamn71C;
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -8,33 +8,39 @@ $(document).ready(function () {
     _toggleF8([
         { input: 'codigo', app: '71C', funct: _ventanaGrupcap }
     ]);
-    obtenerDatosCompletos({ nombreFd: 'GRCAPITA' }, _f8codigocapita_71C)
-
+    CON850(_evaluarCON850)
 
 });
 
-function _f8codigocapita_71C(data) {
-    $_GRCAPITA_71C = data.GRCAPITA;
-    CON850(_evaluarCON850)
-}
-
 // --> F8 DIVISIONES //
 function _ventanaGrupcap(e) {
-    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-        _ventanaDatos({
-            titulo: "VENTANA UNIDADES DE SERVICIO",
-            columnas: ["CODIGO", "DESCRIP"],
-            data: $_GRCAPITA_71C,
-            callback_esc: function () {
-                $("#codigo_71C").focus();
-            },
-            callback: function (data) {
-                document.getElementById('codigo_71C').value = data.CODIGO.trim();
-                document.getElementById('descripGrcp71C').value = data.DESCRIPCION;
-                _enterInput('#codigo_71C');
+    
+    let URL = get_url("APP/" + "SALUD/SER871" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_GRCAPITA_71C = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA UNIDADES DE SERVICIO",
+                    columnas: ["CODIGO", "DESCRIP"],
+                    data: $_GRCAPITA_71C.GRCAPITA,
+                    callback_esc: function () {
+                        $("#codigo_71C").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('codigo_71C').value = data.CODIGO.trim();
+                        document.getElementById('descripGrcp71C').value = data.DESCRIPCION;
+                        _enterInput('#codigo_71C');
+                    }
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error)
         });
-    }
 }
 
 // NOVEDAD //
@@ -128,12 +134,12 @@ function _descripciondivision_71C() {
     )
 }
 
-function _validardescrip_71C(){
+function _validardescrip_71C() {
     $desc71C = $('#descripGrcp71C').val()
-    if($desc71C.trim() == ''){
+    if ($desc71C.trim() == '') {
         _descripciondivision_71C();
-    }else{
-        _proced71c(); 
+    } else {
+        _proced71c();
     }
 }
 
@@ -154,7 +160,7 @@ function _evaluarprocedimiento_71C() {
         $procedm71C = 'N';
         $("#proced71C").val($procedm71C);
         _laborat71c();
-    } else if (($procedm71C== 'S') || ($procedm71C == 'N')) {
+    } else if (($procedm71C == 'S') || ($procedm71C == 'N')) {
         _laborat71c();
     } else {
         _proced71c();
@@ -171,7 +177,7 @@ function _laborat71c() {
     )
 }
 
-function _evaluarlaboratorio_71C(){
+function _evaluarlaboratorio_71C() {
     $laborat71C = $('#laborat71C').val()
     if ($laborat71C.trim() == '') {
         $laborat71C = 'N';
@@ -194,7 +200,7 @@ function _imagen71c() {
     )
 }
 
-function _evaluarimagen_71C(){
+function _evaluarimagen_71C() {
     $imagen71C = $('#imagen71C').val()
 
     if ($imagen71C.trim() == '') {
@@ -218,7 +224,7 @@ function _servicio71c() {
         _evaluarservicio_71C
     )
 }
-function _evaluarservicio_71C(){
+function _evaluarservicio_71C() {
     $servicios71C = $('#otroServ71C').val()
     if ($servicios71C.trim() == '') {
         $servicios71C = 'N';
@@ -242,7 +248,7 @@ function _consulta71c() {
     )
 }
 
-function _evaluarconsulta_71C(){
+function _evaluarconsulta_71C() {
     $consulta71C = $('#consulta71C').val()
 
     if ($consulta71C.trim() == '') {
@@ -266,7 +272,7 @@ function _patologia71c() {
         _evaluarpatologia_71C
     )
 }
-function _evaluarpatologia_71C(){
+function _evaluarpatologia_71C() {
     $patologia71C = $('#patolog71C').val()
 
     if ($patologia71C.trim() == '') {
@@ -290,7 +296,7 @@ function _promyprev71c() {
         _evaluarpromy_71C
     )
 }
-function _evaluarpromy_71C(){
+function _evaluarpromy_71C() {
     $pyp71C = $('#promyprev71C').val()
     if ($pyp71C.trim() == '') {
         $pyp71C = 'N';
@@ -313,7 +319,7 @@ function _medicament71c() {
         _evaluarmedic_71C
     )
 }
-function _evaluarmedic_71C(){
+function _evaluarmedic_71C() {
     $medicamn71C = $('#medicam71C').val()
     if ($medicamn71C.trim() == '') {
         $medicamn71C = 'N';
@@ -337,6 +343,7 @@ function _envioDatSer71C() {
 }
 
 function _validargrabaropcion(data) {
+    console.log(data, 'resultado')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {

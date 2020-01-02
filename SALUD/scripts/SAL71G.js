@@ -717,6 +717,7 @@ function _grabardatos_71G() {
     });
 }
 function _grabaropcion(data) {
+    console.log(data, 'grabaropcion')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -735,7 +736,7 @@ function _grabaropcion(data) {
     }
     else if (swinvalid == "01") {
         CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
-
+        _toggleNav(); 
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);

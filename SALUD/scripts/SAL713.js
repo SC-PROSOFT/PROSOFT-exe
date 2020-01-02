@@ -1027,7 +1027,7 @@ function on_datosTbla713(data) {
     SAL713.$descripcups713 = date[2].trim();
     SAL713.$liquidar713 = date[3].trim();
     SAL713.$monto713 = date[4].trim();
-    SAL713.$monto_713 = $monto713.substring(0, 12)
+    SAL713.$monto_713 = SAL713.$monto713.substring(0, 12)
     SAL713.$paqint713 = date[5].trim();
     SAL713.$codtari_713 = date[6].trim();
     SAL713.$insumos_713 = date[7].trim();
@@ -1058,8 +1058,8 @@ function on_datosTbla713(data) {
 
 function _mostrarDatos713() {
 
-    $('#descrpcups_103').val($descripcups713);
-    $('#liquidar_713').val($liquidar713);
+    $('#descrpcups_103').val(SAL713.$descripcups713);
+    $('#liquidar_713').val(SAL713.$liquidar713);
     vlrmonto_713Mask.typedValue = SAL713.$monto713;
     if (SAL713.$liquidar713 == '4') {
         SAL713.$_valor = ($_SALMINUSU / 30) * SAL713.$monto_713
@@ -1073,7 +1073,7 @@ function _mostrarDatos713() {
     $('#insumos_713').val(SAL713.$insumos_713);
     $('#codtari_713').val(SAL713.$codtari_713);
     $('#divis_713').val(SAL713.$division_713);
-    $('#cantidaddias713').val(SAL713.$cantidaddias713);
+    $('#cantidaddias713').val(parseInt(SAL713.$cantidaddias713));
     $('#descrpdiv_713').val(SAL713.$descrpdiv_713);
     $('#descrpexten_713').val(SAL713.$descripextensa713);
     $('#fina1_713').val(SAL713.$primerfinal713);
