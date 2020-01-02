@@ -80,15 +80,15 @@ function obtenerDatosCompletos(data, callbackSucces) {
         case 'CTA-MAYOR':
             programa = "CONTAB/CON801"
             break;
-        case 'NOM-TAR':
-            programa = "SALUD/SAL712-01"
-            break;
+        // case 'NOM-TAR':
+        //     programa = "SALUD/SAL712-01"
+        //     break;     DLL ES IGUAL SER803  F8 NOMTAR 
         case 'ETNIAS':
             programa = "SALUD/SER867"
             break;
-        case 'PAIRIP':
-            programa = "SALUD/SER888"
-            break;
+        // case 'PAIRIP':
+        //     programa = "SALUD/SER888"
+        //     break;   DLL REPETIDO
         case 'COLEGIOS':
             programa = "SALUD/SER902"
             break;
