@@ -15,6 +15,7 @@
         tablaSql: null,
         consultaSql: null,
         db: null,
+        ancho_usuario: null,
         lenguaje: {
             lengthMenu: "Mostrar _MENU_ por página",
             zeroRecords: "No hay datos disponibles",
@@ -142,7 +143,7 @@
                 data: $.ventanaDatos.data,
                 columns: columnas_show,
                 responsive: true,
-                scrollY: '50vh',
+                scrollY: '50vh',                
                 scrollCollapse: true,
                 language: $.ventanaDatos.lenguaje,
                 ordering: $.ventanaDatos.orden,
@@ -290,12 +291,13 @@
                 .appendTo('body');
             // !End overlay F8
 
+            var ancho_tmp = this.ancho_usuario || '800px';
             // Box contenido F8
             $('<div/>', {
                 id: this.content_id
             })
                 .css({
-                    width: wWindow < 426 ? '95%' : '800px',
+                    width: wWindow < 426 ? '95%' : ancho_tmp,
                     background: '#FFF',
                     margin: '0 auto',
                     'border-radius': '3px'
@@ -338,7 +340,7 @@
                         .css({ width: '95%' });
                 } else {
                     $('#' + $.ventanaDatos.content_id)
-                        .css({ width: '600px' });
+                        .css({ width: ancho_tmp });
                 }
             });
             // End responsive
@@ -397,6 +399,7 @@
                 $.ventanaDatos.orden = params.orden;
                 $.ventanaDatos.callback_esc = params.callback_esc;
                 $.ventanaDatos.db = params.db;
+                $.ventanaDatos.ancho_usuario = params.ancho || null
                 $.ventanaDatos._init();
             }
         }

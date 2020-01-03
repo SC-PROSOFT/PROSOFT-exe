@@ -3,7 +3,7 @@ var $_CODLINK, $_CEDLNK, $_RHLNK, $_NITW, $_REGBASE09, $_EMBALTOPACIW, $_TIPOIDL
     $_TUTELAPACIW = '', $_PADREPACIW = '', $_MADREPACIW = '', $_PAISPACIW = '', $_FECHADEMPACIW = '', $_DEMANINDPACIW = '', $_DERECHOPACIW = '',
     $_CERTESTUDPACIW = '', $_PERIESTUDPACIW = '', $_ULTMAMOPACIW = '', $_CERTECONOPACIW = '', $_PERIECOPACIW = '', $_PARENTPACIW = '', $_DISCAPPACIW = '',
     $_COMUNIPACW = '', $_RESGUARPACIW = '', $_FICHAPACIW = '', $_CARNETPACIW = '', $_EMPRESAPACIW = '', $_FECHANITPACIW = '', $_OBSERVPACIW = '',
-    $_ANTCANCERPACIW = '', $_TIPOPACIW = '', $_ESTCIVILPACIW = '', $_REGIMENPACIW = '', $_ESTRATOPACIW, $_ETNIAPACIW = '';
+    $_ANTCANCERPACIW = '', $_TIPOPACIW = '', $_ESTCIVILPACIW = '', $_REGIMENPACIW = '', $_ESTRATOPACIW, $_ETNIAPACIW = '', $_BLOQUEOHCW, $_ACTUALIZAPACIX;
 
 var $_ENTIDADES_7767 = [];
 var $_CIUDAD_7767 = [];
@@ -1721,7 +1721,7 @@ function _evaluarzona_7767() {
 function _datozona_7767() {
     $_ZONAPACIW = $("#zona_110c").val();
 
-    if (($_NOVEDAD7767 == '7') && ($_ZONAPACIW.trim() == '')) {
+    if (($_NOVEDAD7767 == '7') && ($_ZONAPACIW.trim() == '') || ($_ACTUALIZAPACIX != '1') && ($_ZONAPACIW.trim() == '')) {
         $_ZONAPACIW = 'U';
         $("#zona_110c").val($_ZONAPACIW);
         // _evaluardireccion_7767();
@@ -1883,7 +1883,7 @@ function _evaluartelefono2_7767() {
 
 function _datotel2_7767() {
     $_CELPACIW = $("#tel2_110c").val();
-    if ($_NOVEDAD7767 == '7') {
+    if (($_NOVEDAD7767 == '7') || ($_ACTUALIZAPACIX != '1')) {
         $("#ciudad_110c").val('50689');
         if ($_CELPACIW.trim() == '') {
             _evaluarciudad_7767();
@@ -1918,7 +1918,7 @@ function _datociudad_7767() {
     $_DPTO1PACIW = $_CIUPACIW.substring(0, 1);
     $_CIUD2PACIW = $_CIUPACIW.substring(1, 5);
 
-    if (($_NOVEDAD7767 == '7') && ($_CIUPACIW.trim() == '') || ($_CIUPACIW == '00000')) {
+    if (($_NOVEDAD7767 == '7') && ($_CIUPACIW.trim() == '') || ($_CIUPACIW == '00000') || ($_ACTUALIZAPACIX != '1')) {
         $_CIUPACIW = $_CODCIUUSU;
         $("#ciudad_110c").val($_CIUPACIW);
         _datopais_7767();
@@ -1961,7 +1961,7 @@ function _datopais_7767() {
         }, _f8paisesrips)
 
     } else {
-        if ($_NOVEDAD7767 == '7') {
+        if (($_NOVEDAD7767 == '7') || ($_ACTUALIZAPACIX != '1')) {
             $("#ocupacion_110c").val('9998');
             _evaluarocupacion_7767();
         } else {
@@ -2006,7 +2006,7 @@ function _dataSAL7767_05(data) {
     $_DESCRIPPAISW = date[1].trim();
     if (swinvalid == "00") {
         $("#paisd_110c").val($_DESCRIPPAISW);
-        if ($_NOVEDAD7767 == '7') {
+        if (($_NOVEDAD7767 == '7') || ($_ACTUALIZAPACIX != '1')) {
             $("#ocupacion_110c").val('9998');
             _evaluarocupacion_7767();
         } else {
@@ -3593,7 +3593,7 @@ function _ultmamografia_7767() {
         $_ULTMAMOPACIW = '';
         _evaluarrestriccion();
 
-    } else if ($_NOVEDAD7767 == 7) {
+    } else if ($_NOVEDAD7767 == '7') {
         _evaluardatonitfact_7767();
     } else {
         if ($_ANOULTMAMOPACIW < 2000) {
@@ -3930,7 +3930,7 @@ function _datovcm_7767() {
         $_VCMPACIW = 'N';
         $("#vcm_110c").val($_VCMPACIW);
 
-        if ($_NOVEDAD7767 == '7') {
+        if (($_NOVEDAD7767 == '7') || ($_ACTUALIZAPACIX != '1')) {
             $_DERECHOPACIW = '3 - Creado por el  usuario';
             $("#basedatos_110c").val($_DERECHOPACIW);
             _evaluarobservaciones_7767();
