@@ -8,7 +8,7 @@ var $_OTRSTAT = '00', $_APEL2TER2W = ' ', $_DESCRIPTER2W = ' ', $_NOMBRECLIW = '
     $_DIRREF3TERCEW = '', $_TELREF3TERCEW = '', $_RELREF3TERCEW = '', $_NOMTRABTERCEW = '', $_DIRTRABTERCEW = '', $_TELTRABTERCEW = '', $_CARTRABTERCEW = '',
     $_SUETRABTERCEW = '', $_ANTTRABTERCEW = '', $_FECHANACTERCEW = '', $_CIUEXPTERCEW = '', $_FECHAAFILTERCEW = '', $_EMBARGOTERCEW = '', $_ENTIDAFITERCEW = '', $_NOMBRETXT = ''
     $_PAGOTERCEW = '00', $_CODZONAW = '', $_CODRUTAW = '', $_TIPOIDTERCEW = '', $_REGIVATERCEW = '', $_CALIFITERCEW = '', $_VENDTERCEW = '';
-var $_CODTERCEROLNK, $_NOMTERCEROLNK = '', $_FPAGOLNK;
+var $_CODTERCEROLNK, $_NOMTERCEROLNK = '', $_FPAGOLNK, swinvalid;
 
 
 var porcentica_110cMask = new IMask(document.getElementById('porcetica_110c'),
@@ -18,60 +18,13 @@ var porcentreten_110cMask = new IMask(document.getElementById('porcentreten_110c
     { mask: Number, min: 0, max: 999, scale: 1, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
 );
 var plazoUnitMask_110c = new IMask($('#plazo_110c')[0], { mask: Number, thousandsSeparator: ',' });
-// var codterUnitMask_110c = new IMask($('#codclien_con110c')[0], { mask: Number, thousandsSeparator: ',' });
+
 
 var $_FECHAACTUAL = moment().format('YYYYMMDD');
 $_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
 $_MESACTUALW = $_FECHAACTUAL.substring(4, 6);
 $_DIAACTUAL = $_FECHAACTUAL.substring(6, 8);
 
-///////////////////////// MASCARAS ///////////////////////////
-
-
-var momentFormatcumple = 'YYYY/MM/DD HH:mm';
-
-var momentMask = IMask($("#cumple_con110")[0], {
-    mask: Date,
-    pattern: momentFormatcumple,
-    lazy: true,
-    min: new Date(1890, 0, 1),
-    max: new Date(2019, 0, 1),
-
-    format: function (date) {
-        return moment(date).format(momentFormatcumple);
-    },
-    parse: function (str) {
-        return moment(str, momentFormatcumple);
-    },
-
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 1920,
-            to: 2020
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-});
 ////////////////////////////////MAESTRO ARTICULOS///////////////////////////////7
 
 $(document).ready(function () {
@@ -1786,7 +1739,8 @@ function _evaluarIVA_con110c() {
             { id: 'COD', label: 'DESCRIP' }
         ],
         seleccion: $_REGIVATERCEW,
-        callback_f: _evaluargrado_con110c
+        callback_f: _evaluargrado_con110c,
+        teclaAlterna: true
     },
         _validariva_con110c);
 }
@@ -1822,7 +1776,8 @@ function _evaluarcalificacion_con110c() {
             { id: 'COD', label: 'DESCRIP' }
         ],
         seleccion: $_CALIFITERCEW,
-        callback_f: _evaluargrado_con110c
+        callback_f: _evaluargrado_con110c,
+        teclaAlterna: true
     },
         _validarcalificacion_con110c);
 }
@@ -2740,9 +2695,10 @@ function _eliminarregistro_con110c() {
     });
 }
 function _dataCON110C_14(data) {
-   
+    console.log(data, 'guardar')
     var date = data.split('|');
-    var swinvalid = date[0].trim();
+    console.debug('is string?',typeof date[0])
+    swinvalid = date[0].trim();
     if (swinvalid == "00") {
         if ($_NOVEDADCON110C == '9') {
             toastr.success('Se ha retirado', 'MAESTRO TERCEROS');
@@ -3103,6 +3059,50 @@ function _retiroregistro_con110c() {
 
 
 
+/////////////////////// MASCARAS ///////////////////////////
 
 
-//////////////////////////////////////////////// OTRAS FUNCIONES //////////////////////////
+var momentFormatcumple = 'YYYY/MM/DD HH:mm';
+
+var momentMask = IMask($("#cumple_con110")[0], {
+    mask: Date,
+    pattern: momentFormatcumple,
+    lazy: true,
+    min: new Date(1890, 0, 1),
+    max: new Date(2019, 0, 1),
+
+    format: function (date) {
+        return moment(date).format(momentFormatcumple);
+    },
+    parse: function (str) {
+        return moment(str, momentFormatcumple);
+    },
+
+    blocks: {
+        YYYY: {
+            mask: IMask.MaskedRange,
+            from: 1920,
+            to: 2020
+        },
+        MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12
+        },
+        DD: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 31
+        },
+        HH: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 23
+        },
+        mm: {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 59
+        }
+    }
+});

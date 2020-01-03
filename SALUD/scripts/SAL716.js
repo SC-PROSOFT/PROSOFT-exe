@@ -6,7 +6,8 @@ $(document).ready(function () {
     _inputControl("reset");
     _inputControl('disabled');
     _toggleF8([
-        { input: 'codgOrig', app: '716', funct: _ventanaConvenios716 }
+        { input: 'codgOrig', app: '716', funct: _ventanaConvenios716 },
+        { input: 'codgDest', app: '716', funct: _ventanaConveniodesti716 }
     ]);
     _validarOrigen716();
 });
@@ -33,6 +34,36 @@ function _ventanaConvenios716(e) {
                         $('#codgOrig_716').val(data.COD);
                         $('#decripOrg716').val(data.DESCRIP.trim());
                         _enterInput('#codgOrig_716');
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+}
+
+function _ventanaConveniodesti716(e){
+    var $_CONVENIODEST_715 = [];
+    let URL = get_url("APP/" + "SALUD/SER803" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_CONVENIODEST_715 = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: "VENTANA DE CONVENIOS",
+                    columnas: ["COD", "DESCRIP"],
+                    data: $_CONVENIODEST_715.NOMTAR,
+                    callback_esc: function () {
+                        $("#codgDest_716").focus();
+                    },
+                    callback: function (data) {
+                        $('#codgDest_716').val(data.COD);
+                        $('#decripDest716').val(data.DESCRIP.trim());
+                        _enterInput('#codgDest_716');
                     }
                 });
             }

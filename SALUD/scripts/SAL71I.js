@@ -89,8 +89,7 @@ function _dataSAL71I_res(data){
     console.log(data, 'consulta')
     var date = data.split('|');
     var swinvalid = date[0].trim();
-    $_CODRESGU = date[1];
-    $_NOMRESGU = date[2];
+    $_NOMRESGU = date[1].trim(); 
     if (($_NovedSer71I == '7') && (swinvalid == '01')) {
         detalle71I()
     }
@@ -132,7 +131,7 @@ function detalle71I() {
             orden: '1'
         },
         function () { _validarDato71I(); },
-        envioDatSer71I
+        function () { envioDatSer71I() }
     )
 }
 

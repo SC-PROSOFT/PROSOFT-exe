@@ -368,7 +368,7 @@ function _ventanaalmacenes(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'VENTANA DE ALMACENES',
-            columnas: ["CODIGO", "DESCRIPCION", "DESCRIP2"],
+            columnas: ["CODIGO", "DESCRIPCION", "RESPONSABLE"],
             data: $_ALMAC_103,
             callback_esc: function () {
                 $("#almacen_103").focus();

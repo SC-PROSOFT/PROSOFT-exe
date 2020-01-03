@@ -83,7 +83,6 @@ function _validacionescod_71H(){
 }
 
 function _dataSAL71H_comu(data){
-    console.log(data, 'data')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODCOMU = date[1].trim();

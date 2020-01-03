@@ -9,10 +9,10 @@ var $_TARIFAS_71G = [];
 var $_CUPS_71G = [];
 var $_ART_71G = [];
 var SAL71G = [];
-var filtroarticulos = []; 
+var filtroarticulos = [];
 
 var $_descripgrupo71G, $descrip71G, $convenio71G, $grupos71G, $codigocups71, $llavecod71G, $llavepaquete, $observaciones71G,
-$valor71G, $tabla_paq; 
+    $valor71G, $tabla_paq;
 
 $(document).ready(function () {
     _inputControl('reset');
@@ -109,7 +109,7 @@ function _ventanacups71G(e) {
         });
     }
 }
-function _ventanacodcups71G(e){
+function _ventanacodcups71G(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: "VENTANA DE CODIGOS CUPS",
@@ -331,7 +331,7 @@ function _leerpaquete_71G() {
         datosh: datosEnvio() + $llavepaquete + '|'
     }, get_url("APP/SALUD/SAL71G-01.DLL"))
         .then((data) => {
-           
+
             $_PAQINT = data['PAQINTEGRAL'];
             swinvalid = $_PAQINT[0].ESTADO;
             $observaciones71G = $_PAQINT[0].OBSERVACION;
@@ -390,27 +390,34 @@ function _evaluarvalor_71G() {
 function _validarvalor_71G() {
     $valor71G = valor71G_Mask.unmaskedValue;
 
-    if($_Novedad71G == '7'){
+    if ($_Novedad71G == '7') {
         SAL71G.CONTEO = 1;
         $('#item_71G').val(SAL71G.CONTEO.toString().padStart(3, '0'));
         _evaluarcl_71G();
-    }else{
-        _evaluaritemtabla_71G(); 
+    } else {
+        _evaluaritemtabla_71G();
     }
 }
 
 ///////////////////////TABLA////////////////////
-function _evaluaritemtabla_71G(){
+function _evaluaritemtabla_71G() {
+    console.log('evaluar item tabla')
     validarInputs({
         form: '#ITEM_71G',
         orden: '1'
-    },_evaluaritemtabla_71G, function () {
-        SAL71G.CONTEO = $('#item_71G').val();
-        $('#item_71G').val(SAL71G.CONTEO.toString().padStart(3, '0'));
-        if (SAL71G.CONTEO > 000 && SAL71G.CONTEO <= 020) {
-            _evaluarcl_71G();
-        } else { CON851('03', '03', _evaluaritemtabla_71G(), 'error', 'error') }
-    })
+    }, () => { _evaluaritemtabla_71G() },
+        () => {
+            console.log('validaciones item')
+            SAL71G.CONTEO = itemMask_SAL71G.value;
+            $('#item_71G').val(SAL71G.CONTEO.padStart(3, '0'));
+            SAL71G.CONTEO = parseInt(SAL71G.CONTEO) - 1;
+            $('#cl_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[1].textContent);
+            $('#cldescrip_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[2].textContent);
+            $('#codigo_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[3].textContent);
+            $('#descripcod_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[4].textContent);
+            $('#cantidad_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[5].textContent);
+            _evaluarcl_71G(); 
+        })
 }
 
 function _evaluarcl_71G() {
@@ -418,7 +425,7 @@ function _evaluarcl_71G() {
         form: '#CL_71G',
         orden: '1'
     },
-        function () { _evaluarcl_71G(); },
+        function () { _evaluaritemtabla_71G(); },
         _validarcl_71G
     )
 }
@@ -554,8 +561,8 @@ function _validarcantart_71G() {
 }
 function _editarfilatabla_71G() {
     // let nfila = parseInt($_Nfila) - 1;
-    var cambiar = $('#item_71G').val(); 
-    cambiar = parseInt(cambiar) - 1; 
+    var cambiar = $('#item_71G').val();
+    cambiar = parseInt(cambiar) - 1;
     let fila = $('#TABLAPAQUETEINT_71G tbody tr:eq(' + cambiar + ')');
     let html = '<td>' + $('#item_71G').val() +
         '</td><td>' + $('#cl_71G').val() +
@@ -569,7 +576,23 @@ function _editarfilatabla_71G() {
     _validaciontablaalmacen_71G();
 }
 function _agregarfilatabla_71G() {
+    // let existeregisto_71G = validarexistenciareg_71G(); 
+    // if(!existeregisto_71G){
+    //     $('#TABLAPAQUETEINT_71G tbody').append(
+    //         '<tr>' +
+    //         '<td>' + $('#item_71G').val() + '</td>' +
+    //         '<td>' + $('#cl_71G').val() + '</td>' +
+    //         '<td>' + $('#cldescrip_71G').val() + '</td>' +
+    //         '<td>' + $('#codigo_71G').val() + '</td>' +
+    //         '<td>' + $('#descripcod_71G').val() + '</td>' +
+    //         '<td>' + $('#cantidad_71G').val() + '</td>' +
+    //         '</tr>'
+    //     );
+    //     _validaciontablaalmacen_71G();
 
+    // }else{
+    //     corregirpaqueteint_71G(existeregisto_71G); 
+    // }
     $('#TABLAPAQUETEINT_71G tbody').append(
         '<tr>' +
         '<td>' + $('#item_71G').val() + '</td>' +
@@ -581,6 +604,34 @@ function _agregarfilatabla_71G() {
         '</tr>'
     );
     _validaciontablaalmacen_71G();
+}
+
+function validarexistenciareg_71G(){
+    const tableReg = document.getElementById('TABLAPAQUETEINT_71G');
+    let found = false;
+    //Recorre las filas existentes de la tabla
+    for (let i = 0; i < tableReg.rows.length; i++) {
+        const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+        //Recorre todas las celdas
+        for (let j = 0; j < cellsOfRow.length && !found; j++) {
+            // Busqueda de coincidencias en la tabla
+            if (cellsOfRow[0].textContent.trim() == cerosIzq($('#item_71G').val(), 3).trim()) {
+                found = cellsOfRow
+            }
+
+        }
+    }
+    return found;
+}
+
+function corregirpaqueteint_71G(registro){
+    validarInputs({
+        form: '#CL_71G',
+        orden: '1'
+    },
+        function () { _evaluaritemtabla_71G(); },
+        _validarcl_71G
+    )
 }
 
 function _validaciontablaalmacen_71G(orden) {
@@ -613,6 +664,7 @@ function _paquetes(datos) {
     if ($_Novedad71G == '7') {
 
         SAL71G.CONTEO = SAL71G.CONTEO + 1;
+        console.log(SAL71G.CONTEO, 'SAL71G.CONTEO')
         $('#item_71G').val(SAL71G.CONTEO.toString().padStart(3, '0'));
         $('#cl_71G').val('');
         $('#cldescrip_71G').val('');
@@ -730,13 +782,13 @@ function _grabaropcion(data) {
             toastr.success('Se ha guardado', 'PAQUETE INTEGRAL');
             // CON850(_evaluarCON850);
             _inputControl('reset');
-            _toggleNav(); 
-            
+            _toggleNav();
+
         }
     }
     else if (swinvalid == "01") {
         CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');
-        _toggleNav(); 
+        _toggleNav();
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -749,20 +801,20 @@ function _llenardatos_71G() {
 
     $('#observ_71G').val($observaciones71G);
     valor71G_Mask.typedValue = $valor71G
-   
+
     for (var i = 0; i < $tabla_paq.length; i++) {
         itemstabla = $tabla_paq[i].ITEM_PAQ;
-        item = itemstabla.substring(3,6); 
+        item = itemstabla.substring(3, 6);
         cltabla = $tabla_paq[i].TIPO_PAQ;
-        if(cltabla == '0'){
-            descripcl = 'Droga'; 
-        }else{
-            descripcl = 'Cups'; 
+        if (cltabla == '0') {
+            descripcl = 'Droga';
+        } else {
+            descripcl = 'Cups';
         }
         codigotabla = $tabla_paq[i].CUPS_PAQ;
         cantidadtabla = $tabla_paq[i].CANT_PAQ;
         descripcod = $tabla_paq[i].DESCRIP_PAQ;
-        valorcanti = parseInt(cantidadtabla,10)
+        valorcanti = parseInt(cantidadtabla, 10)
         var comparar = $tabla_paq[i].ITEM_PAQ.trim();
         if (comparar.length > 1) {
             $('#TABLAPAQUETEINT_71G tbody').append(''
@@ -783,7 +835,13 @@ function _llenardatos_71G() {
             _evaluarobservacion_71G()
             break;
         case 9:
-            CON851P('54',_evaluardatoconvenio_71G, _tablapaquetetxt)
+            CON851P('54', _evaluardatoconvenio_71G, _tablapaquetetxt)
             break;
     }
 }
+
+var itemMask_SAL71G = IMask($("#item_71G")[0], {
+    mask: Number,
+    min: 0,
+    max: 20
+});
