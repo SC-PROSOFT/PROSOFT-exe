@@ -294,7 +294,7 @@ function addfilaTablaEsp71A() {
         $('#tablaEspecialidades tbody').append(fuente);
         validarTablaEspec71A();
     } else {
-        CON851P('55', validarIdEspec71A(), corregirEspecialidad71A(existe_registro))
+        corregirEspecialidad71A(existe_registro);
     }
 }
 function validarExistenciaRegistro71A() {

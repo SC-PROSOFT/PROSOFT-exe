@@ -79,26 +79,38 @@ function _ventanaCups718(e) {
 					data: $_cups718,
 					callback_esc: () => { _validarCUPS718() },
 					callback: (data) => {
+						SAL718.CUPS = data;
 						data.GRUPO = data.LLAVE.substring(0, 2);
 						SAL718.CUPS.LLAVE = data.LLAVE.toString().trim(); SAL718.CUPS.DESCRIP = data.DESCRIP;
-						_validarDescripcion718();
+						let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE;
+						console.debug(datos_envio, 'data')
+						postData({
+							datosh: datos_envio
+						}, get_url("APP/SALUD/SAL718-01.DLL"))
+							.then((data) => {
+								let res = data; SAL718.CUPS = res;
+								_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
+
+							})
+							.catch((error) => { console.debug(error) });
+
 					}
 				});
 				break;
-				case '9':
-					$_cups718 = $_cups718.filter(cups_gr => cups_gr.LLAVE.substring(0, 2).toString().trim() == SAL718.GRUPOSER.COD.toString().trim());
-					_ventanaDatos({
-						titulo: "VENTANA DE CODIGOS CUPS",
-						columnas: ["LLAVE", "DESCRIP"],
-						data: $_cups718,
-						callback_esc: () => { _validarCUPS718() },
-						callback: (data) => {
-							data.GRUPO = data.LLAVE.substring(0, 2);
-							SAL718.CUPS.LLAVE = data.LLAVE.toString().trim(); SAL718.CUPS.DESCRIP = data.DESCRIP;
-							_eliminarCups718();
-						}
-					});
-					break;
+			case '9':
+				$_cups718 = $_cups718.filter(cups_gr => cups_gr.LLAVE.substring(0, 2).toString().trim() == SAL718.GRUPOSER.COD.toString().trim());
+				_ventanaDatos({
+					titulo: "VENTANA DE CODIGOS CUPS",
+					columnas: ["LLAVE", "DESCRIP"],
+					data: $_cups718,
+					callback_esc: () => { _validarCUPS718() },
+					callback: (data) => {
+						data.GRUPO = data.LLAVE.substring(0, 2);
+						SAL718.CUPS.LLAVE = data.LLAVE.toString().trim(); SAL718.CUPS.DESCRIP = data.DESCRIP;
+						_eliminarCups718();
+					}
+				});
+				break;
 		}
 
 	}
@@ -189,13 +201,13 @@ function _ventanaDivision718(e) {
 	if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 		_ventanaDatos({
 			titulo: "VENTANA DE DIVISIONES",
-			columnas: ["COD", "NOMBRE"],
+			columnas: ["COD", "DESCRIP"],
 			data: $_divisiones718,
 			callback_esc: () => { validarDivision718() },
 			callback: (data) => {
 				SAL718.DIVISION.COD = data.COD; SAL718.DIVISION.DESCRIP = data.DESCRIP;
 				let caja = e.currentTarget.id;
-				if (caja == 'division1') {
+				if (caja == 'division1_718') {
 					$('#division1_718').val(data.COD + ' ' + data.DESCRIP);
 					validarDivision2718();
 				} else {
@@ -243,19 +255,15 @@ function _validarGrupo718() {
 	)
 }
 function evaluarGrupo718() {
-	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value;
+	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value.toUpperCase();
 	let res;
-	if (typeof SAL718.GRUPOSER.COD == "undefined" || SAL718.GRUPOSER.COD == '') {
+	res = $_grServicios718.filter(gruposer => gruposer.COD == SAL718.GRUPOSER.COD);
+	if (res == '') {
 		CON851('03', '03', _validarGrupo718(), 'error', 'error');
 	} else {
-		res = $_grServicios718.filter(gruposer => gruposer.COD == document.getElementById('codgrupo_718').value);
-		if (res == '') {
-			CON851('03', '03', _validarGrupo718(), 'error', 'error');
-		} else {
-			SAL718.GRUPOSER = res[0]
-			if (res.length > 0 || res != '') { SAL718.GRUPOSER.ESTADO = '00' } else { SAL718.GRUPOSER.ESTADO = '01'; }
-			_onrestricciones718({ invalid: SAL718.GRUPOSER.ESTADO, seccion: 'GRUPOSER' })
-		}
+		SAL718.GRUPOSER = res[0]
+		if (res.length > 0 || res != '') { SAL718.GRUPOSER.ESTADO = '00' } else { SAL718.GRUPOSER.ESTADO = '01'; }
+		_onrestricciones718({ invalid: SAL718.GRUPOSER.ESTADO, seccion: 'GRUPOSER' })
 	}
 }
 function _validarCUPS718() {
@@ -270,22 +278,19 @@ function _validarCUPS718() {
 	)
 }
 function evaluarCups718() {
-	SAL718.CUPS.LLAVE = SAL718.GRUPOSER.COD + (document.getElementById('codcups_718').value).toString().trim();
-	let campo = document.getElementById('codcups_718').value.toString().trim();
+	SAL718.CUPS.LLAVE = SAL718.GRUPOSER.COD + document.getElementById('codcups_718').value;
+	document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
+	let campo = document.getElementById('codcups_718').value.toString().trim().toUpperCase();
 	if (typeof campo == "undefined" || campo == '') {
 		CON851('03', '03', _validarCUPS718(), 'error', 'error');
 	} else {
-		document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
-		let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE;
-		console.debug(datos_envio, 'data')
+		let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE.toUpperCase();
 		postData({
 			datosh: datos_envio
 		}, get_url("APP/SALUD/SAL718-01.DLL"))
 			.then((data) => {
-				let res = data; SAL718.CUPS = res;
-				SAL718.CUPS.LLAVE = res.LLAVE; SAL718.CUPS.DESCRIP = res.DESCRIP; SAL718.CUPS.ESTADO = res.ESTADO;
+				SAL718.CUPS = data;
 				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
-
 			})
 			.catch((error) => { console.debug(error) });
 	}
@@ -311,6 +316,8 @@ function _validarDescripcion718() {
 				{ 'COD': '01', 'DESCRIP': 'CIRUGIAS' },
 				{ 'COD': '02', 'DESCRIP': 'LABORATORIO' }
 			]
+			SAL718.CUPS.LLAVE_ALT[0] = document.getElementById('tipocups_718').value;
+			SAL718.CUPS.DESCRIP = document.getElementById('descripTercer_718').value;
 			if ($_USUA_GLOBAL[0].NIT == 800156469) {
 				data.push(
 					{ 'COD': '03', 'DESCRIP': 'ECOGRAFIAS, DOPPLER, T.A.C, RESONACIA NUCLEAR' },
@@ -326,8 +333,8 @@ function _validarDescripcion718() {
 					{ 'COD': '06', 'DESCRIP': 'PATOLOGIA Y CITOLOGIA' },
 					{ 'COD': '07', 'DESCRIP': 'PROMOCION Y PREVENCION' })
 			}
-			TIPOSERVICIOS({ array: data, seleccion: SAL718.TIPOSER_CUP }, _validarGrupo718, function (data) {
-				SAL718.TIPOSER_CUP = data.COD;
+			TIPOSERVICIOS({ array: data, seleccion: SAL718.CUPS.LLAVE_ALT[0].padStart(2, '0') }, _validarGrupo718, function (data) {
+				SAL718.CUPS.LLAVE_ALT[0] = data.COD;
 				document.getElementById('tipocups_718').value = data.COD + ' ' + data.DESCRIP
 				_validarCodAbr718();
 			});
@@ -406,6 +413,7 @@ function validarDatoNopos718() {
 					if (cis == '') { validarCis718(); } else { validarHl7718(); } break;
 				case '':
 					document.getElementById('proced_718').value = 'N';
+					SAL718.CUPS.NOPOS = document.getElementById('proced_718').value;
 					cis = document.getElementById('cis_718').style.display;
 					if (cis == '') { validarCis718(); } else { validarHl7718(); } break;
 				default: CON851('03', '03', validarDatoNopos718(), 'error', 'error'); break;
@@ -424,7 +432,7 @@ function validarCis718() {
 			SAL718.CUPS.CIS = (document.getElementById('cis_718').value).toString().trim().toUpperCase();
 			switch (SAL718.CUPS.CIS) {
 				case 'N': case 'S': document.getElementById('cis_718').value = SAL718.CUPS.CIS; _validarCentroCost718(); break;
-				case '': document.getElementById('cis_718').value = 'N'; _validarCentroCost718(); break;
+				case '': document.getElementById('cis_718').value = 'N'; SAL718.CUPS.CIS = document.getElementById('cis_718').value; _validarCentroCost718(); break;
 				default: CON851('03', '03', validarCis718(), 'error', 'error'); break;
 			}
 		}
@@ -469,6 +477,7 @@ function evaluarCostos718() {
 		} else {
 			SAL718.COSTO = res[0];
 			if (res.length > 0) { SAL718.COSTO.ESTADO = '00'; SAL718.COSTO.DESCRIP = res[0].NOMBRE } else { SAL718.COSTO.ESTADO = '01'; }
+			SAL718.CUPS.COSTO = SAL718.COSTO.COD;
 			_onrestricciones718({ invalid: SAL718.COSTO.ESTADO, seccion: 'COSTO' })
 		}
 
@@ -536,7 +545,7 @@ function validarSexo718() {
 		validarUndEdad718, function () {
 			SAL718.CUPS.SEXO = document.getElementById('sexo_718').value.toString().trim().toUpperCase();
 			switch (SAL718.CUPS.SEXO) {
-				case 'M': case 'F': document.getElementById('sexo_718').value = SAL718.CUPS.SEXO; validarDiagnostico718(); break;
+				case 'N': case 'M': case 'F': document.getElementById('sexo_718').value = SAL718.CUPS.SEXO; validarDiagnostico718(); break;
 				case '': document.getElementById('sexo_718').value = 'N'; SAL718.CUPS.SEXO = 'N'; validarDiagnostico718(); break;
 				default: CON851('03', '03', validarSexo718(), 'error', 'error'); break;
 			}
@@ -551,7 +560,7 @@ function validarDiagnostico718() {
 		orden: '1'
 	},
 		validarUndEdad718, function () {
-			SAL718.CUPS.DIAGN = document.getElementById('pregRips_718').value.toString().trim();
+			SAL718.CUPS.DIAGN = document.getElementById('pregRips_718').value.toString().trim().toUpperCase();
 			if (typeof SAL718.CUPS.DIAGN == "undefined" || SAL718.CUPS.DIAGN == '') { document.getElementById('pregRips_718').value = 'N'; evaluarDiagn718() }
 			else { evaluarDiagn718() }
 		})
@@ -638,52 +647,44 @@ function validarCtaTercero718() {
 
 function evaluarCtaTercero718() {
 	SAL718.MAESTROS.LLAVE_MAE = document.getElementById('ctaingrTercer_718').value.toString().trim();
-	let cuenta = SAL718.MAESTROS.LLAVE_MAE, res;
-	if (cuenta == '') {
-		res = $_planCuentas718.filter(n => n.TIPO_MAE.trim() == '4');
-		if (res.length > 0 || res !== '') {
-			SAL718.MAESTROS.NOMBRE_MAE = res[0].NOMBRE_MAE; SAL718.MAESTROS.ESTADO = '00';
-			document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
-			validarTercero718();
-		}
-		else {
-			SAL718.MAESTROS.NOMBRE_MAE = res[0].NOMBRE_MAE; SAL718.MAESTROS.NOMBRE_MAE = '41'.padStart(12, '0');
-			SAL718.MAESTROS.ESTADO = '01';
-			document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
-			validarTercero718();
-		}
-	} else {
-		res = $_planCuentas718.filter(n => n.LLAVE_MAE.trim() == cuenta.toString().padStart(12, '0'));
-		if (res.length > 0 || res !== '') {
-			SAL718.MAESTROS.NOMBRE_MAE = res[0].NOMBRE_MAE; SAL718.MAESTROS.ESTADO = '00';
-			document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
-			validarTercero718();
-		}
-		else {
-			SAL718.MAESTROS.NOMBRE_MAE = res[0].NOMBRE_MAE; SAL718.MAESTROS.NOMBRE_MAE = '41'.padStart(12, '0');
-			SAL718.MAESTROS.ESTADO = '01';
-			document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
+	SAL718.CUPS.CTA_OTR = document.getElementById('ctaingrTercer_718').value.padStart(12, '0');
+	let res;
+
+	if (SAL718.CUPS.CTA_OTR == '') {
+		res = $_planCuentas718.filter(n => n.LLAVE_MAE == SAL718.CUPS.CTA_OTR.substring(0, 10) + 4);
+		document.getElementById('ctaingrTercer_718').value = '0'
+		document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
+		validarTercero718();
+	}
+	else {
+		res = $_planCuentas718.filter(n => n.LLAVE_MAE == SAL718.CUPS.CTA_OTR);
+		if (res == '') {
+			CON851('03', '03', validarCtaTercero718(), 'error', 'error');
+		} else {
+			document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_OTR
+			document.getElementById('ctaDescripTercer_718').value = res[0].NOMBRE_MAE;
 			validarTercero718();
 		}
 	}
 
 }
+
 function validarTercero718() {
 	validarInputs({
 		form: "#nitTercer718",
 		orden: '1'
 	},
-		validarPorcentaje718, evaluarTercero718)
+		validarCtaTercero718, evaluarTercero718)
 }
 
 function evaluarTercero718() {
-	SAL718.TERCEROS.COD = document.getElementById('nitTercer_718').value.toString().trim();
+	SAL718.CUPS.NIT_OTR = document.getElementById('nitTercer_718').value.padStart(10, ' ');
 	let res;
-	if (typeof SAL718.TERCEROS.COD == "undefined" || SAL718.TERCEROS.COD == '') { CON851('03', '03', validarCtaTercero718(), 'error', 'error'); }
+	if (typeof SAL718.CUPS.NIT_OTR == "undefined" || SAL718.CUPS.NIT_OTR == '') { CON851('03', '03', validarTercero718(), 'error', 'error'); }
 	else {
-		res = $_terceros718.filter(terce => terce.COD.trim() == SAL718.TERCEROS.COD.trim());
+		res = $_terceros718.filter(terce => terce.COD == SAL718.CUPS.NIT_OTR);
 		if (res == '') {
-			CON851('03', '03', validarCtaTercero718(), 'error', 'error');
+			CON851('03', '03', validarTercero718(), 'error', 'error');
 		} else {
 			SAL718.TERCEROS = res[0];
 			if (res.length > 0) { SAL718.TERCEROS.ESTADO = '00'; SAL718.TERCEROS.NOMBRE = res[0].NOMBRE; } else { SAL718.TERCEROS.ESTADO = '01'; }
@@ -740,13 +741,17 @@ function validarCodPuc718() {
 		function () {
 			let caja = document.getElementById('codHeon718').style.display;
 			if (caja == '') {
-				validarCodHeon718();
+				if (SAL718.CUPS.MED_100 == 'S') {
+					validar100Med();
+				} else { validarCodHeon718(); }
 			} else {
-				validarTercero718()
+				if (SAL718.CUPS.MED_100 == 'S') {
+					validar100Med();
+				} else { validarTercero718() }
 			}
 		},
 		function () {
-			SAL718.MAESTROS.LLAVE_MAE=document.getElementById('codPuc_718').value;
+			SAL718.MAESTROS.LLAVE_MAE = document.getElementById('codPuc_718').value;
 			SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
 			SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
 			let cuenta1, cuenta2, res1, res2;
@@ -755,7 +760,7 @@ function validarCodPuc718() {
 
 			if ((cuenta1 == '' || cuenta2 == '')) { CON851('03', '03', validarCodPuc718(), 'error', 'error'); }
 			else {
-				res1 = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == cuenta1).toString().padStart(12, '0');
+				res1 = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == cuenta1.toString().padStart(12, '0'));
 				if (res1 == '') {
 					CON851('03', '03', validarCodPuc718(), 'error', 'error');
 				} else {
@@ -843,8 +848,8 @@ function validarDivision718() {
 		form: "#division1718",
 		orden: '1'
 	},
-		() => {
-			switch ($_USUA_GLOBAL[0].PUC) {
+		function () {
+			switch ($_USUA_GLOBAL[0].PUC.toString()) {
 				case '1': validarCodPuc718(); break;
 				case '2': validarCodCoop718(); break;
 				case '3': validarCodPuc718(); break;
@@ -856,8 +861,7 @@ function validarDivision718() {
 }
 
 function evaluarDivision718() {
-	SAL718.CUPS.DIV1 = SAL718.DIVISION.COD;
-	SAL718.CUPS.DIV1 = document.getElementById('division1_718').value.toString().trim();
+	SAL718.CUPS.DIV1 = document.getElementById('division1_718').value.toString().trim().toUpperCase();
 	if (typeof SAL718.CUPS.DIV1 == "undefined" || SAL718.CUPS.DIV1 == '') { CON851('03', '03', validarDivision718(), 'error', 'error'); }
 	else {
 		document.getElementById('division1_718').value = SAL718.CUPS.DIV1;
@@ -878,8 +882,7 @@ function validarDivision2718() {
 }
 
 function evaluarDivision2718() {
-	SAL718.CUPS.DIV2 = SAL718.DIVISION.COD;
-	SAL718.CUPS.DIV2 = document.getElementById('division2_718').value.toString().trim();
+	SAL718.CUPS.DIV2 = document.getElementById('division2_718').value.toString().trim().toUpperCase();
 	if (typeof SAL718.CUPS.DIV2 == "undefined" || SAL718.CUPS.DIV2 == '') { CON851('03', '03', validarDivision2718(), 'error', 'error'); }
 	else {
 		document.getElementById('division2_718').value = SAL718.CUPS.DIV2;
@@ -892,18 +895,35 @@ function evaluarDivision2718() {
 
 
 function Actualizar718() {
-	var cuenta = SAL718.CUENTA;
 	switch (SAL718.NOVEDADW) {
 		case '7':
 		case '8':
 			SAL718.PARAMS =
-				SAL718.CUPS.LLAVE.padEnd(12, ' ') + '|' + SAL718.CUPS.DESCRIP.padEnd(80, ' ') + '|' + SAL718.CUPS.LLAVE_ALT[0] + '|' + SAL718.CUPS.LLAVE_ALT[1].padEnd(5, ' ')
-				+ '|' + SAL718.CUPS.NIVEL + '|' + cerosIzq(SAL718.CUPS.DURACION, 3) + '|' + SAL718.CUPS.COPAGO + '|' + '|' + SAL718.CUPS.NOPOS
-				+ '|' + SAL718.CUPS.CIS + '|' + SAL718.CUPS.COSTO + '|' + SAL718.CUPS.COSTO + '|' + SAL718.CUPS.EDAD_MIN + '|' + SAL718.CUPS.EDAD_MAX
-				+ '|' + SAL718.CUPS.UND_EDAD + '|' + SAL718.CUPS.SEXO + '|' + SAL718.CUPS.DIAGN + '|' + SAL718.CUPS.MED_100 + '|' + SAL718.CUPS.PORC_CL
-				+ '|' + SAL718.CUPS.PORC_OTR + '|' + SAL718.CUPS.NIT_OTR + '|' + cuenta.padStart(12, '0') + '|' + $_USUA_GLOBAL[0].PUC
-				+ '|' + SAL718.CUPS.DIV1 + '|' + SAL718.CUPS.DIV2 + '|' + SAL718.CUPS.OPER_ELAB + '|' + SAL718.CUPS.FECHA_ELAB + '|' + SAL718.CUPS.HORA_ELAB
-				+ '|' + SAL718.CUPS.OPER_MOD + '|' + SAL718.CUPS.FECHA_MOD + '|' + SAL718.CUPS.HORA_MOD;
+				SAL718.CUPS.LLAVE.toUpperCase()
+				+ '|' + SAL718.CUPS.DESCRIP
+				+ '|' + SAL718.CUPS.LLAVE_ALT[0]
+				+ '|' + SAL718.CUPS.LLAVE_ALT[1].padEnd(5, ' ')
+				+ '|' + SAL718.CUPS.NIVEL
+				+ '|' + parseInt(SAL718.CUPS.DURACION)
+				+ '|' + parseInt(SAL718.CUPS.COPAGO)
+				+ '|' + SAL718.CUPS.NOPOS
+				+ '|' + SAL718.CUPS.CIS
+				+ '|' + SAL718.CUPS.COSTO
+				+ '|' + SAL718.CUPS.EDAD_MIN
+				+ '|' + SAL718.CUPS.EDAD_MAX
+				+ '|' + SAL718.CUPS.UND_EDAD.toUpperCase()
+				+ '|' + SAL718.CUPS.SEXO.toUpperCase()
+				+ '|' + SAL718.CUPS.DIAGN.toUpperCase()
+				+ '|' + SAL718.CUPS.MED_100
+				+ '|' + SAL718.CUPS.PORC_CL
+				+ '|' + SAL718.CUPS.PORC_OTR
+				+ '|' + SAL718.CUPS.NIT_OTR
+				+ '|' + SAL718.CUPS.CTA_OTR
+				+ '|' + $_USUA_GLOBAL[0].PUC
+				+ '|' + SAL718.CUPS.DIV1
+				+ '|' + SAL718.CUPS.DIV2
+				+ '|' + localStorage['Usuario']
+
 			CON851P('01', validarDivision718, on_grabar718)
 			break;
 		case '9':
@@ -917,14 +937,13 @@ function Actualizar718() {
 
 function on_grabar718() {
 	let datos_envio = datosEnvio() + SAL718.NOVEDADW + '|' + SAL718.PARAMS;
-	console.debug(datos_envio, 'datos_env');
+	console.debug(datos_envio, 'datos Grabar');
 	postData({
 		datosh: datos_envio
 	}, get_url("APP/SALUD/SAL718-02.DLL"))
 		.then((data) => {
 			if (data.split('|')[0] == "00") {
-				CON851(data.split('|')[0], data.split('|')[1], limpiarCajas718, 'success', 'success');
-				limpiarCajas718()
+				CON851(data.split('|')[0], data.split('|')[1], limpiarCajas718(), 'success', 'success');
 			} else {
 				CON851('ERROR', 'ERROR AL ACTUALIZAR', validarDivision718(), 'error', 'error');
 			};
@@ -955,7 +974,8 @@ function _eliminarCups718(escCallback) {
 function limpiarCajas718() {
 	_inputControl('reset');
 	_inputControl('disabled');
-	CON850(_evaluarCON850_718);
+	ocultCajas718();
+	iniciarObjetosFNF8();
 }
 
 // CONDICION POR NIT PARA CAMBIO DE CAJAS //
@@ -983,78 +1003,128 @@ function ocultCajas718() {
 	}
 }
 function on_llenarFormCups718() {
-	SAL718.GRUPOSER.COD == 'undefined' ? document.getElementById('codgrupo_718').value = ' ' : document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD;
-	SAL718.CUPS.LLAVE.substring(2, 12) == 'undefined' ? document.getElementById('codcups_718').value = ' ' : document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
-	SAL718.CUPS.LLAVE_ALT[0] == 'undefined' ? document.getElementById('tipocups_718').value = ' ' : document.getElementById('tipocups_718').value = SAL718.CUPS.LLAVE_ALT[0];
-	SAL718.CUPS.DESCRIP.toString().trim() == 'undefined' ? document.getElementById('descripCup_718').value = ' ' : document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
-	SAL718.CUPS.LLAVE_ALT[1] == 'undefined' ? document.getElementById('codabrev_718').value = ' ' : document.getElementById('codabrev_718').value = SAL718.CUPS.LLAVE_ALT[1];
-	SAL718.CUPS.NIVEL == 'undefined' ? document.getElementById('nivcompl_718').value = ' ' : document.getElementById('nivcompl_718').value = SAL718.CUPS.NIVEL
-	SAL718.CUPS.DURACION == 'undefined' ? document.getElementById('duracion_718').value = ' ' : document.getElementById('duracion_718').value = SAL718.CUPS.DURACION
-	SAL718.CUPS.COPAGO == 'undefined' ? document.getElementById('pagoPaci_718').value = ' ' : document.getElementById('pagoPaci_718').value = SAL718.CUPS.COPAGO
-	SAL718.CUPS.NOPOS == 'undefined' ? document.getElementById('proced_718').value = ' ' : document.getElementById('proced_718').value = SAL718.CUPS.NOPOS
+	SAL718.GRUPOSER.COD == '' ? document.getElementById('codgrupo_718').value = ' '
+		: document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD;
+
+	SAL718.CUPS.LLAVE == '' ? document.getElementById('codcups_718').value = ' '
+		: document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
+
+	SAL718.CUPS.LLAVE_ALT[0] == '' ? document.getElementById('tipocups_718').value = ' '
+		: document.getElementById('tipocups_718').value = SAL718.CUPS.LLAVE_ALT[0];
+
+	SAL718.CUPS.DESCRIP == '' ? document.getElementById('descripCup_718').value = ' '
+		: document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
+
+	SAL718.CUPS.LLAVE_ALT[1] == '' ? document.getElementById('codabrev_718').value = ' '
+		: document.getElementById('codabrev_718').value = SAL718.CUPS.LLAVE_ALT[1];
+
+	SAL718.CUPS.NIVEL == '' ? document.getElementById('nivcompl_718').value = ' '
+		: document.getElementById('nivcompl_718').value = SAL718.CUPS.NIVEL;
+
+	SAL718.CUPS.DURACION == '' ? document.getElementById('duracion_718').value = ' '
+		: document.getElementById('duracion_718').value = SAL718.CUPS.DURACION;
+
+	SAL718.CUPS.COPAGO == '' ? document.getElementById('pagoPaci_718').value = ' '
+		: document.getElementById('pagoPaci_718').value = SAL718.CUPS.COPAGO;
+
+	SAL718.CUPS.NOPOS == '' ? document.getElementById('proced_718').value = ' '
+		: document.getElementById('proced_718').value = SAL718.CUPS.NOPOS;
+
+	SAL718.CUPS.COSTO == '' ? document.getElementById('centrocosto_718').value = ' '
+		: document.getElementById('centrocosto_718').value = SAL718.CUPS.COSTO;
+
+	SAL718.CUPS.EDAD_MIN == '' ? document.getElementById('edadminima_718').value = ' '
+		: document.getElementById('edadminima_718').value = SAL718.CUPS.EDAD_MIN;
+
+	SAL718.CUPS.EDAD_MAX == '' ? document.getElementById('edadmaxima_718').value = ' '
+		: document.getElementById('edadmaxima_718').value = SAL718.CUPS.EDAD_MAX;
+
+	SAL718.CUPS.UND_EDAD == '' ? document.getElementById('undedad_718').value = ' '
+		: document.getElementById('undedad_718').value = SAL718.CUPS.UND_EDAD;
+
+	SAL718.CUPS.SEXO == '' ? document.getElementById('sexo_718').value = ' '
+		: document.getElementById('sexo_718').value = SAL718.CUPS.SEXO;
+
+	SAL718.CUPS.DIAGN == '' ? document.getElementById('pregRips_718').value = ' '
+		: document.getElementById('pregRips_718').value = SAL718.CUPS.DIAGN;
+
+	SAL718.CUPS.MED_100 == '' ? document.getElementById('porcmedico_718').value = ' '
+		: document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
+
+	SAL718.CUPS.MED_100 == '' ? document.getElementById('porcmedico_718').value = ' '
+		: document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
+
+	SAL718.CUPS.PORC_CL == '' ? document.getElementById('ingrclinica_718').value = ' '
+		: document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
+
+
+	SAL718.CUPS.PORC_CL == '' ? document.getElementById('ingrclinica_718').value = ' ' :
+		document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
+
+	SAL718.CUPS.PORC_OTR == '' ? document.getElementById('ingrtercer_718').value = ' ' :
+		document.getElementById('ingrtercer_718').value = SAL718.CUPS.PORC_OTR;
 
 	if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
-		SAL718.CUPS.LLAVEHEON == 'undefined' ? document.getElementById('codHeon718').value = ' ' : document.getElementById('codHeon718').value = SAL718.CUPS.LLAVEHEON;
-		SAL718.CUPS.LLAVE == 'undefined' ? document.getElementById('cupPrinc718').value = ' ' : document.getElementById('cupPrinc718').value = SAL718.CUPS.LLAVE;
-		SAL718.CUPS.CIS == 'undefined' ? document.getElementById('actHl718').value = ' ' : document.getElementById('actHl718').value = SAL718.CUPS.CIS;
+		let ter = $_terceros718.filter(tercero => tercero.COD.trim() == parseInt(SAL718.CUPS.NIT_OTR))
+
+		ter[0] == '' ? document.getElementById('codHeon718').value = ' '
+			: document.getElementById('codHeon718').value = ter[0].COD + ' ' + ter[0].NOMBRE;
+		SAL718.CUPS.LLAVE == '' ? document.getElementById('cupPrinc718').value = ' ' : document.getElementById('cupPrinc718').value = SAL718.CUPS.LLAVE;
+		SAL718.CUPS.CIS == '' ? document.getElementById('actHl718').value = ' ' : document.getElementById('actHl718').value = SAL718.CUPS.CIS;
 	} else {
-		SAL718.CUPS.CIS == 'undefined' ? document.getElementById('cis718').value = ' ' : document.getElementById('cis718').value = SAL718.CUPS.CIS;
-		SAL718.CUPS.NIT_OTR == 'undefined' ? document.getElementById('codTerce718').value = ' ' : document.getElementById('codTerce718').value = SAL718.CUPS.NIT_OTR;
-		SAL718.CUPS.NIT_OTR == 'undefined' ? document.getElementById('nomTerce718').value = ' ' : document.getElementById('nomTerce718').value = $_terceros718.filter(tercero => tercero.COD.toString().trim() == SAL718.CUPS.NIT_OTR).NOMBRE;
+		SAL718.CUPS.CIS == '' ? document.getElementById('cis718').value = ' ' : document.getElementById('cis718').value = SAL718.CUPS.CIS;
+		let ter = $_terceros718.filter(tercero => tercero.COD.trim() == parseInt(SAL718.CUPS.NIT_OTR))
+		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('nitTercer_718').value = ' ' : document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR;
+		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('descripTercer_718').value = ' ' : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
 	}
 
-	SAL718.CUPS.COSTO == 'undefined' ? document.getElementById('centrocosto_718').value = ' ' : document.getElementById('centrocosto_718').value = SAL718.CUPS.COSTO;
-	SAL718.CUPS.EDAD_MIN == 'undefined' ? document.getElementById('edadminima_718').value = ' ' : document.getElementById('edadminima_718').value = SAL718.CUPS.EDAD_MIN;
-	SAL718.CUPS.EDAD_MAX == 'undefined' ? document.getElementById('edadmaxima_718').value = ' ' : document.getElementById('edadmaxima_718').value = SAL718.CUPS.EDAD_MIN;
-	SAL718.CUPS.UND_EDAD == 'undefined' ? document.getElementById('undedad_718').value = ' ' : document.getElementById('undedad_718').value = SAL718.CUPS.UND_EDAD;
-	SAL718.CUPS.SEXO == 'undefined' ? document.getElementById('sexo_718').value = ' ' : document.getElementById('sexo_718').value = SAL718.CUPS.SEXO;
-	SAL718.CUPS.DIAGN == 'undefined' ? document.getElementById('pregRips_718').value = ' ' : document.getElementById('pregRips_718').value = SAL718.CUPS.DIAGN;
-	SAL718.CUPS.MED_100 == 'undefined' ? document.getElementById('porcmedico_718').value = ' ' : document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
-	SAL718.CUPS.MED_100 == 'undefined' ? document.getElementById('porcmedico_718').value = ' ' : document.getElementById('porcmedico_718').value = SAL718.CUPS.MED_100;
-	SAL718.CUPS.PORC_CL == 'undefined' ? document.getElementById('ingrclinica_718').value = ' ' : document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
-	SAL718.CUPS.PORC_CL == 'undefined' ? document.getElementById('ingrclinica_718').value = ' ' : document.getElementById('ingrclinica_718').value = SAL718.CUPS.PORC_CL;
-	SAL718.CUPS.PORC_OTR == 'undefined' ? document.getElementById('ingrtercer_718').value = ' ' : document.getElementById('ingrtercer_718').value = SAL718.CUPS.PORC_OTR;
-	if (SAL718.CUPS.LLAVE_ALT[0].trim() == '6') {
+	if (SAL718.CUPS.LLAVE_ALT[0] == '6') {
 		SAL718.CUPS.CTA_CONTAB.CTA_CONTAB_CUP[0] = '41250400050';
 		SAL718.CUPS.CTA_CONTAB.CTA_CONTAB_CUP[2] = '41248000001';
-		switch ($_USUA_GLOBAL.PUC) {
+	} else {
+		switch ($_USUA_GLOBAL[0].PUC.toString()) {
 			case '1':
-				SAL718.CUPS.CTA_CONTAB_CUP[0] == 'undefined' ?
-					document.getElementById('ctaDescripTercer_718').value = ' ' :
-					document.getElementById('ctaDescripTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
-
-				SAL718.CUPS.CTA_CONTAB_CUP[0] == 'undefined' ?
-					document.getElementById('ctaDescripTercer_718').value = ' ' :
-					document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
+				SAL718.CUPS.CTA_CONTAB_CUP[0] == '' ?
+					document.getElementById('ctaingrTercer_718').value = ' ' :
+					document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
 				break;
 			case '2':
-				SAL718.CUPS.CTA_CONTAB_CUP[1] == 'undefined' ?
-					document.getElementById('ctaDescripTercer_718').value = ' ' :
-					document.getElementById('ctaDescripTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[1];
-				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[1]);
+				SAL718.CUPS.CTA_CONTAB_CUP[1] == '' ?
+					document.getElementById('ctaingrTercer_718').value = ' ' :
+					document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[1];
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[1]);
 				break;
 			case '3':
-				SAL718.CUPS.CTA_CONTAB_CUP[0] == 'undefined' ?
-					document.getElementById('ctaDescripTercer_718').value = ' ' : document.getElementById('ctaDescripTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
-				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
+				SAL718.CUPS.CTA_CONTAB_CUP[0] == '' ?
+					document.getElementById('ctaingrTercer_718').value = ' ' : document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
 				break;
 			case '4':
-				SAL718.CUPS.CTA_CONTAB_CUP[2] == 'undefined' ?
-					document.getElementById('ctaDescripTercer_718').value = ' ' :
-					document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
+				SAL718.CUPS.CTA_CONTAB_CUP[2] == '' ?
+					document.getElementById('ctaingrTercer_718').value = ' ' :
+					document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[2];
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
 				break;
 			case '6':
-				SAL718.CUPS.CTA_CONTAB_CUP[2] == 'undefined' ?
-					document.getElementById('ctaDescripTercer_718').value = ' ' :
-					document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
+				SAL718.CUPS.CTA_CONTAB_CUP[2] == '' ?
+					document.getElementById('ctaingrTercer_718').value = ' ' :
+					document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[2];
+				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
+
 				break;
 			default:
+				document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_OTR
+				let plan = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == SAL718.CUPS.CTA_OTR.padStart(12, '0'))
+				if (plan == '') { document.getElementById('ctaDescripTercer_718').value = ' '; } else { document.getElementById('ctaDescripTercer_718').value = plan[0].NOMBRE_MAE }
 				break;
 		}
 	}
-	_validarCodAbr718();
+	console.debug('CUPS', SAL718.CUPS)
+	_validarDescripcion718();
 
 }
+
 function _onrestricciones718(params) {
 	switch (params.seccion) {
 		case 'GRUPOSER':
@@ -1072,11 +1142,9 @@ function _onrestricciones718(params) {
 				case '7':
 					if (params.invalid == '00') { CON851('00', '00', _validarCUPS718(), 'error', 'error'); }
 					else {
-						if (SAL718.CUPS.LLAVE.substring(0, 2) != SAL718.GRUPOSER.COD) {
+						if (SAL718.CUPS.LLAVE.substring(0, 2).toUpperCase() != SAL718.GRUPOSER.COD.toUpperCase()) {
 							CON851('03', '03', _validarCUPS718(), 'error', 'error');
 						} else {
-							let d = new Date();
-							SAL718.CUPS.OPER_ELAB = localStorage['Usuario']; SAL718.CUPS.FECHA_ELAB = moment().format('YYYYMMDD'); SAL718.CUPS.HORA_ELAB = d.getHours()
 							document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
 							_validarDescripcion718();
 						}
@@ -1087,9 +1155,13 @@ function _onrestricciones718(params) {
 						CON851('01', '01', _validarCUPS718(), 'error', 'error')
 					}
 					else {
-						let d = new Date();
-						SAL718.CUPS.OPER_MOD = localStorage['Usuario']; SAL718.CUPS.FECHA_MOD = moment().format('YYYYMMDD'); SAL718.CUPS.HORA_MOD = d.getHours()
-						document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP; on_llenarFormCups718();
+						if (SAL718.CUPS.LLAVE.substring(0, 2) != SAL718.GRUPOSER.COD) {
+							CON851('03', '03', _validarCUPS718(), 'error', 'error');
+						} else {
+							document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
+							on_llenarFormCups718();
+						}
+
 					}
 					break;
 				case '9':
@@ -1111,8 +1183,7 @@ function _onrestricciones718(params) {
 		case 'TERCEROS':
 			if (params.invalid == '01') { CON851('01', '01', validarTercero718(), 'error', 'error'); }
 			else {
-				SAL718.CUPS.NIT_OTR = SAL718.TERCEROS.COD;
-				document.getElementById('nitTercer_718').value = SAL718.TERCEROS.COD.trim();
+				document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR;
 				document.getElementById('descripTercer_718').value = SAL718.TERCEROS.NOMBRE;
 				switch ($_USUA_GLOBAL[0].PUC) {
 					case '1': validarCodPuc718(); break;
