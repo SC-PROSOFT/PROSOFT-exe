@@ -411,12 +411,18 @@ function _evaluaritemtabla_71G() {
             SAL71G.CONTEO = itemMask_SAL71G.value;
             $('#item_71G').val(SAL71G.CONTEO.padStart(3, '0'));
             SAL71G.CONTEO = parseInt(SAL71G.CONTEO) - 1;
-            $('#cl_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[1].textContent);
-            $('#cldescrip_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[2].textContent);
-            $('#codigo_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[3].textContent);
-            $('#descripcod_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[4].textContent);
-            $('#cantidad_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[5].textContent);
-            _evaluarcl_71G(); 
+            let existeregisto_71G = validarexistenciareg_71G();
+            if (!existeregisto_71G) {
+                _evaluarcl_71G(); 
+            } else {
+                $('#cl_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[1].textContent);
+                $('#cldescrip_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[2].textContent);
+                $('#codigo_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[3].textContent);
+                $('#descripcod_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[4].textContent);
+                $('#cantidad_71G').val($('#TABLAPAQUETEINT_71G tbody tr')[SAL71G.CONTEO].cells[5].textContent);
+                _evaluarcl_71G();
+            }
+
         })
 }
 
@@ -551,62 +557,86 @@ function _validarcantart_71G() {
         CON851('02', '02', null, 'error', 'Error');
         _evaluarcantidad_71G();
     } else {
-        if ($_Novedad71G == '7') {
-            _agregarfilatabla_71G();
-        } else {
-            _editarfilatabla_71G();
+        // if ($_Novedad71G == '7') {
+        //     _agregarfilatabla_71G();
+        // } else {
+        //     _editarfilatabla_71G();
 
-        }
+        // }
+        _modificacionestabla_71G(); 
     }
 }
-function _editarfilatabla_71G() {
-    // let nfila = parseInt($_Nfila) - 1;
-    var cambiar = $('#item_71G').val();
-    cambiar = parseInt(cambiar) - 1;
-    let fila = $('#TABLAPAQUETEINT_71G tbody tr:eq(' + cambiar + ')');
-    let html = '<td>' + $('#item_71G').val() +
-        '</td><td>' + $('#cl_71G').val() +
-        '</td><td>' + $('#cldescrip_71G').val() +
-        '</td><td>' + $('#codigo_71G').val() +
-        '</td><td>' + $('#descripcod_71G').val() +
-        '</td><td>' + $('#cantidad_71G').val() +
-        '</td>';
-    fila.html(html);
+// function _editarfilatabla_71G() {
+//     let existeregisto_71G = validarexistenciareg_71G();
+//     if (!existeregisto_71G) {
+//         console.log('no existe registro')
+//         $('#TABLAPAQUETEINT_71G tbody').append(
+//             '<tr>' +
+//             '<td>' + $('#item_71G').val() + '</td>' +
+//             '<td>' + $('#cl_71G').val() + '</td>' +
+//             '<td>' + $('#cldescrip_71G').val() + '</td>' +
+//             '<td>' + $('#codigo_71G').val() + '</td>' +
+//             '<td>' + $('#descripcod_71G').val() + '</td>' +
+//             '<td>' + $('#cantidad_71G').val() + '</td>' +
+//             '</tr>'
+//         );
+//         _validaciontablaalmacen_71G();
 
-    _validaciontablaalmacen_71G();
+//     } else {
+//         console.log('corregirpaqueteint')
+//         var cambiar = $('#item_71G').val();
+//         cambiar = parseInt(cambiar) - 1;
+//         let fila = $('#TABLAPAQUETEINT_71G tbody tr:eq(' + cambiar + ')');
+//         let html = '<td>' + $('#item_71G').val() +
+//             '</td><td>' + $('#cl_71G').val() +
+//             '</td><td>' + $('#cldescrip_71G').val() +
+//             '</td><td>' + $('#codigo_71G').val() +
+//             '</td><td>' + $('#descripcod_71G').val() +
+//             '</td><td>' + $('#cantidad_71G').val() +
+//             '</td>';
+//         fila.html(html);
+
+//         _validaciontablaalmacen_71G();
+//     }
+// }
+
+function _modificacionestabla_71G() {
+    let existeregisto_71G = validarexistenciareg_71G();
+    console.log(existeregisto_71G, 'existeregisto_71G')
+    if (!existeregisto_71G) {
+        console.log('no existe registro')
+        $('#TABLAPAQUETEINT_71G tbody').append(
+            '<tr>' +
+            '<td>' + $('#item_71G').val() + '</td>' +
+            '<td>' + $('#cl_71G').val() + '</td>' +
+            '<td>' + $('#cldescrip_71G').val() + '</td>' +
+            '<td>' + $('#codigo_71G').val() + '</td>' +
+            '<td>' + $('#descripcod_71G').val() + '</td>' +
+            '<td>' + $('#cantidad_71G').val() + '</td>' +
+            '</tr>'
+        );
+        _validaciontablaalmacen_71G();
+
+    } else {
+        console.log('corregirpaqueteint')
+        var cambiar = $('#item_71G').val();
+        cambiar = parseInt(cambiar) - 1;
+        let fila = $('#TABLAPAQUETEINT_71G tbody tr:eq(' + cambiar + ')');
+        let html = '<td>' + $('#item_71G').val() +
+            '</td><td>' + $('#cl_71G').val() +
+            '</td><td>' + $('#cldescrip_71G').val() +
+            '</td><td>' + $('#codigo_71G').val() +
+            '</td><td>' + $('#descripcod_71G').val() +
+            '</td><td>' + $('#cantidad_71G').val() +
+            '</td>';
+        fila.html(html);
+
+        _validaciontablaalmacen_71G();
+    }
 }
-function _agregarfilatabla_71G() {
-    // let existeregisto_71G = validarexistenciareg_71G(); 
-    // if(!existeregisto_71G){
-    //     $('#TABLAPAQUETEINT_71G tbody').append(
-    //         '<tr>' +
-    //         '<td>' + $('#item_71G').val() + '</td>' +
-    //         '<td>' + $('#cl_71G').val() + '</td>' +
-    //         '<td>' + $('#cldescrip_71G').val() + '</td>' +
-    //         '<td>' + $('#codigo_71G').val() + '</td>' +
-    //         '<td>' + $('#descripcod_71G').val() + '</td>' +
-    //         '<td>' + $('#cantidad_71G').val() + '</td>' +
-    //         '</tr>'
-    //     );
-    //     _validaciontablaalmacen_71G();
 
-    // }else{
-    //     corregirpaqueteint_71G(existeregisto_71G); 
-    // }
-    $('#TABLAPAQUETEINT_71G tbody').append(
-        '<tr>' +
-        '<td>' + $('#item_71G').val() + '</td>' +
-        '<td>' + $('#cl_71G').val() + '</td>' +
-        '<td>' + $('#cldescrip_71G').val() + '</td>' +
-        '<td>' + $('#codigo_71G').val() + '</td>' +
-        '<td>' + $('#descripcod_71G').val() + '</td>' +
-        '<td>' + $('#cantidad_71G').val() + '</td>' +
-        '</tr>'
-    );
-    _validaciontablaalmacen_71G();
-}
-
-function validarexistenciareg_71G(){
+function validarexistenciareg_71G() {
+    console.log('validarexistenciareg')
     const tableReg = document.getElementById('TABLAPAQUETEINT_71G');
     let found = false;
     //Recorre las filas existentes de la tabla
@@ -622,16 +652,6 @@ function validarexistenciareg_71G(){
         }
     }
     return found;
-}
-
-function corregirpaqueteint_71G(registro){
-    validarInputs({
-        form: '#CL_71G',
-        orden: '1'
-    },
-        function () { _evaluaritemtabla_71G(); },
-        _validarcl_71G
-    )
 }
 
 function _validaciontablaalmacen_71G(orden) {
@@ -674,6 +694,13 @@ function _paquetes(datos) {
 
         _evaluarcl_71G();
     } else {
+        SAL71G.CONTEO = SAL71G.CONTEO + 1;
+        $('#item_71G').val(SAL71G.CONTEO.toString().padStart(3, '0'));
+        $('#cl_71G').val('');
+        $('#cldescrip_71G').val('');
+        $('#codigo_71G').val('')
+        $('#descripcod_71G').val('')
+        $('#cantidad_71G').val('')
         _evaluarcl_71G();
     }
 }
@@ -815,7 +842,7 @@ function _llenardatos_71G() {
         cantidadtabla = $tabla_paq[i].CANT_PAQ;
         descripcod = $tabla_paq[i].DESCRIP_PAQ;
         valorcanti = parseInt(cantidadtabla, 10)
-        var comparar = $tabla_paq[i].ITEM_PAQ.trim();
+        var comparar = $tabla_paq[i].CUPS_PAQ.trim();
         if (comparar.length > 1) {
             $('#TABLAPAQUETEINT_71G tbody').append(''
                 + '<tr>'
