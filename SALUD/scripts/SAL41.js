@@ -6,7 +6,7 @@ var $_SECUNUM, $_SECUNUM1, $_SECUNUM2, $_TIPO_COMP = "1  ", $_OPSEGU, $_NRONUM, 
 var $_FECHARETNUM, $_FECHASIGFACT, $_FECHAFACT$_FECHAFACT, $_SWORDSERV, $_ARTFACT;
 var $_DIASTRATAFACT = $_CODLOTEFACT = $_HORACITFACT = $_DATOSETCUP = $_ALMFACT = $_RESTRICLOCAL = $_LLAVEBARRASW = $_DESCRIPCUP = $_CODSERTAB = $_TIPOPACI = '';
 var $_facturas_A = [], $_facturas_P = [], $_facturas_T = [];
-var $_TIPOCOPAGOFACT = ' '; $_COPAGOESTIMFACT = 0; $_MEDCIRFACT = '0'; $_MEDAYUFACT = '0'; $_MEDANEFACT = '0'; $_MEDINSFACT = '0'; $_DETALLEFACT = ''; $_NROAUTORELAB = ''; $_NITFACT = $_IDPACNUM = $_IDHISTORIAFACT = $_MYTNUM = '';
+var $_TIPOCOPAGOFACT = ' '; $_COPAGOESTIMFACT = 0; $_MEDCIRFACT = '0'; $_MEDAYUFACT = '0'; $_MEDANEFACT = '0'; $_MEDINSFACT = '0'; $_DETALLEFACT = ''; $_NROAUTORELAB = ''; $_NITFACT = $_IDPACNUM = $_IDHISTORIAFACT = $_MYTNUM = ''; $_VLRPROMEDW = 0;
 
 var $_CANTMAX, $_VALORBRUTO, $_VALORBASE1IVA, $_VALORBASE2IVA, $_VALORBASE3IVA;
 var SAL41 = [];
@@ -4350,7 +4350,7 @@ function _dataSAL41_06(data) {
             case '2':
                 $_VRVENTA1ART = $_VLRULTCOMPRA;
                 break;
-            case '3':
+            case '4':
                 if ($_VLRREFART > 0) {
                     $_VRVENTA1ART = $_VLRREFART;
                 }
@@ -4643,7 +4643,7 @@ function _Leerarticulo5_41() {
     if (($_CISCUP.trim() == '') || (parseInt($_CISCUP) == 0)) {
         $_CISCUP = 'N';
     }
-    if (($_LLAVETIPOTAB == 'SO1') && ($_CODPAQINTTAB = ! '')) {
+    if (($_LLAVETIPOTAB == 'SO1') && ($_CODPAQINTTAB != '')) {
         CON851('', 'Atencion !, este procedimiento esta clasificado como posible paquete integral', null, 'warning', 'Advertencia!');
     }
     if (($_NITUSU == '0800037021') && ($_NITFACT == '0830079672')) {
@@ -5052,15 +5052,79 @@ function _Buscarsaldo_41() {
         postData({ datosh: datosEnvio() + $_ALMFACT + $_CODART + $_CODLOTEFACT + '|' }, URL)
             .then(data => {
                 console.debug(data);
+                fuente = '';
+                for (var i in data) {
+                    var fuente = '<div class="col-md-12 col-sm-12 col-xs-12">' +
+                        '<div class="col-md-3"> ' +
+                        '<input id="sdoantcant' + i + '_SAL41" class="form-control input-md"> ' +
+                        '</div>' +
+                        '<div class="col-md-3"> ' +
+                        '<input id="acumentcant' + i + '_SAL41" class="form-control input-md"> ' +
+                        '</div>' +
+                        '<div class="col-md-3"> ' +
+                        '<input id="acumsalcant' + i + '_SAL41" class="form-control input-md"> ' +
+                        '</div>' +
+                        '<div class="col-md-3"> ' +
+                        '<input id="sdoactcant' + i + '_SAL41" class="form-control input-md"> ' +
+                        '</div>' +
+                        '</div>';
+                }
+                var ventanaconsultasaldo = bootbox.dialog({
+                    size: 'large',
+                    title: 'CONSULTA SALDO ACTUAL ' + `${$_CODART}` + ' ALM: ' + `${$_ALMFACT}`,
+                    closeButton: false,
+                    message: '<div class="row" style="display:float!important">' +
+                        '<div class="col-md-12 col-sm-12 col-xs-12">' +
+                        fuente +
+                        '<div class="col-md-12 col-sm-12 col-xs-12">' +
+                        '<div class="inline-inputs">' +
+                        '<label class="col-md-6 col-sm-6 col-xs-12">TOTAL ACUMULADO:</label>' +
+                        '<div class="input-group col-md-6 col-sm-6 col-xs-12" id="SU_41">' +
+                        '<input id="saldototal_SAL41" type="text" class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" maxlength="2">' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>',
+                    buttons: {
+                        aceptar: {
+                            label: 'Aceptar',
+                            callback: function () {
+                                ventanaconsultasaldo.off('shown.bs.modal');
+                                if (($_CLFACT == '0') && ($_TIPODRFACT == '2')) {
+                                    $_VLRUNITW = parseFloat($_VLRDEVOL / $_CANTDEVOL)
+                                    $_VLRLIMIW = $_VLRUNIT * 3
+                                    _Dato3_41();
+                                } else {
+                                    _Calcularmonto_41();
+                                }
+                            },
+                            className: 'btn-primary'
+                        },
+                    },
+                });
+                ventanaconsultasaldo.init($('.modal-footer').hide());
+                ventanaconsultasaldo.on('keydown', e => {
+                    $('.btn-primary').click();
+                });
+                ventanaconsultasaldo.init(() => {
+                    _inputControl('disabled');
+                    var SALDOTOTAL = 0;
+                    for (var i in data) {
+                        $('#sdoantcant' + i + '_SAL41').val(data.SDO_ANT);
+                        $('#acumentcant' + i + '_SAL41').val(data.ACUM_ENT);
+                        $('#acumsalcant' + i + '_SAL41').val(data.ACUM_SAL);
+                        $('#sdoactcant' + i + '_SAL41').val(data.SDO_ACT);
+                        SALDOTOTAL = SALDOTOTAL + parseFloat(data.SDO_ACT);
+                    }
+                    $('#saldototal_SAL41').val(SALDOTOTAL);
+                    $_SDOACTCANT = SALDOTOTAL;
+                });
+
             })
             .catch(err => {
                 console.debug(err);
             })
-    }
-    if (($_CLFACT == '0') && ($_TIPODRFACT == '2')) {
-        $_VLRUNITW = parseFloat($_VLRDEVOL / $_CANTDEVOL)
-        $_VLRLIMIW = $_VLRUNIT * 3
-        _Dato3_41();
     }
 }
 
@@ -7070,6 +7134,11 @@ function _Datommedico_41() {
     }
     $_TERCTL = '2';
 }
+
+function _Mostrarmedico_41(){
+    
+}
+
 function _Datommedico2_41() {
     // if (($_UNSERVW == '01') && ($_CLFACT == '5') && ($_IDTRIA.trim() =! '') && ($_FOLIONROCONSULTRIA > 0)){
 
@@ -9705,13 +9774,20 @@ function _Datohonorarios_41() {
             $_VLRANESW = Math.round(parseFloat($_SALMINTAR) * parseFloat($_TABLATAR[$_J].HNANESTAR));
             if (($_GRSERTAB == '72') || ($_GRSERTAB == '73')) {
                 $_VLRMATW = 0;
-            }
-            else {
+            } else {
                 if ($_CRUENTAFACT == '2') {
                     // INV401BC
                     // LINEA 8460
-                }
-                else {
+                    let URL = get_url("APP/SALUD/SAL401BC.DLL");
+                    postData({ datosh: datosEnvio() + $_PREFIJOFACT + $_NROCTAFAC + '|' + 4 + '|' + 'XX39305' }, URL)
+                        .then(data => {
+                            console.debug(data);
+                            $_VLRMATW = data.VLR_MAT;
+                        })
+                        .catch(err => {
+                            console.debug(err);
+                        })
+                } else {
                     $_VLRMATW = $_TABLATAR[$_J].MATQUITAR;
                 }
             }
