@@ -80,6 +80,7 @@
         },
         _ventana_html: function () {
             $('#body_main').load($.ventanaMain.href, function () { _toggleNav(); })
+            $(`li[data-id='${$.ventanaMain.id}']`).addClass('active');
         },
         _loadScript: function () {
             let elemento = document.createElement("script");

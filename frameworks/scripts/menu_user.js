@@ -5,7 +5,7 @@ const { BrowserWindow } = require('electron').remote;
 $CONEXION_BD = {},
     $CONTROL = '',
     $_USUA_GLOBAL = '';
-    $_PARENT = false;
+$_PARENT = false;
 
 $(function () {
     $('.header-v2').attr('style', `background: url(../../imagenes/header-${localStorage.Modulo.toLowerCase()}.webp)`)
@@ -231,43 +231,46 @@ function _toggleNav() {
     //     }
     // }
     // else {
-        if (widthScreen > 992) { // Pantalla grande
-            if (visible) {
-                if (widthScreen > 992) {
-                    nav.hide('slide', function () {
-                        $(this).attr('style', 'display:none!important;');
-                    });
+    if (widthScreen > 992) { // Pantalla grande
+        if (visible) {
+            if (widthScreen > 992) {
+                nav.hide('slide', function () {
+                    $(this).attr('style', 'display:none!important;');
+                });
 
-                    $('.page-fixed-main-content').animate({
-                        'margin-left': '0'
-                    });
-                } else {
-                    nav.slideToggle('slow', function () {
-                        $(this).attr('style', 'display:none!important;');
-                    });
-                }
-
-                _cargarEventos('off');
+                $('.page-fixed-main-content').animate({
+                    'margin-left': '0'
+                });
             } else {
-                if (widthScreen > 992) {
-                    nav.show('slide', function () {
-                        $(this).removeAttr('style');
-                    });
-
-                    $('.page-fixed-main-content').animate({
-                        'margin-left': '280px'
-                    });
-                } else {
-                    nav.slideToggle('slow', function () {
-                        $(this).attr('style', 'display:block!important;');
-                    });
-                }
-                _cargarEventos('on');
-                $('#body_main').html('')
+                nav.slideToggle('slow', function () {
+                    $(this).attr('style', 'display:none!important;');
+                });
             }
 
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+            _cargarEventos('off');
+        } else {
+            let active = $('#navegacion').find('li.opcion-menu.active');
+            if (active) active.removeClass('active');
+
+            if (widthScreen > 992) {
+                nav.show('slide', function () {
+                    $(this).removeAttr('style');
+                });
+
+                $('.page-fixed-main-content').animate({
+                    'margin-left': '280px'
+                });
+            } else {
+                nav.slideToggle('slow', function () {
+                    $(this).attr('style', 'display:block!important;');
+                });
+            }
+            _cargarEventos('on');
+            $('#body_main').html('')
         }
+
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    }
     // }
 }
 
