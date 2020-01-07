@@ -16,7 +16,7 @@ $(document).ready(function () {
     _inputControl("disabled");
     _toggleF8([
         { input: 'claseservicio', app: 'SAL491', funct: _ventanaClases_491 },
-        { input: 'comprob', app: 'SAL491', funct: _ventanaIdHistoria_491 },
+        // { input: 'comprob', app: 'SAL491', funct: _ventanaIdHistoria_491 },
     ]);
     global_SAL491['PREFIJOUSU'] = $_USUA_GLOBAL[0].PREFIJ;
     global_SAL491['ADMIN_W'] = localStorage.getItem('Usuario').trim() ? localStorage.getItem('Usuario').trim() : false;
@@ -51,100 +51,6 @@ function _ventanaIdHistoria_491(e) {
 function mostrarDatosCompletos_SAL491(data) {
     console.log(data)
 }
-
-// function _ventanaIdHistoria_491(e) {
-//     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-//         var fuente = $('#popUp_paciente_491').html();
-//         var dialogo = bootbox.dialog({
-//             title: "Consulta por paciente:",
-//             message: fuente,
-//             closeButton: false,
-//             buttons: {
-//                 main: {
-//                     label: "Aceptar",
-//                     className: "blue hidden",
-//                     callback: function () {
-
-//                     }
-//                 }
-//             },
-//         });
-//         dialogo.on('shown.bs.modal', function (e) {
-//             $('.modal-content').css({ 'width': '1000px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' })
-//             paciente_491()
-//         });
-//     }
-// }
-
-// function paciente_491() {
-//     validarInputs(
-//         {
-//             form: "#validar_paciente_491",
-//             orden: '1'
-//         },
-//         function () {
-//             $('[data-bb-handler="main"]').click();
-//             console.log('cerrar popup')
-//             var paciente = $('.paciente_491')
-//             $(paciente[1]).val('')
-//             $('#compr_SAL491').focus()
-//         },
-//         function (e) {
-//             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-//                 $('[data-bb-handler="main"]').click();
-//                 consultarPacientes()
-//             } else {
-//                 var id_paciente = $('.paciente_491')
-//                 global_SAL491['ID_HISTORIA_FACT'] = cerosIzq($(id_paciente[1]).val(), 15)
-//                 $(id_paciente[1]).val(global_SAL491.ID_HISTORIA_FACT)
-//                 console.log(global_SAL491.ID_HISTORIA_FACT)
-//                 traerFacturasPacientes_491()
-//             }
-//         }
-//     )
-// }
-
-// function traerFacturasPacientes_491() {
-//     obtenerDatosCompletos({ nombreFd: 'FACTURA-SERVICIOS', filtro: global_SAL491.ID_HISTORIA_FACT, campo: '1' }, validarFacturas_491, paciente_491)
-// }
-
-
-// function validarFacturas_491(data) {
-//     $('[data-bb-handler="main"]').click();
-//     f8comprob_sal491 = data.FACTURAS[0]
-//     console.log(f8comprob_sal491)
-//     f8comprob_sal491.TABLA.pop()
-//     _ventanaDatos({
-//         titulo: f8comprob_sal491.NOMBRE_PACI,
-//         columnas: ["SUC", "NRO_FACT", "FECHA", "CUENTA", "CLASE", "ARTICULO", "MEDICO", "DIAGNOSTICO_1", "DIAGNOSTICO_2", "COPAGO", "FINALID", "EMBAR"],
-//         data: f8comprob_sal491.TABLA,
-//         ancho: '90%',
-//         callback_esc: function () {
-//             _ventanaIdHistoria_491()
-//         },
-//         callback: function (data) {
-//             traerRegistroCompleto_SAL491(data.LLAVE)
-//         }
-//     });
-// }
-
-// function traerRegistroCompleto_SAL491(llave) {
-//     var datos_envio = datosEnvio();
-//     datos_envio += llave
-//     datos_envio += '|'
-
-//     let URL = get_url("APP/SALUD/SAL49.DLL");
-
-//     postData({
-//         datosh: datos_envio
-//     }, URL)
-//         .then((data) => {
-//             callbackSucces(data);
-//         })
-//         .catch(error => {
-//             console.error(error)
-//         });
-// }
 
 function cerrarArchivos_491() {
     _inputControl("reset");
