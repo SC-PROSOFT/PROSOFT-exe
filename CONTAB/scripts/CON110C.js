@@ -2697,7 +2697,6 @@ function _eliminarregistro_con110c() {
 function _dataCON110C_14(data) {
     console.log(data, 'guardar')
     var date = data.split('|');
-    console.debug('is string?',typeof date[0])
     swinvalid = date[0].trim();
     if (swinvalid == "00") {
         if ($_NOVEDADCON110C == '9') {
