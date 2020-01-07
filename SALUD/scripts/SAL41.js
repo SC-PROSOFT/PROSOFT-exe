@@ -1,4 +1,4 @@
-var $_NITUSU, $_LOEFARM, $_PUCUSU, $_PREFIJOUSU, $_CONTADOUSU, $_SALMINUSU, $_UNDSERVICIO, $_SERVICIO, $_SUCOPERW, $_FECHA_LNK, $_ARCHTER;
+var $_LOEFARM, $_PUCUSU, $_PREFIJOUSU, $_CONTADOUSU, $_SALMINUSU, $_UNDSERVICIO, $_SERVICIO, $_FECHA_LNK, $_ARCHTER;
 var $_BARRASUSU, $_SUC868, $_SUCFACT, $_SUCPRN, $_FECHAINGESTADO, $_FACTURAS, $_F8LITE, $_PREFIJOFACT, $_PREFIJONUM;
 var $_DESCRIPTER = new Array();
 var $_NOM_PAC = new Array();
@@ -108,13 +108,14 @@ $(document).ready(function () {
     SAL41['FECHAPENDIW'] = '00000000'; SAL41['HORAPENDIW'] = '0000'; SAL41['CANTPENDIW'] = '000'; SAL41['TIPOPENDIW'] = '0';
     SAL41['FACTAUTOFACT'] = '0'; SAL41['EMPRESAPACIRIPS'] = '                                                  '; SAL41['VLRLATERFACT'] = ' '; SAL41['BIRADSFACT'] = ' ';
     SAL41['BLOQUEOIMPFACT'] = '0';
+    SAL41['RESTIC_EXUSU'] = $_USUA_GLOBAL[0].RESTRIC_EX;
 
-    // $_NITUSU = '0800162035';
+    // SAL41.NITUSU = '0800162035';
 
     $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;
     SAL41.MODULO = localStorage.Modulo;
     if (SAL41.MODULO == 'RX') {
-        SAL41.NITUSU = '0830092718'; $_NITUSU = '0830092718';
+        SAL41.NITUSU = '0830092718'; SAL41.NITUSU = '0830092718';
         $_PREFIJOUSU = '80';
     }
     // } else {
@@ -124,7 +125,7 @@ $(document).ready(function () {
     $_FECHA_LNK = $_USUA_GLOBAL[0].FECHALNK;
     $_MESLNK = $_FECHA_LNK.substring(2, 4);
     $_ANOLNK = $_FECHA_LNK.substring(0, 2);
-    $_NITUSU = $_USUA_GLOBAL[0].NIT.toString().padStart(10, '0');
+    SAL41.NITUSU = $_USUA_GLOBAL[0].NIT.toString().padStart(10, '0');
     $_PREFIJOUSU = $_USUA_GLOBAL[0].PREFIJ;
     $_CODDCIUUSU = $_USUA_GLOBAL[0].COD_CIU;
     $_NUIRUSU = $_USUA_GLOBAL[0].NUIR;
@@ -177,10 +178,24 @@ $(document).ready(function () {
             { COD: '7', DESCRIPCION: 'PROMOCION Y PREVENCION' },
         ]
     }
-    _Revisardato_41();
+    OPCIONES = new Object;
+    OPCIONES = {
+        '09421': _Revisardato_41,
+        '09422': _Datosucursal_41,
+        '09423': _Clavedeacceso_41
+    }
+    let active = $('#navegacion').find('li.opcion-menu.active');
+    SAL41.OPCIONACTIVA = active[0].attributes[2].nodeValue;
+    var opcion = new Function ();
+    opcion = OPCIONES[active[0].attributes[2].nodeValue];
+    opcion();
     // setTimeout(FAC135, 500);
 });
 
+
+function _Clavedeacceso_41(){
+    console.debug('clave de acceso');
+}
 // function FAC135() {
 //     let { ipcRenderer } = require("electron");
 //     ipcRenderer.send('another', 'SALUD/PAGINAS/FAC135C.html');
@@ -749,10 +764,7 @@ function _Validarunidaddeservicio_41() {
 function _Datosucursal_41() {
     let datos_envio = datosEnvio()
     datos_envio += SAL41.ADMINW
-    // SolicitarDll({ datosh: datos_envio }, _dataCON003_41_01, get_url('app/CONTAB/CON003.DLL'));
-
     let URL = get_url("app/CONTAB/CON003.DLL");
-
     postData({
         datosh: datos_envio
     }, URL)
@@ -767,13 +779,11 @@ function _Datosucursal_41() {
 }
 
 function _dataCON003_41_01(data) {
-    console.debug(data, ' CON003_01');
-    var date = data.split('|');
-    $_NOMBREOPERW = date[0].trim();
-    $_IDENTOPERW = date[1].trim();
-    $_SUCOPERW = date[2].trim();
-    // REVISAR EN JSON EL ARCHIVO DE RESTRICCION PARA VER LAS SUCURSALES
-    console.debug($_NOMBREOPERW, $_IDENTOPERW, $_SUCOPERW, $_NOMBREOPERW.length);
+    // console.debug(data, ' CON003_01');
+    data = data.split('|');
+    SAL41.NOMBREOPERW = data[0].trim();
+    SAL41.IDENTOPERW = data[1].trim();
+    SAL41.SUCOPERW = data[2].trim();
     if ($_PREFIJOUSU == "  ") {
         $_PREFIJOUSU = "00";
         _Datosucursal2_41();
@@ -782,11 +792,11 @@ function _dataCON003_41_01(data) {
         _Datosucursal2_41();
     }
     else {
-        switch ($_NITUSU) {
+        switch (SAL41.NITUSU) {
             // ESE SALUD YOPAL
             case "0844003225":
-                if (($_SUCOPERW == "JL") || ($_SUCOPERW == "CA") || ($_SUCOPERW == "CS") || ($_SUCOPERW == "PV") || ($_SUCOPERW == "BC") || ($_SUCOPERW == "LC") || ($_SUCOPERW == "CV") || ($_SUCOPERW == "HT") || ($_SUCOPERW == "EM") || ($_SUCOPERW == "HY") || ($_SUCOPERW == "TL") || ($_SUCOPERW == "MR") || ($_SUCOPERW == "01")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "JL") || (SAL41.SUCOPERW == "CA") || (SAL41.SUCOPERW == "CS") || (SAL41.SUCOPERW == "PV") || (SAL41.SUCOPERW == "BC") || (SAL41.SUCOPERW == "LC") || (SAL41.SUCOPERW == "CV") || (SAL41.SUCOPERW == "HT") || (SAL41.SUCOPERW == "EM") || (SAL41.SUCOPERW == "HY") || (SAL41.SUCOPERW == "TL") || (SAL41.SUCOPERW == "MR") || (SAL41.SUCOPERW == "01")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -796,8 +806,8 @@ function _dataCON003_41_01(data) {
                 break;
             // SERVIMEDICOS
             case "0800162035":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "03") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "08") || ($_SUCOPERW == "10") || ($_SUCOPERW == "11") || ($_SUCOPERW == "12") || ($_SUCOPERW == "14") || ($_SUCOPERW == "15") || ($_SUCOPERW == "17")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "08") || (SAL41.SUCOPERW == "10") || (SAL41.SUCOPERW == "11") || (SAL41.SUCOPERW == "12") || (SAL41.SUCOPERW == "14") || (SAL41.SUCOPERW == "15") || (SAL41.SUCOPERW == "17")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -807,8 +817,8 @@ function _dataCON003_41_01(data) {
                 break;
             // MULTISALID VILLAVICENCIO
             case "0830511298":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "08") || ($_SUCOPERW == "09") || ($_SUCOPERW == "10") || ($_SUCOPERW == "11") || ($_SUCOPERW == "12") || ($_SUCOPERW == "13") || ($_SUCOPERW == "14") || ($_SUCOPERW == "15") || ($_SUCOPERW == "16") || ($_SUCOPERW == "17") || ($_SUCOPERW == "18") || ($_SUCOPERW == "19") || ($_SUCOPERW == "20")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "08") || (SAL41.SUCOPERW == "09") || (SAL41.SUCOPERW == "10") || (SAL41.SUCOPERW == "11") || (SAL41.SUCOPERW == "12") || (SAL41.SUCOPERW == "13") || (SAL41.SUCOPERW == "14") || (SAL41.SUCOPERW == "15") || (SAL41.SUCOPERW == "16") || (SAL41.SUCOPERW == "17") || (SAL41.SUCOPERW == "18") || (SAL41.SUCOPERW == "19") || (SAL41.SUCOPERW == "20")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -817,8 +827,8 @@ function _dataCON003_41_01(data) {
                 break;
             // FAMEDIC
             case "0900405505":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "08") || ($_SUCOPERW == "09")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "08") || (SAL41.SUCOPERW == "09")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -827,8 +837,8 @@ function _dataCON003_41_01(data) {
                 break;
             // SOCIEDAD CARDIOLOGICA
             case "0900161116":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -837,8 +847,8 @@ function _dataCON003_41_01(data) {
                 break;
             // MAVEPHARMA
             case "0830511298":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "10")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "10")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -847,8 +857,8 @@ function _dataCON003_41_01(data) {
                 break;
             // ENLACE
             case "0900541158":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "10")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "10")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -857,8 +867,8 @@ function _dataCON003_41_01(data) {
                 break;
             // MAVESALUD
             case "0900566047":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "08") || ($_SUCOPERW == "09") || ($_SUCOPERW == "10") || ($_SUCOPERW == "11") || ($_SUCOPERW == "12")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "08") || (SAL41.SUCOPERW == "09") || (SAL41.SUCOPERW == "10") || (SAL41.SUCOPERW == "11") || (SAL41.SUCOPERW == "12")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -867,8 +877,8 @@ function _dataCON003_41_01(data) {
                 break;
             // ALBERGUE SUKURAME
             case "0900565371":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04") || ($_SUCOPERW == "05") || ($_SUCOPERW == "06") || ($_SUCOPERW == "07") || ($_SUCOPERW == "10")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04") || (SAL41.SUCOPERW == "05") || (SAL41.SUCOPERW == "06") || (SAL41.SUCOPERW == "07") || (SAL41.SUCOPERW == "10")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -877,8 +887,8 @@ function _dataCON003_41_01(data) {
                 break;
             // IMAGENES DIAGNOSTICAS VCIO
             case "0800156469":
-                if (($_SUCOPERW == "00") || ($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "00") || (SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -887,8 +897,8 @@ function _dataCON003_41_01(data) {
                 break;
             // TERAMED
             case "0900641654":
-                if (($_SUCOPERW == "00") || ($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "00") || (SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -897,8 +907,8 @@ function _dataCON003_41_01(data) {
                 break;
             // TERAMED
             case "0800037979":
-                if (($_SUCOPERW == "00") || ($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "00") || (SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -907,8 +917,8 @@ function _dataCON003_41_01(data) {
                 break;
             // SIKUANI
             case "0830512772":
-                if (($_SUCOPERW == "01") || ($_SUCOPERW == "02") || ($_SUCOPERW == "03") || ($_SUCOPERW == "04") || ($_SUCOPERW = "05") || ($_SUCOPERW = "06") || ($_SUCOPERW = "07") || ($_SUCOPERW = "08") || ($_SUCOPERW = "09") || ($_SUCOPERW = "10") || ($_SUCOPERW = "11") || ($_SUCOPERW = "12") || ($_SUCOPERW = "13") || ($_SUCOPERW = "14") || ($_SUCOPERW = "15") || ($_SUCOPERW = "16") || ($_SUCOPERW = "17") || ($_SUCOPERW = "18") || ($_SUCOPERW = "19") || ($_SUCOPERW = "20") || ($_SUCOPERW = "21") || ($_SUCOPERW = "22") || ($_SUCOPERW = "23") || ($_SUCOPERW = "24") || ($_SUCOPERW = "25") || ($_SUCOPERW = "26") || ($_SUCOPERW = "27") || ($_SUCOPERW = "28") || ($_SUCOPERW = "29") || ($_SUCOPERW = "30") || ($_SUCOPERW = "31") || ($_SUCOPERW = "32") || ($_SUCOPERW = "33") || ($_SUCOPERW = "34") || ($_SUCOPERW = "35") || ($_SUCOPERW = "36") || ($_SUCOPERW = "37") || ($_SUCOPERW = "38") || ($_SUCOPERW = "39") || ($_SUCOPERW = "40") || ($_SUCOPERW = "41") || ($_SUCOPERW = "42") || ($_SUCOPERW = "43") || ($_SUCOPERW = "44") || ($_SUCOPERW = "45") || ($_SUCOPERW = "46") || ($_SUCOPERW = "47") || ($_SUCOPERW = "48") || ($_SUCOPERW = "49") || ($_SUCOPERW = "50")) {
-                    $_SUCOPERW = $_PREFIJOUSU;
+                if ((SAL41.SUCOPERW == "01") || (SAL41.SUCOPERW == "02") || (SAL41.SUCOPERW == "03") || (SAL41.SUCOPERW == "04") || (SAL41.SUCOPERW = "05") || (SAL41.SUCOPERW = "06") || (SAL41.SUCOPERW = "07") || (SAL41.SUCOPERW = "08") || (SAL41.SUCOPERW = "09") || (SAL41.SUCOPERW = "10") || (SAL41.SUCOPERW = "11") || (SAL41.SUCOPERW = "12") || (SAL41.SUCOPERW = "13") || (SAL41.SUCOPERW = "14") || (SAL41.SUCOPERW = "15") || (SAL41.SUCOPERW = "16") || (SAL41.SUCOPERW = "17") || (SAL41.SUCOPERW = "18") || (SAL41.SUCOPERW = "19") || (SAL41.SUCOPERW = "20") || (SAL41.SUCOPERW = "21") || (SAL41.SUCOPERW = "22") || (SAL41.SUCOPERW = "23") || (SAL41.SUCOPERW = "24") || (SAL41.SUCOPERW = "25") || (SAL41.SUCOPERW = "26") || (SAL41.SUCOPERW = "27") || (SAL41.SUCOPERW = "28") || (SAL41.SUCOPERW = "29") || (SAL41.SUCOPERW = "30") || (SAL41.SUCOPERW = "31") || (SAL41.SUCOPERW = "32") || (SAL41.SUCOPERW = "33") || (SAL41.SUCOPERW = "34") || (SAL41.SUCOPERW = "35") || (SAL41.SUCOPERW = "36") || (SAL41.SUCOPERW = "37") || (SAL41.SUCOPERW = "38") || (SAL41.SUCOPERW = "39") || (SAL41.SUCOPERW = "40") || (SAL41.SUCOPERW = "41") || (SAL41.SUCOPERW = "42") || (SAL41.SUCOPERW = "43") || (SAL41.SUCOPERW = "44") || (SAL41.SUCOPERW = "45") || (SAL41.SUCOPERW = "46") || (SAL41.SUCOPERW = "47") || (SAL41.SUCOPERW = "48") || (SAL41.SUCOPERW = "49") || (SAL41.SUCOPERW = "50")) {
+                    SAL41.SUCOPERW = $_PREFIJOUSU;
                     _Datosucursal2_41();
                 }
                 else {
@@ -923,16 +933,16 @@ function _dataCON003_41_01(data) {
 
 function _Datosucursal2_41() {
     $_SUCFACT = $_SUCW = $_PREFIJOUSU;
-    if (($_NITUSU == "0800162035") && ($_PREFIJOUSU == "08")) {
+    if ((SAL41.NITUSU == "0800162035") && ($_PREFIJOUSU == "08")) {
         $_ALMPREF = "SIN99";
     }
-    // else if (($_NITUSU == "0830092718") || ($_NITUSU == "0830092719") || ($_NITUSU == "0900193162")) {
+    // else if ((SAL41.NITUSU == "0830092718") || (SAL41.NITUSU == "0830092719") || (SAL41.NITUSU == "0900193162")) {
     //     RX_822_41();
     // } DIAGNOSTICOS E IMAGENES
-    else if (($_NITUSU == "0844003225") && ($_SUCOPERW == "  ")) {
+    else if ((SAL41.NITUSU == "0844003225") && (SAL41.SUCOPERW == "  ")) {
         _Evaluarsuc_41("1");
-    } else if ($_NITUSU == '0844003225') {
-        if (($_SUCOPERW == "JL") || ($_SUCOPERW == "CA") || ($_SUCOPERW == "CS") || ($_SUCOPERW == "PV") || ($_SUCOPERW == "BC") || ($_SUCOPERW == "LC") || ($_SUCOPERW == "CV") || ($_SUCOPERW == "HT") || ($_SUCOPERW == "EM") || ($_SUCOPERW == "HY") || ($_SUCOPERW == "TL") || ($_SUCOPERW == "MR") || ($_SUCOPERW == "01")) {
+    } else if (SAL41.NITUSU == '0844003225') {
+        if ((SAL41.SUCOPERW == "JL") || (SAL41.SUCOPERW == "CA") || (SAL41.SUCOPERW == "CS") || (SAL41.SUCOPERW == "PV") || (SAL41.SUCOPERW == "BC") || (SAL41.SUCOPERW == "LC") || (SAL41.SUCOPERW == "CV") || (SAL41.SUCOPERW == "HT") || (SAL41.SUCOPERW == "EM") || (SAL41.SUCOPERW == "HY") || (SAL41.SUCOPERW == "TL") || (SAL41.SUCOPERW == "MR") || (SAL41.SUCOPERW == "01")) {
             _Evaluarservicio_41();
         } else {
             console.debug('sucursal');
@@ -940,7 +950,7 @@ function _Datosucursal2_41() {
             _toggleNav();
         }
     }
-    else if ($_NITUSU == '0830512772') {
+    else if (SAL41.NITUSU == '0830512772') {
         LLAMADO_DLL({
             dato: [$_ADMINW],
             callback: _dataINV401_09,
@@ -1005,12 +1015,12 @@ function _evaluarRX822_41(data) {
             var sucursal = sedes.substr(0, 2);
             $_RX822 = sucursal;
             var admin_w = localStorage.getItem('cod_oper');
-            if ((admin_w == "0101") || (admin_w == "GEBC") || ($_SUCOPERW == "**")) {
+            if ((admin_w == "0101") || (admin_w == "GEBC") || (SAL41.SUCOPERW == "**")) {
                 $_RX822 = $_SUCFACT;
                 $_RX822 = $_SUCPRN;
             }
             else {
-                if ($_RX822 != $_SUCOPERW) {
+                if ($_RX822 != SAL41.SUCOPERW) {
                     CON852("48", "Sucursal no permitida", "_infodatosucursal", _toggleNav);
                 }
             }
@@ -1022,7 +1032,7 @@ function _evaluarRX822_41(data) {
 }
 
 function _Cargarunidadesdeservicio_41() {
-    if ($_NITUSU == "0800156469") {
+    if (SAL41.NITUSU == "0800156469") {
         var tiposerv = '[{"codigo": "0","descripcion": "DROGUERIA"},{"codigo": "1", "descripcion": "CIRUGIAS"},{"codigo": "2", "descripcion": "ECOGRAFIAS"},{"codigo": "3", "descripcion": "RX - IMAGENOLOGIA"},{"codigo": "4", "descripcion": "DOPPLER"},{"codigo": "5", "descripcion": "T.A.C."},{"codigo": "6", "descripcion": "RESONANCIA NUCLEAR"},{"codigo": "7", "descripcion": "PROMOCION Y PREVENCION"}]';
         $_SERVICIO_401 = JSON.parse(tiposerv);
     }
@@ -1053,7 +1063,11 @@ function _validarservicio() {
         for (i = 0; i < $_SERVICIO_401.length; i++) {
             if ($_CLFACT == $_SERVICIO_401[i].codigo.trim()) {
                 $("#claseservicio_SAL41").val($_SERVICIO_401[i].codigo + " - " + $_SERVICIO_401[i].descripcion);
-                _Mostrartipo_41();
+                if (SAL41.OPCIONACTIVA == '09421'){
+                    _Mostrartipo_41();
+                } else {
+                    _Evaluarnumeroctl_41();
+                } 
                 break;
             }
         }
@@ -1067,8 +1081,7 @@ function _Mostrartipo_41() {
     if ($_UNSERW == "08") {
         if (($_CLFACT == "0") || ($_CLFACT == "7")) {
             _Revisarpermisos_41();
-        }
-        else {
+        } else {
             CON851('B1', 'B1', null, 'error', 'error');
             _Evaluarservicio_41();
         }
@@ -1078,11 +1091,11 @@ function _Mostrartipo_41() {
 }
 
 function _Revisarpermisos_41() {
-    if ($_CLFACT == "0" && (($_NITUSU == "0892000401") || ($_NITUSU == "0900648993") || ($_NITUSU == "0800162035") || ($_NITUSU == "0900755133") || ($_NITUSU == "0900804411") || ($_NITUSU == "0900870633")) && parseInt($_SUCFACT) < 2) {
+    if ($_CLFACT == "0" && ((SAL41.NITUSU == "0892000401") || (SAL41.NITUSU == "0900648993") || (SAL41.NITUSU == "0800162035") || (SAL41.NITUSU == "0900755133") || (SAL41.NITUSU == "0900804411") || (SAL41.NITUSU == "0900870633")) && parseInt($_SUCFACT) < 2) {
         $_SWBLOQFECHA = "S";
     } else {
         $_SWBLOQFECHA = "N";
-    } if (($_NITUSU == '0891855847') || ($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) {
+    } if ((SAL41.NITUSU == '0891855847') || (SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) {
         $_CANTMAX = "99";
     }
     _infoCON904_01_41();
@@ -1109,7 +1122,7 @@ function _dataCON904_01_41(data) {
 }
 
 function _Buscarnumero_41() {
-    if (($_NITUSU == "0830092718") || ($_NITUSU == "0830092719") || ($_NITUSU == "0900193162")) {
+    if ((SAL41.NITUSU == "0830092718") || (SAL41.NITUSU == "0830092719") || (SAL41.NITUSU == "0900193162")) {
         console.debug('nit rx');
         $_SECUNUM2 = $_CLFACT;
         var contenido = ["KN", "TB", "ZP", "IN", "SO", "SC", "GT", "MS", "UN", "80", "MA", "CZ", "CE", "CH", "MD", "PT"];
@@ -1140,7 +1153,7 @@ function _Buscarnumero_41() {
 
 function _Evaluarnit_41() {
     console.debug('nit');
-    switch ($_NITUSU) {
+    switch (SAL41.NITUSU) {
         case "0844003225":
             var contenido = ["01", "JL", "CA", "BC", "CV", "PV", "CS", "HY", "TL", "MR"];
             var secunum = ["8", "a", "c", "b", "v", "p", "s", "h", "i", "j"];
@@ -1249,7 +1262,7 @@ function _infoCON007_01_41() {
 }
 
 function _dataCON007_01_41() {
-    if (($_NITUSU == "0900193162") || ($_NITUSU == "0830512772")) {
+    if ((SAL41.NITUSU == "0900193162") || (SAL41.NITUSU == "0830512772")) {
         _Leernumero_41();
     } else {
         if (parseInt(SAL41.NUMEROCTL) < 1000) {
@@ -1261,7 +1274,7 @@ function _dataCON007_01_41() {
                 carpeta: 'SALUD'
             });
         } else {
-            $_FECHAANT = SAL41.ULTFECHANUM
+            SAL41.FECHAANT = SAL41.ULTFECHANUM
             $("#compr_SAL41").val(SAL41.NUMEROCTL);
             _Leernumero_41();
         }
@@ -1271,7 +1284,7 @@ function _dataINV401C_01_41(data) {
     console.debug(data, "INV401C_01");
     var data = data.split("|");
     SAL41['NUMEROFACTLNK'] = data[1].trim();
-    $_FECHAANT = SAL41.ULTFECHANUM;
+    SAL41.FECHAANT = SAL41.ULTFECHANUM;
     if (data[0].trim() == "00") {
         if (parseInt(SAL41.NUMEROCTL) < SAL41.NUMEROFACTLNK) {
             SAL41.NUMEROCTL = $_NROFACTLNK;
@@ -1285,11 +1298,11 @@ function _dataINV401C_01_41(data) {
 }
 
 function _Leernumero_41() {
-    if (($_NITUSU == "0891855847") && ($_ANOLNK == "10")) {
+    if ((SAL41.NITUSU == "0891855847") && ($_ANOLNK == "10")) {
         _Evaluarnumeroctl_41();
     } else {
         $("#compr_SAL41").val(SAL41.NROFACT);
-        _validarnumeroctl();
+        _validarnumeroctl_SAL41();
     }
 }
 function _Evaluarnumeroctl_41() {
@@ -1298,11 +1311,11 @@ function _Evaluarnumeroctl_41() {
             form: "#COMPR_41",
             orden: "1"
         },
-        function () { _Evaluarservicio_41() },
-        _validarnumeroctl
+        () => { _Evaluarservicio_41() },
+        _validarnumeroctl_SAL41
     )
 }
-function _validarnumeroctl() {
+function _validarnumeroctl_SAL41() {
     SAL41.NROFACT = $("#compr_SAL41").val();
     let datos_envio = datosEnvio()
     datos_envio += SAL41.ADMINW + "|" + $_SUCFACT + $_CLFACT + SAL41.NROFACT.padStart(6, '0');
@@ -1342,7 +1355,6 @@ function _dataCON007B_01_41(data) {
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {
         if ((date[1].trim() == "0") || (date[1].trim() == "5")) {
-            console.debug('algo raro')
             $_FECHAACT = moment().format('YYMMDD');
             $_FECHASIST = moment().format('YYYYMMDD');
             $_FECHAFACT = $_FECHA_LNK;
@@ -1353,7 +1365,7 @@ function _dataCON007B_01_41(data) {
             $_MESACT = $_FECHAACT.substring(2, 4);
             $_ANOFACT = $_FECHAFACT.substring(0, 2);
             $_DIAACT = $_FECHAACT.substring(4, 6);
-            $_DIAANT = $_FECHAANT.substring(4, 6);
+            $_DIAANT = SAL41.FECHAANT.substring(4, 6);
             $_MESFACT = $_FECHAFACT.substring(2, 4);
             $_DIAFACT = $_FECHAFACT.substring(4, 6);
             if ($_ANOACT == $_ANOFACT) {
@@ -1375,7 +1387,7 @@ function _dataCON007B_01_41(data) {
 function _Encabezar2_41() {
     $_UNSERVFACT = $_UNSERW;
     $_SWBONO = '0';
-    if (($_NITUSU == "0900541158") || ($_NITUSU == "0900566047") || ($_NITUSU == "0900565371") || ($_NITUSU == "0901120152")) {
+    if ((SAL41.NITUSU == "0900541158") || (SAL41.NITUSU == "0900566047") || (SAL41.NITUSU == "0900565371") || (SAL41.NITUSU == "0901120152")) {
         _infoSER865A_41();
         // CALL SER865A
     } else {
@@ -1485,7 +1497,7 @@ function _Controldispensacion_41() {
     if (parseInt($_CLFACT) > 0) {
         _Evaluarfecha_41();
     } else {
-        if ((($_UNSERW == "02") || ($_UNSERW == "08")) && ($_NITUSU != "0892000458")) {
+        if ((($_UNSERW == "02") || ($_UNSERW == "08")) && (SAL41.NITUSU != "0892000458")) {
             _Evaluarfecha_41();
         } else {
             console.debug('control dispensacion SER815')
@@ -1532,7 +1544,7 @@ function _Controlfecha_41() {
             }
         }
         else {
-            if ((($_NITUSU == "0830092718") || ($_NITUSU == "0830092719") || ($_NITUSU == "0892000401") || ($_NITUSU == "0900648993") || ($_NITUSU == "0900193162") || ($_NITUSU == "0900755133") || ($_NITUSU == "0900804411") || ($_NITUSU == "0900870633") || ($_NITUSU == "0900658867")) && (after == true)) {
+            if (((SAL41.NITUSU == "0830092718") || (SAL41.NITUSU == "0830092719") || (SAL41.NITUSU == "0892000401") || (SAL41.NITUSU == "0900648993") || (SAL41.NITUSU == "0900193162") || (SAL41.NITUSU == "0900755133") || (SAL41.NITUSU == "0900804411") || (SAL41.NITUSU == "0900870633") || (SAL41.NITUSU == "0900658867")) && (after == true)) {
                 $_OPSEGU = "I4SF";
                 LLAMADO_DLL({
                     dato: [$_ADMINW, $_OPSEGU],
@@ -1570,7 +1582,7 @@ function _dataCON904_03_41(data) {
 }
 
 function _Validarfechaopago_41() {
-    if (($_NITUSU == "0800162035") || ($_NITUSU == "0845000038") || ($_NITUSU == "0892000401") || ($_NITUSU == "0900870633")) {
+    if ((SAL41.NITUSU == "0800162035") || (SAL41.NITUSU == "0845000038") || (SAL41.NITUSU == "0892000401") || (SAL41.NITUSU == "0900870633")) {
         _Evaluarfechaatencion_41();
     } else {
         if ($_UNSERW == "01") {
@@ -1731,7 +1743,7 @@ function _Evaluarprefijofact_41() {
 function _Validarprefijofact_41() {
     $_PREFIJOFACT = $("#factura_SAL41").val();
     $_PREFIJOFACT = $_PREFIJOFACT.substring(0, 1);
-    if ((($_NITUSU == "0830092718") || ($_NITUSU == "0830092719") || ($_NITUSU == "0900193162") || ($_NITUSU == "0892000401") || ($_NITUSU == "0900648993") || ($_NITUSU == "0900755133") || ($_NITUSU == "0900870633") || ($_NITUSU == "0900804411")) && (($_PREFIJOFACT == "C") || ($_PREFIJOFACT == "E"))) {
+    if (((SAL41.NITUSU == "0830092718") || (SAL41.NITUSU == "0830092719") || (SAL41.NITUSU == "0900193162") || (SAL41.NITUSU == "0892000401") || (SAL41.NITUSU == "0900648993") || (SAL41.NITUSU == "0900755133") || (SAL41.NITUSU == "0900870633") || (SAL41.NITUSU == "0900804411")) && (($_PREFIJOFACT == "C") || ($_PREFIJOFACT == "E"))) {
         CON851('49', '49', null, 'error', 'error');
         $('#factura_SAL41').val('');
         _Evaluarprefijofact_41();
@@ -1788,7 +1800,7 @@ function _EvaluarCON0072_SAL41() {
             var data = data.split("|");
             $_NUMEROCTL2 = data[1].substring(3, 9);
             $_ULTFECHANUM2 = data[2].trim();
-            if (($_NITUSU == "0891855847") && ($_ANOLNK == "10")) {
+            if ((SAL41.NITUSU == "0891855847") && ($_ANOLNK == "10")) {
                 _Evaluarnrofact_41();
             }
             else {
@@ -1893,7 +1905,7 @@ function _dataSAL41_02(data) {
 }
 
 function _Leercuenta_41() {
-    if ($_NITUSU == "0844003225") {
+    if (SAL41.NITUSU == "0844003225") {
         _Leercuenta2_41();
     }
     else {
@@ -1922,7 +1934,7 @@ function _Leercuenta_41() {
 }
 
 function _Leercuenta2_41() {
-    if ((($_NITUSU == "0800037021") || ($_NITUSU == "0800162035")) && (($_PREFIJOFACT == "P") || ($_PREFIJOFACT == "T"))) {
+    if (((SAL41.NITUSU == "0800037021") || (SAL41.NITUSU == "0800162035")) && (($_PREFIJOFACT == "P") || ($_PREFIJOFACT == "T"))) {
         if (parseInt($_LLAVESALIDANUM) > 0) {
             $_FECHASALIDBOLW = $_FECHASALID;
             $_ANOACSALIDBOLW = $_FECHASALIDBOLW.substring(0, 4);
@@ -2093,7 +2105,7 @@ function _Leercuenta5_41() {
         _Evaluarnrofact_41();
     }
     else if (($_PREFIJOFACT == "P") || ($_PREFIJOFACT == "T")) {
-        if (($_NITUSU == "0830092718") || ($_NITUSU == "0830092719") || ($_NITUSU == "0900193162")) {
+        if ((SAL41.NITUSU == "0830092718") || (SAL41.NITUSU == "0830092719") || (SAL41.NITUSU == "0900193162")) {
             $_IDHISTORIAFACT = $_IDPACNUM;
             console.debug('quitar condicion funciona solo pára pruebas');
             _Leercuenta6_41();
@@ -2104,7 +2116,7 @@ function _Leercuenta5_41() {
         }
     }
     else {
-        if ($_NITUSU == "0800251482") {
+        if (SAL41.NITUSU == "0800251482") {
             $_IDHISTORIAFACT = $_IDPACNUM;
             _Leercuenta6_41();
         }
@@ -2383,7 +2395,7 @@ function _Validarpuertaingreso_41() {
     } else if (($_UNSERW == "01") && ($_PUERTAINGW == 2)) {
         CON851('03', '03', null, 'error', 'error');
         SER822_41();
-    } else if ((($_NITUSU == "0830092718") || ($_NITUSU == "0830092719") || ($_NITUSU == "0900193162")) && (($_NITNUM == "0830092718") || ($_NITNUM == "0830092719") || ($_NITNUM == "0900193162"))) {
+    } else if (((SAL41.NITUSU == "0830092718") || (SAL41.NITUSU == "0830092719") || (SAL41.NITUSU == "0900193162")) && (($_NITNUM == "0830092718") || ($_NITNUM == "0830092719") || ($_NITNUM == "0900193162"))) {
         // GO TO DATO-BARRAS-PROMO
         console.debug('dato barras promo');
     } else {
@@ -2397,7 +2409,7 @@ function _Ubicarcliente_41() {
         _Mostrarcliente_41();
     }
     else if ($_PREFIJOFACT == "E") {
-        if ($_NITUSU == "0800162035") {
+        if (SAL41.NITUSU == "0800162035") {
             $_NITFACT = "222222222";
             _Evaluarcliente_41();
         }
@@ -2740,7 +2752,7 @@ function _Resultadohoras_41() {
 
 function _Validandocliente_41() {
     $_NOMBRECTA = $_DESCRIPTER;
-    if (($_PREFIJOFACT == "C") && (($_NITUSU == "0892000401") || ($_NITUSU == "0900648993") || ($_NITUSU == "0900755133") || ($_NITUSU == "0900804411") || ($_NITUSU == "0900870633")) && ($_NITFACT != "9999")) {
+    if (($_PREFIJOFACT == "C") && ((SAL41.NITUSU == "0892000401") || (SAL41.NITUSU == "0900648993") || (SAL41.NITUSU == "0900755133") || (SAL41.NITUSU == "0900804411") || (SAL41.NITUSU == "0900870633")) && ($_NITFACT != "9999")) {
         if (($_ACTTER == "01") || ($_ACTTER == "03") || ($_ACTTER == "04") || ($_ACTTER == "05")) {
             _Validandocliente2_41();
         }
@@ -2773,7 +2785,7 @@ function _Validandocliente2_41() {
     }
 }
 function _Datoordserv_41() {
-    if ($_NITUSU == "0800162035") {
+    if (SAL41.NITUSU == "0800162035") {
         if ((($_UNSERW == "01") || ($_UNSERW == "09")) && ($_REDEXTERNUM != "S")) {
             $_SWORDSERV = "N";
             SAL41.ORDSERVFACT = "";
@@ -2782,7 +2794,7 @@ function _Datoordserv_41() {
             _Ventanaordserv_41();
         }
     } else {
-        if ($_NITUSU == "0900434629") {
+        if (SAL41.NITUSU == "0900434629") {
             $_SWORDSERV = "S";
             _Ventanaordserv_41();
         }
@@ -3017,16 +3029,16 @@ function _dataINV401_07_41(data) {
     }
 }
 function _Datopaciente_41() {
-    console.debug("estoy en dato paciente", $_NITUSU, $_UNSERW);
+    console.debug("estoy en dato paciente", SAL41.NITUSU, $_UNSERW);
     $_SWCREAR = '0';
     // CLINICA META Y SERVIMEDICOS TIENEN PISTOLA CEDULA ADMISIONES URGENCIAS
-    if ((($_NITUSU == "0892000401") || ($_NITUSU == "0800162035")) && (($_UNSERW == "01") || ($_UNSERW == "02"))) {
+    if (((SAL41.NITUSU == "0892000401") || (SAL41.NITUSU == "0800162035")) && (($_UNSERW == "01") || ($_UNSERW == "02"))) {
         setTimeout(SER848, 50);
         // _Leerpaciente_41();
     } // LA MALOKA
-    else if ($_NITUSU == "0800251482") {
+    else if (SAL41.NITUSU == "0800251482") {
         _Leerpaciente_41();
-    } else if ($_NITUSU == "0830512772") {
+    } else if (SAL41.NITUSU == "0830512772") {
         _Evaluaridhistoriafact_41();
     } else {
         _Datopaciente2_41();
@@ -3084,7 +3096,7 @@ function _Validaridhistoriafact_41() {
         CON851('03', '03', null, 'error', 'Error');
         _Datopaciente_41();
     }
-    else if ($_NITUSU == "0800162035") {
+    else if (SAL41.NITUSU == "0800162035") {
         if ((($_PREFIJOUSU == "05") || ($_PREFIJOUSU == "06") || ($_PREFIJOUSU == "08") || ($_PREFIJOUSU == "10") || ($_PREFIJOUSU == "11") || ($_PREFIJOUSU == "12") || ($_PREFIJOUSU == "14") || ($_PREFIJOUSU == "15") || ($_PREFIJOUSU == "17")) && (parseInt($_NROCAPITNUM) > 0) && ($_FACTCAPITNUM == $_LLAVENUM) && ($_IDHISTORIAFACT != "000000000000001")) {
             CON851('1W', '1W', null, 'error', 'Error');
         } else {
@@ -3208,15 +3220,15 @@ function _dataCON904S_01_41(data) {
 //     ipcRenderer.send('another', { html:'SALUD/PAGINAS/SAL7767.html'});
 // }
 function _Validarpaciente_41() {
-    if ($_NITUSU == "0900019291") {
-        if (($_NITUSU == '0800162035') && ($_SWINVALID == '2B')) {
+    if (SAL41.NITUSU == "0900019291") {
+        if ((SAL41.NITUSU == '0800162035') && ($_SWINVALID == '2B')) {
             // PREFORM GRABAR-CAMBIO-DOCUMENTO
         } else {
             _Validandocliente3_41();
         }
     } else {
         if ($_SWCREAR == '0') {
-            if ((($_CLFACT == "3") || ($_CLFACT == "5") || ($_CLFACT == "7")) || (($_NITUSU == "0891855847") || ($_NITUSU == "0900565371"))) {
+            if ((($_CLFACT == "3") || ($_CLFACT == "5") || ($_CLFACT == "7")) || ((SAL41.NITUSU == "0891855847") || (SAL41.NITUSU == "0900565371"))) {
                 $_OPSEGU = "IS767";
                 LLAMADO_DLL({
                     dato: [$_ADMINW, $_OPSEGU],
@@ -3264,7 +3276,7 @@ function _dataCON904S_03_41(data) {
     var swinvalid = date[0].trim();
     var swinvalid1 = date[1].trim();
     if (swinvalid == "00") {
-        if ($_NITUSU == "0800162035") {
+        if (SAL41.NITUSU == "0800162035") {
             if (($_EPSPACI == "RES004") && (swinvalid1 == "00")) {
                 console.debug("actualizacion de pacientes");
                 // CALL SER11G Y DESPUES GO TO LEER-PACIENTE
@@ -3313,7 +3325,7 @@ function _Validandocliente3_41() {
         if ($_TIPOPACINUM == $_TIPOPACI) {
             _Validandocliente4_41();
         } else {
-            if ($_NITUSU == '0845000038') {
+            if (SAL41.NITUSU == '0845000038') {
                 if ((($_TIPOPACINUM == 'D') || ($_TIPOPACINUM == 'E') || ($_TIPOPACINUM == 'F')) || (($_TIPOPACINUM == 'D') || ($_TIPOPACINUM == 'E') || ($_TIPOPACINUM == 'F'))) {
                     _Validandocliente4_41();
                 }
@@ -3325,7 +3337,7 @@ function _Validandocliente3_41() {
     }
 }
 function _Validandocliente4_41() {
-    if (($_NITUSU == '0844003225') || ($_NITUSU == '0800251482') || ($_NITUSU == '0830092718') || ($_NITUSU == '0900193162')) {
+    if ((SAL41.NITUSU == '0844003225') || (SAL41.NITUSU == '0800251482') || (SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900193162')) {
         _Validandocliente5_41();
     } else {
         if ((($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_CONTRATONUM.trim() != '') && ($_CONTRATOPACI.trim() != '') && ($_CONTRATONUM != $_CONTRATOPACI)) {
@@ -3338,7 +3350,7 @@ function _Validandocliente4_41() {
 }
 function _Validandocliente5_41() {
     console.debug('validandocliente 5');
-    if (($_IDHISTORIAFACT == '000000086059367') && ($_NITUSU == '0900405505')) {
+    if (($_IDHISTORIAFACT == '000000086059367') && (SAL41.NITUSU == '0900405505')) {
         $_CONTRATOPACIW = $_CONTRATONUM;
         if ($_CONTRATONUM == $_CONTRATOPACI) {
             _Validandocliente6_41();
@@ -3348,7 +3360,7 @@ function _Validandocliente5_41() {
         }
     }
     else if (($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'T')) {
-        if ($_NITUSU == '0800037021') {
+        if (SAL41.NITUSU == '0800037021') {
             if (($_TIPOPACIDPACI == 'RC') || ($_TIPOPACIDPACI == 'MSI')) {
                 _Validandocliente6_41();
             }
@@ -3424,7 +3436,7 @@ function _Validandocliente6_41() {
         );
         _Validandocliente7_41();
     }
-    else if (($_NITUSU == '0845000038') || ($_NITUSU == '0800251482')) {
+    else if ((SAL41.NITUSU == '0845000038') || (SAL41.NITUSU == '0800251482')) {
         _Validandocliente7_41();
     }
     else {
@@ -3450,18 +3462,18 @@ function _Validandocliente7_41() {
     console.debug('validandocliente 7')
     $_FECHAVENCEPACI = '00000000';
     console.debug('quitar fechavence paci solo para prueba');
-    if (($_NITUSU == '0844003225') && $_CIUDADPACI != '85001') {
+    if ((SAL41.NITUSU == '0844003225') && $_CIUDADPACI != '85001') {
         $_DERECHOPACI = '2';
     }
-    if ((($_NITUSU == '0900229438') || ($_NITUSU == '0800162035')) && ($_FECHAVENCEPACI > 0) && ($_FECHAINGESTAD > $_FECHAVENCEPACI)) {
+    if (((SAL41.NITUSU == '0900229438') || (SAL41.NITUSU == '0800162035')) && ($_FECHAVENCEPACI > 0) && ($_FECHAINGESTAD > $_FECHAVENCEPACI)) {
         $_DERECHOPACI = '2';
     }
     if ((($_DERECHOPACI == '2') || ($_DERECHOPACI == '4') || ($_DERECHOPACI == '7') || ($_DERECHOPACI == '8') || ($_DERECHOPACI == 'A')) && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'T') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z'))) {
         CON851('80', '80', null, 'error', 'Error');
-        if (($_PUERTAINGW == '2') && ($_NITUSU == '0800037979')) {
+        if (($_PUERTAINGW == '2') && (SAL41.NITUSU == '0800037979')) {
             _Datopaciente_41();
         }
-        else if (($_NITUSU == '0800162035') || ($_NITUSU == '0900405505')) {
+        else if ((SAL41.NITUSU == '0800162035') || (SAL41.NITUSU == '0900405505')) {
             _Datopaciente_41()
         }
         else {
@@ -3589,9 +3601,9 @@ function _Validandocliente84_41() {
                         CON851('9S', '9S', null, 'warning', 'Advertencia!');
                         if (($_CLFACT == '7') && (isNumeric($_VENDEDORTER))) {
                             _Datopaciente_41()
-                        } else if (($_NITUSU == '0900229438') && ($_ENTIDADTER == 'SIN438')) {
+                        } else if ((SAL41.NITUSU == '0900229438') && ($_ENTIDADTER == 'SIN438')) {
                             _Datopaciente_41();
-                        } else if ((($_NITUSU == '0800162035') || ($_NITUSU == '0900405505') || ($_NITUSU == '0900005594') || ($_NITUSU == '0830512772') || ($_NITUSU == '0830511298') || ($_NITUSU == '0822001570') || ($_NITUSU == '0844003225')) && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_NITNUM != '0000009999') && ($_ADMINW != 'GEBC')) {
+                        } else if (((SAL41.NITUSU == '0800162035') || (SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0900005594') || (SAL41.NITUSU == '0830512772') || (SAL41.NITUSU == '0830511298') || (SAL41.NITUSU == '0822001570') || (SAL41.NITUSU == '0844003225')) && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_NITNUM != '0000009999') && ($_ADMINW != 'GEBC')) {
                             _Datopaciente_41();
                         } else {
                             _Validandopaciente10_41();
@@ -3609,7 +3621,7 @@ function _Validandocliente84_41() {
 
 function _Validandopaciente9_41() {
     console.debug('validando cliente 9');
-    if (($_NITUSU == '0844003225') || ($_NITUSU == '0800251482')) {
+    if ((SAL41.NITUSU == '0844003225') || (SAL41.NITUSU == '0800251482')) {
         _Validandopaciente10_41();
     } else {
         if ((($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'P') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z')) && ($_CONTRATONUM.trim() != '') && ($_CONTRATOPACI.trim() != '') && ($_CONTRATONUM != $_CONTRATOPACI)) {
@@ -3622,10 +3634,10 @@ function _Validandopaciente9_41() {
 }
 
 function _Validandopaciente10_41() {
-    if (($_NITUSU == '0900229438') && ($_EPSPACI == 'SIN438') && ($_FECHAVENCEPACI < $_FECHAINGESTAD)) {
+    if ((SAL41.NITUSU == '0900229438') && ($_EPSPACI == 'SIN438') && ($_FECHAVENCEPACI < $_FECHAINGESTAD)) {
         CON851('9S', '9S', null, 'error', 'Error');
         _Datopaciente_41();
-    } else if ((($_NITUSU == '0900004059') || ($_NITUSU == '0891855847')) && ($_NITFACTPACI != $_NITFACT) && ($_NITFACT != '9999')) {
+    } else if (((SAL41.NITUSU == '0900004059') || (SAL41.NITUSU == '0891855847')) && ($_NITFACTPACI != $_NITFACT) && ($_NITFACT != '9999')) {
         CON851('9S', '9S', null, 'error', 'Error');
         _Datopaciente_41();
     } else {
@@ -3634,17 +3646,17 @@ function _Validandopaciente10_41() {
 }
 
 function _Buscarconsultas_41() {
-    SER835({ PACIENTE: $_IDHISTORIAFACT.padStart(15, '0'), CLFACT: $_CLFACT, NITUSU: $_NITUSU, DESCRIPPACI: $_DESCRIPPACI }, _Evaluaridhistoriafact_41, _Buscarconsultas2_41);
+    SER835({ PACIENTE: $_IDHISTORIAFACT.padStart(15, '0'), CLFACT: $_CLFACT, NITUSU: SAL41.NITUSU, DESCRIPPACI: $_DESCRIPPACI }, _Evaluaridhistoriafact_41, _Buscarconsultas2_41);
 }
 
 function _Buscarconsultas2_41() {
-    if (($_NITUSU == '0800162035') && (($_NITFACT == '0860525150') || ($_NITFACT == '0860525149') || ($_NITFACT == '0900255098') || ($_NITFACT == '0860525148') || ($_NITFACT == '0900255099') || ($_NITFACT == '0900520316') || ($_NITFACT == '0900520317') || ($_NITFACT == '0900520318'))) {
+    if ((SAL41.NITUSU == '0800162035') && (($_NITFACT == '0860525150') || ($_NITFACT == '0860525149') || ($_NITFACT == '0900255098') || ($_NITFACT == '0860525148') || ($_NITFACT == '0900255099') || ($_NITFACT == '0900520316') || ($_NITFACT == '0900520317') || ($_NITFACT == '0900520318'))) {
         // SER 835E
-    } else if (($_CLFACT == '0') && ((($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z'))) && ($_NITUSU != '0830512772')) {
+    } else if (($_CLFACT == '0') && ((($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z'))) && (SAL41.NITUSU != '0830512772')) {
         // CALL 836A LINEA 3988
-    } else if (($_NITUSU == '0800162035') && ($_UNSERW == '01') && ($_CLFACT != '5') && ($_PREFIJOUSU == '01') && ($_REDEXTERNUM == '01')) {
+    } else if ((SAL41.NITUSU == '0800162035') && ($_UNSERW == '01') && ($_CLFACT != '5') && ($_PREFIJOUSU == '01') && ($_REDEXTERNUM == '01')) {
         // CALL SER 836U LINEA 4018
-    } else if (($_NITUSU == '0891855847') && ($_UNSERW == '01') && ($_CLFACT != '5') && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z'))) {
+    } else if ((SAL41.NITUSU == '0891855847') && ($_UNSERW == '01') && ($_CLFACT != '5') && (($_PREFIJOFACT == 'A') || ($_PREFIJOFACT == 'B') || ($_PREFIJOFACT == 'D') || ($_PREFIJOFACT == 'F') || ($_PREFIJOFACT == 'G') || ($_PREFIJOFACT == 'H') || ($_PREFIJOFACT == 'I') || ($_PREFIJOFACT == 'J') || ($_PREFIJOFACT == 'K') || ($_PREFIJOFACT == 'L') || ($_PREFIJOFACT == 'M') || ($_PREFIJOFACT == 'N') || ($_PREFIJOFACT == 'O') || ($_PREFIJOFACT == 'Q') || ($_PREFIJOFACT == 'R') || ($_PREFIJOFACT == 'S') || ($_PREFIJOFACT == 'V') || ($_PREFIJOFACT == 'W') || ($_PREFIJOFACT == 'X') || ($_PREFIJOFACT == 'Y') || ($_PREFIJOFACT == 'Z'))) {
         // CALL SER 836U LINEA 4041
     }
     $_SWOCULTAR = '00'
@@ -3797,7 +3809,7 @@ function _Dato1_41() {
             // _Dato1_2_41();
         });
     }
-    else if (($_NITUSU == '0900405505') && ($_FECHACIT != $_FECHAACT) && ($_IDHISTORIAFACT != 000000000000001)) {
+    else if ((SAL41.NITUSU == '0900405505') && ($_FECHACIT != $_FECHAACT) && ($_IDHISTORIAFACT != 000000000000001)) {
         CON851('9F', '9F', null, 'error', 'Error');
         if (($_CLFACT == '2') || ($_CLFACT == '3') || ($_CLFACT == '7')) {
             _Dato1_2_41();
@@ -3928,7 +3940,7 @@ function _dataINV401_10_41(data) {
 
 function _Dato2_41() {
     $_SWPASO = 0;
-    if (($_NITUSU == '0844003225') && ($_SWPASO == '0')) {
+    if ((SAL41.NITUSU == '0844003225') && ($_SWPASO == '0')) {
         if ($_CLFACT == '7') {
             $_TIPOMACROW = '2';
             _Evaluarmacro_41();
@@ -4148,7 +4160,7 @@ function _Validarcodservicio2_41() {
     _event_f3({ estado: 'off' });
     let LLAVECUP = $('#codservicio2_SAL41').val();
     $_GRUPOFACT = LLAVECUP.substring(0, 2);
-    $_CODARTFACT = LLAVECUP.substring(2, 12);
+    $_CODARTFACT = LLAVECUP.substring(2, 15);
     $_CODARTCTL = $_CODARTFACT;
     // if (($_CLFACT == '0') && ($_CODARTFACT != $_CODARTCTL)) {
     //     $_TIPOART = '0';
@@ -4209,7 +4221,7 @@ function _dataINV401_11(data) {
 function _Leerarticulo_41() {
     $_ARTFACT = $_GRUPOFACT + $_CODARTFACT + $_CLASEARTFACT;
     // SE AÑADIO LA CLASEART DEBAJO DE TODAS LAS VARIABLES
-    if ((($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) && ($_SUCW == 'SC')) {
+    if (((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) && ($_SUCW == 'SC')) {
         // SER835C NO SE REALIZA POR FALTA DE FACTURA-SERVICIO (SALUD)
     }
     else if (($_GRUPOFACT.trim() == '') || (parseInt($_GRUPOFACT) == 0)) {
@@ -4272,6 +4284,7 @@ function _Leerarticulo2_41() {
         $_CODART = $_TIPOART + $_GRUPOART + $_NUMEROART.padEnd(13, ' ') + $_CLASEART;
         // _Leerpromedio_41(_LlamdoSAL41_06_41); // PRUEBA DE LEER PROMEDIO ANTES DE DEBIDO A EJECUCION DE VARIABLES
         // setTimeout(_LlamdoSAL41_06_41, 300);
+        _Leerpromedio_41();
         let datos_envio = datosEnvio();
         datos_envio += $_CODART;
         console.debug(datos_envio);
@@ -4282,7 +4295,7 @@ function _Leerarticulo2_41() {
             $_LLAVETAB = $_CODTABW + $_TIPOTABW + $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
             $_LLAVECUP = $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
             let datos_envio = datosEnvio();
-            datos_envio += SAL41.ADMINW + '|' + $_LLAVETAB + '|' + $_NITUSU + '|' + $_CONVENIONUM + '|' + $_LLAVECUP;
+            datos_envio += SAL41.ADMINW + '|' + $_LLAVETAB + '|' + SAL41.NITUSU + '|' + $_CONVENIONUM + '|' + $_LLAVECUP;
             console.debug(datos_envio)
             SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("APP/SALUD/SAL41-07.DLL"));
         }
@@ -4291,7 +4304,7 @@ function _Leerarticulo2_41() {
             $_LLAVETAB = $_CODTABW + $_TIPOTABW + $_GRUPOFACT + $_CODARTFACT.padEnd(8, ' ');
             $_LLAVECUP = $_GRUPOFACT + $_CODARTFACT.padEnd(10, ' ');
             let datos_envio = datosEnvio();
-            datos_envio += SAL41.ADMINW + '|' + $_LLAVETAB + '|' + $_NITUSU + '|' + $_CONVENIONUM + '|' + $_LLAVECUP;
+            datos_envio += SAL41.ADMINW + '|' + $_LLAVETAB + '|' + SAL41.NITUSU + '|' + $_CONVENIONUM + '|' + $_LLAVECUP;
             console.debug(datos_envio)
             SolicitarDll({ datosh: datos_envio }, _dataSAL41_07, get_url("APP/SALUD/SAL41-07.DLL"));
         }
@@ -4356,7 +4369,7 @@ function _dataSAL41_06(data) {
                 }
                 break;
         }
-        if (($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) {
+        if ((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) {
             $('form').append(
                 '<div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">' +
                 '<div class="col-md-5 col-sm-4 col-xs-4">' +
@@ -4454,7 +4467,7 @@ function _Leerarticulo3_41() {
     $_VALORAPROX = parseInt($_VLRUNITW) * 1;
     console.debug($_VALORAPROX);
     $_VLRUNITW = $_VALORAPROX;
-    if ($_NITUSU == '0900004059') {
+    if (SAL41.NITUSU == '0900004059') {
         $_SWAPR = '100';
         $_VLRUNITW = parseInt($_VLRUNITW) + 50;
         $_VALORAPROX = parseInt($_VLRUNITW) / $_SWAPR;
@@ -4602,7 +4615,7 @@ function _Leerarticulo4_41() {
             $_VLRUNITW = $_MONTOTAB;
             break;
         case '4':
-            if ($_NITUSU == '0892000401') {
+            if (SAL41.NITUSU == '0892000401') {
                 $_FACTORW = 1;
                 $_SWAPR = 100;
                 // $_VLRUNITW = Math.round($_MONTOTAB * $_SALMINTAR);
@@ -4646,17 +4659,17 @@ function _Leerarticulo5_41() {
     if (($_LLAVETIPOTAB == 'SO1') && ($_CODPAQINTTAB != '')) {
         CON851('', 'Atencion !, este procedimiento esta clasificado como posible paquete integral', null, 'warning', 'Advertencia!');
     }
-    if (($_NITUSU == '0800037021') && ($_NITFACT == '0830079672')) {
+    if ((SAL41.NITUSU == '0800037021') && ($_NITFACT == '0830079672')) {
         $_SWAPR = '1';
     }
     if (($_CODTAR == 'H4') && (parseInt($_CLFACT) > 1)) {
         $_SWAPR = '1';
     }
-    if (($_NITUSU == '0800037021') && ($_OCULTARCUP == '*')) {
+    if ((SAL41.NITUSU == '0800037021') && ($_OCULTARCUP == '*')) {
         CON851('7R', '7R', null, 'error', 'Error');
         _Dato2_41();
     }
-    else if ((($_NITUSU == '0900405505') || ($_NITUSU == '0822002688')) && ($_CISNUM == 'S') && ($_CISCUP == 'N')) {
+    else if (((SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0822002688')) && ($_CISNUM == 'S') && ($_CISCUP == 'N')) {
         CON851('5L', '5L', null, 'error', 'Error');
         _Buscarcodigo_41();
     }
@@ -4667,7 +4680,7 @@ function _Leerarticulo5_41() {
     else if (($_FACTCAPITNUM == $_LLAVENUM) && ($_CLFACT == '4') && ($_I < 9)) {
         $_VALCAPITAW = $_ARTFACT;
         if (($_VALCAPITAW == 'XXCAP') || ($_VALCAPITAW == 'XXPGP')) {
-            if ($_NITUSU == '0900019291') {
+            if (SAL41.NITUSU == '0900019291') {
                 _Leerarticulo6_41();
             }
             else {
@@ -4675,7 +4688,7 @@ function _Leerarticulo5_41() {
             }
         }
         else {
-            if ($_NITUSU == '0900405505') {
+            if (SAL41.NITUSU == '0900405505') {
                 if ($_VALCAPITAW == 'XX19') {
                     _Ventanacapacitacion_41();
                 }
@@ -4703,7 +4716,7 @@ function _Leerarticulo6_41() {
         // BUSCAR REPETIDO EN LA TABLA
     }
     $_SWBUSCAR = '0'
-    if (($_NITUSU == '0800037021') && ($_CLFACT == '2')) {
+    if ((SAL41.NITUSU == '0800037021') && ($_CLFACT == '2')) {
         //BUSCAR REPETIDO 
         if ($_SWBUSCAR == 1) {
             CON851('05', '05', null, 'error', 'Error');
@@ -4718,7 +4731,7 @@ function _Datolateralidad_41() {
     console.debug($_VLRUNITW);
     console.debug('datolateralidad');
     $_PRINCIPALANTEW = $_DATOSSEPCUP;
-    if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) {
+    if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) {
         var lateralidades = '[{"codigo": "1","descripcion": "Derecho"},{"codigo": "2", "descripcion": "Izquierdo"},{"codigo": "3","descripcion": "Bilateral"},{"codigo": "4","descripcion": "No aplica"}]'
         var lateralidad = JSON.parse(lateralidades);
         POPUP({
@@ -4758,14 +4771,14 @@ function _Datoalmacen_41() {
     }
 }
 function _Evaluandoalmacen_41() {
-    if (($_NITUSU == '0800037021') && ($_ADMINW == 'UCI')) {
+    if ((SAL41.NITUSU == '0800037021') && ($_ADMINW == 'UCI')) {
         $_ALMFACT = 'SIN97';
     }
-    if (($_NITUSU == '0900658867') && ($_PREFIJOUSU == '10')) {
+    if ((SAL41.NITUSU == '0900658867') && ($_PREFIJOUSU == '10')) {
         $_ALMFACT = 'ALM10';
     }
     if ($_ALMFACT.trim() == '') {
-        if (($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) {
+        if ((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) {
             if (($_UNSERVFACT == '04') || ($_UNSERVFACT == '54')) {
                 $_ALMFACT == 'CR001';
             }
@@ -4796,7 +4809,7 @@ function _Evaluaralmacen_41() {
 
 function _Validaralmacen_41() {
     $_ALMFACT = $('#almac_SAL41').val();
-    if ($_NITUSU == '0830512772') {
+    if (SAL41.NITUSU == '0830512772') {
         if (($_SWPASOALMW == '1') || ($_ALMFACT == 'SIN99') || (($_ADMINW == 'INVI') || ($_ADMINW == 'VENT')) && ($_ALMFACT == 'SIN98')) {
             _Datoalmacen2_41();
         }
@@ -4868,7 +4881,7 @@ function _dataCON904_06_41(data) {
         if ((data[0].trim() == '01') && ($_CLFACT == '0')) {
             $_RESTRICLOCAL == 'N';
         }
-        if (($_NITUSU == '0892001990') && ($_CODLOCAL == 'DR02') && ($_ADMINW == 'MEOM')) {
+        if ((SAL41.NITUSU == '0892001990') && ($_CODLOCAL == 'DR02') && ($_ADMINW == 'MEOM')) {
             $_RESTRICLOCAL == 'N';
         }
         if (($_CLFACT == '0') && ($_ALMFACT.substring(0, 3) != "SIN") && (($_GRUPOFACT == 'PO') && ($_GRUPOFACT == 'NP'))) {
@@ -4907,11 +4920,11 @@ function _Permisosalmacen_41() {
         CON851('13', '13', null, 'error', 'Error');
         _Datoalmacen_41();
     }
-    else if ((($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) && ($_ALMFACT == 'DR099') && (($_UNSERVFACT == '04') || ($_UNSERVFACT == '54'))) {
+    else if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) && ($_ALMFACT == 'DR099') && (($_UNSERVFACT == '04') || ($_UNSERVFACT == '54'))) {
         CON851('B1', 'B1', null, 'error', 'Error');
         _Datoalmacen_41();
     }
-    else if ((($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133')) || ($_ALMFACT == 'CR001')) {
+    else if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133')) || ($_ALMFACT == 'CR001')) {
         if (($_UNSERVFACT == '04') || ($_UNSERVFACT == '54')) {
             _Permisosalmacen2_41();
         }
@@ -4930,10 +4943,10 @@ function _Permisosalmacen2_41() {
         _Ventanalote_41()
     }
     else {
-        if (($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) {
+        if ((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) {
             _Ventanalote_41()
         }
-        if ((($_GRUPOFACT == 'MQ') && ($_TIPODRFACT == '1') && ((parseInt($_LLAVEBARRASW) == 0)) || ($_LLAVEBARRASW.trim() == '')) && ($_NITUSU == '0891855847')) {
+        if ((($_GRUPOFACT == 'MQ') && ($_TIPODRFACT == '1') && ((parseInt($_LLAVEBARRASW) == 0)) || ($_LLAVEBARRASW.trim() == '')) && (SAL41.NITUSU == '0891855847')) {
             CON851('1P', '1P', null, 'error', 'Error');
             _Ventanabarras_41();
         }
@@ -4942,7 +4955,7 @@ function _Permisosalmacen2_41() {
                 CON851('1P', '1P', null, 'error', 'Error');
                 _Ventanabarras_41();
             }
-            if ((($_GRUPOFACT == 'PO') || ($_NITUSU == 'NP')) && ($_LLAVEBARRASW = !$_CODBARRASART)) {
+            if ((($_GRUPOFACT == 'PO') || (SAL41.NITUSU == 'NP')) && ($_LLAVEBARRASW = !$_CODBARRASART)) {
                 CON851('1P', '1P', null, 'error', 'Error');
                 _Ventanabarras_41();
             }
@@ -5183,7 +5196,7 @@ function _Calcularmonto_41() {
                     $_SWAPR = 1;
                     break;
             }
-            if ($_NITUSU == '0892000401') {
+            if (SAL41.NITUSU == '0892000401') {
                 $_VLRUNITW = Math.round(($_VLRUNITW * $_FACTORW) / $_SWAPR);
                 $_VLRUNITW = Math.round($_VLRUNITW * $_SWAPR);
             }
@@ -5212,7 +5225,7 @@ function _Calcularmonto3_41() {
         // $_VLRARTW = Math.round($_VLRUNITW * $_CANTFACT);
         $_VLRARTW = $_VLRUNITW * $_CANTFACT;
     }
-    if (($_NITUSU == '0845000038') && ($_CLFACT == '0')) {
+    if ((SAL41.NITUSU == '0845000038') && ($_CLFACT == '0')) {
         $_VLRARTCOMPW = $_VLRUNITW * $_CANTFACT;
         if ($_VLRARTCOMPW == $_VLRARTW) {
             _Calcularmonto4_41();
@@ -5297,7 +5310,7 @@ function _Evaluarcant_41() {
     )
 }
 function _Validarcant_41() {
-    if (($_CLFACT == '0') && ($_TIPODRFACT == '2')) {
+    if ($_CLFACT == '0') {
         if ($_TIPODRFACT == '2') {
             if (parseFloat($_CANTFACT) == 0) {
                 _Aceptarcodigo_41();
@@ -5318,16 +5331,15 @@ function _Validarcant_41() {
             if ((parseFloat($_CANTFACT < 0)) && ($_ALMFACT != 'S')) {
                 CON851('46', '46', null, 'error', 'Error');
                 _Dato3_41();
-            } else if (($_NITUSU == '0892000458') && (($_ALMFACT == 'DR002') || ($_ALMFACT == 'DR003') || ($_ALMFACT == 'URG01'))) {
+            } else if ((SAL41.NITUSU == '0892000458') && (($_ALMFACT == 'DR002') || ($_ALMFACT == 'DR003') || ($_ALMFACT == 'URG01'))) {
                 _Validarcant2_41()
             }
             else {
                 if (($_ALMFACT.substring(0, 3) != 'SIN') && (parseFloat($_CANTFACT) > 0) && (parseFloat($_CANTFACT) > parseFloat($_SDOACTCANT))) {
                     CON851('07', '07', null, 'error', 'Error');
-                    if ($_RESTICEXUSU == 'N') {
+                    if (SAL41.RESTIC_EXUSU == 'N') {
                         _Dato3_41();
-                    }
-                    else {
+                    } else {
                         _Validarcant2_41();
                     }
                 }
@@ -5371,7 +5383,7 @@ function _Validarcant2_41() {
     }
 }
 function _Validarcant3_41() {
-    if ((($_NITUSU == '0900658867') || ($_NITUSU == '0900541158') || ($_NITUSU == '0900566047') || ($_NITUSU == '0800037979')) && (($_GRUPOFACT == 'PO') || ($_GRUPOFACT == 'NP'))) {
+    if (((SAL41.NITUSU == '0900658867') || (SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0800037979')) && (($_GRUPOFACT == 'PO') || ($_GRUPOFACT == 'NP'))) {
         fuente = '<div class="col-md-12" id="DIASTRATAFACT_41"> ' +
             '<input id="diatratafact_SAL41" type="text" class="form-control input-md" data-orden="1" maxlength="3"> ' +
             '</div>';
@@ -5414,7 +5426,7 @@ function _Datodestart_41() {
 function _Calcularprecio_41() {
     // $_FACTORDESW = Math.round((100 - $_DESCTOW) / 100)
     $_FACTORDESW = (100 - $_DESCTOW) / 100;
-    if ($_NITUSU == '0845000038') {
+    if (SAL41.NITUSU == '0845000038') {
         if ($_CLFACT == '0') {
             $_VLRUNIT2W = Math.round(parseFloat($_VLRUNITW) * parseFloat($_FACTORDESW));
             $_VLRUNITW = $_VLRUNIT2W;
@@ -5438,10 +5450,10 @@ function _Calcularprecio2_41() {
 }
 
 function _Dato4_41() {
-    if (($_NITUSU == '0822001570') && ($_CLFACT == '0')) {
+    if ((SAL41.NITUSU == '0822001570') && ($_CLFACT == '0')) {
         // CONTINUE
     } else {
-        if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162') || ($_NITUSU == '0900658867') || ($_NITUSU == '0830511298') || ($_NITUSU == '0822001570')) {
+        if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162') || (SAL41.NITUSU == '0900658867') || (SAL41.NITUSU == '0830511298') || (SAL41.NITUSU == '0822001570')) {
             if (($_ADMINW == 'LUZA') || ($_ADMINW == 'MOR6') || ($_ADMINW == 'ADMI') || ($_ADMINW == 'BLA1')) {
                 $_SWINVALID = '0';
                 _Dato42_41();
@@ -5480,7 +5492,7 @@ function _Validartlimite_41() {
     console.debug('falta incluir el con851p');
     if (($_VLRLIMIW > 0) && ($_VLRUNITW > $_VLRLIMIW)) {
         CON851('9E', '9E', null, 'warning', 'Advertencia!');
-        if (($_NITUSU == '0891855847') || ($_NITUSU == '024247556') || ($_NITUSU == '0900030814') || ($_NITUSU == '0800162035') || ($_NITUSU == '0900019291')) {
+        if ((SAL41.NITUSU == '0891855847') || (SAL41.NITUSU == '024247556') || (SAL41.NITUSU == '0900030814') || (SAL41.NITUSU == '0800162035') || (SAL41.NITUSU == '0900019291')) {
             // CON851P
         }
         else {
@@ -5503,7 +5515,7 @@ function _Validartlimite_41() {
     }
 }
 function _Dato5_41() {
-    if ($_NITUSU == '0892000401') {
+    if (SAL41.NITUSU == '0892000401') {
         let vlrunit = $_VLRUNITW.replace(/,/, '');
         let cantfact = $_CANTFACT.replace(/,/, '')
         $_VLRARTW = parseFloat(vlrunit) * parseFloat(cantfact);
@@ -5516,7 +5528,7 @@ function _Dato5_41() {
     _Dato52_41();
 }
 function _Dato52_41() {
-    if (($_NITUSU == '0830512772') && ($_REGULADOSTABME == 'S')) {
+    if ((SAL41.NITUSU == '0830512772') && ($_REGULADOSTABME == 'S')) {
         if ($_VLRARTW > $_VLRLIMITETABME) {
             $_VLRREGULADOW = ($_VLRARTW * $_PORCEMINTABME) / 100;
         }
@@ -5527,7 +5539,7 @@ function _Dato52_41() {
         }
         $_VLRARTW = $_VLRARTW + $_VLRREGULADOW;
     }
-    if ($_NITUSU == '0892000401') {
+    if (SAL41.NITUSU == '0892000401') {
         console.debug('condicion despues 4835');
         $_VALOREDIT = $_VLRARTW;
         // $('#vlrtotal_41').val($_VALOREDIT);
@@ -5688,22 +5700,22 @@ function _Datoabono_41() {
     else if ($_PREFIJOFACT == 'E') {
         $_PORCENTCOPAGO = 9;
         $_COPAGOESTIMFACT = $_VALORTOTAL;
-        if ($_NITUSU == '0892000401') {
+        if (SAL41.NITUSU == '0892000401') {
             _Datocopago_41();
         }
         else {
             _Editarabono_41();
         }
     }
-    else if ((($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) && ($_PORCENTCOPAGONUM == '99')) {
+    else if (((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) && ($_PORCENTCOPAGONUM == '99')) {
         $_COPAGOESTIMFACT = $_VALORBRUTO;
         _Editarabono_41();
     }
-    else if ((($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) && ($_COPAGOPACI == 'N')) {
+    else if (((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719')) && ($_COPAGOPACI == 'N')) {
         $_COPAGOESTIMFACT = 0;
         _Editarabono_41();
     }
-    else if ($_NITUSU == '0800156469') {
+    else if (SAL41.NITUSU == '0800156469') {
         _Datoabono2_41();
     }
     else {
@@ -5724,23 +5736,23 @@ function _Datoabono2_41() {
     else if ((($_PREFIJOFACT == "A") || ($_PREFIJOFACT == "B") || ($_PREFIJOFACT == "D") || ($_PREFIJOFACT == "F") || ($_PREFIJOFACT == "G") || ($_PREFIJOFACT == "H") || ($_PREFIJOFACT == "I") || ($_PREFIJOFACT == "J") || ($_PREFIJOFACT == "K") || ($_PREFIJOFACT == "L") || ($_PREFIJOFACT == "M") || ($_PREFIJOFACT == "N") || ($_PREFIJOFACT == "O") || ($_PREFIJOFACT == "Q") || ($_PREFIJOFACT == "R") || ($_PREFIJOFACT == "S") || ($_PREFIJOFACT == "V") || ($_PREFIJOFACT == "W") || ($_PREFIJOFACT == "X") || ($_PREFIJOFACT == "Y") || ($_PREFIJOFACT == "Z")) && ($_NITFACT == '9999') && (($_ACTTER == '15') || ($_ACTTER == '25'))) {
         $_PORCENTCOPAGO = 9;
         $_COPAGOESTIMFACT = $_VALORTOTAL;
-        if ($_NITUSU == '0892000401') {
+        if (SAL41.NITUSU == '0892000401') {
             _Datocopago_41();
         }
         else {
             _Editarabono_41();
         }
     }
-    else if (($_NITUSU == $_NITFACT) && (($_PREFIJOFACT == "A") || ($_PREFIJOFACT == "B") || ($_PREFIJOFACT == "D") || ($_PREFIJOFACT == "F") || ($_PREFIJOFACT == "G") || ($_PREFIJOFACT == "H") || ($_PREFIJOFACT == "I") || ($_PREFIJOFACT == "J") || ($_PREFIJOFACT == "K") || ($_PREFIJOFACT == "L") || ($_PREFIJOFACT == "M") || ($_PREFIJOFACT == "N") || ($_PREFIJOFACT == "O") || ($_PREFIJOFACT == "Q") || ($_PREFIJOFACT == "R") || ($_PREFIJOFACT == "S") || ($_PREFIJOFACT == "V") || ($_PREFIJOFACT == "W") || ($_PREFIJOFACT == "X") || ($_PREFIJOFACT == "Y") || ($_PREFIJOFACT == "Z"))) {
+    else if ((SAL41.NITUSU == $_NITFACT) && (($_PREFIJOFACT == "A") || ($_PREFIJOFACT == "B") || ($_PREFIJOFACT == "D") || ($_PREFIJOFACT == "F") || ($_PREFIJOFACT == "G") || ($_PREFIJOFACT == "H") || ($_PREFIJOFACT == "I") || ($_PREFIJOFACT == "J") || ($_PREFIJOFACT == "K") || ($_PREFIJOFACT == "L") || ($_PREFIJOFACT == "M") || ($_PREFIJOFACT == "N") || ($_PREFIJOFACT == "O") || ($_PREFIJOFACT == "Q") || ($_PREFIJOFACT == "R") || ($_PREFIJOFACT == "S") || ($_PREFIJOFACT == "V") || ($_PREFIJOFACT == "W") || ($_PREFIJOFACT == "X") || ($_PREFIJOFACT == "Y") || ($_PREFIJOFACT == "Z"))) {
         $_COPAGOESTIMFACT = 0;
         _Datocopago_41();
     }
-    else if (($_NITUSU == '0900685768') && (($_PREFIJOFACT == "A") || ($_PREFIJOFACT == "B") || ($_PREFIJOFACT == "D") || ($_PREFIJOFACT == "F") || ($_PREFIJOFACT == "G") || ($_PREFIJOFACT == "H") || ($_PREFIJOFACT == "I") || ($_PREFIJOFACT == "J") || ($_PREFIJOFACT == "K") || ($_PREFIJOFACT == "L") || ($_PREFIJOFACT == "M") || ($_PREFIJOFACT == "N") || ($_PREFIJOFACT == "O") || ($_PREFIJOFACT == "Q") || ($_PREFIJOFACT == "R") || ($_PREFIJOFACT == "S") || ($_PREFIJOFACT == "V") || ($_PREFIJOFACT == "W") || ($_PREFIJOFACT == "X") || ($_PREFIJOFACT == "Y") || ($_PREFIJOFACT == "Z"))) {
+    else if ((SAL41.NITUSU == '0900685768') && (($_PREFIJOFACT == "A") || ($_PREFIJOFACT == "B") || ($_PREFIJOFACT == "D") || ($_PREFIJOFACT == "F") || ($_PREFIJOFACT == "G") || ($_PREFIJOFACT == "H") || ($_PREFIJOFACT == "I") || ($_PREFIJOFACT == "J") || ($_PREFIJOFACT == "K") || ($_PREFIJOFACT == "L") || ($_PREFIJOFACT == "M") || ($_PREFIJOFACT == "N") || ($_PREFIJOFACT == "O") || ($_PREFIJOFACT == "Q") || ($_PREFIJOFACT == "R") || ($_PREFIJOFACT == "S") || ($_PREFIJOFACT == "V") || ($_PREFIJOFACT == "W") || ($_PREFIJOFACT == "X") || ($_PREFIJOFACT == "Y") || ($_PREFIJOFACT == "Z"))) {
         $_PORCENTCOPAGO = 9;
         $_COPAGOESTIMFACT = $_VALORTOTAL;
         _Editarabono_41();
     }
-    else if (($_NITUSU == '0900405505') || ($_NITUSU == '0830511298')) {
+    else if ((SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0830511298')) {
         _Datoabono3_41();
     }
     else {
@@ -5758,7 +5770,7 @@ function _Datoabono3_41() {
         $_COPAGOESTIMFACT = 0;
         _Editarabono_41();
     }
-    else if ($_NITUSU == '0800175901') {
+    else if (SAL41.NITUSU == '0800175901') {
         $_PORCENTCOPAGO = 0;
     }
     else {
@@ -5780,7 +5792,7 @@ function _Datoabono3_41() {
                 }
                 _Validarfechaopago_41();
             }
-            else if (($_NITUSU == '0900405505') && ($_CLFACT == '4') && (($_TIPOAFILPACI == '0') || ($_TIPOAFILPACI == '2'))) {
+            else if ((SAL41.NITUSU == '0900405505') && ($_CLFACT == '4') && (($_TIPOAFILPACI == '0') || ($_TIPOAFILPACI == '2'))) {
                 if (($_SWORDSERV == 'S') && ($_COPAGOESTIMFACT > 0)) {
                     _Datocopago_41();
                 }
@@ -5879,7 +5891,7 @@ function _dataCON904S_06_41(data) {
     console.debug(data, 'CON904S_06');
     var date = data.split('|');
     if (date[0].trim() == '01') {
-        if (($_NITUSU == '0900405505') && ($_GRUPOFACT == '93')) {
+        if ((SAL41.NITUSU == '0900405505') && ($_GRUPOFACT == '93')) {
             if (($_SWORDSERV == 'S') && ($_COPAGOESTIMFACT > 0)) {
                 _Datocopago_41();
             }
@@ -5903,9 +5915,9 @@ function _dataCON904S_06_41(data) {
     }
 }
 function _Datoabono4_41() {
-    if (($_NITUSU == '0800162035') && ($_NITFACT == '9999') && ($_CLFACT == '0')) {
+    if ((SAL41.NITUSU == '0800162035') && ($_NITFACT == '9999') && ($_CLFACT == '0')) {
         $_PORCENTCOPAGO = 9;
-    } if ($_NITUSU == '0822002688') {
+    } if (SAL41.NITUSU == '0822002688') {
         _Validarcopago_41();
     }
     else {
@@ -5940,7 +5952,7 @@ function _Validarcopago2_41() {
 
 function _Datocopago_41() {
     console.debug('dato copago 41');
-    if (($_NITUSU == '0800162035') && ($_NITFACT == '9999') && ($_CLFACT == '0')) {
+    if ((SAL41.NITUSU == '0800162035') && ($_NITFACT == '9999') && ($_CLFACT == '0')) {
         $_COPAGOESTIMFACT = $_VALORTOTAL;
     }
     $_OPSEGU = 'I41C';
@@ -5954,7 +5966,7 @@ function _dataCON904S_07_41(data) {
     console.debug(data, 'CON904S_07');
     var date = data.split('|');
     if (date[0].trim() == '01') {
-        if ((($_NITUSU == '0900405505') || ($_NITUSU == '0830511298')) && ($_GRUPOFACT == '93')) {
+        if (((SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0830511298')) && ($_GRUPOFACT == '93')) {
             _Evaluarcopagoestimfact();
         } else {
             _Editarabono_41();
@@ -6010,7 +6022,7 @@ function _Aceptartipocopago_41() {
                 _Aceptarespec_41();
             }
             else {
-                if (($_NITUSU == '0845000038') && (($_CLFACT == '0') || ($_CLFACT == '2') || ($_CLFACT == '3') || ($_CLFACT == '4'))) {
+                if ((SAL41.NITUSU == '0845000038') && (($_CLFACT == '0') || ($_CLFACT == '2') || ($_CLFACT == '3') || ($_CLFACT == '4'))) {
                     $_TIPOCOPAGOFACT = '2';
                     _Aceptarespec_41();
                 }
@@ -6040,7 +6052,7 @@ function _EvaluarSER822A_41(data) {
         case '1':
         case '2':
         case '3':
-            if ($_NITUSU == '0800074996') {
+            if (SAL41.NITUSU == '0800074996') {
                 var tipodepago = [
                     { codigo: '1', descripcion: 'EFECTIVO' },
                     { codigo: '2', descripcion: 'TARJ.CRED' },
@@ -6120,16 +6132,16 @@ function _Aceptarespec_41() {
         $_ESPECLAB = '385';
     }
     // AGREGAR QUE SEA EL PRIMER ARTFACT
-    if (($_NITUSU == '0800162035') && ($_CLFACT == '7') && ($_CODTAR == 'PE') && (($_ARTFACT == '903841') || ($_ARTFACT == '903815') || ($_ARTFACT == '903816') || ($_ARTFACT == '903818'))) {
+    if ((SAL41.NITUSU == '0800162035') && ($_CLFACT == '7') && ($_CODTAR == 'PE') && (($_ARTFACT == '903841') || ($_ARTFACT == '903815') || ($_ARTFACT == '903816') || ($_ARTFACT == '903818'))) {
         CON851('3S', '3S', null, 'warning', 'Advertencia!');
     }
-    if (($_NITUSU == '0800162035') && ($_CLFACT == '7') && ($_CODTAR == 'PE') && ($_ARTFACT == '903841')) {
+    if ((SAL41.NITUSU == '0800162035') && ($_CLFACT == '7') && ($_CODTAR == 'PE') && ($_ARTFACT == '903841')) {
         CON851('3S', '3S', null, 'warning', 'Advertencia!');
     }
-    if (($_ESPECLAB.trim() == '') && (($_NITUSU == '0830092718') || ($_NITUSU == '0900019291') || ($_NITUSU == '0900193162'))) {
+    if (($_ESPECLAB.trim() == '') && ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900019291') || (SAL41.NITUSU == '0900193162'))) {
         $_ESPECLAB = '602';
     }
-    if (($_NITUSU == '0845000038') && ($_TIPODRFACT == '1') && ($_COPAGOESTIMFACT > $_VALORBRUTO)) {
+    if ((SAL41.NITUSU == '0845000038') && ($_TIPODRFACT == '1') && ($_COPAGOESTIMFACT > $_VALORBRUTO)) {
         CON851('11', '11', null, 'error', 'Error');
         _Aceptarcodigo_41();
     }
@@ -6179,7 +6191,7 @@ function _dataSAL41_08(data) {
             CON851('13', '13', null, 'error', 'Error');
             _Evaluarespeclab_41();
         }
-        else if ($_NITUSU == '0800037021') {
+        else if (SAL41.NITUSU == '0800037021') {
             if (($_COSTOESP == '2D') || ($_COSTOESP == '26') || ($_COSTOESP == '27') || ($_COSTOESP == '28') || ($_COSTOESP == '2H') || ($_COSTOESP == '2Q') || ($_COSTOESP == '2W') || ($_COSTOESP == '2g')) {
                 $_OPCION1 = ' ';
             }
@@ -6202,7 +6214,7 @@ function _dataSAL41_08(data) {
             _Leerespec2_41();
         }
         else {
-            if ($_NITUSU == '0845000038') {
+            if (SAL41.NITUSU == '0845000038') {
                 if (($_COSTOESP == '2a') || ($_COSTOESP == '2e') || ($_COSTOESP == '2C') || ($_COSTOESP == '2J') || ($_COSTOESP == '2w') || ($_COSTOESP == '2b') || ($_COSTOESP == '3Q') || ($_COSTOESP == '3s') || ($_COSTOESP == '3g') || ($_COSTOESP == '3h') || ($_COSTOESP == '3m') || ($_COSTOESP == '4n')) {
                     $_OPCION1 = ' '
                 }
@@ -6251,10 +6263,10 @@ function _dataSAL41_08(data) {
 }
 
 function _Leerespec2_41() {
-    if (($_NITUSU == '0800037021') && ($_CLFACT == '4') && ($_GRUPOFACT == 'S3')) {
+    if ((SAL41.NITUSU == '0800037021') && ($_CLFACT == '4') && ($_GRUPOFACT == 'S3')) {
         $_COSTOESP = '41'
     }
-    // if (($_CLFACT == '1') && ($_MEDCIRFACT > 0) && ($_MEDCIRFACT =! $_NITUSU)){
+    // if (($_CLFACT == '1') && ($_MEDCIRFACT > 0) && ($_MEDCIRFACT =! SAL41.NITUSU)){
     //     SE PUEDE IMPLEMENTAR EN SAL41-07 Y SAL41-08
     // }
     // if (parseInt($_CLFACT) > 0){
@@ -6266,10 +6278,9 @@ function _Leerespec2_41() {
 function _Aceptarcosto() {
     // if (parseInt($_CLFACT) > 0){
     // }
-    console.debug('aceptarcosto')
     if (($_CCOSTOSERV == '  ') || ($_CCOSTOSERV == '00')) {
         if ($_COSTOESP.trim() == '') {
-            if ($_NITUSU == '0900030814') {
+            if (SAL41.NITUSU == '0900030814') {
                 $_SWINVALID = '0'
             }
             else {
@@ -6279,7 +6290,7 @@ function _Aceptarcosto() {
         }
         else {
             $_COSTOFACT = $_COSTOESP;
-            if ($_NITUSU == '0891855847') {
+            if (SAL41.NITUSU == '0891855847') {
                 switch ($_UNSERVFACT) {
                     case '01':
                         $_COSTOFACT = $_COSTOESP;
@@ -6332,8 +6343,8 @@ function _Aceptarcosto() {
     }
     else {
         $_COSTOFACT = $_CCOSTOSERV;
-        if (($_NITUSU == '0900004059') || ($_NITUSU == '0900541158')) {
-            if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) {
+        if ((SAL41.NITUSU == '0900004059') || (SAL41.NITUSU == '0900541158')) {
+            if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) {
                 $_COSTOFACT = ' ';
                 _Datocccosto_41();
             }
@@ -6348,7 +6359,7 @@ function _Aceptarcosto() {
     }
 }
 function _Datocccosto_41() {
-    if (($_NITUSU == '0900541158') || ($_NITUSU == '0900566047') || ($_NITUSU == '0900565371') || ($_NITUSU == '0901120152')) {
+    if ((SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0901120152')) {
         $_COSTOFACT = $_CCOSTONUM;
     }
     _Evaluarcostofact_41();
@@ -6378,12 +6389,12 @@ function _dataSAL41_09(data) {
     $_NOMBRECOSTO = date[1].trim();
     if (date[0].trim() == '00') {
         $('#dccostos_SAL41').val($_NOMBRECOSTO);
-        if (($_NITUSU == '0844003225') && ($_COSTOFACT == '00')) {
+        if ((SAL41.NITUSU == '0844003225') && ($_COSTOFACT == '00')) {
             CON851('03', '03', null, 'error', 'Error');
             $('#ccostos_41').val('');
             _Evaluarcostofact_41();
         }
-        else if ((($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) && ($_COSTOFACT == 'HX')) {
+        else if (((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) && ($_COSTOFACT == 'HX')) {
             _Ventanacama_41();
         }
         else {
@@ -6472,7 +6483,7 @@ function _Evaluardetalle_41() {
 
 function _Validardetalle_41() {
     $_DETALLEFACT = $('#detallefactura_SAL41').val();
-    if ($_NITUSU == '0800251482') {
+    if (SAL41.NITUSU == '0800251482') {
         $('.modal-body .row').append('<div class="salto-linea"></div>' +
             '<div class="col-md-12 col-sm-12 col-xs-12"' +
             '<div class="inline-inputs">' +
@@ -6498,13 +6509,13 @@ function _Evaluardetalle2_41() {
         function () {
             $_DETALLE2W = $('#detalle2_SAL41').val();
             SAL41.RECIBIDORX = $_DETALLE2W;
-            if ($_NITUSU == '0800162035') {
+            if (SAL41.NITUSU == '0800162035') {
                 _Aceptarautorizacion_41();
             }
             else {
                 if (parseInt($_NROCAPITNUM) > 0) {
                     $_NROAUTORELAB = '  ';
-                    if (($_NITUSU == '0830512772') || ($_NITUSU == '0844002258') || ($_NITUSU == '0900565371') || ($_NITUSU == '0900471031') || ($_NITUSU == '0901120152')) {
+                    if ((SAL41.NITUSU == '0830512772') || (SAL41.NITUSU == '0844002258') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0900471031') || (SAL41.NITUSU == '0901120152')) {
                         _Aceptarautorizacion_41();
                     }
                     else {
@@ -6546,7 +6557,7 @@ function _Evaluarautorizacion_41() {
 function _Aceptarautorizacion2_41() {
     console.debug('aceptarautorizacion 2');
     $_NROAUTORELAB = $('#autorizacion_SAL41').val();
-    if (($_NITUSU == '0900405505') || ($_NITUSU == '0900005594') || ($_NITUSU == '019233740')) {
+    if ((SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0900005594') || (SAL41.NITUSU == '019233740')) {
         _Aceptarautorizacion3_41();
     }
     else {
@@ -6566,11 +6577,11 @@ function _Aceptarautorizacion2_41() {
 }
 function _Aceptarautorizacion3_41() {
     console.debug('aceptarautorizacion3')
-    if (($_NROAUTORELAB.trim() == '') && (($_NITUSU == '0830092718') || ($_NITUSU == '0900193162'))) {
+    if (($_NROAUTORELAB.trim() == '') && ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900193162'))) {
         CON851('02', '02', null, 'error', 'Error');
         _Detalle_41();
     }
-    else if ($_NITUSU == '0900405505') {
+    else if (SAL41.NITUSU == '0900405505') {
         $_NROAUTOREDIT = $_NROAUTORINUM
         if ($_NROAUTOREDIT.trim() == '') {
             $('.btn-primary').click();
@@ -6619,7 +6630,7 @@ function _Datodiagnosticos_41() {
 }
 
 function _Ventanadiagnostico_41() {
-    if (($_NITUSU == '0830512772') || ($_NITUSU == '0900264583')) {
+    if ((SAL41.NITUSU == '0830512772') || (SAL41.NITUSU == '0900264583')) {
         var fuente = '<div class="col-md-12 col-sm-12 col-xs-12"' +
             '<div class="inline-inputs">' +
             '<label class="col-md-4 col-sm-4 col-xs-4">DIAG 1:</label>' +
@@ -6850,7 +6861,7 @@ function _dataSAL41_072(data) {
 }
 
 function _Cerrarventanadetalle_41() {
-    if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) {
+    if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) {
         $_PASOW = '0'
         if ($_NITFACT == '0860011153') {
             var causasestado = '[{"codigo": "1","descripcion": "ACCIDENTE DE TRABAJO"},{"codigo": "2", "descripcion": "ACCIDENTE DE TRANSITO"},{"codigo": "3", "descripcion": "ACCIDENTE RABICO"},{"codigo": "4", "descripcion": "ACCIDENTE OFIDICO"},{"codigo": "5", "descripcion": "OTRO TIPO DE ACCIDENTE"},{"codigo": "6", "descripcion": "EVENTO CATASTROFICO"},{"codigo": "7", "descripcion": "LESION POR AGRESION"},{"codigo": "8", "descripcion": "LESION AUTOINFLINGIDA"},{"codigo": "9", "descripcion": "SOSP.MALTRATO FISICO"},{"codigo": "A", "descripcion": "SOSP.ABUSO SEXUAL"},{"codigo": "B", "descripcion": "SOSP.MALTRATO EMOCIONAL"},{"codigo": "C", "descripcion": "ENFERMEDAD GENERAL"},{"codigo": "D", "descripcion": "ENFERMEDAD PROFESIONAL"},{"codigo": "E", "descripcion": "NO APLICA"}]';
@@ -7037,7 +7048,7 @@ function _Validardatoacctransito_41() {
 function _Fechaestancia_41() {
     $_GRUPOFACT1 = $('#TABLA_401 tbody tr')[0].textContent;
     $_GRUPOFACT1 = $_PRIMERARTFACT.substring(1, 3);
-    if (($_NITUSU == '0892000401') || ($_NITUSU == '0900541158') || ($_NITUSU == '0900566047') || ($_NITUSU == '0900658867') || ($_NITUSU == '0900565371') || ($_NITUSU == '0901120152')) {
+    if ((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0900658867') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0901120152')) {
         _Datommedico_41();
     }
     if (($_GRUPOFACT1 == 'S1') || ($_GRUPOFACT1 == 'F5') || ($_GRUPOFACT1 == 'F8')) {
@@ -7123,7 +7134,7 @@ function _Datommedico_41() {
     if (($_CLFACT == '0') || ($_CLFACT == '1')) {
         $_MEDOTRFACT = ' ';
         $('#atend_SAL41').val($_MEDOTRFACT);
-        _Mostrarmedico_41();
+        _Validarmedotrfact_41();
     }
     else {
         $_MEDCIRFACT = ' ';
@@ -7133,10 +7144,6 @@ function _Datommedico_41() {
         _Datommedico2_41();
     }
     $_TERCTL = '2';
-}
-
-function _Mostrarmedico_41(){
-    
 }
 
 function _Datommedico2_41() {
@@ -7268,12 +7275,12 @@ function _Validarmedotrfact3_41() {
             _Validarmedotrfact4_41();
         } else {
             console.debug('sino de evaluar med otr');
-            if (($_NITUSU == '0830092718') && ($_SUCW == 'SC')) {
+            if ((SAL41.NITUSU == '0830092718') && ($_SUCW == 'SC')) {
                 $_SWINVALID = '0';
                 _Validarmedotrfact4_41();
             } else {
                 CON851('82', '82', null, 'error', 'Error');
-                if (($_NITUSU == '0892000401') && ($_ESPPROF[1] == '999')) {
+                if ((SAL41.NITUSU == '0892000401') && ($_ESPPROF[1] == '999')) {
                     _Validarmedotrfact4_41();
                 } else {
                     $('atend_SAL41').val('')
@@ -7316,7 +7323,7 @@ function _Validarmedotrfact5_41() {
                 _Evaluarremite_41();
             }
             else {
-                if (($_NITUSU == '0900565371') || ($_NITUSU == '0900081643') || ($_NITUSU == '0901120152')) {
+                if ((SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0900081643') || (SAL41.NITUSU == '0901120152')) {
                     _Evaluarremite_41();
                 }
                 else {
@@ -7352,7 +7359,7 @@ function _Evaluarremite_41() {
 function _Validarremite_41() {
     $_REMITEFACT = $('#solic_SAL41').val();
     if (parseInt($_REMITEFACT) == 0) {
-        if ((($_NITUSU == '0830092718') || ($_NITUSU == '0900193162')) && ($_PREFIJOUSU = ! 'SB')) {
+        if (((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900193162')) && ($_PREFIJOUSU = ! 'SB')) {
             $_DESCRIPTER = '  ';
         } else {
             if (($_CLFACT == '0') || ($_CLFACT == '2') || ($_CLFACT == '3')) {
@@ -7385,7 +7392,7 @@ function _dataSAL41_043(data) {
     $_ENTIDADTER = date[3].trim();
     if (date[0].trim() == '00') {
         $('#dsolic_SAL41').val($_DESCRIPTER);
-        if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) {
+        if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) {
             _Claseproced_41();
         } else {
             let datos_envio = datosEnvio();
@@ -7456,7 +7463,7 @@ function _Mostrarproced_41() {
         $_DIAGNCUP1 = 'N';
         SAL41.TIPOPROCESTAD = '0';
         _Controlcapitacion_41();
-    } else if ((($_NITUSU == '0830092718') || ($_NITUSU == '0900193162')) && ($_PREFIJOUSU == 'SB')) {
+    } else if (((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900193162')) && ($_PREFIJOUSU == 'SB')) {
         _Datoespecremite_41();
     } else {
         _Datocondicion_41();
@@ -7831,7 +7838,7 @@ function _Datofinalidconsulta_41() {
 }
 
 function _Datofinalidconsulta2_41() {
-    if (($_NITUSU == '0800162035') && ($_FINALANTW.trim() = ! '')) {
+    if ((SAL41.NITUSU == '0800162035') && ($_FINALANTW.trim() = ! '')) {
         $_FINALIDESTAD = $_FINALANTW;
     }
     _SER834A();
@@ -7841,7 +7848,7 @@ function _SER834A() {
     var personalatiende = '';
     var i;
     var l;
-    if ($_NITUSU == '0844003225') {
+    if (SAL41.NITUSU == '0844003225') {
         if (($_SEXOPACI == 'F') && ($_UNIDEDADELAB == 'A') && (($_VLREDADELAB > 9) && ($_VLREDADELAB < 51))) {
             i++;
             personalatiende += '{"codigo": "' + i + '", "descripcion": "ATENCION PARTO puerperio"}';
@@ -8055,7 +8062,7 @@ function _evaluarSER834A_41(data) {
 }
 
 function _Datofinalidconsulta3_41() {
-    if (($_NITUSU == '0900306771') && ($_GRUPOFACT1 == '89')) {
+    if ((SAL41.NITUSU == '0900306771') && ($_GRUPOFACT1 == '89')) {
         if ($_FINALIDCIT == $_FINALIDESTAD) {
             _Datofinalidconsulta4_41();
         }
@@ -8066,7 +8073,7 @@ function _Datofinalidconsulta3_41() {
 }
 function _Datofinalidadconsulta4_41() {
     if ($_FINALIDESTAD == '10') {
-        if (($_NITUSU == '0845000038') && ($_NITUSU == '0900405505')) {
+        if ((SAL41.NITUSU == '0845000038') && (SAL41.NITUSU == '0900405505')) {
             CON851('4K', '4K', null, 'warning', 'Advertencia!');
         }
     }
@@ -8162,7 +8169,7 @@ function _dataSAL41_12(data) {
 
 function _Controlcapitacion_41() {
     console.debug('controlcapacitacion');
-    if (($_NITUSU == '0891855847') && ($_CLFACT == '0')) {
+    if ((SAL41.NITUSU == '0891855847') && ($_CLFACT == '0')) {
         _Controlcapitacion2_41();
     } else {
         $_CONTROLCAPESTAD = ' ';
@@ -8312,7 +8319,7 @@ function _infoCON007_03_SAL41() {
 }
 
 function _Leerfactura_41() {
-    if (($_NITUSU == '0830512772') && ($_CLFACT)) {
+    if ((SAL41.NITUSU == '0830512772') && ($_CLFACT)) {
         $_SWBUSCAR3 = 0;
         _Buscarpendiente_41();
         if ($_SWBUSCAR3 > 0) {
@@ -8329,7 +8336,7 @@ function _Leerfactura_41() {
             SAL41.PENDIENTEW = 'N';
         }
     }
-    if ((($_NITUSU == '0900541158') || ($_NITUSU == '0900566047') || ($_NITUSU == '0900565371') || ($_NITUSU == '0901120152')) && (SAL41.FACTAUTOFACT == 2) && ($_SWAUTOPASO == 0)) {
+    if (((SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0901120152')) && (SAL41.FACTAUTOFACT == 2) && ($_SWAUTOPASO == 0)) {
         $_SECUNUM = '9' + $_PREFIJONUM;
         let datos_envio = datosEnvio();
         datos_envio += '|' + $_SECUNUM;
@@ -8534,10 +8541,10 @@ function _dataCON007X_02_41(data) {
     data = data.split('|');
     $_NROW = data[1].trim();
     $_DETALLEMOV = data[2].trim();
-    if ((($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0891855847') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633') || ($_NITUSU == '0800037021') || ($_NITUSU == '0892000458') || ($_NITUSU == '0832002436') || ($_NITUSU == '0844003225')) && ($_CLFACT == '0') && ($_NROPEDFACT > 0)) {
+    if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0891855847') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633') || (SAL41.NITUSU == '0800037021') || (SAL41.NITUSU == '0892000458') || (SAL41.NITUSU == '0832002436') || (SAL41.NITUSU == '0844003225')) && ($_CLFACT == '0') && ($_NROPEDFACT > 0)) {
         SER815C_41(); // CONTROL DE DISPENSACION
     }
-    else if ((($_NITUSU == '0900541158') || ($_NITUSU == '0900566047') || ($_NITUSU == '0900565371') || ($_NITUSU == '0901120152')) && (SAL41.FACTAUTOFACT == '2')) {
+    else if (((SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0901120152')) && (SAL41.FACTAUTOFACT == '2')) {
         SER108DB(); // IMPRIME FACTURAS (RESUMEN DE COMPROBANTES)
     }
     else {
@@ -8550,13 +8557,13 @@ function _Contabiliarcomp_41() {
         if (($_PREFIJOFACT == "A") || ($_PREFIJOFACT == "B") || ($_PREFIJOFACT == "D") || ($_PREFIJOFACT == "F") || ($_PREFIJOFACT == "G") || ($_PREFIJOFACT == "H") || ($_PREFIJOFACT == "I") || ($_PREFIJOFACT == "J") || ($_PREFIJOFACT == "K") || ($_PREFIJOFACT == "L") || ($_PREFIJOFACT == "M") || ($_PREFIJOFACT == "N") || ($_PREFIJOFACT == "O") || ($_PREFIJOFACT == "P") || ($_PREFIJOFACT == "Q") || ($_PREFIJOFACT == "R") || ($_PREFIJOFACT == "S") || ($_PREFIJOFACT == "T") || ($_PREFIJOFACT == "V") || ($_PREFIJOFACT == "W") || ($_PREFIJOFACT == "X") || ($_PREFIJOFACT == "Y") || ($_PREFIJOFACT == "Z")) {
             // INV020GA(); // ACUMULAR FACTURA PARA CARTERA
             let datos_envio = datosEnvio()
-            datos_envio += SAL41.ADMINW + '|' + $_LLAVENUM + $_NROCTAFACT.padStart(6, '0') + '|' + $_FECHA_LNK + '|' + $_NITUSU + '|' + $_SALMINUSU
+            datos_envio += SAL41.ADMINW + '|' + $_LLAVENUM + $_NROCTAFACT.padStart(6, '0') + '|' + $_FECHA_LNK + '|' + SAL41.NITUSU + '|' + $_SALMINUSU
             console.debug(datos_envio);
             SolicitarDll({ datosh: datos_envio }, _dataINV020GA_41, get_url('APP/SALUD/INV020GA.DLL'));
         }
         else if (($_PREFIJOFACT == 'E') || ($_PREFIJOFACT == 'C')) {
             let datos_envio = datosEnvio();
-            datos_envio += SAL41.ADMINW + '|' + SAL41.LLAVEFACT + '|' + $_FECHA_LNK + '|' + $_NITUSU + '|' + $_SALMINUSU + '|' + $_CONTADOUSU + '|' + $_PUCUSU + '|' + $_PREFIJOUSU + '|' + $_CONTABPOSUSU + '|' + $_RETCREEUSU + '|' + $_PEDIDOUSU + '|' + $_AUTORETUSU + '|' + $_RETENEDORUSU + '|' + $_NOMBREUSU.substring(0, 7) + '|' + $_SEPARACAJAUSU
+            datos_envio += SAL41.ADMINW + '|' + SAL41.LLAVEFACT + '|' + $_FECHA_LNK + '|' + SAL41.NITUSU + '|' + $_SALMINUSU + '|' + $_CONTADOUSU + '|' + $_PUCUSU + '|' + $_PREFIJOUSU + '|' + $_CONTABPOSUSU + '|' + $_RETCREEUSU + '|' + $_PEDIDOUSU + '|' + $_AUTORETUSU + '|' + $_RETENEDORUSU + '|' + $_NOMBREUSU.substring(0, 7) + '|' + $_SEPARACAJAUSU
             SolicitarDll({ datosh: datos_envio }, _dataINV020_41, get_url('APP/SALUD/INV020.DLL'));
         }
         else {
@@ -8605,7 +8612,7 @@ function _Contabiliarcomp2_41() {
 function _Generarhl7_41() {
     console.debug('generarh17_41');
     $_FECHAFACT = $_FECHAFACT[0].substring(2, 4) + $_FECHAFACT[1] + $_FECHAFACT[2];
-    if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) {
+    if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) {
         if ($_FECHAACT == $_FECHAFACT) {
             console.debug('montarhl17_41')
             _Montarhl7_41();
@@ -8619,7 +8626,7 @@ function _Generarhl7_41() {
 }
 
 function _Descargarinvent_41() {
-    if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900193162')) {
+    if ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900193162')) {
         _Descargarinvent2_41();
     } else {
         if ((SAL41.INVENTUSU == 'S') && (($_CLFACT == '0') || ($_MACROFACT == '1'))) {
@@ -8651,7 +8658,7 @@ function _dataINV030V_41(data) {
     data = data.split('|');
     if ((data[0].trim() == '00') && ($_CLFACT == '0') && ($TABLAFACT[0].ALMAFACT = ! "SIN")) {
         CON851('3M', '3M', null, 'warning', 'Advertencia!');
-        if (($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) {
+        if ((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) {
             _Descargarinvent2_41();
         }
         else {
@@ -8685,9 +8692,9 @@ function _Imprimir_41() {
     } else {
         if ($_PUERTAESTAD == '2') {
             let artfact = $TABLAFACT[0].ARTFACT;
-            if ((($_CLFACT == '1') || ($_CLFACT == '5')) || (artfact.substring(0, 2) == '99') || (artfact.substring(0, 2) == '23') || (artfact.substring(0, 2) == 'F8') || (artfact.substring(0, 2) == '13') || (artfact.substring(0, 2) == '12') || (($_CLFACT == '7') && (artfact.substring(0, 2) = ! '90')) || (($_NITUSU == '0830092718') && ($_CLFACT == '3')) || (($_NITUSU == '0900193162') && ($_CLFACT == '3')) || (($_NITUSU == '0830092719') && ($_CLFACT == '3')) || (($_NITUSU == '0800037979') && ($_CLFACT == '3')) || (($_NITUSU == '0800037979') && ($_CLFACT == '4')) || (($_NITUSU == '0900405505') && ($_CLFACT == '3')) || (($_NITUSU == '0900073674') && ($_CLFACT == '3')) || (($_NITUSU == '0800175901') && ($_CLFACT == '4')) || (($_NITUSU == '0830511298') && ($_CLFACT == '4')) || (($_NITUSU == '0900004059') && (parseInt($_CLFACT) > 0)) || (($_NITUSU == '0900005594') && (parseInt($_CLFACT) > 0)) || (($_NITUSU == '0900405505') && ($_CLFACT == '3'))) {
+            if ((($_CLFACT == '1') || ($_CLFACT == '5')) || (artfact.substring(0, 2) == '99') || (artfact.substring(0, 2) == '23') || (artfact.substring(0, 2) == 'F8') || (artfact.substring(0, 2) == '13') || (artfact.substring(0, 2) == '12') || (($_CLFACT == '7') && (artfact.substring(0, 2) = ! '90')) || ((SAL41.NITUSU == '0830092718') && ($_CLFACT == '3')) || ((SAL41.NITUSU == '0900193162') && ($_CLFACT == '3')) || ((SAL41.NITUSU == '0830092719') && ($_CLFACT == '3')) || ((SAL41.NITUSU == '0800037979') && ($_CLFACT == '3')) || ((SAL41.NITUSU == '0800037979') && ($_CLFACT == '4')) || ((SAL41.NITUSU == '0900405505') && ($_CLFACT == '3')) || ((SAL41.NITUSU == '0900073674') && ($_CLFACT == '3')) || ((SAL41.NITUSU == '0800175901') && ($_CLFACT == '4')) || ((SAL41.NITUSU == '0830511298') && ($_CLFACT == '4')) || ((SAL41.NITUSU == '0900004059') && (parseInt($_CLFACT) > 0)) || ((SAL41.NITUSU == '0900005594') && (parseInt($_CLFACT) > 0)) || ((SAL41.NITUSU == '0900405505') && ($_CLFACT == '3'))) {
                 $_ACTCITW = 'F';
-                let datos_envio = datosEnvio() + SAL41.LLAVEFACT + '|' + $_FINALIDESTAD + '|' + $_ACTCITW + '|' + $_ANOACT + '|' + $_NITUSU + '|'
+                let datos_envio = datosEnvio() + SAL41.LLAVEFACT + '|' + $_FINALIDESTAD + '|' + $_ACTCITW + '|' + $_ANOACT + '|' + SAL41.NITUSU + '|'
                 console.debug(datos_envio);
                 let URL = get_url("APP/SALUD/SER891.DLL");
                 postData({ datosh: datos_envio }, URL)
@@ -8704,9 +8711,9 @@ function _Imprimir_41() {
                 _Imprimir2_41();
             }
         } else {
-            if ((($_NITUSU == '0900004059') || ($_NITUSU == '0830092718') || ($_NITUSU == '0900193162') || ($_NITUSU == '0900405505') || ($_NITUSU == '0830092719') || ($_NITUSU == '0900405505') || ($_NITUSU == '0900005594')) && (parseInt($_CLFACT) > 0)) {
+            if (((SAL41.NITUSU == '0900004059') || (SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900193162') || (SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0830092719') || (SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0900005594')) && (parseInt($_CLFACT) > 0)) {
                 $_ACTCITW = 'F';
-                let datos_envio = datosEnvio() + SAL41.LLAVEFACT + '|' + $_FINALIDESTAD + '|' + $_ACTCITW + '|' + $_ANOACT + '|' + $_NITUSU + '|'
+                let datos_envio = datosEnvio() + SAL41.LLAVEFACT + '|' + $_FINALIDESTAD + '|' + $_ACTCITW + '|' + $_ANOACT + '|' + SAL41.NITUSU + '|'
                 console.debug(datos_envio);
                 // SolicitarDll({ datosh: datos_envio }, _dataSER891_41, get_url("APP/SALUD/SER891.DLL"));
                 let URL = get_url("APP/SALUD/SER891.DLL");
@@ -8727,9 +8734,9 @@ function _Imprimir_41() {
 
 function _Imprimir2_41() {
     console.debug('imprimir 2');
-    if (($_NITUSU == '0845000038') && ($_PUERTAESTAD == '8') && (parseInt($_CLFACT) > 0)) {
+    if ((SAL41.NITUSU == '0845000038') && ($_PUERTAESTAD == '8') && (parseInt($_CLFACT) > 0)) {
         $_ACTCITW = 'F';
-        let datos_envio = datosEnvio() + SAL41.LLAVEFACT + '|' + $_FINALIDESTAD + '|' + $_ACTCITW + '|' + $_ANOACT + '|' + $_NITUSU + '|'
+        let datos_envio = datosEnvio() + SAL41.LLAVEFACT + '|' + $_FINALIDESTAD + '|' + $_ACTCITW + '|' + $_ANOACT + '|' + SAL41.NITUSU + '|'
         let URL = get_url("APP/SALUD/SER891.DLL");
         postData({ datosh: datos_envio }, URL)
             .then(data => {
@@ -8754,7 +8761,7 @@ function _Imprimir3_41() {
             SolicitarDll({ datosh: datos_envio }, data => { console.debug(data) }, get_url("APP/SALUD/SER448O.DLL")); // FALTA FD-HISOD17 FD-ODEVO17
         }
         else {
-            if (($_NITUSU == '0800162035') && ((parseInt(artfact) == 990113) || (artfact == 'A10502'))) {
+            if ((SAL41.NITUSU == '0800162035') && ((parseInt(artfact) == 990113) || (artfact == 'A10502'))) {
                 _Imprimir4_41();
             }
             else {
@@ -8797,7 +8804,7 @@ function _Releerrips_41() {
 
 function _Imprimir4_41() {
     console.debug('imprimir 4');
-    if ((($_NITUSU == '0900264583') || ($_NITUSU == '0900030814')) && ($_CODDIAGESTAD[1].trim() == '')) {
+    if (((SAL41.NITUSU == '0900264583') || (SAL41.NITUSU == '0900030814')) && ($_CODDIAGESTAD[1].trim() == '')) {
         //SER421 OTRA OPCION _dataSER421_41
     }
     if (($_PREFIJOFACT == 'C') || ($_PREFIJOFACT == 'E')) {
@@ -8807,7 +8814,7 @@ function _Imprimir4_41() {
         if ((artfact == 890701) || (artfact == 890702) || (artfact == 890703) || (artfact == 890704)) {
             if ($_CODDIAGESTAD[0].trim() == '') {
                 //SER421 OTRA OPCION _dataSER421_41
-            } if ($_NITUSU == '0800162035') {
+            } if (SAL41.NITUSU == '0800162035') {
                 _Imprimir6_41();
             } else {
                 let datos_envio = datosEnvio()
@@ -8832,7 +8839,7 @@ function _dataSER411U_41(data) {
 
 function _Imprimir6_41() {
     console.debug('imprimir 6')
-    if ($_NITUSU == '0822007038') {
+    if (SAL41.NITUSU == '0822007038') {
         _Imprimir7_41();
     } else {
         if (($_UNSERVFACT == '01') && ($_CLFACT == '5')) {
@@ -8872,9 +8879,9 @@ function _dataSAL41_16(data) {
 
 function _Imprimir8_41() {
     console.debug('imprimir 8');
-    if ((($_CLFACT == '0') && ($_NITUSU == '0822005339')) || (($_REDEXTERNUM == 'S') && ($_DIAGNCUP = ! 'N'))) {
+    if ((($_CLFACT == '0') && (SAL41.NITUSU == '0822005339')) || (($_REDEXTERNUM == 'S') && ($_DIAGNCUP = ! 'N'))) {
         //SER421 OTRA OPCION _dataSER4213_41
-    } if (($_NITUSU == '0900264583') && ($_DIAGNCUP = ! 'N') && ($_CODDIAGESTAD[0].trim() == '')) {
+    } if ((SAL41.NITUSU == '0900264583') && ($_DIAGNCUP = ! 'N') && ($_CODDIAGESTAD[0].trim() == '')) {
         //SER421 OTRA OPCION _dataSER4214_41
     } else {
         let grupofact = $TABLAFACT[0].ARTFACT.substring(0, 2);
@@ -8885,7 +8892,7 @@ function _Imprimir8_41() {
             if (($_CLFACT == '1') && ($_CODDIAGESTAD[0].trim() == '') && ($_DIAGNCUP = ! 'N')) {
                 //SER421 OTRA OPCION _dataSER4214_41
             } else {
-                if (((parseInt($_CLFACT) > 2) || (($_NITUSU == '0891855847') && ($_CLFACT == '1'))) && (($_FECHAINGESTAD < $_FECHAACT) || (($_PUERTAESTAD != '1') && ($_HORAELABFACT > 1915))) && ($_DIAGNCUP = ! 'N') && ($_CODDIAGESTAD[0].trim() == '')) {
+                if (((parseInt($_CLFACT) > 2) || ((SAL41.NITUSU == '0891855847') && ($_CLFACT == '1'))) && (($_FECHAINGESTAD < $_FECHAACT) || (($_PUERTAESTAD != '1') && ($_HORAELABFACT > 1915))) && ($_DIAGNCUP = ! 'N') && ($_CODDIAGESTAD[0].trim() == '')) {
                     //SER421 OTRA OPCION _dataSER4213_41
                 } else {
                     _Imprimir9_41();
@@ -8914,11 +8921,11 @@ function _Imprimir9_41() {
     // else {
     // $_FORMATOW == 1
     // }
-    if (($_NITUSU == '0830092718') && ($_PREFIJOUSU == 'TU')) {
+    if ((SAL41.NITUSU == '0830092718') && ($_PREFIJOUSU == 'TU')) {
         // REGRESAR
     }
     else {
-        if ((($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) && ($_CLFACT == '5')) {
+        if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) && ($_CLFACT == '5')) {
             $_FORMATOW = 0
             _Imprimir10_41();
         }
@@ -9421,11 +9428,11 @@ function _Imprimir10_41() {
         //
     }
     else {
-        if (($_NITUSU == '0800162035') && ($_FORMATOW > 0) && ($_CLFACT == '0')) {
+        if ((SAL41.NITUSU == '0800162035') && ($_FORMATOW > 0) && ($_CLFACT == '0')) {
             $_FORMATOW = 5
         }
     }
-    if (($_NITUSU == '0900565731') && ($_SWOCULTAR == '01')) {
+    if ((SAL41.NITUSU == '0900565731') && ($_SWOCULTAR == '01')) {
         $_FORMATOW = 1
     }
     _Imprimir11_41();
@@ -9451,7 +9458,7 @@ function _Imprimir11_41() {
             // INV412
             break;
         case 5:
-            if ($_NITUSU == '0800162035') {
+            if (SAL41.NITUSU == '0800162035') {
                 // INV411
             }
             else {
@@ -9510,7 +9517,7 @@ function _Montarhl7_41() {
             if ($_CISCUP == 'S') {
                 if ($_SWPACI == 0) {
                     $_SWPACI = 1;
-                    switch ($_NITUSU) {
+                    switch (SAL41.NITUSU) {
                         case '0830092718':
                             $EMPRMSGL1 = 1;
                             break;
@@ -9555,9 +9562,9 @@ function _Montarhl7_41() {
             // datos_envio += '|' + $_SWRECAL
             // datos_envio += '|' + $_PUCUSU
             // datos_envio += '|' + $_PREFIJOUSU
-            // datos_envio += '|' + $_NITUSU.padStart(10, '0');
+            // datos_envio += '|' + SAL41.NITUSU.padStart(10, '0');
             // datos_envio += '|' + $_LOTEFARMUSU
-            datos_envio += $_FECHAFACT + '|' + $_NITUSU + SAL41.LLAVEFACT + '|' + $_PREFIJOFACT + $_NROCTAFACT + '|' + $_IDHISTORIAFACT + '|' + $_DESCRIPPACI + '|' + $_GRUPOFACT + '|' + $_CODARTFACT.padEnd(13, ' ') + '|' + $_DESCRIPCUP + '|' + $_MEDAYUFACT + '|' + $_DESCRIPPROF + '|' + $_REGMEDPROF + '|' + SAL41.BIRADSFACT + '|' + $_VLREDADELAB + $_UNIDEDADELAB.padStart(3, '0') + '|' + $_SEXOPACI + '|' + SAL41.BLOQUEOIMPFACT + '|' + $_EMAILPACI
+            datos_envio += $_FECHAFACT + '|' + SAL41.NITUSU + SAL41.LLAVEFACT + '|' + $_PREFIJOFACT + $_NROCTAFACT + '|' + $_IDHISTORIAFACT + '|' + $_DESCRIPPACI + '|' + $_GRUPOFACT + '|' + $_CODARTFACT.padEnd(13, ' ') + '|' + $_DESCRIPCUP + '|' + $_MEDAYUFACT + '|' + $_DESCRIPPROF + '|' + $_REGMEDPROF + '|' + SAL41.BIRADSFACT + '|' + $_VLREDADELAB + $_UNIDEDADELAB.padStart(3, '0') + '|' + $_SEXOPACI + '|' + SAL41.BLOQUEOIMPFACT + '|' + $_EMAILPACI
             console.debug(datos_envio);
             SolicitarDll({ datosh: datos_envio }, _dataRXWEB01, get_url("APP/SALUD/RX-WEB01.DLL"));
         }
@@ -9602,7 +9609,7 @@ function _dataHL7000_41(data) {
 
 function _HL70002_41() {
     $DESCRIPCUPI.trim() == '' ? $DESCRIPCUPI = $LLAVECUPI : $DESCRIPCUPI = $DESCRIPCUPI;
-    switch ($_NITUSU) {
+    switch (SAL41.NITUSU) {
         case '0830092718':
             $EMPRMSGL1 = 1;
             break;
@@ -9825,7 +9832,7 @@ function _Datohonorarios_41() {
         }
     }
     else {
-        if ($_NITUSU == '0892000401') {
+        if (SAL41.NITUSU == '0892000401') {
             $_VALORAPROX = Math.round(parseFloat($_VLRCIRUW) / $_SWAPR);
             $_VLRCIRUW = Math.round($_VALORAPROX * $_SWAPR);
             $_VALORAPROX = Math.round(parseFloat($_VLRAYUDW) / $_SWAPR);
@@ -10452,8 +10459,8 @@ function _Sumarvaloresciru_41() {
             $_VALORBASE3IVA += $_VALORBRUTO;
             break;
     }
-    if ((($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) && ($_CLFACT == '2') && ($_GRUPOFACT == '98')) {
-        $_MEDOTRFACT = $_NITUSU;
+    if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) && ($_CLFACT == '2') && ($_GRUPOFACT == '98')) {
+        $_MEDOTRFACT = SAL41.NITUSU;
     }
     if ($_CLFACT == '5') {
         if (($_ARTFACT == '39145') || ($_ARTFACT == '35604')) {
@@ -10499,7 +10506,7 @@ function _Almacenartablacirugia_SAL97C11() {
 }
 
 //////////////////////////////////////// LEER  PROMEDIO /////////////////////////////
-function _Leerpromedio_41(callback) {
+function _Leerpromedio_41() {
     if ($_GRP1SAL != '9') {
         let datos_envio = datosEnvio()
         datos_envio += $_ALMPREF + '|' + $_CODART + '|' + $_DIAFACT + '|' + SAL41.PUCUSU + '|'
@@ -10518,46 +10525,6 @@ function _Leerpromedio_41(callback) {
                 } else {
                     $_VLRPROMEDW = $_SDOACTVLR / $_SDOACTCANT;
                 }
-                var fuente = '<div class="col-md-12"> ' +
-                    '<input id="cantidad1_SAL41" class="form-control input-md"> ' +
-                    '</div>' +
-                    '<div class="col-md-12"> ' +
-                    '<input id="cantidad2_SAL41" class="form-control input-md"> ' +
-                    '</div>' +
-                    '<div class="col-md-12"> ' +
-                    '<input id="cantidad3_SAL41" class="form-control input-md"> ' +
-                    '</div>' +
-                    '<div class="col-md-12"> ' +
-                    '<input id="cantidad4_SAL41" class="form-control input-md"> ' +
-                    '</div>';
-                var ventanadetallefactura = bootbox.dialog({
-                    size: 'medium',
-                    title: 'CONSULTA SALDO ACTUAL',
-                    closeButton: false,
-                    message: '<div class="row" style="display:float!important">' +
-                        '<div class="col-md-12 col-sm-12 col-xs-12">' +
-                        fuente +
-                        '</div>' +
-                        '</div>',
-                    buttons: {
-                        aceptar: {
-                            label: 'Aceptar',
-                            callback: function () {
-                                ventanadetallefactura.off('shown.bs.modal');
-                                callback();
-                            },
-                            className: 'btn-primary'
-                        },
-                    },
-                });
-                ventanadetallefactura.on('keydown', e => {
-                    $('.btn-primary').click();
-                });
-                ventanadetallefactura.init(() => {
-                    _inputControl('disabled');
-                    $('#cantidad1_SAL41').val($_SDOACTCANT);
-                    $('#cantidad2_SAL41').val($_SDOACTVLR);
-                })
             } else {
                 CON852(data[0], data[1], data[2], _toggleNav);
             }
@@ -10604,8 +10571,8 @@ function _Sumarvalores_41() {
             $_VALORBASE3IVA += $_VALORBRUTO;
             break;
     }
-    if ((($_NITUSU == '0892000401') || ($_NITUSU == '0900648993') || ($_NITUSU == '0900755133') || ($_NITUSU == '0900804411') || ($_NITUSU == '0900870633')) && ($_CLFACT == '2') && ($_GRUPOFACT == '98')) {
-        $_MEDOTRFACT = $_NITUSU;
+    if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633')) && ($_CLFACT == '2') && ($_GRUPOFACT == '98')) {
+        $_MEDOTRFACT = SAL41.NITUSU;
     }
     if ($_CLFACT == '5') {
         if (($_ARTFACT == '39145') || ($_ARTFACT == '35604')) {
@@ -10653,7 +10620,7 @@ function _Buscarincremento_41() {
     if ($_INCREMTAB == '9') {
         $_FACTORW = 1;
     } else {
-        if ($_NITUSU == '0892000401') {
+        if (SAL41.NITUSU == '0892000401') {
             let posicion = $_INCREMTAB - 1;
             // $_FACTORW = Math.round(parseFloat($_PORCTABTAR[posicion]) / 100);
             if (($_PORCTABTAR[posicion] == '') || (parseFloat($_PORCTABTAR[posicion]) == 0)) {
@@ -11119,7 +11086,7 @@ function INV401D() {
 /////////////////////////////////////////////////// HL7001 ///////////////////////////////////////////////
 
 function _HL7001() {
-    switch ($_NITUSU) {
+    switch (SAL41.NITUSU) {
         case '0830092718':
             $EMPRMSGL1 = 1;
             break;
