@@ -11,7 +11,7 @@ var $_SECU1NUM, $_SECU2NUM, $_REDEXTER, NUM_FACT, $_FECHA_SIG_W, $_FECHA_ING_W, 
 var $_PACILNK;
 var SAL7411 = [];
 
-
+var $_FECHABUSQ = moment().format('YYMMDD');
 var vlrcopago_7411Mask = new IMask(document.getElementById('porcent_108'),
     { mask: Number, min: 0, max: 99999, scale: 2, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
 );
@@ -835,6 +835,7 @@ function _dataSER108_05(data) {
         $("#nitd_108").val($_DESCRIPTER);
         if (($_DESCRIPW == '') || ($_NITW != $_NITNUM) || ($_NOVEDAD == "7")) {
             $_DESCRIPW = $_DESCRIPTER;
+            console.log($_DESCRIPW, '$_DESCRIPW')
             // _validarfacturaparticular();
             if ($_CONVENIOTER.trim() != '') {
                 var $_CONVENIOW = $_CONVENIOTER;
@@ -1422,14 +1423,14 @@ function _buscarfacturarepetida() {
         $_ANOBUSQORI = $_FECHABUSQORIGINAL.substring(4, 6);
 
         if ((($_NITUSU == "0900471031") || ($_NITUSU == "900004059")) && ($_NOVEDAD == "7") && ($_PREFIJOW == "A")) {
-            $_FECHABUSQ = moment().format('YYMMDD');
+            // $_FECHABUSQ = moment().format('YYMMDD');
             $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
             $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
 
             if ($_MESBUSQORI > 1) {
                 $_MESBUSQw = $_MESBUSQORI - 1;
 
-                $_FECHABUSQ = moment().format('YYMMDD');
+                // $_FECHABUSQ = moment().format('YYMMDD');
                 $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
                 $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
                 $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
@@ -1456,7 +1457,7 @@ function _buscarfacturarepetida() {
                     $_MESBUSQW = 12;
                     $_ANOBUSQW = $_ANOBUSQORI - 1;
 
-                    $_FECHABUSQ = moment().format('YYMMDD');
+                    // $_FECHABUSQ = moment().format('YYMMDD');
                     $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
                     $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
                     $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
@@ -1476,7 +1477,7 @@ function _buscarfacturarepetida() {
             if ($_MESBUSQORI > 1) {
                 $_MESBUSQW = $_MESBUSQORI - 1;
 
-                $_FECHABUSQ = moment().format('YYMMDD');
+                // $_FECHABUSQ = moment().format('YYMMDD');
                 $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
                 $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
                 $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
@@ -1504,7 +1505,7 @@ function _buscarfacturarepetida() {
                     $_MESBUSQW = 12;
                     $_ANOBUSQW = $_ANOBUSQORI - 1;
 
-                    $_FECHABUSQ = moment().format('YYMMDD');
+                    // $_FECHABUSQ = moment().format('YYMMDD');
                     $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
                     $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
                     $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
@@ -1523,7 +1524,7 @@ function _buscarfacturarepetida() {
         }
         else if (($_NITUSU == "0800251482") && ($_NOVEDAD == "7") && (($_PREFIJOW == "A") || ($_PREFIJOW == "P"))) {
 
-            $_FECHABUSQ = moment().format('YYMMDD');
+            // $_FECHABUSQ = moment().format('YYMMDD');
             $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
             $_ANOBUSQ = $_FECHABUSQ.substring(0, 2);
             $_DIABUSQ = 05;
@@ -3170,7 +3171,7 @@ function _evaluarautoriza_SAL7411() {
 function _validarobservacion_SAL7411() {
 
     if (($_NITUSU == '0800037021') && ($_PREFIJOW == 'P') && ($_NROAUTORIZACIONW != '')) {
-        $_FECHABUSQ = moment().format('YYMMDD');
+        // $_FECHABUSQ = moment().format('YYMMDD');
         $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
         $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
 
@@ -3178,7 +3179,7 @@ function _validarobservacion_SAL7411() {
             $_MESBUSQW = $_MESBUSQ - 3;
             if ($_IDPACW != "000000000000001") {
                 $_FACTP = '';
-                $_FECHABUSQ = moment().format('YYMMDD');
+                // $_FECHABUSQ = moment().format('YYMMDD');
                 $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
                 $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
                 $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
@@ -3205,7 +3206,7 @@ function _validarobservacion_SAL7411() {
             } else {
                 $_MESBUSQW == 12;
                 $_ANOBUSQW = $_ANOBUSQ - 1;
-                $_FECHABUSQ = moment().format('YYMMDD');
+                // $_FECHABUSQ = moment().format('YYMMDD');
                 $_DIABUSQ = $_FECHABUSQ.substring(0, 2);
                 $_MESBUSQ = $_FECHABUSQ.substring(2, 4);
                 $_ANOBUSQ = $_FECHABUSQ.substring(4, 6);
@@ -3261,6 +3262,9 @@ function _evaluarobservacionaper() {
 /////////////////////////////////// GRABAR DATOS////////////////////////////////////////////
 
 function _validarinformacion() {
+    console.log($_NITW, '$_NITW')
+    console.log($_DESCRIPW, '$_DESCRIPW')
+
     $_OBSERAPERW = $("#obserapertura_108").val();
     if ($_NOVEDAD == '8') {
         CON851P('01', _evaluardetalle, _grabarcambio)
@@ -3270,19 +3274,12 @@ function _validarinformacion() {
 }
 
 function _grabarregistro() {
-    // if ($_NOVEDAD == '8') {
-    //     $_FECHAMODNUM = moment().format('YYYYMMDD');
-    //     $_OPERMODNUM = $_ADMINW;
-    //     $_FECHACRENUM = $_ANOCRENUM + $_MESCRENUM + $_DIACRENUM;
-    //     $_NITW = $_NITNUM;
-    //     $_DESCRIPW = $_DESCRIPNUM;
-
-    // } else {
+   
     $_FECHACRENUM = moment().format('YYYYMMDD');
     $_OPERNUM = $_ADMINW;
     $_FECHAMODNUM = ' ';
     $_OPERMODNUM = ' ';
-    // }
+    
     $_FACTCAPITW = $_PRECAPITW + $_NROCAPITW;
     $_FECHAINGNUM = $_FECHAINGNUM.replace(/-/g, '');
     $_HORASALW = $_HORASALW.replace(/:/, '');
@@ -3299,34 +3296,8 @@ function _grabarregistro() {
 function _dataSER108_nuevo(data) {
     var date = data.split('|');
     var swinvalid = date[0];
-    if (swinvalid == "00") {
-        // if ($_NOVEDAD == '7') {
+    if (swinvalid == "00") {  
         BUSCARNUMERO(_grabarnumero);
-
-        // } else {
-        //     if ($_ESTADOW == '0') {
-        //         $_OPERBLOQNUM = '';
-        //         $("#bloqueo_108").val($_OPERBLOQNUM);
-
-        //     } else if ($_CONVENIONUM == $_CONVENIOACTUAL) {
-        //         if ($_NITNUM == $_NITACTUAL) {
-        //             //// CONTINUE 
-        //             if (($_PREFIJONUM = "P" || "T" || "A" || "B" || "D" ||
-        //                 "F" || "G" || "H" || "I" || "J" || "K" || "L" || "M"
-        //                 || "N" || "O" || "Q" || "R" || "S" || "W" || "X" ||
-        //                 "Y" || "Z") && ()) {
-
-        //             } else {
-
-        //             }
-        //             // _validarimpresion();
-        //         } else {
-        //             CON851P('50', _leerusuario, _reliquidarcomprob_7411)
-        //         }
-        //     } else {
-        //         CON851P('50', _leerusuario, _reliquidarcomprob_7411)
-        //     } 
-        // }
     }
     else {
         CON852(date[0], date[1], date[2], _toggleNav);
@@ -3334,13 +3305,11 @@ function _dataSER108_nuevo(data) {
 }
 
 function _grabarcambio() {
-    
+    console.log($_NITW, '$_NITW')
+    console.log($_DESCRIPW, '$_DESCRIPW')
     $_FECHAMODNUM = moment().format('YYYYMMDD');
     $_OPERMODNUM = $_ADMINW;
     $_FECHACRENUM = $_ANOCRENUM + $_MESCRENUM + $_DIACRENUM;
-    // $_NITW = $_NITNUM;
-    // $_DESCRIPW = $_DESCRIPNUM;
-
     $_FACTCAPITW = $_PRECAPITW + $_NROCAPITW;
     $_FECHAINGNUM = $_FECHAINGNUM.replace(/-/g, '');
     $_HORASALW = $_HORASALW.replace(/:/, '');
@@ -3391,8 +3360,8 @@ function respuestaauditoria2_7411(data) {
         }else{
             if ($_ESTADOW == '0') {
                 console.log('estado = 0 - validar')
-                console.log($_NITANT, 'nitactual')
-                console.log($_CONVENIOACTUAL, 'convenioactual')
+                console.log($_NITANT, 'nitactual', $_NITNUM, '$_NITNUM')
+                console.log($_CONVENIOACTUAL, 'convenioactual', $_DESCRIPNUM,'$_DESCRIPNUM')
                 $_OPERBLOQNUM = '';
                 $("#bloqueo_108").val($_OPERBLOQNUM);
 
@@ -3800,6 +3769,8 @@ function _mostrardatos_SAL7411() {
     $("#factura_108").val($_LLAVENUM);
     $("#nit_108").val($_NITNUM);
     $("#nitd_108").val($_DESCRIPNUM);
+    $_NITW = $_NITNUM;
+    $_DESCRIPW = $_DESCRIPNUM;
     $("#convenio_108").val($_CONVENIONUM);
     $_CONVENIOACTUAL = $_CONVENIONUM;
     $_NITACTUAL = $_NITNUM;
@@ -3833,8 +3804,15 @@ function _mostrardatos_SAL7411() {
     $("#servicio_108").val($_SERVICIONUM);
     $("#redext_108").val($_REDEXTERNUM);
     $("#contrato_108").val($_CONTRATONUM);
-    $("#precapit_108").val($_PRECAPITNUM);
-    $("#capit_108").val($_NROCAPITNUM);
+    if($_PRECAPITNUM == '0'){
+        $_PRECAPITNUM = ''; 
+        $_NROCAPITNUM = ''; 
+        $("#precapit_108").val($_PRECAPITNUM);
+        $("#capit_108").val($_NROCAPITNUM);
+    }else{
+        $("#precapit_108").val($_PRECAPITNUM);
+        $("#capit_108").val($_NROCAPITNUM);
+    }
     $("#division_108").val($_DIVISIONNUM);
     $("#formadepago_108").val($_FORMACOPAGNUM);
     $("#envio_108").val($_ENVIONUM);
@@ -3883,7 +3861,6 @@ function _mostrardatos_SAL7411() {
         CON851('15', '15', null, 'error', 'error');
         _evaluarfactura();
     }
-
     if ($_NOVEDAD == '9') {
         _retiroregistro();
     } else if ($_NOVEDAD == '8') {

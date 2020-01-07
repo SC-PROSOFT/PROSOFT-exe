@@ -52,7 +52,13 @@ function _evaluarCON850(novedad) {
         case 7:
         case 8:
         case 9:
-            _validarDato71H();
+            if ($_NovedSer71H == '7') {
+                console.log('novedad 7')
+                _calcularconsecutivo_71H();
+
+            } else {
+                _validarDato71H();
+            }
             break;
         default:
             _toggleNav();
@@ -72,7 +78,36 @@ function _validarDato71H() {
     )
 }
 
-function _validacionescod_71H(){
+function _calcularconsecutivo_71H() {
+    console.log('calcularconsecutivo')
+    LLAMADO_DLL({
+        dato: [],
+        callback: _dataSAL71H_consecutivo,
+        nombredll: 'SAL71H-03',
+        carpeta: 'SALUD'
+    });
+}
+function _dataSAL71H_consecutivo(data) {
+    console.log('data', data)
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $_COD71H = date[1].trim();
+    console.log($_COD71H, '$_COD71H')
+    if (swinvalid == "00") {
+        $('#codigo_71H').val($_COD71H);
+        // _dataSAL71H_comu()
+        _validacionescod_71H(); 
+    } else if (swinvalid == "01") {
+        CON851('ERROR', 'ERROR CONSECUTIVO', null, 'error', 'error');
+        _validarDato71H();
+    } else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+
+}
+
+function _validacionescod_71H() {
+
     $_COD71H = $('#codigo_71H').val();
     LLAMADO_DLL({
         dato: [$_COD71H],
@@ -80,48 +115,49 @@ function _validacionescod_71H(){
         nombredll: 'SAL71H-01',
         carpeta: 'SALUD'
     });
+
 }
 
-function _dataSAL71H_comu(data){
+function _dataSAL71H_comu(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODCOMU = date[1].trim();
     $_NOMCOMU = date[2].trim();
     if (($_NovedSer71H == '7') && (swinvalid == '01')) {
-        
+
         detalle71H()
     }
     else if (($_NovedSer71H == '7') && (swinvalid == '00')) {
-        
+
         CON851('00', '00', null, 'error', 'Error');
         CON850(_evaluarCON850);
     }
     else if (($_NovedSer71H == '8') && (swinvalid == '00')) {
-       
-        _llenarDatSer71H(); 
+
+        _llenarDatSer71H();
 
     }
     else if (($_NovedSer71H == '8') && (swinvalid == '01')) {
-        
+
         CON851('01', '01', null, 'error', 'Error');
         CON850(_evaluarCON850);
 
     }
     else if (($_NovedSer71H == '9') && (swinvalid == '00')) {
-      
-        _llenarDatSer71H(); 
+
+        _llenarDatSer71H();
 
     }
     else if (($_NovedSer71H == '9') && (swinvalid == '01')) {
-       
+
         CON851('01', '01', null, 'error', 'Error');
         CON850(_evaluarCON850);
-    }   
+    }
 }
 
 /// NOVEDAD 7 ////
 function detalle71H() {
-    
+
     validarInputs(
         {
             form: '#descrp',
@@ -150,7 +186,7 @@ function _llenarDatSer71H() {
 function _envDatos71H() {
 
     LLAMADO_DLL({
-        dato: [$_NovedSer71H, $_COD71H],
+        dato: [$_NovedSer71H, $_COD71H, desc71H],
         callback: _data71H_02,
         nombredll: 'SAL71H-02',
         carpeta: 'SALUD'
@@ -171,6 +207,7 @@ function envioDatSer71H() {
 }
 
 function _data71H_02(data) {
+    console.log(data, 'dll grabar')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == "00") {

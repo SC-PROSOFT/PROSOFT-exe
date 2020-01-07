@@ -56,13 +56,43 @@ function _evaluarCON850(novedad) {
         case 7:
         case 8:
         case 9:
-            _validarDato71I();
+            if($_NovedSer71I == '7'){
+                _calcularconsecutivo_71I();
+            }else{
+                _validarDato71I();
+            }
             break;
         default:
             _toggleNav();
             break;
     }
     $('#novSer71I').val(novedad.id + ' - ' + novedad.descripcion)
+}
+function _calcularconsecutivo_71I(){
+    LLAMADO_DLL({
+        dato: [],
+        callback: _dataSAL71I_consecutivo,
+        nombredll: 'SAL71I-03',
+        carpeta: 'SALUD'
+    });
+}
+
+function _dataSAL71I_consecutivo(data) {
+    console.log('data', data)
+    var date = data.split('|');
+    var swinvalid = date[0].trim();
+    $codigo_71I = date[1].trim();
+    console.log($codigo_71I, '$codigo_71I')
+    if (swinvalid == "00") {
+        $('#codigo_71I').val($codigo_71I);
+        _validarcodigores_71I(); 
+    } else if (swinvalid == "01") {
+        CON851('ERROR', 'ERROR CONSECUTIVO', null, 'error', 'error');
+        _validarDato71H();
+    } else {
+        CON852(date[0], date[1], date[2], _toggleNav);
+    }
+
 }
 
 function _validarDato71I() {
