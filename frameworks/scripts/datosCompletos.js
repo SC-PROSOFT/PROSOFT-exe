@@ -1,22 +1,22 @@
-function obtenerDatosCompletos(data, callbackSucces) {
+function obtenerDatosCompletos(data, callbackSucces, callbackError) {
     var nombreFD = data.nombreFd.toUpperCase()
     var programa
     var objLocal = ''
 
-    var ventanaimpresion = bootbox.dialog({
-        message: '<div class="text-center"><div><i class="fa fa-spin fa-spinner"></i> Cargando ' + nombreFD + '...</div></div>',
-        closeButton: false,
-        buttons: {
-            confirm: {
-                label: 'Aceptar',
-                className: 'btn-success',
-                callback: function () {
+    // var ventanaimpresion = bootbox.dialog({
+    //     message: '<div class="text-center"><div><i class="fa fa-spin fa-spinner"></i> Cargando ' + nombreFD + '...</div></div>',
+    //     closeButton: false,
+    //     buttons: {
+    //         confirm: {
+    //             label: 'Aceptar',
+    //             className: 'btn-success',
+    //             callback: function () {
 
-                }
-            }
-        }
-    })
-    ventanaimpresion.init($('.modal-footer').hide());
+    //             }
+    //         }
+    //     }
+    // })
+    // ventanaimpresion.init($('.modal-footer').hide());
     switch (nombreFD) {
         case 'ENFERMEDADES':
             programa = "SALUD/SER851"
@@ -95,7 +95,7 @@ function obtenerDatosCompletos(data, callbackSucces) {
         case 'CLASIPACI':
             programa = "SALUD/SER868"
             break;
-//REVISION DIANA            
+        //REVISION DIANA            
         case 'PREFIJOS':
             programa = "INVENT/INV109"
             // NO REQUIERE FILTRO
@@ -219,8 +219,19 @@ function obtenerDatosCompletos(data, callbackSucces) {
                 _toggleNav
             );
             break;
-      
+
     }
+
+    // var prueba = {
+    //     CUPS: 'SALUD/SER802C', // FDFDF
+    //     ESPCUPS: 'SALUD'
+    // }
+
+    // if(prueba[$variable] ){
+
+    // }else{
+
+    // }
 
     if (objLocal == '') {
         var datos_envio_DC = datosEnvio();
@@ -241,14 +252,16 @@ function obtenerDatosCompletos(data, callbackSucces) {
         }, URL)
             .then((data) => {
                 callbackSucces(data);
-                $('.btn-success').click();
+                // $('.btn-success').click();
             })
             .catch(error => {
                 console.error(error)
+                callbackError(callbackError)
+                // $('.btn-success').click();
                 // _toggleNav()
             });
     } else {
-        $('.btn-success').click();
+        // $('.btn-success').click();
         callbackSucces(objLocal);
         objLocal = ''
     }
