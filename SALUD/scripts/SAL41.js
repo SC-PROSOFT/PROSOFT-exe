@@ -3092,7 +3092,6 @@ function _Validaridhistoriafact_41() {
     //     _Leerpaciente_41();
     // }
     else if ((($_CLFACT == "1") || ($_CLFACT == "2") || ($_CLFACT == "3") || ($_CLFACT == "5") || ($_CLFACT == "5")) && (parseInt($_IDHISTORIAFACT) < 000000000000010)) {
-        console.debug("no deberia entrar");
         CON851('03', '03', null, 'error', 'Error');
         _Datopaciente_41();
     }
@@ -7537,12 +7536,18 @@ function _Datocondicion_41() {
             _Leercondic_41();
         }
         else {
-            var estadosusuaria = '[{"codigo": "1", "descripcion": "EMBARAZO PRIMER TRIMESTRE"},{"codigo": "2","descripcion": "EMBARAZO SEGUNDO TRIMESTRE"},{"codigo": "3","descripcion": "EMBARAZO TERCER TRIMESTRE"},{"codigo": "4","descripcion": "NO ESTA EMBARAZADA"},{"codigo": "8","descripcion": "NO APLICA"},]'
-            var estadousuaria = JSON.parse(estadosusuaria);
-            var titulo = 'Condicion usuaria';
+            // var estadosusuaria = '[{"codigo": "1", "descripcion": "EMBARAZO PRIMER TRIMESTRE"},{"codigo": "2","descripcion": "EMBARAZO SEGUNDO TRIMESTRE"},{"codigo": "3","descripcion": "EMBARAZO TERCER TRIMESTRE"},{"codigo": "4","descripcion": "NO ESTA EMBARAZADA"},{"codigo": "8","descripcion": "NO APLICA"},]'
+            // var estadousuaria = JSON.parse(estadosusuaria);
+            var estadousuaria = [
+                {codigo:'1', descripcion: 'EMABARAZO PRIMER TRIMESTRE'},
+                {codigo:'2', descripcion: 'EMABARAZO SEGUNDO TRIMESTRE'},
+                {codigo:'3', descripcion: 'EMABARAZO TERCER TRIMESTRE'},
+                {codigo:'4', descripcion: 'NO ESTA EMBARAZADA'},
+                {codigo:'8', descripcion: 'NO APLICA'},
+            ]
             POPUP({
                 array: estadousuaria,
-                titulo: titulo,
+                titulo: 'Condicion usuaria',
                 indices: [
                     { id: 'codigo', label: 'descripcion' }
                 ],
@@ -7554,7 +7559,7 @@ function _Datocondicion_41() {
 }
 
 function _evaluarSER826_41(data) {
-    $_EMBARESTAD = data.id;
+    $_EMBARESTAD = data.codigo;
     _Leercondic_41();
 }
 
@@ -7621,15 +7626,14 @@ function _Leercondic_41() {
                 $('#embarestado_SAL41').html(
                     '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO ESTA EMBARAZADA</label>'
                 )
-                _Leercondic2_41()
             } else {
                 $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
                     '<div class="inline-inputs">' +
                     '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO ESTA EMBARAZADA</label>' +
                     '</div>' +
                     '</div>');
-                _Leercondic2_41()
             }
+            _Leercondic2_41()
             break;
         case '8':
             _Detalle_41();
@@ -7637,8 +7641,9 @@ function _Leercondic_41() {
     }
 }
 function _Leercondic2_41() {
+    console.debug('leer condic 2');
     if ($_CLFACT == '7') {
-        _Tipoproced_41();
+        setTimeout(_Tipoproced_41, 300);
     } else {
         if ($_DIAGNCUP1 == 'S') {
             console.debug('diagnostico cup S');
@@ -7646,7 +7651,8 @@ function _Leercondic2_41() {
             $_FINALIDESTAD = '' ? $_FINALIDESTAD = ' ' : $_FINALIDESTAD = $_FINALIDESTAD;
             _Controlcapitacion_41();
         } else {
-            _Tipoproced_41();
+            console.debug('else de diangcup');
+            setTimeout(_Tipoproced_41, 300);
         }
     }
 }
@@ -7671,12 +7677,17 @@ function _Tipoproced_41() {
     //             break;
     //     }
     // }
-    var tiposprocedimientos = '[{"codigo": "1", "descripcion": "DIAGNOSTICO"},{"codigo": "2","descripcion": "TERAPEUTICO"},{"codigo": "3","descripcion": "PROTEC.ESPEXIFICA"},{"codigo": "4","descripcion": "DETECCION TEMPRANA ENF.GENER"},{"codigo": "9","descripcion": "NO APLICA"}]'
-    var tipoprocedimiento = JSON.parse(tiposprocedimientos);
-    var titulo = 'Tipo procedimiento';
+    console.debug('tipo de procedimiento');
+    var tipoprocedimiento = [
+        {codigo:'1', descripcion:'DIAGNOSTICO'},
+        {codigo:'2', descripcion:'TERAPEUTICO'},
+        {codigo:'3', descripcion:'PROTEC.ESPEXIFICA'},
+        {codigo:'4', descripcion:'DETECCION TEMPRANA ENF.GENER'},
+        {codigo:'9', descripcion:'NO APLICA'}
+    ]
     POPUP({
         array: tipoprocedimiento,
-        titulo: titulo,
+        titulo: 'Tipo procedimiento',
         indices: [
             { label: 'descripcion' }
         ],
