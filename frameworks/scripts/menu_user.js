@@ -221,16 +221,14 @@ function _toggleNav() {
     var visible = nav.is(':visible');
     var widthScreen = $(document).width();
     let Window = BrowserWindow.getAllWindows();
-    console.debug(Window);
 
-    // if (Window.length > 1) {
-    //     if ($_PARENT){
-    //         var { ipcRenderer } = require('electron');
-    //         let vector = ['salir', 'ejemplo']
-    //         ipcRenderer.send('ventana2', { param: vector });
-    //     }
-    // }
-    // else {
+    if (!visible) {
+        if (Window.length > 1) {
+            var { ipcRenderer } = require('electron');
+            let vector = ['salir', 'ejemplo']
+            ipcRenderer.send('ventana2', { param: vector });
+        }
+    }
     if (widthScreen > 992) { // Pantalla grande
         if (visible) {
             if (widthScreen > 992) {
@@ -271,7 +269,6 @@ function _toggleNav() {
 
         $("html, body").animate({ scrollTop: 0 }, "slow");
     }
-    // }
 }
 
 function _inputControl(set) {

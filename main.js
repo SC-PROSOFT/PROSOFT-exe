@@ -295,43 +295,13 @@ function cerrarVentana() {
 
 app.on('ready', creaVentana);
 
-
-// function SegundaVentana(data) {
-//   console.log(data);
-//   var tamano = electron.screen.getAllDisplays();
-//   var tamano = tamano[0].size;
-//   win2 = new BrowserWindow({
-//     frame: false,
-//     width: parseInt(tamano.width - (tamano.width*0.1)),
-//     height: parseInt(tamano.height - (tamano.height*0.1)),
-//     icon: 'build/SC.ico',
-//     parent: win,
-//     webPrefences: {
-//       nodeIntegration: true,
-//       plugins: true,
-//       contextIsolation: false,
-//     }
-//   });
-
-//   win2.setBounds({y: 40});
-//   win2.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
-//   win2.webContents.on('did-finish-load', () => {
-//     let dir = path.join(__dirname, data);
-//     data.push(dir);
-//     win2.webContents.send('finish', data);
-//   })
-// }
-
 ipcMain.on('another', (e, m) => {
-  console.log(m);
-  // SegundaVentana(m);
   var tamano = electron.screen.getAllDisplays();
   var tamano = tamano[0].size;
   segundaventana = new BrowserWindow({
     frame: false,
     width: parseInt(tamano.width - (tamano.width * 0.1)),
     height: parseInt(tamano.height - (tamano.height * 0.1)),
-    // icon: 'build/SC.ico',
     parent: win,
     webPreferences: {
       nodeIntegration: true,
@@ -339,7 +309,6 @@ ipcMain.on('another', (e, m) => {
   });
 
   segundaventana.setBounds({ y: 40 });
-  segundaventana.fromId(2);
   segundaventana.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
   var primeraventana =  segundaventana.getParentWindow();
   segundaventana.webContents.on('did-finish-load', () => {
@@ -348,15 +317,7 @@ ipcMain.on('another', (e, m) => {
   })
 });
 
-// ipcMain.on('ventana2', (e, m) => {
-//   console.log('ventana2')
-//   if (m.param[0] == 'salir') {
-//     win2.close();
-//     win.webContents.send('closed2', m);
-//   }
-// })
 ipcMain.on('ventana2', (e, m) => {
-  console.log(m);
   segundaventana.close();
   win.webContents.send('closed2');
 })
