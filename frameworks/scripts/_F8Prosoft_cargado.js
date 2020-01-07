@@ -394,7 +394,7 @@
                 $.F8LITE.table.destroy();
             }
             $.F8LITE._initControls(false);
-            setTimeout( $.F8LITE.cancelcallback, 200);
+            setTimeout(() => {$.F8LITE.cancelcallback}, 200);
         },
 
     }
