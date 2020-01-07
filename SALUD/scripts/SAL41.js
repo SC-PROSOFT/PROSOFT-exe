@@ -196,12 +196,12 @@ $(document).ready(function () {
 function _Clavedeacceso_41(){
     console.debug('clave de acceso');
 }
-// function FAC135() {
-//     let { ipcRenderer } = require("electron");
-//     ipcRenderer.send('another', 'SALUD/PAGINAS/FAC135C.html');
-//     vector = ['on', 'Actualizando maestro de pacientes...']
-//     _EventocrearSegventana(vector, _Revisardato_41);
-// }
+function FAC135() {
+    let { ipcRenderer } = require("electron");
+    ipcRenderer.send('another', 'SALUD/PAGINAS/FAC135C.html');
+    vector = ['on', 'Actualizando maestro de pacientes...']
+    _EventocrearSegventana(vector, _Revisardato_41);
+}
 
 ///////////////////////////////// F8 /////////////////////////////////////////////////
 function _ventanaClases_41(e) {
@@ -7641,7 +7641,6 @@ function _Leercondic_41() {
     }
 }
 function _Leercondic2_41() {
-    console.debug('leer condic 2');
     if ($_CLFACT == '7') {
         setTimeout(_Tipoproced_41, 300);
     } else {
@@ -7651,7 +7650,6 @@ function _Leercondic2_41() {
             $_FINALIDESTAD = '' ? $_FINALIDESTAD = ' ' : $_FINALIDESTAD = $_FINALIDESTAD;
             _Controlcapitacion_41();
         } else {
-            console.debug('else de diangcup');
             setTimeout(_Tipoproced_41, 300);
         }
     }
@@ -7677,7 +7675,6 @@ function _Tipoproced_41() {
     //             break;
     //     }
     // }
-    console.debug('tipo de procedimiento');
     var tipoprocedimiento = [
         {codigo:'1', descripcion:'DIAGNOSTICO'},
         {codigo:'2', descripcion:'TERAPEUTICO'},
