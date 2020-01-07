@@ -6,11 +6,6 @@ var $_Token_Cliente_109;
 var $_Token_Acceso_109
 var $prueba_token
 
-var SQL_INSERT = "INSERT INTO sc_archpref VALUES";
-var SQL_UPDATE = '';
-var SQL_DELETE = "DELETE FROM sc_archpref WHERE id in (";
-
-
 var momentFormat = 'YYYY/MM/DD';
 var momentMaskFecha = new IMask($("#fechaPrefijo_109")[0], {
     mask: Date,
@@ -74,7 +69,7 @@ function _ventanaCentroCosto_109(e) {
         _ventanaDatos({
             titulo: 'Ventana centro de costos',
             columnas: ["COD", "NOMBRE"],
-            data: arrayLote_110I,
+            data: arrayCostos_109,
             callback_esc: function () {
                 $('#centroCosto_109').focus()
             },
@@ -92,7 +87,7 @@ function _ventanaAlmacen_109(e) {
         _ventanaDatos({
             titulo: 'Ventana de Almacenes',
             columnas: ["CODIGO", "DESCRIPCION", "RESPONSABLE"],
-            data: arrayLote_110I,
+            data: arrayAlmacenes_109,
             callback_esc: function () {
                 $('#almacen_109').focus()
             },
@@ -708,7 +703,8 @@ function validar_factElect_109() {
         indices: [
             { id: 'COD', label: 'DESCRIP' }
         ],
-        callback_f: validar_sucPref_109
+        callback_f: validar_sucPref_109,
+        seleccion: arrayPrefijos_109[0].PROV_FACT_ELECT
     }, function (data) {
         var proveedor = data.COD.trim()
         $('#factElect_109').val(proveedor)

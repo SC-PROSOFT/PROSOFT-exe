@@ -278,7 +278,7 @@ function SER830(data, esccallback, callback) {
     ]
     POPUP({
         array: SER830,
-        titulo: 'FINALIDAD DE LA CONSULTA',
+        titulo: 'PROFESIONAL ATIENDE',
         indices: [{
             id: 'COD',
             label: 'DESCRIP'
@@ -415,4 +415,150 @@ function consult_atiendProf(codigo) {
             msj = false;
     }
     return msj;
+}
+
+function SER825(callbackAtras, callbackSig, orden_w) {
+    var fuente = '<div id="popUp_paciente_491">' +
+        '<div class="col-md-12">' +
+        '<div class="portlet light no-padding">' +
+        '<div class="portlet-body no-padding">' +
+        '<div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin: 0 auto;">' +
+        '<div class="col-md-12 col-sm-12 col-xs-12" id="validar_paciente_SER825" style="display: flex;justify-content: center">' +
+        '<div class="col-md-6">' +
+        '<label>Doc. Identidad:</label>' +
+        '<div class="input-group col-md-10 col-sm-10 col-xs-10">' +
+        '<input type="text" id="paciente_SER825" class="form-control col-md-12 col-sm-12 col-xs-12" maxlength="15" data-orden="1" required="true" disabled="disabled">' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<div style="clear:both;"></div>' +
+        '</div>'
+    var dialogo = bootbox.dialog({
+        title: "Consulta por paciente:",
+        message: fuente,
+        closeButton: false,
+        buttons: {
+            main: {
+                label: "Aceptar",
+                className: "blue hidden",
+                callback: function () {
+
+                }
+            }
+        },
+    });
+    dialogo.on('shown.bs.modal', function (e) {
+        $('.modal-content').css({ 'width': '1000px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' })
+        paciente_SER825(callbackAtras, callbackSig, orden_w)
+    });
+}
+
+
+function paciente_SER825(callbackAtras, callbackSig, orden_w) {
+    _toggleF8([{ input: 'paciente', app: 'SER825', funct: (e) => {f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w)}},])
+
+    validarInputs(
+        {
+            form: "#validar_paciente_SER825",
+            orden: '1'
+        },
+        function () {
+            $('[data-bb-handler="main"]').click();
+            $('#paciente_SER825').val()
+            callbackAtras(callbackAtras)
+        },
+        function () {
+            var id_historia = cerosIzq($('#paciente_SER825').val(), 15)
+            $('#paciente_SER825').val(id_historia)
+
+            var datos_envio = datosEnvio()
+            datos_envio += id_historia
+            datos_envio += '|'
+            datos_envio += orden_w
+            datos_envio += '|'
+            let URL = get_url("APP/SALUD/SER825.DLL");
+            postData({
+                datosh: datos_envio
+            }, URL)
+                .then((data) => {
+                    validarFacturas_SER825(data, callbackAtras, callbackSig, orden_w);
+                })
+                .catch(error => {
+                    console.error(error)
+                    paciente_SER825(callbackAtras, callbackSig, orden_w)
+                });
+
+        }
+
+    )
+}
+
+function validarFacturas_SER825(data, callbackAtras, callbackSig, orden_w) {
+    $('[data-bb-handler="main"]').click();
+    f8comprob_sal491 = data.FACTURAS[0]
+    console.log(f8comprob_sal491)
+    f8comprob_sal491.TABLA.pop()
+    _ventanaDatos({
+        titulo: f8comprob_sal491.NOMBRE_PACI,
+        columnas: ["SUC", "NRO_FACT", "FECHA", "CUENTA", "CLASE", "ARTICULO", "MEDICO", "DIAGNOSTICO_1", "DIAGNOSTICO_2", "COPAGO", "FINALID", "EMBAR"],
+        data: f8comprob_sal491.TABLA,
+        ancho: '90%',
+        callback_esc: function () {
+            callbackAtras(callbackAtras)
+        },
+        callback: function (data) {
+            traerRegistroCompleto_SER825(data.LLAVE, callbackAtras, callbackSig, orden_w)
+        }
+    });
+}
+
+function traerRegistroCompleto_SER825(llave, callbackAtras, callbackSig, orden_w) {
+    var datos_envio = datosEnvio();
+    datos_envio += llave
+    datos_envio += '|'
+
+    let URL = get_url("APP/SALUD/SAL49.DLL");
+
+    postData({
+        datosh: datos_envio
+    }, URL)
+        .then((data) => {
+            callbackSig(data);
+        })
+        .catch(error => {
+            console.error(error)
+            callbackAtras(callbackAtras)
+        });
+}
+
+function f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w) {
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        $('[data-bb-handler="main"]').click();
+        parametros = {
+            valoresselect: ['Descripcion', 'Identificacion'],
+            f8data: 'PACIENTES',
+            columnas: [{
+                title: 'COD'
+            }, {
+                title: 'NOMBRE'
+            }, {
+                title: 'EPS'
+            }, {
+                title: 'EDAD'
+            }],
+            callback: data => {
+                console.debug(data);
+                $('#paciente_SER825').val(data.COD)
+                _enterInput($('#paciente_SER825'));
+            },
+            cancel: () => {
+                paciente_SER825(callbackAtras, callbackSig, orden_w)
+            }
+        };
+        F8LITE(parametros);
+    }
 }
