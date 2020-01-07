@@ -4639,7 +4639,7 @@
                   "Descripcion": "Reimprimir facturas",
                   "Opc-segu": "I42",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL42.html"
+                  "Href": "../../SALUD/paginas/SAL41.html"
                 },
                 {
                   "Id": "09423",
@@ -4655,7 +4655,7 @@
                     "8"
                   ],
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL43.html"
+                  "Href": "../../SALUD/paginas/SAL41.html"
                 },
                 {
                   "Id": "09424",
