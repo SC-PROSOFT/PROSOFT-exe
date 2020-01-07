@@ -234,7 +234,7 @@ function _validarGrupo718() {
 function evaluarGrupo718() {
 	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value.toUpperCase();
 	let res;
-	res = $_grServicios718.filter(gruposer => gruposer.COD.toUpperCase() == SAL718.GRUPOSER.COD.toUpperCase());
+	res = $_grServicios718.filter(gruposer => gruposer.COD == SAL718.GRUPOSER.COD.toUpperCase());
 	if (res == '') {
 		CON851('03', '03', _validarGrupo718(), 'error', 'error');
 	} else {
@@ -255,20 +255,20 @@ function _validarCUPS718() {
 	)
 }
 function evaluarCups718() {
-	SAL718.CUPS.GRUPO=SAL718.GRUPOSER.COD;
+	SAL718.CUPS.GRUPO = SAL718.GRUPOSER.COD;
 	let campo = document.getElementById('codcups_718').value.toString().trim().toUpperCase();
 	if (typeof campo == "undefined" || campo == '') {
 		CON851('03', '03', _validarCUPS718(), 'error', 'error');
 	} else {
 		SAL718.CUPS.LLAVE = SAL718.CUPS.GRUPO + campo;
-		
+
 		let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE.toUpperCase();
 		postData({
 			datosh: datos_envio
 		}, get_url("APP/SALUD/SAL718-01.DLL"))
 			.then((data) => {
 				SAL718.CUPS = data;
-				
+
 				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
 			})
 			.catch((error) => { console.debug(error) });
@@ -288,7 +288,7 @@ function _validarDescripcion718() {
 		},
 		function () {
 			SAL718.CUPS.DESCRIP = document.getElementById('descripCup_718').value;
-			console.debug('descrip',SAL718.CUPS.DESCRIP)
+			console.debug('descrip', SAL718.CUPS.DESCRIP)
 			_validarTipoCups718();
 		}
 	)
@@ -627,17 +627,21 @@ function validarCtaTercero718() {
 
 function evaluarCtaTercero718() {
 	SAL718.MAESTROS.LLAVE_MAE = document.getElementById('ctaingrTercer_718').value.toString().trim();
-	SAL718.CUPS.CTA_OTR = document.getElementById('ctaingrTercer_718').value.padStart(12, '0');
+	SAL718.CUPS.CTA_OTR = SAL718.MAESTROS.LLAVE_MAE;
 	let res;
 
-	if (SAL718.CUPS.CTA_OTR == '') {
+	if (SAL718.CUPS.CTA_OTR.trim().length == 0 || SAL718.CUPS.CTA_OTR == '') {
 		res = $_planCuentas718.filter(n => n.LLAVE_MAE == SAL718.CUPS.CTA_OTR.substring(0, 10) + 4);
-		document.getElementById('ctaingrTercer_718').value = '0'
-		document.getElementById('ctaDescripTercer_718').value = SAL718.MAESTROS.NOMBRE_MAE;
+		if (res == '') {
+			document.getElementById('ctaingrTercer_718').value = '0';
+			document.getElementById('ctaDescripTercer_718').value = document.getElementById('ctaDescripTercer_718').value.padStart(30, '*');
+		} else {
+			document.getElementById('ctaDescripTercer_718').value = res[0].NOMBRE_MAE
+		}
 		validarTercero718();
 	}
 	else {
-		res = $_planCuentas718.filter(n => n.LLAVE_MAE == SAL718.CUPS.CTA_OTR);
+		res = $_planCuentas718.filter(n => n.LLAVE_MAE == SAL718.CUPS.CTA_OTR.padStart(12, '0'));
 		if (res == '') {
 			CON851('03', '03', validarCtaTercero718(), 'error', 'error');
 		} else {
@@ -648,7 +652,6 @@ function evaluarCtaTercero718() {
 	}
 
 }
-
 function validarTercero718() {
 	validarInputs({
 		form: "#nitTercer718",
@@ -658,17 +661,27 @@ function validarTercero718() {
 }
 
 function evaluarTercero718() {
-	SAL718.CUPS.NIT_OTR = document.getElementById('nitTercer_718').value.padStart(10, ' ');
-	let res;
-	if (typeof SAL718.CUPS.NIT_OTR == "undefined" || SAL718.CUPS.NIT_OTR == '') { CON851('03', '03', validarTercero718(), 'error', 'error'); }
-	else {
-		res = $_terceros718.filter(terce => terce.COD == SAL718.CUPS.NIT_OTR);
-		if (res == '') {
+	let res = '';
+	SAL718.CUPS.NIT_OTR = document.getElementById('nitTercer_718').value.trim();
+	if (SAL718.CUPS.NIT_OTR == '' || SAL718.CUPS.NIT_OTR.trim().length == 0) {
+		CON851('03', '03', validarTercero718(), 'error', 'error');
+	} else {
+		res = $_terceros718.filter(n => n.COD.trim() == SAL718.CUPS.NIT_OTR.trim());
+		if (res == '' || res == undefined) {
+			document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR;
+			document.getElementById('descripTercer_718').value = document.getElementById('descripTercer_718').value.padStart(10,'*');
 			CON851('03', '03', validarTercero718(), 'error', 'error');
 		} else {
-			SAL718.TERCEROS = res[0];
-			if (res.length > 0) { SAL718.TERCEROS.ESTADO = '00'; SAL718.TERCEROS.NOMBRE = res[0].NOMBRE; } else { SAL718.TERCEROS.ESTADO = '01'; }
-			_onrestricciones718({ invalid: SAL718.TERCEROS.ESTADO, seccion: 'TERCEROS' })
+			document.getElementById('nitTercer_718').value = res[0].COD;
+			document.getElementById('descripTercer_718').value = res[0].NOMBRE;
+			switch ($_USUA_GLOBAL[0].PUC) {
+				case '1': validarCodPuc718(); break;
+				case '2': validarCodCoop718(); break;
+				case '3': validarCodPuc718(); break;
+				case '4': validarcodOficial718(); break;
+				case '6': validarCodPuc718(); break;
+				default: validarCodPuc718(); break;
+			}
 		}
 	}
 }
@@ -882,9 +895,9 @@ function Actualizar718() {
 				SAL718.CUPS.LLAVE.toUpperCase()
 				+ '|' + SAL718.CUPS.DESCRIP.trim()
 				+ '|' + SAL718.CUPS.LLAVE_ALT[0].trim()
-				+ '|' + SAL718.CUPS.LLAVE_ALT[1].padEnd(5, ' ').trim()
+				+ '|' + SAL718.CUPS.LLAVE_ALT[1]
 				+ '|' + parseInt(SAL718.CUPS.NIVEL)
-				+ '|' + SAL718.CUPS.DURACION.padStart(3,'0').trim()
+				+ '|' + SAL718.CUPS.DURACION.padStart(3, '0')
 				+ '|' + parseInt(SAL718.CUPS.COPAGO)
 				+ '|' + SAL718.CUPS.NOPOS.trim()
 				+ '|' + SAL718.CUPS.CIS.trim()
@@ -982,7 +995,7 @@ function on_llenarFormCups718() {
 	SAL718.CUPS.GRUPO = SAL718.GRUPOSER.COD
 	SAL718.CUPS.LLAVE = SAL718.CUPS.GRUPO + document.getElementById('codcups_718').value;
 	SAL718.CUPS.TIPO = SAL718.CUPS.LLAVE_ALT[0]; SAL718.CUPS.ABRV = SAL718.CUPS.LLAVE_ALT[1];
-	document.getElementById('codcups_718').value=SAL718.CUPS.LLAVE.substring(2,12);
+	document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
 	const dom_Idcups = [
 		'tipocups_718', 'descripCup_718', 'codabrev_718', 'codgrupo_718', 'nivcompl_718',
 		'duracion_718', 'pagoPaci_718', 'proced_718', 'centrocosto_718', 'edadminima_718', 'edadmaxima_718',
@@ -1005,8 +1018,8 @@ function on_llenarFormCups718() {
 		SAL718.CUPS.CIS == '' ? document.getElementById('actHl718').value = ' ' : document.getElementById('actHl718').value = SAL718.CUPS.CIS;
 	} else {
 		SAL718.CUPS.CIS == '' ? document.getElementById('cis718').value = ' ' : document.getElementById('cis718').value = SAL718.CUPS.CIS;
-		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('nitTercer_718').value = ' ' : document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR;
-		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('descripTercer_718').value = ' ' : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
+		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('nitTercer_718').value = ' ' : document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR.trim();
+		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('descripTercer_718').value =document.getElementById('descripTercer_718').value.padStart(10,'*') : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
 	}
 	if (SAL718.CUPS.LLAVE_ALT[0] == '6') {
 		SAL718.CUPS.CTA_CONTAB.CTA_CONTAB_CUP[0] = '41250400050'; SAL718.CUPS.CTA_CONTAB.CTA_CONTAB_CUP[2] = '41248000001';
@@ -1092,22 +1105,6 @@ function _onrestricciones718(params) {
 			break;
 
 		//-----------------------------------------//
-		case 'TERCEROS':
-			if (params.invalid == '01') { CON851('01', '01', validarTercero718(), 'error', 'error'); }
-			else {
-				document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR;
-				document.getElementById('descripTercer_718').value = SAL718.TERCEROS.NOMBRE;
-				switch ($_USUA_GLOBAL[0].PUC) {
-					case '1': validarCodPuc718(); break;
-					case '2': validarCodCoop718(); break;
-					case '3': validarCodPuc718(); break;
-					case '4': validarcodOficial718(); break;
-					case '6': validarCodPuc718(); break;
-					default: validarCodPuc718(); break;
-				}
-
-			}
-			break;
-		default: break;
 	}
+
 }
