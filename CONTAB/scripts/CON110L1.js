@@ -1,12 +1,58 @@
 var CON110L1 = [];
 $(document).ready(() => {
-    if ($_USUA_GLOBAL[0].TIPO_EMPRE != 'H') {
-        $('#DATOALMACEN_CON110L1').hide()
-    }
+    if ($_USUA_GLOBAL[0].TIPO_EMPRE != 'H') $('#DATOALMACEN_CON110L1').hide();
     _inputControl('reset');
     _inputControl('disabled');
-    _evaluarnovedad_CON110L1();
+    obtenerDatosCompletos({nombreFd: 'SUCURSALES'}, data => { 
+        data = data.SUCURSAL;
+        data.pop();
+        CON110L1.SUCURSALES = data;
+        obtenerDatosCompletos({nombreFd: 'LOCALIZACION'}, data => { 
+            data = data.LOCALIZACION;
+            data.pop();
+            CON110L1.ALMACENES = data;
+            _evaluarnovedad_CON110L1();
+        }, 'OFF');
+    }, 'ON');
+    _toggleF8([
+        { input: 'codigo', app: 'CON110L1', funct: _ventanaSucursales },
+        { input: 'almacen', app: 'CON110L1', funct: _ventanaAlmacenes },
+    ])
 })
+
+function _ventanaSucursales(e){
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: "VENTANA DE SUCURSALES",
+            columnas: ["CODIGO", "DESCRIPCION", "ALMACEN"],
+            data: CON110L1.SUCURSALES,
+            callback_esc: function () {
+                $("#codigo_CON110L1").focus();
+            },
+            callback: function (data) {
+                $('#codigo_CON110L1').val(data.CODIGO);
+                _enterInput('#codigo_CON110L1');
+            }
+        });
+    }
+}
+
+function _ventanaAlmacenes(e){
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: "VENTANA DE ALMACENES",
+            columnas: ["CODIGO", "DESCRIPCION", "RESPONSABLE"],
+            data: CON110L1.ALMACENES,
+            callback_esc: function () {
+                $("#almacen_CON110L1").focus();
+            },
+            callback: function (data) {
+                $('#almacen_CON110L1').val(data.CODIGO);
+                _enterInput('#almacen_CON110L1');
+            }
+        });
+    }
+}
 
 function _evaluarnovedad_CON110L1() {
     CON850(data => {
