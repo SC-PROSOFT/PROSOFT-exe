@@ -83,7 +83,6 @@ function _ventanaCups718(e) {
 						data.GRUPO = data.LLAVE.substring(0, 2);
 						SAL718.CUPS.LLAVE = data.LLAVE; SAL718.CUPS.DESCRIP = data.DESCRIP;
 						let datos_envio = datosEnvio() + SAL718.CUPS.LLAVE;
-						console.debug(datos_envio, 'data')
 						postData({
 							datosh: datos_envio
 						}, get_url("APP/SALUD/SAL718-01.DLL"))
@@ -271,7 +270,7 @@ function evaluarCups718() {
 
 				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
 			})
-			.catch((error) => { console.debug(error) });
+		.catch((error) => { console.debug(error) });
 	}
 }
 
@@ -288,7 +287,6 @@ function _validarDescripcion718() {
 		},
 		function () {
 			SAL718.CUPS.DESCRIP = document.getElementById('descripCup_718').value;
-			console.debug('descrip', SAL718.CUPS.DESCRIP)
 			_validarTipoCups718();
 		}
 	)
@@ -666,14 +664,15 @@ function evaluarTercero718() {
 	if (SAL718.CUPS.NIT_OTR == '' || SAL718.CUPS.NIT_OTR.trim().length == 0) {
 		CON851('03', '03', validarTercero718(), 'error', 'error');
 	} else {
-		res = $_terceros718.filter(n => n.COD.trim() == SAL718.CUPS.NIT_OTR.trim());
+		res = $_terceros718.filter(n => n.COD == parseInt(SAL718.CUPS.NIT_OTR));
 		if (res == '' || res == undefined) {
-			document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR;
-			document.getElementById('descripTercer_718').value = document.getElementById('descripTercer_718').value.padStart(10,'*');
+			document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR.trim();
+			document.getElementById('descripTercer_718').value = document.getElementById('descripTercer_718').value.padStart(10, '*');
 			CON851('03', '03', validarTercero718(), 'error', 'error');
 		} else {
-			document.getElementById('nitTercer_718').value = res[0].COD;
+			document.getElementById('nitTercer_718').value = res[0].COD.trim();
 			document.getElementById('descripTercer_718').value = res[0].NOMBRE;
+			SAL718.TERCEROS.COD = parseInt(SAL718.CUPS.NIT_OTR);
 			switch ($_USUA_GLOBAL[0].PUC) {
 				case '1': validarCodPuc718(); break;
 				case '2': validarCodCoop718(); break;
@@ -744,7 +743,7 @@ function validarCodPuc718() {
 			}
 		},
 		function () {
-			SAL718.MAESTROS.LLAVE_MAE = document.getElementById('codPuc_718').value;
+			SAL718.MAESTROS.LLAVE_MAE = document.getElementById('codPuc_718').value.substring(0, 12);
 			SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
 			SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = SAL718.MAESTROS.LLAVE_MAE;
 			let cuenta1, cuenta2, res1, res2;
@@ -854,13 +853,13 @@ function validarDivision718() {
 }
 
 function evaluarDivision718() {
-	SAL718.CUPS.DIV1 = document.getElementById('division1_718').value.toString().trim().toUpperCase();
+	SAL718.CUPS.DIV1 = document.getElementById('division1_718').value.toString().trim().toUpperCase().substring(0, 2);
 	if (typeof SAL718.CUPS.DIV1 == "undefined" || SAL718.CUPS.DIV1 == '') { CON851('03', '03', validarDivision718(), 'error', 'error'); }
 	else {
 		document.getElementById('division1_718').value = SAL718.CUPS.DIV1;
 		let sw_invalid = $_divisiones718.find(n => n.COD == SAL718.CUPS.DIV1);
 		if (sw_invalid == -1) { SAL718.DIVISION.ESTADO == '01'; CON851('01', '01', validarDivision718(), 'error', 'error'); }
-		else { SAL718.DIVISION.ESTADO == '00'; validarDivision2718(); }
+		else { SAL718.DIVISION.ESTADO == '00'; document.getElementById('division1_718').value = sw_invalid.COD + ' ' + sw_invalid.DESCRIP; validarDivision2718(); }
 	}
 
 }
@@ -875,13 +874,13 @@ function validarDivision2718() {
 }
 
 function evaluarDivision2718() {
-	SAL718.CUPS.DIV2 = document.getElementById('division2_718').value.toString().trim().toUpperCase();
+	SAL718.CUPS.DIV2 = document.getElementById('division2_718').value.toString().trim().toUpperCase().substring(0, 2);
 	if (typeof SAL718.CUPS.DIV2 == "undefined" || SAL718.CUPS.DIV2 == '') { CON851('03', '03', validarDivision2718(), 'error', 'error'); }
 	else {
 		document.getElementById('division2_718').value = SAL718.CUPS.DIV2;
 		let sw_invalid = $_divisiones718.find(n => n.COD == SAL718.CUPS.DIV2);
 		if (sw_invalid == -1) { SAL718.DIVISION.ESTADO == '01'; CON851('01', '01', validarDivision718(), 'error', 'error'); }
-		else { SAL718.DIVISION.ESTADO == '00'; Actualizar718(); }
+		else { SAL718.DIVISION.ESTADO == '00'; document.getElementById('division2_718').value = sw_invalid.COD + ' ' + sw_invalid.DESCRIP; Actualizar718(); }
 	}
 
 }
@@ -892,30 +891,32 @@ function Actualizar718() {
 		case '7':
 		case '8':
 			SAL718.PARAMS =
-				SAL718.CUPS.LLAVE.toUpperCase()
-				+ '|' + SAL718.CUPS.DESCRIP.trim()
+				SAL718.CUPS.LLAVE.toUpperCase().padEnd(12, ' ')
+				+ '|' + SAL718.CUPS.DESCRIP.trim().padEnd(80, ' ')
 				+ '|' + SAL718.CUPS.LLAVE_ALT[0].trim()
-				+ '|' + SAL718.CUPS.LLAVE_ALT[1]
+				+ '|' + SAL718.CUPS.LLAVE_ALT[1].padEnd(5, ' ')
 				+ '|' + parseInt(SAL718.CUPS.NIVEL)
 				+ '|' + SAL718.CUPS.DURACION.padStart(3, '0')
 				+ '|' + parseInt(SAL718.CUPS.COPAGO)
 				+ '|' + SAL718.CUPS.NOPOS.trim()
 				+ '|' + SAL718.CUPS.CIS.trim()
-				+ '|' + SAL718.CUPS.COSTO
+				+ '|' + SAL718.CUPS.COSTO.padStart(4, '0')
 				+ '|' + SAL718.CUPS.EDAD_MIN.trim()
 				+ '|' + SAL718.CUPS.EDAD_MAX.trim()
 				+ '|' + SAL718.CUPS.UND_EDAD.toUpperCase()
-				+ '|' + SAL718.CUPS.SEXO.toUpperCase()
-				+ '|' + SAL718.CUPS.DIAGN.toUpperCase()
+				+ '|' + SAL718.CUPS.SEXO.toUpperCase().trim()
+				+ '|' + SAL718.CUPS.DIAGN.toUpperCase().trim()
 				+ '|' + SAL718.CUPS.MED_100.trim()
 				+ '|' + SAL718.CUPS.PORC_CL
 				+ '|' + SAL718.CUPS.PORC_OTR
-				+ '|' + SAL718.TERCEROS.COD.trim()
-				+ '|' + SAL718.CUPS.CTA_OTR
-				+ '|' + $_USUA_GLOBAL[0].PUC.trim()
+				+ '|' + SAL718.TERCEROS.COD.toString().padStart(10, ' ')
+				+ '|' + SAL718.CUPS.CTA_OTR.padStart(11, '0')
+				+ '|' + SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP.padStart(11, '0')
+				+ '|' + SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP.padStart(11, '0')
+				+ '|' + SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP.padStart(11, '0')
 				+ '|' + SAL718.CUPS.DIV1.trim()
 				+ '|' + SAL718.CUPS.DIV2.trim()
-				+ '|' + localStorage['Usuario']
+				+ '|' + localStorage['Usuario'].trim()
 
 			CON851P('01', validarDivision718, on_grabar718)
 			break;
@@ -995,21 +996,35 @@ function on_llenarFormCups718() {
 	SAL718.CUPS.GRUPO = SAL718.GRUPOSER.COD
 	SAL718.CUPS.LLAVE = SAL718.CUPS.GRUPO + document.getElementById('codcups_718').value;
 	SAL718.CUPS.TIPO = SAL718.CUPS.LLAVE_ALT[0]; SAL718.CUPS.ABRV = SAL718.CUPS.LLAVE_ALT[1];
+	SAL718.CUPS.LLAVE_ALT[0] = SAL718.CUPS.LLAVE_ALT[0].trim();
 	document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
 	const dom_Idcups = [
 		'tipocups_718', 'descripCup_718', 'codabrev_718', 'codgrupo_718', 'nivcompl_718',
 		'duracion_718', 'pagoPaci_718', 'proced_718', 'centrocosto_718', 'edadminima_718', 'edadmaxima_718',
-		'undedad_718', 'sexo_718', 'pregRips_718', 'porcmedico_718', 'ingrclinica_718', 'ingrtercer_718'
+		'undedad_718', 'sexo_718', 'pregRips_718', 'porcmedico_718', 'ingrclinica_718', 'ingrtercer_718',
+		'cis_718','actHl_718'
 	];
 	const obj_Idcups = [
 		'TIPO', 'DESCRIP', 'ABRV', 'GRUPO', 'NIVEL', 'DURACION', 'COPAGO', 'NOPOS', 'COSTO', 'EDAD_MIN',
-		'EDAD_MAX', 'UND_EDAD', 'SEXO', 'DIAGN', 'MED_100', 'PORC_CL', 'PORC_OTR'
+		'EDAD_MAX', 'UND_EDAD', 'SEXO', 'DIAGN', 'MED_100', 'PORC_CL', 'PORC_OTR', 'CIS','CIS'
 	];
 
 	let ter = $_terceros718.filter(tercero => tercero.COD.trim() == parseInt(SAL718.CUPS.NIT_OTR))
 	let plan = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == SAL718.CUPS.CTA_OTR.padStart(12, '0'))
-	for (indice in dom_Idcups) { document.querySelector(`#${dom_Idcups[indice]}`).value = SAL718.CUPS[obj_Idcups[indice]]; }
 
+	let division1 = $_divisiones718.filter(div => div.COD.trim() == SAL718.CUPS.DIV1);
+	if (division1 == '') { document.getElementById('division1_718').value = '*******' } else { document.getElementById('division1_718').value = division1[0].COD + ' ' + division1[0].DESCRIP }
+
+	let division2 = $_divisiones718.filter(div => div.COD.trim() == SAL718.CUPS.DIV2);
+	if (division2 == '') { document.getElementById('division2_718').value = '*******' } else { document.getElementById('division2_718').value = division2[0].COD + ' ' + division2[0].DESCRIP }
+
+
+	for (indice in dom_Idcups) { document.querySelector(`#${dom_Idcups[indice]}`).value = SAL718.CUPS[obj_Idcups[indice]]; }
+	if (plan == '') {
+		document.getElementById('ctaingrTercer_718').value = ''; document.getElementById('ctaDescripTercer_718').value = '***********';
+	} else {
+		document.getElementById('ctaingrTercer_718').value = plan[0].LLAVE_MAE; document.getElementById('ctaDescripTercer_718').value = plan[0].NOMBRE_MAE;
+	}
 	if ($_USUA_GLOBAL[0].NIT == 830092718 || $_USUA_GLOBAL[0].NIT == 830092719 || $_USUA_GLOBAL[0].NIT == 900193162) {
 		ter[0] == '' ? document.getElementById('codHeon718').value = ' ' : document.getElementById('codHeon718').value = ter[0].COD + ' ' + ter[0].NOMBRE;
 
@@ -1019,31 +1034,62 @@ function on_llenarFormCups718() {
 	} else {
 		SAL718.CUPS.CIS == '' ? document.getElementById('cis718').value = ' ' : document.getElementById('cis718').value = SAL718.CUPS.CIS;
 		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('nitTercer_718').value = ' ' : document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR.trim();
-		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('descripTercer_718').value =document.getElementById('descripTercer_718').value.padStart(10,'*') : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
+		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('descripTercer_718').value = document.getElementById('descripTercer_718').value.padStart(10, '*') : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
 	}
 	if (SAL718.CUPS.LLAVE_ALT[0] == '6') {
-		SAL718.CUPS.CTA_CONTAB.CTA_CONTAB_CUP[0] = '41250400050'; SAL718.CUPS.CTA_CONTAB.CTA_CONTAB_CUP[2] = '41248000001';
-	} else {
 		switch ($_USUA_GLOBAL[0].PUC.toString()) {
 			case '1': case '3':
-				SAL718.CUPS.CTA_CONTAB_CUP[0] == '' ? document.getElementById('ctaingrTercer_718').value = ' ' : document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[0];
-				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[0]);
+				SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP = '41250400050'; document.getElementById('codPuc_718').value = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP;
+				break;
+			case '4':
+				SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP = '41248000001'; document.getElementById('codOficial_718').value = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP;
+				break;
+		}
+	} else {
+		let planc;
+		switch ($_USUA_GLOBAL[0].PUC.toString()) {
+			case '1': case '3':
+				planc = $_planCuentas718.filter(cuenta => parseInt(cuenta.LLAVE_MAE) == parseInt(SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP));
+				if (planc == '') {
+					document.getElementById('codCoop_718').value = '***********';
+				} else {
+					document.getElementById('codCoop_718').value = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP + '-' + planc[0].NOMBRE_MAE;
+				}
 				break;
 			case '2':
-				SAL718.CUPS.CTA_CONTAB_CUP[1] == '' ? document.getElementById('ctaingrTercer_718').value = ' ' : document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[1];
-				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[1]);
+				planc = $_planCuentas718.filter(cuenta => parseInt(cuenta.LLAVE_MAE) == parseInt(SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP));
+				if (planc == '') {
+					document.getElementById('codCoop_718').value = '***********';
+				} else {
+					document.getElementById('codCoop_718').value = SAL718.CUPS.CTA_CONTAB[1].CTA_CONTAB_CUP + '-' + planc[0].NOMBRE_MAE;
+				}
 				break;
-			case '4': case '6':
-				SAL718.CUPS.CTA_CONTAB_CUP[2] == '' ? document.getElementById('ctaingrTercer_718').value = ' ' : document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_CONTAB_CUP[2];
-				document.getElementById('ctaDescripTercer_718').value = $_planCuentas718.find(cuenta => cuenta.LLAVE_MAE == SAL718.CUPS.CTA_CONTAB_CUP[2]);
+			case '4':
+				planc = $_planCuentas718.filter(cuenta => parseInt(cuenta.LLAVE_MAE) == parseInt(SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP));
+				if (planc == '') {
+					document.getElementById('codOficial_718').value = '***********';
+				} else {
+					document.getElementById('codOficial_718').value = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP + '-' + planc[0].NOMBRE_MAE;
+				}
+				break;
+			case '6':
+				planc = $_planCuentas718.filter(cuenta => parseInt(cuenta.LLAVE_MAE) == parseInt(SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP));
+				if (planc == '') {
+					document.getElementById('codPuc_718').value = '***********';
+				} else {
+					document.getElementById('codPuc_718').value = SAL718.CUPS.CTA_CONTAB[2].CTA_CONTAB_CUP.padStart(12, '0') + '-' + planc[0].NOMBRE_MAE;
+				}
 				break;
 			default:
-				document.getElementById('ctaingrTercer_718').value = SAL718.CUPS.CTA_OTR;
-				if (plan == '') { document.getElementById('ctaDescripTercer_718').value = ' '; } else { document.getElementById('ctaDescripTercer_718').value = plan[0].NOMBRE_MAE }
+				planc = $_planCuentas718.filter(cuenta => parseInt(cuenta.LLAVE_MAE) == parseInt(SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP));
+				if (planc == '') {
+					document.getElementById('codPuc_718').value = '***********';
+				} else {
+					document.getElementById('codPuc_718').value = SAL718.CUPS.CTA_CONTAB[0].CTA_CONTAB_CUP.padStart(12, '0') + '-' + planc[0].NOMBRE_MAE
+				}
 				break;
 		}
 	}
-	console.debug('CUPS', SAL718.CUPS)
 	_validarDescripcion718();
 
 }
