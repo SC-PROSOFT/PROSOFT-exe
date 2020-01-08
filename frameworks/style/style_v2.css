@@ -598,3 +598,42 @@ header.header-v2{
     border-radius: 0px!important;
 }
 /* CSS AUTOCOMPLETE F8_Lite */
+
+
+@-webkit-keyframes dash {
+    to {
+      stroke-dashoffset: -1200;
+    }
+  }
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -1200;
+    }
+  }
+  @-webkit-keyframes fade {
+    0% {
+      opacity: 1;
+    }
+    20% {
+      opacity: 1;
+    }
+  }
+  @keyframes fade {
+    0% {
+      opacity: 1;
+    }
+    20% {
+      opacity: 1;
+    }
+  }
+  svg {
+    margin: 0 -1rem;
+  }
+  
+  .ekg {
+    opacity: 1;
+    stroke-dasharray: 700;
+    -webkit-animation: dash 4.0s linear forwards infinite, fade 4.0s linear infinite;
+    animation: dash 2.0s linear forwards infinite, fade 5.0s linear infinite;
+  }
+  
