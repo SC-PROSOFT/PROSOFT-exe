@@ -3,7 +3,7 @@ var $_CODLINK, $_CEDLNK, $_RHLNK, $_NITW, $_REGBASE09, $_EMBALTOPACIW, $_TIPOIDL
     $_TUTELAPACIW = '', $_PADREPACIW = '', $_MADREPACIW = '', $_PAISPACIW = '', $_FECHADEMPACIW = '', $_DEMANINDPACIW = '', $_DERECHOPACIW = '',
     $_CERTESTUDPACIW = '', $_PERIESTUDPACIW = '', $_ULTMAMOPACIW = '', $_CERTECONOPACIW = '', $_PERIECOPACIW = '', $_PARENTPACIW = '', $_DISCAPPACIW = '',
     $_COMUNIPACW = '', $_RESGUARPACIW = '', $_FICHAPACIW = '', $_CARNETPACIW = '', $_EMPRESAPACIW = '', $_FECHANITPACIW = '', $_OBSERVPACIW = '',
-    $_ANTCANCERPACIW = '', $_TIPOPACIW = '', $_ESTCIVILPACIW = '', $_REGIMENPACIW = '', $_ESTRATOPACIW, $_ETNIAPACIW = '', $_BLOQUEOHCW, $_ACTUALIZAPACIX;
+    $_ANTCANCERPACIW = '', $_TIPOPACIW = '', $_ESTCIVILPACIW = '', $_REGIMENPACIW = '', $_ESTRATOPACIW, $_ETNIAPACIW = '', $_BLOQUEOHCW, $_ACTUALIZAPACIX = '';
 
 var $_ENTIDADES_7767 = [];
 var $_CIUDAD_7767 = [];
@@ -81,17 +81,20 @@ $(document).ready(function () {
                 $_CIUDAD_7767 = data.CIUDAD
                 obtenerDatosCompletos({
                     nombreFd: 'COLEGIOS'
-                }, _f8colegios_108)
+                }, function (data) {
+                    $_COLEGIOS_7767 = data.COLEGIOS;
+                    $_COLEGIOS_7767.pop()
+                    obtenerDatosCompletos({
+                        nombreFd: 'PROFESIONALES'
+                    }, function (data) {
+                        $_PROFESIONALES_7767 = data.ARCHPROF;
+                        _buscarrestriccion_7767();
+                    }, 'OFF')
+                })
             })
         })
-    })
+    }, 'ON')
 })
-
-function _f8colegios_108(data) {
-    $_COLEGIOS_7767 = data.COLEGIOS;
-    $_COLEGIOS_7767.pop()
-    _buscarrestriccion_7767()
-}
 
 //////// VENTANAS F8////////////////////////
 
@@ -101,11 +104,10 @@ function _ventanaPacientes(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 
         parametros = {
-            valoresselect: ['Descripcion', 'Identificacion'],
+            dll: 'PACIENTES',
+            valoresselect: ['Nombre del paciente'],
             f8data: 'PACIENTES',
-            columnas: [{
-                title: 'COD'
-            }, { title: 'NOMBRE' }, { title: 'EPS' }],
+            columnas: [{title: 'COD' }, { title: 'NOMBRE' }, { title: 'EPS' }],
             callback: (data) => {
                 // document.querySelector("#numero_110c").focus();
                 document.querySelector("#numero_110c").value = data.COD;
@@ -264,9 +266,9 @@ function _ventanaentidades_SAL7767(e) {
 function _ventanamaestrodospaci_SAL7767(e) {
 
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-
         parametros = {
-            valoresselect: ['Descripcion', 'Identificacion'],
+            dll: 'PACIENTES',
+            valoresselect: ['Nombre del paciente'],
             f8data: 'PACIENTES',
             columnas: [{
                 title: 'COD'
@@ -283,7 +285,9 @@ function _ventanamaestrodospaci_SAL7767(e) {
                 document.querySelector("#cotizante_110c").focus()
             }
         };
+        console.log(parametros)
         F8LITE(parametros);
+        
     }
 }
 
@@ -295,7 +299,7 @@ function _ventanapatologias_SAL7767(e) {
     }, URL)
         .then((data) => {
             loader("hide");
-            $_PATOLOGIAS_108.data;
+            $_PATOLOGIAS_108 = data;
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: 'VENTANA DE PATOLOGIAS CRONICAS',
@@ -324,7 +328,7 @@ function _ventanaclasificacion_SAL7767(e) {
     }, URL)
         .then((data) => {
             loader("hide");
-            $_CLASIPACI_108.data;
+            $_CLASIPACI_108 = data;
             if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
                 _ventanaDatos({
                     titulo: 'VENTANA DE CLASIFICACION PACI',
@@ -375,35 +379,24 @@ function _ventanaterceros_SAL7767(e) {
 
 
 function _ventanaprofesionales_SAL7767(e) {
-    let URL = get_url("APP/" + "SALUD/SER819" + ".DLL");
-    postData({
-        datosh: datosEnvio() + localStorage['Usuario'] + "|"
-    }, URL)
-        .then((data) => {
-            loader("hide");
-            $_PROFESIONALES_7767 = data;
-            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-                _ventanaDatos({
-                    titulo: 'VENTANA DE PROFESIONALES',
-                    data: $_PROFESIONALES_7767.ARCHPROF,
-                    columnas: ["NOMBRE", "IDENTIFICACION", "ATIENDE_PROF", "LU", "MA", "MI", "JU", "VI", "SA"],
-                    callback_esc: function () {
-                        $("#medicofam_110c").focus();
-                    },
-                    callback: function (data) {
-                        // $('#medicofam_110c').val(data.IDENTIFICACION);
-                        $_MEDFAMIPACIW = data.IDENTIFICACION;
-                        $_MEDFAMIPACIW = $_MEDFAMIPACIW.padStart(10, '0');
-                        $("#medicofam_110c").val($_MEDFAMIPACIW);
-                        $('#medicofamd_110c').val(data.NOMBRE.trim());
-                        _enterInput('#medicofam_110c');
-                    }
-                });
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: 'VENTANA DE PROFESIONALES',
+            data: $_PROFESIONALES_7767,
+            columnas: ["NOMBRE", "IDENTIFICACION", "ATIENDE_PROF", "LU", "MA", "MI", "JU", "VI", "SA"],
+            callback_esc: function () {
+                $("#medicofam_110c").focus();
+            },
+            callback: function (data) {
+                // $('#medicofam_110c').val(data.IDENTIFICACION);
+                $_MEDFAMIPACIW = data.IDENTIFICACION;
+                $_MEDFAMIPACIW = $_MEDFAMIPACIW.padStart(10, '0');
+                $("#medicofam_110c").val($_MEDFAMIPACIW);
+                $('#medicofamd_110c').val(data.NOMBRE.trim());
+                _enterInput('#medicofam_110c');
             }
-        })
-        .catch((error) => {
-            console.log(error)
         });
+    }
 }
 
 
@@ -845,6 +838,8 @@ function _editarpaci_7767() {
 function _dataSAL7767_02(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
+    $_NITFACTPACIW = date[3].trim();
+
     if (($_NOVEDAD7767 == '7') && (swinvalid == '01')) {
 
         _nuevoregistro_7767();
@@ -1408,7 +1403,7 @@ function _validacionesedad7767() {
 function _buscarduplicado_7767() {
     $_APEL_PACIW = $_APELLIDO1PACW.padEnd(15, ' ') + '|' + $_APELLIDO2PACW.padEnd(15, ' ');
     $_NOMB_PACIW = $_NOMBRE1PACW.padEnd(12, ' ') + '|' + $_NOMBRE2PACW.padEnd(12, ' ');
-    console.log(datosEnvio() + $_APEL_PACIW.toUpperCase() + '|' + $_NOMB_PACIW.toUpperCase() + '|' + $_CODPACIW + '|' + $_NACIMPACIW, 'envio')
+
     if ($_NOVEDAD7767 == '7') {
         var datos_envio = datosEnvio() + $_APEL_PACIW.toUpperCase() + '|' + $_NOMB_PACIW.toUpperCase() + '|' + $_CODPACIW + '|' + $_NACIMPACIW;
         postData({
@@ -1427,7 +1422,7 @@ function _buscarduplicado_7767() {
 }
 
 function ventanaDuplicado_7767(data) {
-    $_ACTUALIZAPACIX = '1'; 
+    $_ACTUALIZAPACIX = '1';
     $_BUSQ = data['DUPLICADO'][0];
     $_APEL_PACIW = $_APELLIDO1PACW + ' ' + $_APELLIDO2PACW;
     $_NOMB_PACIW = $_NOMBRE1PACW + ' ' + $_NOMBRE2PACW;
@@ -1610,7 +1605,6 @@ function datoestadocivil() {
             _evaluarsexo_7767();
         } else {
             // $_ESTCIVILPACIW = $_OPCION1;
-            // console.debug($_ESTCIVILPACIW);
             _validarcivilpac_7767();
         }
     }
@@ -1883,7 +1877,7 @@ function _evaluartelefono2_7767() {
 
 function _datotel2_7767() {
     $_CELPACIW = $("#tel2_110c").val();
-    if ($_NOVEDAD7767 == '7') {
+    if (($_NOVEDAD7767 == '7') && ($_ACTUALIZAPACIX.trim() == '')) {
         $("#ciudad_110c").val('50689');
         if ($_CELPACIW.trim() == '') {
             _evaluarciudad_7767();
@@ -1958,7 +1952,7 @@ function _datopais_7767() {
         //// CONTINUE 
         obtenerDatosCompletos({
             nombreFd: 'PAISES_RIPS'
-        }, _f8paisesrips)
+        }, _f8paisesrips, 'ONLY')
 
     } else {
         if ($_NOVEDAD7767 == '7') {
@@ -2006,7 +2000,7 @@ function _dataSAL7767_05(data) {
     $_DESCRIPPAISW = date[1].trim();
     if (swinvalid == "00") {
         $("#paisd_110c").val($_DESCRIPPAISW);
-        if ($_NOVEDAD7767 == '7') {
+        if (($_NOVEDAD7767 == '7') && ($_ACTUALIZAPACIX.trim() == '')) {
             $("#ocupacion_110c").val('9998');
             _evaluarocupacion_7767();
         } else {
@@ -2119,7 +2113,6 @@ function _datoestrato_7767(estrato) {
 }
 
 function _evaluarcopago_7767() {
-    console.log('copago')
     validarInputs({
         form: "#COPAGO_110C",
         orden: "1"
@@ -2132,7 +2125,7 @@ function _evaluarcopago_7767() {
 }
 
 function _datocopago_7767() {
-    console.log('DATO copago',$_COPAGOPACIW)
+
     $_COPAGOPACIW = $("#copago_110c").val();
     if (($_NITUSU == '0830092718') || ($_NITUSU == '0830092719')) {
         if ($_COPAGOPACIW.trim() == '') {
@@ -2143,7 +2136,6 @@ function _datocopago_7767() {
             _datocopago2_7767();
         }
     } else {
-        console.log('DATO copago ELSE',$_COPAGOPACIW)
         if ($_COPAGOPACIW.trim() == '') {
             _evaluarcopago_7767();
         } else {
@@ -2153,13 +2145,11 @@ function _datocopago_7767() {
 }
 
 function _datocopago2_7767() {
-    console.log('DATO copago2',)
+
     if (($_COPAGOPACIW == 'S') || ($_COPAGOPACIW == 'N')) {
         swinvalid = '0';
-        console.log('copago si o no ')
         _datoregimen_7767();
     } else {
-        console.log('volver ')
         _evaluarcopago_7767();
     }
 }
@@ -2582,7 +2572,7 @@ function _dataSAL7767_045(data) {
 
 function datodesplazado_7767() {
     if ((($_REGIMENPACIW == 'D') || ($_REGIMENPACIW == 'E') || ($_REGIMENPACIW == 'G')) && ($_TIPOAFILPACIW == '1')) {
-        
+
         /// LLAMA OTRO PROGRAMA SER110D
 
         let { ipcRenderer } = require("electron");
@@ -2617,13 +2607,11 @@ function _datoentidadafiliado_7767() {
                 $_DESCRIPENTIPACIW = '';
                 $("#epsd_110c").val($_DESCRIPENTIPACIW);
                 $("#entidadd_110c").val($_DESCRIPENTIPACIW);
-
-                _validarentidadpaci_7767();
+                _validacionesentidadpaci_7767();
             } else {
                 CON851('02', '02', null, 'error', 'error');
                 _evaluarentidadafiliada_7767();
             }
-
         } else {
             LLAMADO_DLL({
                 dato: [$_EPSPACIW],
@@ -2639,7 +2627,7 @@ function _datoentidadafiliado_7767() {
                 $("#epsd_110c").val($_DESCRIPENTIPACIW);
                 $("#entidadd_110c").val($_DESCRIPENTIPACIW);
 
-                _validarentidadpaci_7767();
+                _validacionesentidadpaci_7767();
             } else {
                 CON851('02', '02', null, 'error', 'error');
                 _evaluarentidadafiliada_7767();
@@ -2660,6 +2648,7 @@ function _dataSAL7767_08(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPENTIPACIW = date[1].trim();
+    $_NITENT = date[2].trim();
     if (swinvalid == "00") {
         $("#epsd_110c").val($_DESCRIPENTIPACIW);
         _validacionesentidadpaci_7767();
@@ -2933,8 +2922,8 @@ function _mostrarcotizante_7767() {
         _evaluarempresa_7767();
     } else {
         if ($_IDCOTIPACIW == $_CODPACIW) {
-            $_DESCRIPCOTIPACW = '';
-            $("#cotizanted_110c").val($_DESCRIPCOTIPACW);
+            // $_DESCRIPCOTIPACW = '';
+            $("#cotizanted_110c").val($_DECRIPPACIW);
             _validatipocotizante_7767()
             // _evaluarparentezcopaci_7767(); 
         } else {
@@ -3564,7 +3553,7 @@ function _validacionesperiodoeco_7767() {
 }
 
 function _datomamo_7767() {
-    if (($_NITUSU == '0830092718') && (($_SEXOPACIW == 'F') || ($_SEXOPACIW == 'f'))) {
+    if (($_NITUSU == '0830092718') && ($_SEXOPACIW == 'F')) {
         _evaluarultimomamo();
     } else {
         _evaluarrestriccion();
@@ -3585,7 +3574,7 @@ function _evaluarultimomamo() {
 }
 
 function _ultmamografia_7767() {
-    $_ULTMAMOPACIW = $("#acompañante_110c").val();
+    $_ULTMAMOPACIW = $("#mamografia_110c").val();
     $_ANOULTMAMOPACIW = $_ULTMAMOPACIW.substring(0, 4);
     $_MESULTMAMOPACIW = $_ULTMAMOPACIW.substring(4, 6);
 
@@ -3593,8 +3582,8 @@ function _ultmamografia_7767() {
         $_ULTMAMOPACIW = '';
         _evaluarrestriccion();
 
-    } else if ($_NOVEDAD7767 == 7) {
-        _evaluardatonitfact_7767();
+    } else if ($_NOVEDAD7767 == '7') {
+        _evaluarrestriccion();
     } else {
         if ($_ANOULTMAMOPACIW < 2000) {
             CON851('03', '03', null, 'error', 'error');
@@ -3621,11 +3610,6 @@ function _evaluarrestriccion() {
 function _datorestriccion_7767() {
 
     $_RESTAPLIPACIW = $("#restric_110c").val();
-
-    // if(($_RESTCONSPACIW = 'N') || ($_RESTADONPACIW = 'N') || ($_RESTPYPPACIW = 'N') || ($_RESTLABOPACIW = 'N') || ($_RESTIMAGPACIW = 'N') || ($_RESTDROGPACIW = 'N') || ($_RESTTERFPACIW = 'N') || ($_RESTTEROPACIW = 'N') || ($_RESTESTAPACIW = 'N')){
-    //     $_RESTAPLIPACIW = 'S'; 
-    //     $("#restric_110c").val($_RESTAPLIPACIW);
-    //     _evaluarrestriconsulta();
     if ($_RESTAPLIPACIW.trim() == '') {
         $_RESTAPLIPACIW = 'N';
         $("#restric_110c").val($_RESTAPLIPACIW);
@@ -4082,7 +4066,7 @@ function _seleccionardiscapacidad_7767(discapacidad) {
 
 function _evaluarentidadfact_7767() {
     validarInputs({
-        form: "#ENTIDAD_102",
+        form: "#ENTIDAD_110C",
         orden: "1"
     },
         function () {
@@ -4099,11 +4083,22 @@ function _validacionentidadfact_7767() {
             case "TU":
                 $_ENTIFACTPACIW = '0800209488';
                 $("#entidad_110c").val($_ENTIFACTPACIW);
-                _leernitfact_7767();
+                LLAMADO_DLL({
+                    dato: [$_ENTIFACTPACIW],
+                    callback: _dataSAL7767_11,
+                    nombredll: 'SAL7767_11',
+                    carpeta: 'SALUD'
+                });
+                break;
             case "SB":
                 $_ENTIFACTPACIW = '0800216883';
                 $("#entidad_110c").val($_ENTIFACTPACIW);
-                _leernitfact_7767();
+                LLAMADO_DLL({
+                    dato: [$_ENTIFACTPACIW],
+                    callback: _dataSAL7767_11,
+                    nombredll: 'SAL7767_11',
+                    carpeta: 'SALUD'
+                });
                 break;
             default:
                 break;
@@ -4116,11 +4111,9 @@ function _validacionentidadfact_7767() {
         $("#entidad_110c").val($_ENTIFACTPACIW);
 
         if ($_ENTIFACTPACIW == '0') {
-            $_DESCRIPENTIPACIW = '';
-            $("#entidadd_110c").val($_DESCRIPENTIPACIW);
-            _evaluarembarazoriesgo_7767();
-            // $_ENTIFACTPACIW = $_NITENT
-            // _leernitfact_7767(); 
+            $_ENTIFACTPACIW = $_NITENT;
+            $_ENTIFACTPACIW = $_ENTIFACTPACIW.padStart(10, "0");
+            _leernitfact_7767();
 
         } else if (($_ENTIFACTPACIW == '0') && ($_NITUSU != '0892000401') && ($_NITUSU != '830092718')) {
             $_DESCRIPENTIPACIW = '';
@@ -4138,6 +4131,20 @@ function _validacionentidadfact_7767() {
     }
 }
 
+function _leernitfact_7767() {
+    if ($_ENTIFACTPACIW.trim() == '') {
+        $_DESCRIPENTIPACIW = '';
+        $("#entidadd_110c").val($_DESCRIPENTIPACIW);
+    } else {
+        LLAMADO_DLL({
+            dato: [$_ENTIFACTPACIW],
+            callback: _dataSAL7767_11,
+            nombredll: 'SAL7767_11',
+            carpeta: 'SALUD'
+        });
+    }
+}
+
 function _dataSAL7767_11(data) {
     var date = data.split('|');
     var swinvalid = date[0].trim();
@@ -4148,7 +4155,6 @@ function _dataSAL7767_11(data) {
             $_FECHANITPACIW = moment().format('YYYYMMDD');
             $("#fechasistd_110c").val($_FECHANITPACIW);
             _evaluarembarazoriesgo_7767();
-
         } else if ($_NITUSU == '0830092718') {
             _evaluarantecendentescancer();
         } else {
@@ -4442,10 +4448,10 @@ function _mostrardatos_7767() {
 
     // $('#numero_110c').val($_CODPACIW);
     $('#identif_110c').val($_TIPOPACIW);
-    if($_LUGARIDPACIW.trim() == ''){
-        $_LUGARIDPACIW= ''; 
+    if ($_LUGARIDPACIW.trim() == '') {
+        $_LUGARIDPACIW = '';
         $('#lugar_110c').val($_LUGARIDPACIW);
-    }else{
+    } else {
         $('#lugar_110c').val($_LUGARIDPACIW);
     }
     $('#apellido1_110c').val($_APELLIDO1PACW);
@@ -4598,11 +4604,10 @@ function _dataCON904S_04(data) {
     var swinvalid = date[2].trim();
     if (swinvalid == "00") {
         if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
-            if($_ACTUALIZAPACIX == '1'){
-                console.log('primer actualiza doc')
+            if ($_ACTUALIZAPACIX == '1') {
                 CON851P('24', _deseatrasladardoc, _ventanaactualizarcorresponsalia)
                 // _eliminarregistro
-            }else{
+            } else {
                 CON851P('24', _grabardatos_7767, _ventanaactualizarcorresponsalia)
             }
         } else {
@@ -4616,7 +4621,7 @@ function _dataCON904S_04(data) {
     }
 }
 
-function _deseatrasladardoc(){
+function _deseatrasladardoc() {
     $_OPSEGU = "IS762"
     LLAMADO_DLL({
         dato: [$_ADMINW, $_OPSEGU],
@@ -4625,7 +4630,7 @@ function _deseatrasladardoc(){
         carpeta: 'CONTAB'
     })
 }
-function _dataCON904S_05(data){
+function _dataCON904S_05(data) {
     var date = data.split("|");
     var swinvalid = date[2].trim();
     if ((swinvalid == "00") && ($_ACTUALIZAPACIX == '1')) {
@@ -4638,21 +4643,20 @@ function _dataCON904S_05(data){
     }
 }
 
-function _buscartrasladodoc_7767(){
-    console.log('buscartrasladodoc')
+function _buscartrasladodoc_7767() {
     let { ipcRenderer } = require("electron");
-        ipcRenderer.send('another', 'SALUD/PAGINAS/SAL77621.html');
-        vector = ['on', 'Unifica movimiento de pacientes...']
-        _EventocrearSegventana(vector, _buscarrestriccion_7767);
+    ipcRenderer.send('another', 'SALUD/PAGINAS/SAL77621.html');
+    vector = ['on', 'Unifica movimiento de pacientes...']
+    _EventocrearSegventana(vector, _buscarrestriccion_7767);
     ////// VENTANA DE TRASLADO 0101DE DOCUMENTO 
 }
 
 function _ventanaactualizarcorresponsalia() {
     console.log("VENTANA CORRESPONSALIA PREGUNTAR ESNEIDER COMO FUNCIONAR");
     if (($_NOVEDAD7767 == '7') || ($_NOVEDAD7767 == '8')) {
-        if($_ACTUALIZAPACIX == '1'){
-            _deseatrasladardoc(); 
-        }else{
+        if ($_ACTUALIZAPACIX == '1') {
+            _deseatrasladardoc();
+        } else {
             _grabardatos_7767()
         }
     } else {
