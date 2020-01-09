@@ -189,9 +189,9 @@
             <div id="bloq_fact">
                 <a style="font-size:9px; margin:0 auto;" class="bloqtxt_ser108p"> BLOQ:  </a>
             </div>
-            <div id="imprime_fact">
+            <!-- <div id="imprime_fact">
                 <a style="font-size:9px; margin:0 auto;" class="imprimetxt_ser108p"> IMPR: </a>
-            </div>
+            </div> -->
         </div>
         <div class="salto-linea"></div>
     </div>
@@ -204,45 +204,37 @@
         console.log(data);
 
         SER108P = data.datos;
-        SER108P.FACTURA = 'CUENTA NRO:' + SER108P.FACTURA;
-        SER108P.DESCRIPCION = '' + SER108P.DESCRIPCION;
-        SER108P.NIT = 'NIT: ' + SER108P.NIT;
-        SER108P.CEDULA = 'PACIENTE:' + SER108P.CEDULA;
-        SER108P.PACIENTE = '' + SER108P.PACIENTE;
-        SER108P.EPS = 'ENTIDAD:' + SER108P.EPS;
-        SER108P.DESCRIPCION = '' + SER108P.DESCRIPCION;
-        SER108P.INGRESO = 'FECHA INGRESO:' + SER108P.INGRESO;
-        SER108P.HABITACION = 'HABITACION:' + SER108P.HABITACION;
-        SER108P.RETIRO = 'FECHA SALIDA:' + SER108P.RETIRO;
-        SER108P.FUNCIONARIO = 'AUTORIZO:' + SER108P.FUNCIONARIO;
-        SER108P.NOMBREFUNC = '' + SER108P.NOMBREFUNC;
-        SER108P.OBSERVACION = 'OBSERVACION:' + SER108P.OBSERVACION;
-        SER108P.OPERCREADO = 'ELABORADO:' + SER108P.OPERCREADO;
-        SER108P.FECHACREADO = '' + SER108P.FECHACREADO;
-        SER108P.OPERMODIF = 'MODIFICADO:' + SER108P.OPERMODIF;
-        SER108P.FECHAMODIF = '' + SER108P.FECHAMODIF;
-        SER108P.OPERBLOQ = 'BLOQ:   ' + SER108P.OPERBLOQ;
-        SER108P.ADMIN = 'IMPR:  ' + SER108P.ADMIN;
+        console.log(SER108P, 'SER108P');
+        SER108P.NIT = SER108P.NIT.replace(/^0+/, ''); 
+        SER108P.CEDULA = SER108P.CEDULA.replace(/^0+/, '');
+        SER108P.EPS = SER108P.EPS.replace(/^0+/, '');
+        SER108P.FUNCIONARIO = SER108P.FUNCIONARIO.replace(/^0+/, '');
 
-        $('.facturatxt_ser108p').text(SER108P.FACTURA);
+        $('.facturatxt_ser108p').text('CUENTA NRO:' + SER108P.FACTURA);
         $('.descripnittxt_ser108p').text(SER108P.DESCRIPCION);
-        $('.nittxt_ser108p').text(SER108P.NIT);
-        $('.pacientetxt_ser108p').text(SER108P.CEDULA);
+        $('.nittxt_ser108p').text('NIT: ' + SER108P.NIT);
+        $('.pacientetxt_ser108p').text('PACIENTE:' + SER108P.CEDULA);
         $('.nomtxt_ser108p').text(SER108P.PACIENTE);
-        $('.epstxt_ser108p').text(SER108P.EPS);
+        $('.epstxt_ser108p').text('ENTIDAD:' + SER108P.EPS);
         $('.nomepstxt_ser108p').text(SER108P.NOMBREEPS);
-        $('.ingresotxt_ser108p').text(SER108P.INGRESO);
-        $('.habtxt_ser108p').text(SER108P.HABITACION);
-        $('.salidtxt_ser108p').text(SER108P.RETIRO);
-        $('.cedautotxt_ser108p').text(SER108P.FUNCIONARIO);
+        $('.ingresotxt_ser108p').text('FECHA INGRESO:' +SER108P.MESING + ' '+ SER108P.DIAING + '/'+ SER108P.ANOING);;
+        $('.habtxt_ser108p').text('HABITACION:' + SER108P.HABITACION);
+        if((parseInt(SER108P.DIARET) == 0) || (parseInt(SER108P.ANORET) == 0)){
+            SER108P.DIARET = ''; 
+            SER108P.ANORET = ''; 
+            $('.salidtxt_ser108p').text('FECHA SALIDA:' + SER108P.MESRET + ' '+ SER108P.DIARET + '' + SER108P.ANORET);
+        }else{
+            $('.salidtxt_ser108p').text('FECHA SALIDA:' + SER108P.MESRET + ' '+ SER108P.DIARET + '/' + SER108P.ANORET);
+        }
+        $('.cedautotxt_ser108p').text('AUTORIZO:' + SER108P.FUNCIONARIO);
         $('.nombreautotxt_ser108p').text(SER108P.NOMBREFUNC);
-        $('.obsertxt_ser108p').text(SER108P.OBSERVACION);
-        $('.elabtxt_ser108p').text(SER108P.OPERCREADO);
-        $('.fechaelatxt_ser108p').text(SER108P.FECHACREADO);
-        $('.modtxt_ser108p').text(SER108P.OPERMODIF);
-        $('.fechamodiftxt_ser108p').text(SER108P.FECHAMODIF);
-        $('.bloqtxt_ser108p').text(SER108P.OPERBLOQ);
-        $('.imprimetxt_ser108p').text(SER108P.ADMIN);
+        $('.obsertxt_ser108p').text('OBSERVACION:' + SER108P.OBSERVACION);
+        $('.elabtxt_ser108p').text('ELABORADO:' + SER108P.OPERCREADO + ' ' + SER108P.FECHACREADO + ' ');
+        // $('.fechaelatxt_ser108p').text(SER108P.FECHACREADO);
+        $('.modtxt_ser108p').text('MODIFICADO:' + SER108P.OPERMODIF + ' '+ SER108P.FECHAMODIF + ' ' );
+        // $('.fechamodiftxt_ser108p').text(SER108P.FECHAMODIF);
+        $('.bloqtxt_ser108p').text('BLOQ:   ' + SER108P.OPERBLOQ + '  ' + 'IMPR:' + SER108P.ADMIN + ' ');
+        // $('.imprimetxt_ser108p').text('IMPREM:  ' + SER108P.ADMIN + ' '); 
 
         var nit = SER108P.NIT;
         var url = path.join(`P:\\PROG\\LOGOS\\${nit}.bmp`);

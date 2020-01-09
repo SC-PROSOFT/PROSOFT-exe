@@ -31,7 +31,7 @@ $(document).ready(function () {
     $_PUCUSU = $_USUA_GLOBAL[0].PUC;
     $_CONTROLFORMUUSU = $_USUA_GLOBAL[0].CTRL_FORMU;
     _toggleF8([
-        // { input: 'factura', app: '108', funct: _ventanaFacturacion },
+        { input: 'factura', app: '108', funct: _ventanaFacturacion },
         { input: 'nit', app: '108', funct: _ventanaTerceros },
         { input: 'convenio', app: '108', funct: _ventanaConvenios },
         { input: "idpaciente", app: "108", funct: _ventanaPacientes },
@@ -50,22 +50,29 @@ $(document).ready(function () {
 
 //////////////////////////////////////////// F8 //////////////////////////////////////////////////
 
-
 function _ventanaFacturacion(e) {
 
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 
         parametros = {
-            valoresselect: ['FACTURA', 'DESCRIPCION'],
+            dll: 'NUMERACION',
+            valoresselect: ['Nombre del tercero'],
             f8data: 'NUMERACION',
-            columnas: [{ title: 'COD' }, { title: 'NOM_PAC' }, { title: 'DESCRIP' }, { title: 'FECHA_ING' }, { title: 'CONVENIO' }],
+            columnas: [{ title: 'COD' }, { title: 'FECHA_ING' }, { title: 'DESCRIP' }, { title: 'NOM_PAC' }, { title: 'CONVENIO' }, { title: 'ESTADO' }],
             callback: (data) => {
-                document.querySelector("#factura_108").value = data.COD;
-                document.querySelector("#factura_108").focus();
+                console.log('data', data)
+                $_NROW  = data.COD; 
+                $_NROW = $_NROW.substring(1,7)
+                $('#factura_108').val($_NROW);
+                // document.querySelector("#factura_108").value = data.COD;
+                _enterInput('#factura_108');
             },
-            cancel: () => { document.querySelector("#factura_108").focus() }
+            cancel: () => {
+                _enterInput('#factura_108');
+                // document.querySelector("#idpaciente_108").focus() 
+            }
         };
-        F8NUME(parametros);
+        F8LITE(parametros);
     }
 }
 
@@ -144,7 +151,8 @@ function _ventanaPacientes(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
 
         parametros = {
-            valoresselect: ['Descripcion', 'Identificacion'],
+            dll: 'PACIENTES',
+            valoresselect: ['Nombre del paciente'],
             f8data: 'PACIENTES',
             columnas: [{ title: 'COD' }, { title: 'NOMBRE' }, { title: 'EPS' }],
             callback: (data) => {
@@ -835,7 +843,6 @@ function _dataSER108_05(data) {
         $("#nitd_108").val($_DESCRIPTER);
         if (($_DESCRIPW == '') || ($_NITW != $_NITNUM) || ($_NOVEDAD == "7")) {
             $_DESCRIPW = $_DESCRIPTER;
-            console.log($_DESCRIPW, '$_DESCRIPW')
             // _validarfacturaparticular();
             if ($_CONVENIOTER.trim() != '') {
                 var $_CONVENIOW = $_CONVENIOTER;
@@ -3262,9 +3269,6 @@ function _evaluarobservacionaper() {
 /////////////////////////////////// GRABAR DATOS////////////////////////////////////////////
 
 function _validarinformacion() {
-    console.log($_NITW, '$_NITW')
-    console.log($_DESCRIPW, '$_DESCRIPW')
-
     $_OBSERAPERW = $("#obserapertura_108").val();
     if ($_NOVEDAD == '8') {
         CON851P('01', _evaluardetalle, _grabarcambio)
@@ -3274,12 +3278,12 @@ function _validarinformacion() {
 }
 
 function _grabarregistro() {
-   
+
     $_FECHACRENUM = moment().format('YYYYMMDD');
     $_OPERNUM = $_ADMINW;
     $_FECHAMODNUM = ' ';
     $_OPERMODNUM = ' ';
-    
+
     $_FACTCAPITW = $_PRECAPITW + $_NROCAPITW;
     $_FECHAINGNUM = $_FECHAINGNUM.replace(/-/g, '');
     $_HORASALW = $_HORASALW.replace(/:/, '');
@@ -3296,7 +3300,7 @@ function _grabarregistro() {
 function _dataSER108_nuevo(data) {
     var date = data.split('|');
     var swinvalid = date[0];
-    if (swinvalid == "00") {  
+    if (swinvalid == "00") {
         BUSCARNUMERO(_grabarnumero);
     }
     else {
@@ -3305,8 +3309,6 @@ function _dataSER108_nuevo(data) {
 }
 
 function _grabarcambio() {
-    console.log($_NITW, '$_NITW')
-    console.log($_DESCRIPW, '$_DESCRIPW')
     $_FECHAMODNUM = moment().format('YYYYMMDD');
     $_OPERMODNUM = $_ADMINW;
     $_FECHACRENUM = $_ANOCRENUM + $_MESCRENUM + $_DIACRENUM;
@@ -3324,7 +3326,6 @@ function _grabarcambio() {
 }
 
 function _dataSER108_cambio(data) {
-    console.log(data, 'cambio')
     if (($_ESTADOW != $_ESTADONUM) && (($_ESTADONUM == '1') || ($_ESTADONUM == '2'))) {
         $_SWESTADO = '1';
     } else {
@@ -3338,7 +3339,7 @@ function _dataSER108_cambio(data) {
 }
 
 function _grabarauditoria2_7411() {
-    console.log('grabarauditoria')
+
     $_TIPOAUDW = "IS41";
     $_NOVEDADAUDW = $_NOVEDAD;
     $_SUCAUDW = $_PREFIJOUSU;
@@ -3351,17 +3352,14 @@ function _grabarauditoria2_7411() {
 }
 
 function respuestaauditoria2_7411(data) {
-    console.log('grabarauditoria resp', data)
+
     var date = data.split('|');
     var swinvalid = date[0].trim();
     if (swinvalid == '00') {
-        if (($_NITUSU == '0844003225') || ($_NITUSU == '0800037021')){
-            _grabarfacttriage2_7411(); 
-        }else{
+        if (($_NITUSU == '0844003225') || ($_NITUSU == '0800037021')) {
+            _grabarfacttriage2_7411();
+        } else {
             if ($_ESTADOW == '0') {
-                console.log('estado = 0 - validar')
-                console.log($_NITANT, 'nitactual', $_NITNUM, '$_NITNUM')
-                console.log($_CONVENIOACTUAL, 'convenioactual', $_DESCRIPNUM,'$_DESCRIPNUM')
                 $_OPERBLOQNUM = '';
                 $("#bloqueo_108").val($_OPERBLOQNUM);
 
@@ -3377,7 +3375,7 @@ function respuestaauditoria2_7411(data) {
                                 nombredll: 'INV020E',
                                 carpeta: 'INVENT'
                             });
-    
+
                         } else if ($_NITNUM != $_NITANT) {
                             console.log('consulta SER168A')
                             LLAMADO_DLL({
@@ -3396,24 +3394,20 @@ function respuestaauditoria2_7411(data) {
                     CON851P('50', otrocodigo_7411, _reliquidarcomprob_7411)
                 }
             } else {
-    
+
                 if ($_CONVENIOW == $_CONVENIOACTUAL) {
-                    console.log($_NITACTUAL, '$_NITACTUAL')
-                    console.log($_NITW,'$_NITW')
                     if ($_NITW == $_NITACTUAL) {
-                        console.log('igual los nit')
                         if (($_PREFIJONUM = "P" || "T" || "A" || "B" || "D" || "F" || "G" || "H" || "I" || "J" || "K" || "L" || "M" || "N" || "O" || "Q" || "R" || "S" || "W" || "X" || "Y" || "Z")
                             && ($_SWESTADO == '1') && ($_AÑOPACI_RET7411 > '1999')) {
-                            
+
                             LLAMADO_DLL({
                                 dato: [$_LLAVENUM],
                                 callback: respuestaanulafact_7411,
                                 nombredll: 'INV020E',
                                 carpeta: 'INVENT'
                             });
-    
+
                         } else if ($_NITNUM != $_NITANT) {
-                            console.log('$_NITNUM != $_NITANT')
                             LLAMADO_DLL({
                                 dato: [$_LLAVENUM, $_NITNUM, $_FECHAINGNUM],
                                 callback: respuestacambianit_7411,
@@ -3421,7 +3415,6 @@ function respuestaauditoria2_7411(data) {
                                 carpeta: 'SALUD'
                             });
                         } else {
-                            console.log('pasa normal')
                             otrocodigo_7411();
                         }
                     } else {
@@ -3432,68 +3425,101 @@ function respuestaauditoria2_7411(data) {
                 }
             }
         }
-        
+
     } else {
         jAlert({ titulo: 'Error ', mensaje: 'No cargo cambios en el log de auditoria' }, otrocodigo_7411);
     }
 }
 
-function _grabarfacttriage2_7411(){
+function _grabarfacttriage2_7411() {
     //////FALTA HACER ESTE FUNCION 
     console.log('grabarfacttriage2')
 }
 
 function _reliquidarcomprob_7411() {
-    console.log('datos-envio', datosEnvio() + $_LLAVENUM + '|' + $_ADMINW + '|')
     let URL = get_url("APP/SALUD/SER612R.DLL");
     postData({ datosh: datosEnvio() + $_LLAVENUM + '|' + $_ADMINW + '|' }, URL)
         .then(data => {
-            console.log(data, 'respuesta')
-            $_COMPROBANTE = data['RELIQUIDA'];  
+            $_COMPROBANTE = data['RELIQUIDA'];
             swinvalid = $_COMPROBANTE[0].ESTADO;
-            
+            $_SUCURSAL = $_COMPROBANTE[0].SUCURSAL;
+            $_CLFACT = $_COMPROBANTE[0].CLFACT;
+            $_NROFACT = $_COMPROBANTE[0].NROFACT;
+            $_FECHAFAT = $_COMPROBANTE[0].FECHAFAT;
+
             if (swinvalid == '08') {
                 CON851('08', '08', null, 'error', 'error');
                 otrocodigo_7411();
 
             } else if (swinvalid == '01') {
-                    var ventanaDuplicado = bootbox.dialog({
-                        title: 'RELIQUIDANDO FACT:' + $_LLAVENUM,
-                        message: '<style type="text/css">' + '.modal-footer {' +
-                            +'padding: 10px;' +
-                            'text-align: right;' +
-                            'margin-top:38px;' +
-                            'border-top: 1px solid #e5e5e5;}' +
-                            '</style>' +
-                            '<div class="table-scrollable">' +
-                            '<table class="table table-striped table-hover">' +
-                            '<thead><tr>' +
-                            '<th>Estado</th>' +
-                            '</tr></thead>' +
-                            '<tbody>' +
-                            //registro existente
-                            '<tr class="encontrado">' +
-                            `<td>"ERROR NO EXISTE CONVENIO"</td></tr>` +
-                            '</tbody>' +
-                            '</table>' +
-                            '</div>' //cierrra portlety
-                        ,
-                        buttons: {
-                            Aceptar: {
-                                span: 'Aceptar',
-                                className: 'btn-primary',
-                                callback: function () {
-                                    ventanaDuplicado.off('show.bs.modal');
-                                    otrocodigo_7411();
-                                }
+                var ventanaDuplicado = bootbox.dialog({
+                    title: 'RELIQUIDANDO FACT:' + $_LLAVENUM,
+                    message: '<style type="text/css">' + '.modal-footer {' +
+                        +'padding: 10px;' +
+                        'text-align: right;' +
+                        'margin-top:38px;' +
+                        'border-top: 1px solid #e5e5e5;}' +
+                        '</style>' +
+                        '<div class="table-scrollable">' +
+                        '<table class="table table-striped table-hover">' +
+                        '<thead><tr>' +
+                        '<th>Estado</th>' +
+                        '</tr></thead>' +
+                        '<tbody>' +
+                        //registro existente
+                        '<tr class="encontrado">' +
+                        `<td>"ERROR NO EXISTE CONVENIO"</td></tr>` +
+                        '</tbody>' +
+                        '</table>' +
+                        '</div>' //cierrra portlety
+                    ,
+                    buttons: {
+                        Aceptar: {
+                            span: 'Aceptar',
+                            className: 'btn-primary',
+                            callback: function () {
+                                ventanaDuplicado.off('show.bs.modal');
+                                otrocodigo_7411();
                             }
                         }
-                    })
-               
-            } else {
+                    }
+                })
 
-                console.log('reliquida comprobantes')
-                otrocodigo_7411();
+            } else {
+                var ventanaDuplicado = bootbox.dialog({
+                    title: 'RELIQUIDANDO FACT:' + $_LLAVENUM,
+                    message: '<style type="text/css">' + '.modal-footer {' +
+                        +'padding: 10px;' +
+                        'text-align: right;' +
+                        'margin-top:38px;' +
+                        'border-top: 1px solid #e5e5e5;}' +
+                        '</style>' +
+                        '<div class="table-scrollable">' +
+                        '<table class="table table-striped table-hover">' +
+                        '<thead><tr>' +
+                        '<th>Sucursal</th>' +
+                        '<th>Cl fact</th>' +
+                        '<th>Nro fact</th>' +
+                        '<th>Fecha fact</th>' +
+                        '</tr></thead>' +
+                        '<tbody id= "COMPROBANTES">' +
+                        `${obtenerComprobantes($_COMPROBANTE = data['RELIQUIDA'])}` +
+                        '</tbody>' +
+                        '</table>' +
+                        '</div>' //cierrra portlety
+                    ,
+                    buttons: {
+                        Aceptar: {
+                            span: 'Aceptar',
+                            className: 'btn-primary',
+                            callback: function () {
+                                ventanaDuplicado.off('show.bs.modal');
+                                otrocodigo_7411();
+                            }
+                        }
+                    }
+                })
+                // otrocodigo_7411();
             }
 
 
@@ -3502,8 +3528,15 @@ function _reliquidarcomprob_7411() {
             console.debug(err);
         })
 }
-
-
+function obtenerComprobantes(arrCompr) {
+    let comprobantes = '';
+    for (let i = 0; i < arrCompr.length; i++) {
+        if (arrCompr[i].SUCURSAL.trim() !='') {
+            comprobantes += (`<tr><td >${arrCompr[i].SUCURSAL}</td>` + `<td >${arrCompr[i].CLFACT}</td>` + `<td >${arrCompr[i].NROFACT}</td>` + `<td >${arrCompr[i].FECHAFAT}</td></tr>`);
+        }
+    }
+    return comprobantes;
+}
 function respuestacambianit_7411(data) {
     console.log('respuestacambianit', data)
     var date = data.split('|');
@@ -3597,11 +3630,13 @@ function _imprimirfactura_SAL7411() {
     setTimeout(function () { _cargandoimpresion('imprimiendo') }, 300);
 
     var datos_envio = datosEnvio();
+    console.log($_LLAVEW + '|' + $_NITUSU + '|' + $_NOMBREUSU + '|' + $_ADMINW, 'envio dll imprmiri')
     datos_envio += $_LLAVEW + '|' + $_NITUSU + '|' + $_NOMBREUSU + '|' + $_ADMINW
     let URL = get_url("APP/SALUD/SER108-15.DLL");
     postData({ datosh: datos_envio }, URL)
         .then(function (data) {
             SAL7411.FACTURAS = data.FACTURAS[0];
+            console.log(SAL7411.FACTURAS, 'SAL7411.FACTURAS')
             _impresion_SAL7411();
         })
         .catch(err => {
@@ -3804,12 +3839,12 @@ function _mostrardatos_SAL7411() {
     $("#servicio_108").val($_SERVICIONUM);
     $("#redext_108").val($_REDEXTERNUM);
     $("#contrato_108").val($_CONTRATONUM);
-    if($_PRECAPITNUM == '0'){
-        $_PRECAPITNUM = ''; 
-        $_NROCAPITNUM = ''; 
+    if ($_PRECAPITNUM == '0') {
+        $_PRECAPITNUM = '';
+        $_NROCAPITNUM = '';
         $("#precapit_108").val($_PRECAPITNUM);
         $("#capit_108").val($_NROCAPITNUM);
-    }else{
+    } else {
         $("#precapit_108").val($_PRECAPITNUM);
         $("#capit_108").val($_NROCAPITNUM);
     }
@@ -3869,19 +3904,19 @@ function _mostrardatos_SAL7411() {
 }
 
 function _retiroregistro() {
-    if($_TOTALFACT == 0){
+    if ($_TOTALFACT == 0) {
         CON851P('54', _evaluarfactura, _grabarauditoria3_7411)
-    }else{
-        if($_NITUSU == '070100111'){
+    } else {
+        if ($_NITUSU == '070100111') {
             CON851P('54', _evaluarfactura, _grabarauditoria3_7411)
-        }else{
+        } else {
             CON851('52', '52', null, 'error', 'error')
-            _leerusuario(); 
+            _leerusuario();
         }
     }
 }
 
-function _grabarauditoria3_7411(){
+function _grabarauditoria3_7411() {
     $_TIPOAUDW = "IS41";
     $_NOVEDADAUDW = $_NOVEDAD;
     $_SUCAUDW = $_PREFIJOUSU;
@@ -3893,7 +3928,7 @@ function _grabarauditoria3_7411(){
     });
 }
 
-function respuestaauditoria3_7411(data){
+function respuestaauditoria3_7411(data) {
 
     var date = data.split('|');
     var swinvalid = date[0].trim();
