@@ -26,12 +26,13 @@ function _iniciar_menu_his() {
 		.then((data) => {
 			var res = data.split("|");
 			var idProfe = parseInt(res[1]);
+			idProfe=espaciosIzq(idProfe, 10)
 			obtenerDatosCompletos({
-				"nombreFd": "PROFESIONALES"
+				nombreFd: "PROFESIONALES"
 			}, function (array_profesionales) {
-				$_REG_PROF.datos_prof = array_profesionales['ARCHPROF'].find(arr => arr.IDENTIFICACION.trim() == idProfe.toString());
+				$_REG_PROF.datos_prof = array_profesionales['ARCHPROF'].find(profesional => profesional.IDENTIFICACION == idProfe);
 				$_REG_PROF.datos_prof.IDENTIFICACION = $_REG_PROF.datos_prof.IDENTIFICACION.trim().padStart(10, "0");
-				if ($_REG_PROF.datos_prof) {
+				if ($_REG_PROF.datos_prof!==-1) {
 					$_REG_PROF.tabla_especialidad = new Array();
 					$_REG_PROF.tabla_especialidad = $_REG_PROF.datos_prof.TAB_ESPEC
 					$_REG_PROF.tabla_especialidad.pop();
