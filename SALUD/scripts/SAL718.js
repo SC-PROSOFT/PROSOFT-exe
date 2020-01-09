@@ -235,7 +235,7 @@ function _validarGrupo718() {
 	)
 }
 function evaluarGrupo718() {
-	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value.toUpperCase();
+	SAL718.GRUPOSER.COD = document.getElementById('codgrupo_718').value.toUpperCase().substring(0, 2);
 	let res;
 	res = $_grServicios718.filter(gruposer => gruposer.COD == SAL718.GRUPOSER.COD.toUpperCase());
 	if (res == '') {
@@ -317,7 +317,7 @@ function _validarTipoCups718() {
 			{ 'COD': '06', 'DESCRIP': 'PATOLOGIA Y CITOLOGIA' },
 			{ 'COD': '07', 'DESCRIP': 'PROMOCION Y PREVENCION' })
 	}
-	TIPOSERVICIOS({ array: data, seleccion: SAL718.CUPS.LLAVE_ALT[0].padStart(2, '0') }, _validarGrupo718, function (data) {
+	TIPOSERVICIOS({ popup: 'on', seleccion: parseInt(SAL718.CUPS.LLAVE_ALT[0]) }, _validarGrupo718, function (data) {
 		SAL718.CUPS.LLAVE_ALT[0] = data.COD;
 		document.getElementById('tipocups_718').value = data.COD + ' ' + data.DESCRIP
 		_validarCodAbr718();
@@ -374,7 +374,7 @@ function validarDuracion718() {
 	)
 }
 function validarCopago718() {
-	SER822B({ seleccion: SAL718.CUPS.COPAGO }, validarDuracion718, function (data) {
+	SER822B({ popup: 'on', seleccion: parseInt(SAL718.CUPS.COPAGO) }, validarDuracion718, function (data) {
 		SAL718.CUPS.COPAGO = data.COD;
 		document.getElementById('pagoPaci_718').value = SAL718.CUPS.COPAGO + ' ' + data.DESCRIP;
 		validarDatoNopos718();
@@ -897,7 +897,7 @@ function Actualizar718() {
 			SAL718.PARAMS =
 				SAL718.CUPS.LLAVE.toUpperCase().padEnd(12, ' ')
 				+ '|' + SAL718.CUPS.DESCRIP.trim().padEnd(80, ' ')
-				+ '|' + SAL718.CUPS.LLAVE_ALT[0].trim()
+				+ '|' + parseInt(SAL718.CUPS.LLAVE_ALT[0])
 				+ '|' + SAL718.CUPS.LLAVE_ALT[1].padEnd(5, ' ')
 				+ '|' + parseInt(SAL718.CUPS.NIVEL)
 				+ '|' + SAL718.CUPS.DURACION.padStart(3, '0')
@@ -997,22 +997,29 @@ function ocultCajas718() {
 	}
 }
 function on_llenarFormCups718() {
-	SAL718.CUPS.GRUPO = SAL718.GRUPOSER.COD
-	SAL718.CUPS.LLAVE = SAL718.CUPS.GRUPO + document.getElementById('codcups_718').value;
 	SAL718.CUPS.TIPO = SAL718.CUPS.LLAVE_ALT[0]; SAL718.CUPS.ABRV = SAL718.CUPS.LLAVE_ALT[1];
 	SAL718.CUPS.LLAVE_ALT[0] = SAL718.CUPS.LLAVE_ALT[0].trim();
 	document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
-	const dom_Idcups = [
-		'tipocups_718', 'descripCup_718', 'codabrev_718', 'codgrupo_718', 'nivcompl_718',
-		'duracion_718', 'pagoPaci_718', 'proced_718', 'centrocosto_718', 'edadminima_718', 'edadmaxima_718',
+	const dom_Idcups = ['descripCup_718', 'codabrev_718', 'nivcompl_718',
+		'duracion_718', 'proced_718', 'edadminima_718', 'edadmaxima_718',
 		'undedad_718', 'sexo_718', 'pregRips_718', 'porcmedico_718', 'ingrclinica_718', 'ingrtercer_718',
 		'cis_718', 'actHl_718'
 	];
 	const obj_Idcups = [
-		'TIPO', 'DESCRIP', 'ABRV', 'GRUPO', 'NIVEL', 'DURACION', 'COPAGO', 'NOPOS', 'COSTO', 'EDAD_MIN',
+		'DESCRIP', 'ABRV', 'NIVEL', 'DURACION', 'NOPOS', 'EDAD_MIN',
 		'EDAD_MAX', 'UND_EDAD', 'SEXO', 'DIAGN', 'MED_100', 'PORC_CL', 'PORC_OTR', 'CIS', 'CIS'
 	];
+	TIPOSERVICIOS({ popup: 'off', seleccion: parseInt(SAL718.CUPS.TIPO) }, null, function (data) {
+		document.getElementById('tipocups_718').value = data.COD + ' ' + data.DESCRIP
+	});
+	SER822B({ popup: 'off', seleccion: parseInt(SAL718.CUPS.COPAGO) }, null, function (data) {
+		document.getElementById('pagoPaci_718').value = data.COD + ' ' + data.DESCRIP
+	});
 
+	let cos = $_costos718.filter(costo => costo.COD == SAL718.CUPS.COSTO);
+	if (cos == '') { document.getElementById('centrocosto_718').value = '*******' } else { document.getElementById('centrocosto_718').value = cos[0].COD + ' ' + cos[0].DESCRIP }
+
+	document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD + ' ' + SAL718.GRUPOSER.DESCRIP;
 	let ter = $_terceros718.filter(tercero => tercero.COD.trim() == parseInt(SAL718.CUPS.NIT_OTR))
 	let plan = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == SAL718.CUPS.CTA_OTR.padStart(12, '0'))
 
@@ -1103,8 +1110,7 @@ function _onrestricciones718(params) {
 		case 'GRUPOSER':
 			if (SAL718.GRUPOSER.COD.toString().trim() == '89' && $_USUA_GLOBAL[0].PUC == '5') {
 				toastr.warning('Para consulta de medicina especializada \n use la cta 411027 que el sistema reclasifica x especialidad')
-			}
-			if (params.invalid == '00') {
+			} else if (params.invalid == '00') {
 				document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD + ' ' + SAL718.GRUPOSER.DESCRIP;
 				_validarCUPS718();
 			} else { CON851('01', '01', _validarGrupo718(), 'error', 'error'); }
@@ -1118,7 +1124,7 @@ function _onrestricciones718(params) {
 						if (SAL718.CUPS.LLAVE.substring(0, 2).toUpperCase() != SAL718.GRUPOSER.COD.toUpperCase()) {
 							CON851('03', '03', _validarCUPS718(), 'error', 'error');
 						} else {
-							SAL718.CUPS.LLAVE = SAL718.CUPS.GRUPO + document.getElementById('codcups_718').value;
+							document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
 							document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
 							_validarDescripcion718();
 						}
@@ -1132,7 +1138,7 @@ function _onrestricciones718(params) {
 						if (SAL718.CUPS.LLAVE.substring(0, 2) != SAL718.GRUPOSER.COD) {
 							CON851('03', '03', _validarCUPS718(), 'error', 'error');
 						} else {
-							SAL718.CUPS.LLAVE = SAL718.CUPS.GRUPO + document.getElementById('codcups_718').value;
+							document.getElementById('codcups_718').value = SAL718.CUPS.LLAVE.substring(2, 12);
 							document.getElementById('descripCup_718').value = SAL718.CUPS.DESCRIP;
 							on_llenarFormCups718();
 						}

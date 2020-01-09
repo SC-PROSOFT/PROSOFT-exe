@@ -1,6 +1,7 @@
 function SER835(data, esccallback, callback) {
     var SER835 = [];
     let URL = get_url("APP/SALUD/SER835.DLL");
+    console.log(' data.PACIENTE + ' | ' + data.CLFACT + ' | ' + data.NITUSU', data.PACIENTE + '|' + data.CLFACT + '|' + data.NITUSU)
     postData({
         datosh: datosEnvio() + data.PACIENTE + '|' + data.CLFACT + '|' + data.NITUSU + '|'
     }, URL)
@@ -295,29 +296,56 @@ function SER822B(data, esccallback, callback) {
         { 'COD': '02', 'DESCRIP': 'CUOTA MODERADORA' },
         { 'COD': '03', 'DESCRIP': 'NO APLICA' }
     ]
-    POPUP({
-        array: SER822B,
-        titulo: 'TIPO DE PAGO',
-        indices: [{
-            id: 'COD',
-            label: 'DESCRIP'
-        }],
-        seleccion: data.seleccion,
-        callback_f: esccallback
-    }, callback)
+    if (data.popup == 'off') {
+        callback(SER822B.find(e => e.COD == data.seleccion))
+    } else {
+        POPUP({
+            array: SER822B,
+            titulo: 'TIPO DE PAGO',
+            indices: [{
+                id: 'COD',
+                label: 'DESCRIP'
+            }],
+            seleccion: data.seleccion,
+            callback_f: esccallback
+        }, callback)
+    }
 }
 
 function TIPOSERVICIOS(data, esccallback, callback) {
-    POPUP({
-        array: data.array,
-        titulo: 'Tipo servicios',
-        indices: [{
-            id: 'COD',
-            label: 'DESCRIP'
-        }],
-        seleccion: data.seleccion,
-        callback_f: esccallback
-    }, callback)
+    var TIPOSER = [
+        { 'COD': '01', 'DESCRIP': 'CIRUGIAS' },
+        { 'COD': '02', 'DESCRIP': 'LABORATORIO' }];
+
+    if ($_USUA_GLOBAL[0].NIT == 800156469) {
+        TIPOSER.push(
+            { 'COD': '03', 'DESCRIP': 'ECOGRAFIAS, DOPPLER, T.A.C, RESONACIA NUCLEAR' },
+            { 'COD': '04', 'DESCRIP': 'ESTANCIA Y OTROS' },
+            { 'COD': '05', 'DESCRIP': 'CONSULTA Y TERAPIAS' },
+            { 'COD': '06', 'DESCRIP': 'PATOLOGIA Y CITOLOGIA' },
+            { 'COD': '07', 'DESCRIP': 'PROMOCION Y PREVENCION' })
+    } else {
+        TIPOSER.push(
+            { 'COD': '03', 'DESCRIP': 'RX iMAGENEOLOGIA' },
+            { 'COD': '04', 'DESCRIP': 'ESTANCIA Y OTROS' },
+            { 'COD': '05', 'DESCRIP': 'CONSULTA Y TERAPIAS' },
+            { 'COD': '06', 'DESCRIP': 'PATOLOGIA Y CITOLOGIA' },
+            { 'COD': '07', 'DESCRIP': 'PROMOCION Y PREVENCION' })
+    }
+    if (data.popup == 'off') {
+        callback(TIPOSER.find(ts => ts.COD == data.seleccion))
+    } else {
+        POPUP({
+            array: TIPOSER,
+            titulo: 'Tipo servicios',
+            indices: [{
+                id: 'COD',
+                label: 'DESCRIP'
+            }],
+            seleccion: data.seleccion,
+            callback_f: esccallback
+        }, callback)
+    }
 }
 /////////// FUNCIONES PARA VENTANAS SALUD//////////
 
@@ -459,7 +487,7 @@ function SER825(callbackAtras, callbackSig, orden_w) {
 
 
 function paciente_SER825(callbackAtras, callbackSig, orden_w) {
-    _toggleF8([{ input: 'paciente', app: 'SER825', funct: (e) => {f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w)}},])
+    _toggleF8([{ input: 'paciente', app: 'SER825', funct: (e) => { f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w) } },])
 
     validarInputs(
         {
@@ -509,6 +537,7 @@ function validarFacturas_SER825(data, callbackAtras, callbackSig, orden_w) {
         ancho: '90%',
         callback_esc: function () {
             callbackAtras(callbackAtras)
+            // paciente_SER825(callbackAtras, callbackSig, orden_w)
         },
         callback: function (data) {
             traerRegistroCompleto_SER825(data.LLAVE, callbackAtras, callbackSig, orden_w)
@@ -556,7 +585,7 @@ function f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w) {
                 _enterInput($('#paciente_SER825'));
             },
             cancel: () => {
-                paciente_SER825(callbackAtras, callbackSig, orden_w)
+                callbackAtras(callbackAtras)
             }
         };
         F8LITE(parametros);
