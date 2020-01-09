@@ -30,21 +30,25 @@ $(document).ready(function () {
 
 function iniciarObjetosFNF8() {
 	SAL718.CUPS = []; SAL718.COSTO = []; SAL718.TERCEROS = []; SAL718.GRUPOSER = []; SAL718.MAESTROS = [];
-	let objetos = ['GRUPO-SER', 'CUPS', 'COSTOS', 'CTA-MAYOR', 'TERCEROS', 'DIVISION'], i = 0;
-	for (let objeto in objetos) {
-		obtenerDatosCompletos({ nombreFd: objetos[objeto] }, (data) => {
-			switch (objetos[objeto]) {
-				case 'GRUPO-SER': $_grServicios718 = data.CODIGOS; break;
-				case 'CUPS': $_cups718 = data.CODIGOS; break;
-				case 'COSTOS': $_costos718 = data.COSTO; break;
-				case 'CTA-MAYOR': $_planCuentas718 = data.MAESTROS; break;
-				case 'TERCEROS': $_terceros718 = data.TERCEROS; break;
-				case 'DIVISION': $_divisiones718 = data.CODIGOS; break;
-			}
-		})
-		i++
-		if (i == objetos.length) { setTimeout(() => { CON850(_evaluarCON850_718) }, 400); }
-	}
+	obtenerDatosCompletos({ nombreFd: 'CUPS' }, (data) => {
+		$_cups718 = data.CODIGOS;
+		obtenerDatosCompletos({ nombreFd: 'GRUPO-SER' }, (data) => {
+			$_grServicios718 = data.CODIGOS;
+			obtenerDatosCompletos({ nombreFd: 'COSTOS' }, (data) => {
+				$_costos718 = data.COSTO;
+				obtenerDatosCompletos({ nombreFd: 'CTA-MAYOR' }, (data) => {
+					$_planCuentas718 = data.MAESTROS;
+					obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, (data) => {
+						$_terceros718 = data.TERCEROS;
+						obtenerDatosCompletos({ nombreFd: 'DIVISION' }, (data) => {
+							$_divisiones718 = data.CODIGOS;
+							CON850(_evaluarCON850_718)
+						}, 'OFF');
+					}, 'ONLY');
+				}, 'ONLY');
+			}, 'ONLY');
+		}, 'ONLY');
+	}, 'ON');
 }
 
 //------------------------ Funciones FNF8 -----------------------------------//
@@ -270,7 +274,7 @@ function evaluarCups718() {
 
 				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
 			})
-		.catch((error) => { console.debug(error) });
+			.catch((error) => { console.debug(error) });
 	}
 }
 
@@ -1002,11 +1006,11 @@ function on_llenarFormCups718() {
 		'tipocups_718', 'descripCup_718', 'codabrev_718', 'codgrupo_718', 'nivcompl_718',
 		'duracion_718', 'pagoPaci_718', 'proced_718', 'centrocosto_718', 'edadminima_718', 'edadmaxima_718',
 		'undedad_718', 'sexo_718', 'pregRips_718', 'porcmedico_718', 'ingrclinica_718', 'ingrtercer_718',
-		'cis_718','actHl_718'
+		'cis_718', 'actHl_718'
 	];
 	const obj_Idcups = [
 		'TIPO', 'DESCRIP', 'ABRV', 'GRUPO', 'NIVEL', 'DURACION', 'COPAGO', 'NOPOS', 'COSTO', 'EDAD_MIN',
-		'EDAD_MAX', 'UND_EDAD', 'SEXO', 'DIAGN', 'MED_100', 'PORC_CL', 'PORC_OTR', 'CIS','CIS'
+		'EDAD_MAX', 'UND_EDAD', 'SEXO', 'DIAGN', 'MED_100', 'PORC_CL', 'PORC_OTR', 'CIS', 'CIS'
 	];
 
 	let ter = $_terceros718.filter(tercero => tercero.COD.trim() == parseInt(SAL718.CUPS.NIT_OTR))
