@@ -7,6 +7,7 @@
         next: null,
         key: null,
         event_f3: false,
+        event_f5: false,
 
         init: function () {
             if ($.validar.key == 'keyup') {
@@ -134,6 +135,9 @@
                     case 114:
                         if ($.validar.event_f3) $.validar._eventf3();
                         break;
+                    case 116:
+                        if ($.validar.event_f5) $.validar._eventf5();
+                        break;
                     default:
                         // if (requerido) {
                         if (act_longitud > 0) {
@@ -153,6 +157,11 @@
         _eventf3: function () {
             _fin_validar_form();
             $.validar.event_f3($.validar.event_f3);
+        },
+
+        _eventf5: () => {
+            _fin_validar_form();
+            $.validar.event_f5($.validar.event_f5)
         },
 
         _fin: function () {
@@ -228,6 +237,7 @@
         $.validar.back = back;
         $.validar.next = next;
         $.validar.event_f3 = params.event_f3 ? params.event_f3 : false;
+        $.validar.event_f5 = params.event_f5 ? params.event_f5 : false;
         $.validar.key = params.key ? params.key : 'keyup';
         setTimeout(function () { $.validar.init(); }, 100)
     }
