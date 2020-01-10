@@ -65,24 +65,34 @@
                 'DESPLAZADO':    'SALUD/SER810D',
                 'ESPCUPS':       'SALUD/SAL71A-C', // se puede filtrar por cod-cups
                 'CUPS':          'SALUD/SER802C',
-                'PROFESION' : {
-                                 'PROFESION': [
-                                 { 'COD': '1', 'DESCRIP': 'MEDICO ESPECIALISTA' },
-                                 { 'COD': '2', 'DESCRIP': 'MEDICO GENERAL' },
-                                 { 'COD': '3', 'DESCRIP': 'ENFERMERO(A) JEFE' },
-                                 { 'COD': '4', 'DESCRIP': 'AUXILIAR ENFERMERIA' },
-                                 { 'COD': '5', 'DESCRIP': 'TERAPEUTAS Y OTROS' },
-                                 { 'COD': '6', 'DESCRIP': 'ENFERMERA JEFE P Y P' },
-                                 { 'COD': '7', 'DESCRIP': 'PSICOLOGIA' },
-                                 { 'COD': '8', 'DESCRIP': 'NUTRICIONISTA' },
-                                 { 'COD': '9', 'DESCRIP': 'NO APLICA' },
-                                 { 'COD': 'A', 'DESCRIP': 'ODONTOLOGO' },
-                                 { 'COD': 'B', 'DESCRIP': 'AUDITOR MEDICO' },
-                                 { 'COD': 'H', 'DESCRIP': 'HIGIENE ORAL' },
-                                 { 'COD': 'I', 'DESCRIP': 'INSTRUMENTADOR(A)' },
-                                 { 'COD': 'O', 'DESCRIP': 'OPTOMETRA' },
-                                 { 'COD': 'T', 'DESCRIP': 'TRABAJO SOCIAL' },
-                              ]},
+                'PROFESION': {
+                    'PROFESION': [
+                        { 'COD': '1', 'DESCRIP': 'MEDICO ESPECIALISTA' },
+                        { 'COD': '2', 'DESCRIP': 'MEDICO GENERAL' },
+                        { 'COD': '3', 'DESCRIP': 'ENFERMERO(A) JEFE' },
+                        { 'COD': '4', 'DESCRIP': 'AUXILIAR ENFERMERIA' },
+                        { 'COD': '5', 'DESCRIP': 'TERAPEUTAS Y OTROS' },
+                        { 'COD': '6', 'DESCRIP': 'ENFERMERA JEFE P Y P' },
+                        { 'COD': '7', 'DESCRIP': 'PSICOLOGIA' },
+                        { 'COD': '8', 'DESCRIP': 'NUTRICIONISTA' },
+                        { 'COD': '9', 'DESCRIP': 'NO APLICA' },
+                        { 'COD': 'A', 'DESCRIP': 'ODONTOLOGO' },
+                        { 'COD': 'B', 'DESCRIP': 'AUDITOR MEDICO' },
+                        { 'COD': 'H', 'DESCRIP': 'HIGIENE ORAL' },
+                        { 'COD': 'I', 'DESCRIP': 'INSTRUMENTADOR(A)' },
+                        { 'COD': 'O', 'DESCRIP': 'OPTOMETRA' },
+                        { 'COD': 'T', 'DESCRIP': 'TRABAJO SOCIAL' },
+                    ]
+                },
+                'FORMAPAGO': {
+                    'FORMAPAGO': [
+                        { 'COD': 'E', 'DESCRIP': 'E-EFECTIVO' },
+                        { 'COD': 'C', 'DESCRIP': 'C-CREDITO' },
+                        { 'COD': 'P', 'DESCRIP': 'P-PENSIONADO' },
+                        { 'COD': 'A', 'DESCRIP': 'A-AMBULATORIO' },
+                        { 'COD': 'T', 'DESCRIP': 'T-ACC.TRANS' },
+                    ]
+                },
             }
             let ruta = DLLS[dll.nombreFd.toUpperCase()];
             let datos_envio = datosEnvio();
@@ -98,7 +108,7 @@
                     datosh: datos_envio
                 }, URL)
                     .then(data => {
-                        console.log(data)
+                        // console.log(data)
                         $.datoscompletos.callback(data);
                         if ($.datoscompletos.estado == 'ONLY') {
                             loader('hide');
