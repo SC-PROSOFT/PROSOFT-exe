@@ -2346,7 +2346,7 @@ function _dato19() {
 
 function _dataCON904S_03(data) {
     var date = data.split("|");
-    var swinvalid = date[1].substring(0, 2);
+    var swinvalid = date[0].trim();
     if ((swinvalid == "00") && ($_NOVEDAD == "8")) {
         _evaluarbol();
     }
