@@ -9,6 +9,8 @@
         datatable: [],
         titulo: 'Ventana de búsqueda',
         valoresselect: '',
+        close: false,
+        dll: null,
         columnas: '',
         f8data: '',
         table: null,
@@ -28,6 +30,8 @@
                 );
 
                 $('#' + $.F8LITE.id_input).focus();
+
+                if ($.F8LITE.close) $.F8LITE._close();
             }
         },
 
@@ -106,25 +110,11 @@
             // End responsive
 
             // Insertar formulario
-            // $('<select />', {
-            //     id: $.F8LITE.id_select
-            // })
-            //     .css({
-            //         width: '40%',
-            //         background: '#f2fbff',
-            //         padding: '10px 8px',
-            //         border: '1px solid #becdda',
-            //         outline: 'none',
-            //         'border-radius': '2px 2px 0 0',
-            //     })
-            //     // .attr('disabled', true)
-            //     .appendTo(`#${$.F8LITE.content_id}_body`);
-
-            $('<input />', {
-                id: $.F8LITE.id_input
+            $('<select />', {
+                id: $.F8LITE.id_select
             })
                 .css({
-                    width: '100%',
+                    width: '40%',
                     background: '#f2fbff',
                     padding: '10px 8px',
                     border: '1px solid #becdda',
@@ -134,9 +124,27 @@
                 // .attr('disabled', true)
                 .appendTo(`#${$.F8LITE.content_id}_body`);
 
-            $.F8LITE.valoresselect.forEach(data => {
-                $(`#${$.F8LITE.id_select}`).append(new Option(data, data));
+            $('<input />', {
+                id: $.F8LITE.id_input
             })
+                .css({
+                    width: '60%',
+                    background: '#f2fbff',
+                    padding: '10px 8px',
+                    border: '1px solid #becdda',
+                    outline: 'none',
+                    'border-radius': '2px 2px 0 0',
+                })
+                // .attr('disabled', true)
+                .appendTo(`#${$.F8LITE.content_id}_body`);
+
+            // $.F8LITE.valoresselect.forEach(data => {
+            //     $(`#${$.F8LITE.id_select}`).append(new Option(data, data));
+            // })
+
+            for (var i in $.F8LITE.valoresselect){
+                $(`#${$.F8LITE.id_select}`).append(new Option($.F8LITE.valoresselect[i],parseInt(i) + 1));
+            }
 
             // Footer
             $(`#${$.F8LITE.content_id}_body`).append(
@@ -221,7 +229,7 @@
                     })
                     break;
                 case 'off':
-                        $('#' + $.F8LITE.id_input).off('key');
+                    $('#' + $.F8LITE.id_input).off('key');
                     break;
                 default:
                     break;
@@ -229,37 +237,31 @@
         },
 
         _sendData: () => {
-            if ($(`#${$.F8LITE.id_input}`).val().length > 10) {
-                CON851('','Ingresar menos de 10 caracteres', null, 'error', 'Error')
-                $(`#${$.F8LITE.id_input}`).focus();
-            } else if ($(`#${$.F8LITE.id_input}`).val().length < 3) {
-                CON851('', 'Ingresar minimo 3 caracteres', null, 'error','Error');
-                $(`#${$.F8LITE.id_input}`).focus();
-            } else {
+            if ($.F8LITE.dll != 'PACIENTES') {
+                let DLL =  {
+                    'NUMERACION': 'APP/SALUD/SER808.DLL'
+                }
+                let rutaDLL = DLL[$.F8LITE.dll];
                 $('span').remove();
-                let URL = get_url("APP/SALUD/SER810.DLL");
-                $(`#${$.F8LITE.id_input}`).hide();
+                let URL = get_url(rutaDLL);
+                $(`#${$.F8LITE.id_input}`).hide(); $(`#${$.F8LITE.id_select}`).hide();
                 $('#content-f8_lite_body').append('<div id="cargando_F8cargarndo" style="display:flex;justify-content:center;"><i class="fa fa-spin fa-spinner fa-3x"></i></div>');
                 postData({
-                    datosh: datosEnvio() + '1' + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
+                    datosh: datosEnvio() + $(`#${$.F8LITE.id_select}`).val() + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
                 }, URL)
                     .then(data => {
                         console.debug(data);
                         $('#cargando_F8cargarndo').remove();
                         var array = data[$.F8LITE.f8data];
                         table = [];
-                        array.forEach(index => {
-                            var edad = calcular_edad(index.NACIMIENTO);
-                            index.EDAD = edad.unid_edad + edad.vlr_edad.toString().padStart(3,'0');
-                        });
                         $.F8LITE.datatable = array;
                         var columnas = $.F8LITE.columnas;
                         array.forEach(index => {
                             var contenido = [];
-                            for (var i in columnas){
+                            for (var i in columnas) {
                                 contenido.push(index[columnas[i].title]);
                             }
-                            if (contenido[0].trim() != ''){
+                            if (contenido[0].trim() != '') {
                                 table.push(contenido);
                             }
                         });
@@ -319,6 +321,98 @@
                     .catch((error) => {
                         console.log(error)
                     });
+            } else {
+                if ($(`#${$.F8LITE.id_input}`).val().length > 10) {
+                    CON851('', 'Ingresar menos de 10 caracteres', null, 'error', 'Error')
+                    $(`#${$.F8LITE.id_input}`).focus();
+                } else if ($(`#${$.F8LITE.id_input}`).val().length < 3) {
+                    CON851('', 'Ingresar minimo 3 caracteres', null, 'error', 'Error');
+                    $(`#${$.F8LITE.id_input}`).focus();
+                } else {
+                    $('span').remove();
+                    let URL = get_url("APP/SALUD/SER810.DLL");
+                    $(`#${$.F8LITE.id_input}`).hide(); $(`#${$.F8LITE.id_select}`).hide();
+                    $('#content-f8_lite_body').append('<div id="cargando_F8cargarndo" style="display:flex;justify-content:center;"><i class="fa fa-spin fa-spinner fa-3x"></i></div>');
+                    postData({
+                        datosh: datosEnvio() + $(`#${$.F8LITE.id_select}`).val() + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
+                    }, URL)
+                        .then(data => {
+                            console.debug(data);
+                            $('#cargando_F8cargarndo').remove();
+                            var array = data[$.F8LITE.f8data];
+                            table = [];
+                            array.forEach(index => {
+                                var edad = calcular_edad(index.NACIMIENTO);
+                                index.EDAD = edad.unid_edad + edad.vlr_edad.toString().padStart(3, '0');
+                            });
+                            $.F8LITE.datatable = array;
+                            var columnas = $.F8LITE.columnas;
+                            array.forEach(index => {
+                                var contenido = [];
+                                for (var i in columnas) {
+                                    contenido.push(index[columnas[i].title]);
+                                }
+                                if (contenido[0].trim() != '') {
+                                    table.push(contenido);
+                                }
+                            });
+                            $.F8LITE.table = $(`#${$.F8LITE.tabla_id}`).DataTable({
+                                data: table,
+                                columns: columnas,
+                                responsive: true,
+                                scrollY: '50vh',
+                                scrollCollapse: true,
+                                createdRow: function (row, data, index) {
+                                    $(row)
+                                        .css({ cursor: 'pointer' })
+                                        .attr('data-index', index);
+                                },
+                                initComplete: function () {
+                                    var api = this.api();
+
+                                    // Evento click en fila
+                                    api.$('td').click(function () {
+                                        var indx = $(this).hasClass('sorting_1');
+                                        if (!indx) {
+                                            var parent = $(this).closest('tr');
+                                            var item = $(parent).data().index;
+                                            $.F8LITE._selected(item);
+                                        }
+                                    })
+
+                                    // Reset foco table
+                                    api.on('page search', function () {
+                                        $(".focus-table").removeClass("focus-table");
+                                    })
+
+                                    // Set focus search
+                                    $('#' + $.F8LITE.tabla_id + '_filter label input').focus();
+
+                                    // Init teclas
+                                    $.F8LITE._initControls(true);
+                                },
+                                language: {
+                                    lengthMenu: "Mostrar _MENU_ por página",
+                                    zeroRecords: "No hay datos disponibles",
+                                    info: "Página _PAGE_ de _PAGES_",
+                                    infoEmpty: "No hay datos disponibles",
+                                    infoFiltered: "(filtrado de  _MAX_ registros)",
+                                    loadingRecords: "Cargando...",
+                                    processing: "Procesando...",
+                                    sSearch: 'Buscar:',
+                                    paginate: {
+                                        first: "Primera",
+                                        last: "Final",
+                                        next: "Siguiente",
+                                        previous: "Anterior"
+                                    },
+                                }
+                            })
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        });
+                }
             }
         },
 
@@ -390,34 +484,33 @@
         _close: function () {
             $('#' + $.F8LITE.overlay_id).remove();
             $.F8LITE._initenterinput('off');
-            if ($(`#${$.F8LITE.tabla_id} tbody`).length > 0){
+            if ($(`#${$.F8LITE.tabla_id} tbody`).length > 0) {
                 $.F8LITE.table.destroy();
             }
             $.F8LITE._initControls(false);
-            setTimeout(() => {$.F8LITE.cancelcallback}, 200);
+            if ($.F8LITE.cancelcallback) setTimeout(() => { $.F8LITE.cancelcallback }, 200);
         },
 
     }
     F8LITE = params => {
         if (!params.callback) {
-            alert('Callback sin definir');
-            console.error('Falta definir una función para retornar los datos');
+            $.F8LITE.close = true;
+            console.error('Falta definir callback para retornar los datos');
         } if (!params.cancel) {
-            alert('Cancelar sin definir');
-            console.error('Falta definir una función para retornar los datos');
-        } 
-        // else if (!params.indice) {
-        //     alert('Falta definir el indice para la consulta');
-        //     console.error('Falta definir el indice para la consulta');
-        // } else {
-        // $.F8LITE.callback = params.callback;
-        // $.F8LITE.data = params.data;
+            $.F8LITE.close = true;
+            console.error('Falta definir cancelcallback para retornar los datos');
+        } if (!params.dll) {
+            $.F8LITE.close = true;
+            console.error('Falta definir el DLL a consultar para retornar los datos');
+        }
         $.F8LITE.valoresselect = params.valoresselect || ['Seleccionar'];
         $.F8LITE.f8data = params.f8data || null;
         $.F8LITE.columnas = params.columnas || ['NOMBRE', 'DESCRIPCION'];
         $.F8LITE.callback = params.callback || null;
         $.F8LITE.cancelcallback = params.cancel || null;
+        $.F8LITE.dll = params.dll;
+        $.F8LITE.consulta = '1';
+        if (params.consulta) $.F8LITE.consulta = params.consulta
         $.F8LITE._init();
-        // }
     }
 })(jQuery)

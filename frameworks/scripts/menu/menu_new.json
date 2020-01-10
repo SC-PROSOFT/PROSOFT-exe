@@ -4725,7 +4725,6 @@
                       "Href": "../../SALUD/paginas/SAL454.html"
                     }
                   ]
-                
                 },
                 {
                   "Id": "09426",
@@ -4958,7 +4957,6 @@
                       "Tipo": "HTML",
                       "Href": "../../SALUD/paginas/SAL4C3.html"
                     }
-
                   ]
                 },
                 {
@@ -4968,7 +4966,6 @@
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL4D.html"
                 }
-
               ]
             }
           ]
@@ -6455,14 +6452,14 @@
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL71D.html"
                 },
-				{
+                {
                   "Id": "0971E",
                   "Descripcion": "Equivalencia operad. Datalab",
                   "Opc-segu": "IS1E",
                   "Tipo": "HTML",
                   "Href": "../../SALUD/paginas/SAL71E.html"
                 },
-				{
+                {
                   "Id": "0971G",
                   "Descripcion": "Actualiza paquete integral",
                   "Opc-segu": "IS1G",
@@ -6664,7 +6661,7 @@
                       "dll": "SALUD\\SER307"
                     }
                   ]
-                }                
+                }
               ]
             },
             {
@@ -6945,8 +6942,13 @@
                       "Id": "097435",
                       "Descripcion": "Imprimir fact. orden fecha",
                       "Opc-segu": "IS435",
-                      "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SER109D.html"
+                      "Tipo": "RM",
+                      "Params": [
+                        {
+                          "formulario": "SER109D",
+                          "dll": "SALUD\\SER109D"
+                        }
+                      ]
                     },
                     {
                       "Id": "097436",
@@ -7154,7 +7156,7 @@
                       "Params": [
                         {
                           "formulario": "SER109H",
-                          "dll": "SALUD\\SER109H"                          
+                          "dll": "SALUD\\SER109H"
                         }
                       ]
                     },
