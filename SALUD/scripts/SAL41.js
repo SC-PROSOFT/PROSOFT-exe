@@ -5,7 +5,7 @@ var $_NOM_PAC = new Array();
 var $_SECUNUM, $_SECUNUM1, $_SECUNUM2, $_TIPO_COMP = "1  ", $_OPSEGU, $_NRONUM, $_SWINVALID, $_SECUOTROS, $_NROOTROS, $_NROCTAFACT, $_LLAVESALIDANUM;
 var $_FECHARETNUM, $_FECHASIGFACT, $_FECHAFACT$_FECHAFACT, $_SWORDSERV, $_ARTFACT;
 var $_DIASTRATAFACT = $_CODLOTEFACT = $_HORACITFACT = $_DATOSETCUP = $_ALMFACT = $_RESTRICLOCAL = $_LLAVEBARRASW = $_DESCRIPCUP = $_CODSERTAB = $_TIPOPACI = '';
-var $_facturas_A = [], $_facturas_P = [], $_facturas_T = [];
+var $_facturas_A = [], $_facturas_P = [], $_facturas_T = []; var $_CAMARXFACT = '    '; var $_CAUSAESTAD = '00'; var $_HORASALIDESTAD = '0000'; $_TIPODRFACT = '0';
 var $_TIPOCOPAGOFACT = ' '; $_COPAGOESTIMFACT = 0; $_MEDCIRFACT = '0'; $_MEDAYUFACT = '0'; $_MEDANEFACT = '0'; $_MEDINSFACT = '0'; $_DETALLEFACT = ''; $_NROAUTORELAB = ''; $_NITFACT = $_IDPACNUM = $_IDHISTORIAFACT = $_MYTNUM = ''; $_VLRPROMEDW = 0;
 
 var $_CANTMAX, $_VALORBRUTO, $_VALORBASE1IVA, $_VALORBASE2IVA, $_VALORBASE3IVA;
@@ -217,17 +217,8 @@ $(document).ready(function () {
                                         }
                                     }
                                 }
-                                OPCIONES = new Object;
-                                OPCIONES = {
-                                    '09421': _Revisardato_41,
-                                    '09422': _Datosucursal_41,
-                                    '09423': _Clavedeacceso_41
-                                }
-                                let active = $('#navegacion').find('li.opcion-menu.active');
-                                SAL41.OPCIONACTIVA = active[0].attributes[2].nodeValue;
-                                var opcion = new Function();
-                                opcion = OPCIONES[active[0].attributes[2].nodeValue];
-                                opcion();
+                                _validarOpcion_SAL41();
+                                // setTimeout(FAC135, 500);
                             }, 'OFF');
                         });
                     });
@@ -235,9 +226,22 @@ $(document).ready(function () {
             });
         });
     }, 'ON');
-    // setTimeout(FAC135, 500);
 });
 
+
+function _validarOpcion_SAL41() {
+    OPCIONES = new Object;
+    OPCIONES = {
+        '09421': _Revisardato_41,
+        '09422': _Datosucursal_41,
+        '09423': _Clavedeacceso_41
+    }
+    let active = $('#navegacion').find('li.opcion-menu.active');
+    SAL41.OPCIONACTIVA = active[0].attributes[2].nodeValue;
+    let opcion = new Function();
+    opcion = OPCIONES[active[0].attributes[2].nodeValue];
+    opcion();
+}
 
 function _Clavedeacceso_41() {
     bootbox.prompt({
@@ -1034,7 +1038,8 @@ function _Evaluarnumeroctl_41() {
     )
 }
 function _validarnumeroctl_SAL41() {
-    if (SAL41.OPCIONACTIVA == '09421'){
+    if (SAL41.NROFACT == undefined) SAL41.NROFACT = $("#compr_SAL41").val();
+    if (SAL41.OPCIONACTIVA == '09421') {
         let datos_envio = datosEnvio()
         datos_envio += SAL41.ADMINW + "|" + $_SUCFACT + $_CLFACT + SAL41.NROFACT.padStart(6, '0');
         console.debug(datos_envio);
@@ -1042,14 +1047,82 @@ function _validarnumeroctl_SAL41() {
     } else {
         let URL = get_url("APP/SALUD/SAL49.DLL");
         postData({ datosh: datosEnvio() + $_SUCFACT + $_CLFACT + SAL41.NROFACT.padStart(6, '0') + '|' }, URL)
-        .then(data => {
-            console.debug(data);
-        })
-        .catch(err => {
-            console.debug(err);
-            CON852(date[0], date[1], date[2], _toggleNav);
-        })
+            .then(data => {
+                console.debug(data);
+                SAL41.FACTURA = data.FACTURA[0];
+                $('#compr_SAL41').val(SAL41.FACTURA.NRO);
+                // $('#fecha_SAL41').val(SAL41.FACTURA.FECHA)
+                fechaMask.typedValue = SAL41.FACTURA.FECHA;
+                $('#factura_SAL41').val(SAL41.FACTURA.CTA.substring(0, 1));
+                $('#facturad_SAL41').val(SAL41.FACTURA.CTA.substring(1, 7));
+                $('#pingreso_SAL41').val(SAL41.FACTURA.PUERTA_ESTAD + ' - ' + SAL41.FACTURA.DESCRIP_PUERTA);
+                $('#cliente_SAL41').val(SAL41.FACTURA.NIT_TER);
+                $('#cliented_SAL41').val(SAL41.FACTURA.DESCRIP_TER);
+                $('#paciente_SAL41').val(SAL41.FACTURA.ID_PACIENTE);
+                $('#paciented_SAL41').val(SAL41.FACTURA.DESCRIP_PACI);
+                $('#sexo_SAL41').val(SAL41.FACTURA.SEXO);
+                $('#edad_SAL41').val(SAL41.FACTURA.EDAD);
+                $('#vlrtot_SAL41').val(SAL41.FACTURA.VALOR_BRUTO);
+                $('#copagoestimfact_SAL41').val(SAL41.FACTURA.COPAGO_ESTIM_PAGO);
+                $('#netofact_SAL41').val(SAL41.FACTURA.VALOR_TOTAL);
+                $('#espec_SAL41').val(SAL41.FACTURA.ESPEC);
+                $('#despec_SAL41').val(SAL41.FACTURA.DESCRIP_ESPEC);
+                $('#ccostos_SAL41').val(SAL41.FACTURA.COSTO_FACT);
+                $('#dcostos_SAL41').val(SAL41.FACTURA.DESCRIP_TAR);
+                $('#atend_SAL41').val(SAL41.FACTURA.MED_OTR_FACT);
+                $('#datend_SAL41').val(SAL41.FACTURA.DESCRIP_MED1);
+                $('#solic_SAL41').val(SAL41.FACTURA.REMITE_FACT);
+                $('#dsolic_SAL41').val(SAL41.FACTURA.DESCRIP_MED2);
+                $('#estrato_SAL41').val(SAL41.FACTURA.ESTRATO);
+                $('#ciudad_SAL41').val(SAL41.FACTURA.CIUDAD_PACI);
+                $_PUERTAINGW = SAL41.FACTURA.PUERTA_ESTAD;
+                $_PREFIJOFACT = SAL41.FACTURA.CTA.substring(0, 1);
+                $_FECHAFACT = fechaMask.value;
+                $_NROCTAFACT = SAL41.FACTURA.CTA.substring(1, 7);
+                SAL41.LLAVEFACT = $('#unidades_SAL41').val() + $('#claseservicio_SAL41').val().substring(0,1) + $('#compr_SAL41').val();
+                $_DESCRIPPROF = SAL41.FACTURA.DESCRIP_MED1;
+                $_DESCRIPPROF2 = SAL41.FACTURA.DESCRIP_MED2;
+                $_ESPECLAB = SAL41.FACTURA.ESPEC;
+                $_NOMBREESP = SAL41.FACTURA.DESCRIP_ESPEC;
+                // $_COSTOFACT = ;
+                $_NOMBRECOSTO = SAL41.FACTURA.CCOSTO;
+                $_IDHISTORIAFACT = SAL41.FACTURA.ID_PACIENTE;
+                $_DESCRIPPACI = SAL41.FACTURA.DESCRIP_PACI;
+                $_EDAD = SAL41.FACTURA.EDAD;
+                $_SEXOPACI = SAL41.FACTURA.SEXO;
+                $_EPSPACI = SAL41.FACTURA.EPS_PACI;
+                $_DETALLEFACT = SAL41.FACTURA.DETALLE_FACT;
+                $_NROAUTORELAB = SAL41.FACTURA.NRO_AUTOR_ELAB;
+                $_CIUDADPACI = SAL41.FACTURA.CIUDAD_PACI;
+                SAL41.ZONAPACI = SAL41.FACTURA.ZONA_PACI;
+                $_COSTOFACT = SAL41.FACTURA.COSTO_FACT;
+                $_VALORTOTAL = SAL41.FACTURA.VALOR_TOTAL;
+                $TABLA = SAL41.FACTURA.TABLA;
+
+                SAL41.UNIDSERVICIO.forEach(item => {
+                    if(item.COD == SAL41.FACTURA.UNIDAD_SERVICIO) $_UNSER = item.COD + ' ' + item.DESCRIP;
+                });
+                let OPCIONES2 = { 
+                    '09422': _Imprimir9_41,
+                    '09423': _Confirmarborrar_SAL41 
+                };
+                let opcion2 = new Function();
+                opcion2 = OPCIONES2[SAL41.OPCIONACTIVA];
+                console.debug(opcion2);
+                opcion2();
+            })
+            .catch(err => {
+                console.debug(err);
+            })
     }
+}
+
+function _Confirmarborrar_SAL41() {
+    CON851P('02', () => { setTimeout(_validarOpcion_SAL41, 300) }, _AceptarAnular_SAL41);
+}
+
+function _AceptarAnular_SAL41(){
+    console.debug('Aceptaranular');
 }
 
 function _dataSAL41_01(data) {
@@ -1417,14 +1490,12 @@ function _Ubicarcuenta_41() {
             let datos_envio = datosEnvio()
             datos_envio += $_SECUNUM
             console.debug(datos_envio);
-            // SolicitarDll({ datosh: datos_envio }, _dataCON007_02_41, get_url('APP/CONTAB/CON007.DLL'));
             _EvaluarCON0072_SAL41();
         } else if ($_PREFIJOFACT == "C") {
             $_OPSEGU = "96"
-            let datos_envio = datosEnvio()
+            let datos_envio = datosEnvio() + $_SECUNUM
             datos_envio += $_SECUNUM
             console.debug(datos_envio);
-            // SolicitarDll({ datosh: datos_envio }, _dataCON007_02_41, get_url('APP/CONTAB/CON007.DLL'));
             _EvaluarCON0072_SAL41();
         }
     }
@@ -8038,10 +8109,6 @@ function _dataSER108DA_41(data) {
 
 function _Leerfactura2_41() {
     // INITIALIZE
-    if ($_CAMARXFACT == undefined) $_CAMARXFACT = '    ';
-    if ($_CAUSAESTAD == undefined) $_CAUSAESTAD = '00';
-    if ($_HORASALIDESTAD == undefined) $_HORASALIDESTAD = '0000';
-    if ($_TIPODRFACT == undefined) $_TIPODRFACT = '0';
     $_HORAELABFACT = $_HORAELABFACT.substring(0, 2) + $_HORAELABFACT.substring(3, 5);
     let fechaguardado = $_FECHAFACT.split('-');
     SAL41.LLAVEFACT = $_SUCFACT + $_CLFACT + SAL41.NROFACT;
@@ -8138,15 +8205,15 @@ function _dataCON007X_02_41(data) {
     data = data.split('|');
     $_NROW = data[1].trim();
     $_DETALLEMOV = data[2].trim();
-    if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0891855847') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633') || (SAL41.NITUSU == '0800037021') || (SAL41.NITUSU == '0892000458') || (SAL41.NITUSU == '0832002436') || (SAL41.NITUSU == '0844003225')) && ($_CLFACT == '0') && ($_NROPEDFACT > 0)) {
-        SER815C_41(); // CONTROL DE DISPENSACION
-    }
-    else if (((SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0901120152')) && (SAL41.FACTAUTOFACT == '2')) {
-        SER108DB(); // IMPRIME FACTURAS (RESUMEN DE COMPROBANTES)
-    }
-    else {
+    // if (((SAL41.NITUSU == '0892000401') || (SAL41.NITUSU == '0900648993') || (SAL41.NITUSU == '0891855847') || (SAL41.NITUSU == '0900755133') || (SAL41.NITUSU == '0900804411') || (SAL41.NITUSU == '0900870633') || (SAL41.NITUSU == '0800037021') || (SAL41.NITUSU == '0892000458') || (SAL41.NITUSU == '0832002436') || (SAL41.NITUSU == '0844003225')) && ($_CLFACT == '0') && ($_NROPEDFACT > 0)) {
+    //     SER815C_41(); // CONTROL DE DISPENSACION
+    // }
+    // else if (((SAL41.NITUSU == '0900541158') || (SAL41.NITUSU == '0900566047') || (SAL41.NITUSU == '0900565371') || (SAL41.NITUSU == '0901120152')) && (SAL41.FACTAUTOFACT == '2')) {
+    //     SER108DB(); // IMPRIME FACTURAS (RESUMEN DE COMPROBANTES)
+    // }
+    // else {
         _Contabiliarcomp_41();
-    }
+    // }
 }
 
 function _Contabiliarcomp_41() {
@@ -8167,8 +8234,7 @@ function _Contabiliarcomp_41() {
         else {
             _Contabiliarcomp2_41();
         }
-    }
-    else {
+    } else {
         _Contabiliarcomp2_41();
     }
 }
@@ -10023,8 +10089,9 @@ function _Sumarvaloresciru_41() {
         let cantidad = tabla[i].cells[7].textContent;
         cantidad = cantidad.replace(',', '');
         cantidad = parseFloat(cantidad);
-        $.isNaN(cantidad) ? cantidad = 0 : cantidad = cantida;
-        $_VALORBRUTO += cantidad;
+        console.debug(cantidad);
+        $.isNaN(cantidad) ? cantidad = 0 : cantidad = cantidad;
+        $_VALORBRUTO = $_VALORBRUTO + cantidad;
         console.debug($_VALORBRUTO)
     }
     console.debug($_VALORBRUTO);
@@ -10134,10 +10201,10 @@ function _Sumarvalores_41() {
     let tabla = $('#TABLA_401 tbody tr');
     $_VALORBRUTO = 0;
     for (var i = 0; i < tabla.length; i++) {
-        let cantidad = tabla[i].cells[6].textContent;
+        let cantidad = tabla[i].cells[7].textContent;
         cantidad = cantidad.replace(',', '');
         cantidad = parseFloat(cantidad);
-        $_VALORBRUTO += cantidad;
+        $_VALORBRUTO = $_VALORBRUTO + cantidad;
     }
     console.debug($_VALORBRUTO);
     switch ($_IVAARTW) {

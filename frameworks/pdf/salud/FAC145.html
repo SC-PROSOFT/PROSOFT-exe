@@ -94,7 +94,7 @@
 <style>
     .page-header,
     .page-header-space {
-        height: 200px;
+        height: 220px;
     }
 
     .page-header {
@@ -152,7 +152,7 @@
     }
 
     .copago_FAC145 {
-        width: 5%;
+        width: 4%;
         display: inline-flex;
     }
 
@@ -269,7 +269,8 @@
         border-top: black solid 0.1px;
         border-bottom: black solid 0.1px;
     }
-    .tablacopagos_FAC145{
+
+    .tablacopagos_FAC145 {
         width: 99%;
     }
 </style>
@@ -282,24 +283,29 @@
         $('.sucursal_FAC145').text('SUC : ' + FAC145.SUCURSAL);
         $('.nitusu_FAC145').text(FAC145.NITUSU);
         $('.nombrelote_FAC145').text(FAC145.NOMBRELOTE);
+        $('.nombrelote_FAC145').text('COPAGOS');
         $('.comprobante_FAC145').text('No. ' + FAC145.COMPROBANTE);
         $('.direccionusu_FAC145').text(FAC145.DIRECCIONUSU);
-        $('.telfonousu_FAC145').text(FAC145.TELEFONOUSU);
-        $('.fecha_FAC145').text(FAC145.FECHAMOV);
+        $('.telfonousu_FAC145').text('TEL: ' + FAC145.TELEFONOUSU);
+        $('.fecha_FAC145').text('FECHA: ' + FAC145.FECHAMOV);
         $('.nombreciu_FAC145').text(FAC145.NOMBRECIU);
         // $('.descripvalor_FAC145').text();
         $('.valor_FAC145').text(FAC145.NETO);
-        $('.recibi_FAC145').text('RECIBI DE :' + FAC145.NOMBREPACI);
+        $('.recibi_FAC145').text('RECIBI DE :' + FAC145.DESCRIPTER);
         $('.idter_FAC145').text('ID : ' + FAC145.IDPAC);
         $('.direccionter_FAC145').text('DIRECCION : ' + FAC145.DIRECCPACI);
         $('.telter_FAC145').text('TEL : ' + FAC145.TELEFONOPACI);
-        $('.cantidad_FAC145').text('LA SUMA DE : ' + FAC145.VALORENLETRAS);
-        $('.cuentade_FAC145').text('A CUENTA DE : ' + FAC145.NOMBREUSU);
+        if (FAC145.VALORENLETRAS == 'CERO PESOS') {
+            $('.cantidad_FAC145').text('LA SUMA DE : *********************************************************************************************');
+        } else {
+            $('.cantidad_FAC145').text('LA SUMA DE : ' + FAC145.VALORENLETRAS);
+        }
+        $('.cuentade_FAC145').text('A CUENTA DE : ' + FAC145.DESCRIPTER);
         $('.idpac_FAC145').text('ID : ' + FAC145.NITUSU);
         $('.detalle_FAC145').text('DETALLE : ' + FAC145.DETALLEMOV);
         $('.formadepago_FAC145').text('F.PAGO : ' + FAC145.REFERMOV + FAC145.OTROMOV);
         $('.tipocomp_FAC145').text(FAC145.TIPOCOMP);
-        $('.operador_FAC145').text(FAC145.OPERMOV)
+        $('.operador_FAC145').text(FAC145.OPERMOV);
 
         $('.tablacopagos_FAC145').append(
             '<tr>' +
@@ -307,6 +313,16 @@
             '<td style="width: 9%;font-size:12px;">' + FAC145.NOMBREMAE + '</td>' +
             '<td style="width: 4%;font-size:12px;">' + FAC145.DOCUMMOV + '</td>' +
             '<td style="width: 4%;font-size:12px;">' + FAC145.TOTALDDB + '</td>' +
+            '<td style="width: 4%;font-size:12px;">' + FAC145.TOTALCR + '</td>' +
+            '</tr>'
+        )
+
+        $('.tablacopagos_FAC145').append(
+            '<tr>' +
+            '<td style="width: 3%;font-size:12px;"></td>' +
+            '<td style="width: 9%;font-size:12px;"> SUMAS IGUALES --------> </td>' +
+            '<td style="width: 4%;font-size:12px;"></td>' +
+            '<td style="width: 4%;font-size:12px;"></td>' +
             '<td style="width: 4%;font-size:12px;">' + FAC145.TOTALCR + '</td>' +
             '</tr>'
         )

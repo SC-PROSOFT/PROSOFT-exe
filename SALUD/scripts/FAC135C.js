@@ -104,7 +104,7 @@ function _evaluarsucursal_FAC135C() {
         form: '#VALIDAR2_FAC135C',
         orden: '1'
     },
-        () => { _evaluaranodir_FAC135C() },
+        _evaluaranodir_FAC135C,
         () => {
             FAC135C.SUCFACTW = $('#sucursal_FAC135C').val();
             _evaluarfactura_FAC135C('1');
@@ -118,13 +118,13 @@ function _evaluarfactura_FAC135C(orden) {
         form: '#VALIDAR3_FAC135C',
         orden: orden
     },
-        () => { _evaluaranodir_FAC135C() },
+        _evaluaranodir_FAC135C,
         () => {
             FAC135C.PREFIJOW = prefijoMask_FAC135C.value;
             FAC135C.NRONUMW = nronumMask_FAC135C.value;
             FAC135C.CLFACTW = tipofactMask_FAC135C.value;
 
-            FAC145({ LOTE: FAC135C.LOTEW, COMPROBANTE: FAC135C.COMPINGRESO }, data => { console.debug(data) });
+            // FAC145({ LOTE: FAC135C.LOTEW, COMPROBANTE: FAC135C.COMPINGRESO }, data => { console.debug(data) });
 
             let URL = get_url("APP/SALUD/FAC135C.DLL");
             postData({ datosh: datosEnvio() + '1|' + FAC135C.SUCFACTW + FAC135C.CLFACTW + FAC135C.NRONUMW.padStart(6, '0') + '|' + FAC135C.CLFACTW + '|' + FAC135C.FECHACOMP.replace(/-/g, '') + '|' }, URL)
@@ -256,7 +256,7 @@ function _evaluarcopagos_FAC135C() {
         form: '#VALIDAR4_FAC135C',
         orden: '1'
     },
-        () => { _evaluaranodir_FAC135C() },
+        _evaluaranodir_FAC135C,
         () => {
             FAC135C.CODIGOCONTROL = $('#codcontable_FAC135C').val();
             let URL = get_url("APP/SALUD/FAC135C.DLL");
@@ -282,12 +282,11 @@ function _evaluarvalorarr_FAC135C() {
         form: '#VALIDAR5_FAC135C',
         orden: '1'
     },
-        () => { _evaluaranodir_FAC135C() },
+        _evaluarcopagos_FAC135C,
         () => {
-            // FAC135C.VALORARR = $('#debito_FAC135C').val();
             FAC135C.VALORARR = debitoMask_FAC135C.value;
-            // console.debug(FAC135C.VALORARR);
             FAC135C.VALORARR = parseFloat(FAC135C.VALORARR) * -1;
+            console.debug(FAC135C.VALORARR);
             var total = FAC135C.VALORARR + parseFloat(FAC135C.TOTALFACT);
             console.debug(total);
             $('#debito_FAC135C').val(FAC135C.VALORARR);
@@ -338,12 +337,12 @@ function _grabarnumerocomp_FAC135C() {
             console.debug(data);
             data = data.split('|');
             FAC135C.COMPCTL = FAC135C.COMPINGRESO = data[1].substring(3, 9);
+            valorarr = parseFloat(valorarr) * -1;
             var valorarr = FAC135C.VALORARR.toFixed(2);
-            valorarr = (parseFloat(valorarr) * -1)
             valorarr = valorarr.toString().replace(/,/g, '').padStart(13, '0');
             valorarr = '-' + valorarr;
+            valorarr2 = parseFloat(valorarr2)
             var valorarr2 = FAC135C.VALORARR.toFixed(2);
-            valorarr2 = parseFloat(valorarr2) * -1
             valorarr2 = valorarr2.toString().replace(/,/g, '').padStart(14, '0');
             let URL = get_url("APP/SALUD/FAC135C.DLL");
             postData({
@@ -369,7 +368,7 @@ function _grabarnumerocomp_FAC135C() {
                                         console.debug(data);
                                         FAC145({LOTE:FAC135C.LOTEW, COMPROBANTE:FAC135C.COMPINGRESO, MAYDEUD1: FAC135C.CTASEXEP.MAYDEUD1, MAYDEUD2: FAC135C.CTASEXEP.MAYDEUD2, MAYDEUD3: ''}, () => {
                                             CON851('','Impresion finalizada',null,'success','');
-                                            _toggleNav();
+                                            // _toggleNav();
                                         })
                                     })
                                     .catch((error) => {
