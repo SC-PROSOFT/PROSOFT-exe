@@ -260,7 +260,7 @@ function _Clavedeacceso_41() {
 
 function FAC135() {
     let { ipcRenderer } = require("electron");
-    ipcRenderer.send('another', 'SALUD/PAGINAS/FAC135C.html');
+    ipcRenderer.send('another', 'SALUD/paginas/FAC135C.html');
     vector = ['on', 'Actualizando maestro de pacientes...']
     _EventocrearSegventana(vector, _Revisardato_41);
 }
@@ -2219,7 +2219,7 @@ function _dataSAL41_04(data) {
 
 function _Crearcliente_41() {
     let { ipcRenderer } = require("electron");
-    ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+    ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
     vector = ['on', 'Actualizando maestro de pacientes...']
     _EventocrearSegventana(vector, _Evaluarcliente_41);
 }
@@ -2803,7 +2803,7 @@ function _Validaridhistoriafact_41() {
     //     $_IDHISTORIAFACT = $_IDPACNUM;
     //     _Leerpaciente_41();
     // }
-    else if ((($_CLFACT == "1") || ($_CLFACT == "2") || ($_CLFACT == "3") || ($_CLFACT == "5") || ($_CLFACT == "5")) && (parseInt($_IDHISTORIAFACT) < 000000000000010)) {
+    if ((($_CLFACT == "1") || ($_CLFACT == "2") || ($_CLFACT == "3") || ($_CLFACT == "5") || ($_CLFACT == "5")) && (parseInt($_IDHISTORIAFACT) < 000000000000010)) {
         CON851('03', '03', null, 'error', 'Error');
         _Datopaciente_41();
     }
@@ -2915,7 +2915,7 @@ function _dataCON904S_01_41(data) {
             $_SWCREAR = '1';
             // ACTUALIZACION DE MAESTRO DE PACIENTES SER110C
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _Evaluaridhistoriafact_41);
         } else {
@@ -2993,7 +2993,7 @@ function _dataCON904S_03_41(data) {
                 // CALL SER11G Y DESPUES GO TO LEER-PACIENTE
                 console.debug('segunda ventana de actualizar paciente SER11G')
                 let { ipcRenderer } = require("electron");
-                ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+                ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
                 vector = ['on', 'Actualizando maestro de pacientes...']
                 _EventocrearSegventana(vector, _Validandocliente3_41);
                 // _Validandocliente3_41();
@@ -3002,7 +3002,7 @@ function _dataCON904S_03_41(data) {
                 // CALL SER11I Y DESPUES GO TO LEER PACIENTE
                 console.debug('segunda ventana de actualizar paciente SER11I')
                 let { ipcRenderer } = require("electron");
-                ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+                ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
                 vector = ['on', 'Actualizando maestro de pacientes...']
                 _EventocrearSegventana(vector, _Validandocliente3_41);
                 // _Validandocliente3_41();
@@ -3014,7 +3014,7 @@ function _dataCON904S_03_41(data) {
                 // CALL SER11G Y DESPUES GO TO PACIENTE
                 console.debug('segunda ventana de actualizar paciente SER11G')
                 let { ipcRenderer } = require("electron");
-                ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+                ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
                 vector = ['on', 'Actualizando maestro de pacientes...']
                 _EventocrearSegventana(vector, _Validandocliente3_41);
                 // _Validandocliente3_41();
@@ -9078,7 +9078,7 @@ function finImpresion_INV411() {
     // _toggleNav();
     if (parseInt($_COPAGOESTIMFACT) > 0) {
         let { ipcRenderer } = require("electron");
-        ipcRenderer.send('another', 'SALUD/PAGINAS/FAC135C.html');
+        ipcRenderer.send('another', 'SALUD/paginas/FAC135C.html');
         vector = ['on', 'Ventana de Copagos']
         _EventocrearSegventana(vector, _toggleNav);
     }
