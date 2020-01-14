@@ -1,6 +1,8 @@
 /* NOMBRE RM --> SER102C // NOMBRE ELECTR --> SAL718 */
 /* PO - PABLO OLGUIN 16/12/2019 -> AJUSTES*/
 /* PO - PABLO OLGUIN 17/12/2019 -> Rediseño formulario, reestructuracion codigo*/
+/* PO - PABLO OLGUIN 14/01/2020 -> Correcion de BUGS, Navegacion*/
+
 var SAL718 = [], $_divisiones718 = '', $_planCuentas718 = '', $_costos718 = '', $_cups718 = '', $_grServicios718 = '', $_terceros718;
 SAL718.CUPS = []; SAL718.COSTO = []; SAL718.TERCEROS = []; SAL718.GRUPOSER = []; SAL718.MAESTROS = []; SAL718.DIVISION = [];
 
@@ -29,28 +31,27 @@ $(document).ready(function () {
 });
 
 function iniciarObjetosFNF8() {
-	SAL718.CUPS = []; SAL718.COSTO = []; SAL718.TERCEROS = []; SAL718.GRUPOSER = []; SAL718.MAESTROS = [];
-	obtenerDatosCompletos({ nombreFd: 'CUPS' }, (data) => {
-		$_cups718 = data.CODIGOS;
-		obtenerDatosCompletos({ nombreFd: 'GRUPO-SER' }, (data) => {
-			$_grServicios718 = data.CODIGOS;
-			obtenerDatosCompletos({ nombreFd: 'COSTOS' }, (data) => {
-				$_costos718 = data.COSTO;
-				obtenerDatosCompletos({ nombreFd: 'CTA-MAYOR' }, (data) => {
-					$_planCuentas718 = data.MAESTROS;
-					obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, (data) => {
-						$_terceros718 = data.TERCEROS;
-						obtenerDatosCompletos({ nombreFd: 'DIVISION' }, (data) => {
-							$_divisiones718 = data.CODIGOS;
-							CON850(_evaluarCON850_718)
-						}, 'OFF');
-					}, 'ONLY');
-				}, 'ONLY');
-			}, 'ONLY');
-		}, 'ONLY');
-	}, 'ON');
+	SAL718.CUPS = []; SAL718.COSTO = []; SAL718.TERCEROS = []; SAL718.GRUPOSER = []; SAL718.MAESTROS = []; getCups718();
 }
-
+//------------------------ Datos Completos-----------------------------------//
+function getCups718() {
+	obtenerDatosCompletos({ nombreFd: 'CUPS' }, (data) => { $_cups718 = data.CODIGOS; getServicios718(); }, 'ON')
+}
+function getServicios718() {
+	obtenerDatosCompletos({ nombreFd: 'GRUPO-SER' }, (data) => { $_grServicios718 = data.CODIGOS; getCostos718() }, 'ONLY')
+}
+function getCostos718() {
+	obtenerDatosCompletos({ nombreFd: 'COSTOS' }, (data) => { $_costos718 = data.COSTO; getPlanCuentas718(); }, 'ONLY')
+}
+function getPlanCuentas718() {
+	obtenerDatosCompletos({ nombreFd: 'CTA-MAYOR' }, (data) => { $_planCuentas718 = data.MAESTROS; getTerceros718(); }, 'ONLY')
+}
+function getTerceros718() {
+	obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, (data) => { $_terceros718 = data.TERCEROS; getDivision718(); }, 'ONLY')
+}
+function getDivision718() {
+	obtenerDatosCompletos({ nombreFd: 'DIVISION' }, (data) => { $_divisiones718 = data.CODIGOS; CON850(_evaluarCON850_718); }, 'OFF')
+}
 //------------------------ Funciones FNF8 -----------------------------------//
 // F8 GRUPO-SERVICIO //
 function _ventanaGrupo718(e) {
@@ -274,7 +275,7 @@ function evaluarCups718() {
 
 				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
 			})
-			.catch((error) => { console.debug(error) });
+			// .catch((error) => { console.debug(error) });
 	}
 }
 
@@ -450,10 +451,10 @@ function _validarCentroCost718() {
 
 function evaluarCostos718() {
 	let res;
-	SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim();
+	SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim().substring(0,4);
 	if (typeof SAL718.COSTO.COD == "undefined" || SAL718.COSTO.COD == '' || isNaN(SAL718.COSTO.COD)) { CON851('03', '03', _validarCentroCost718(), 'error', 'error'); }
 	else {
-		res = $_costos718.filter(costo => costo.COD.padStart(6, '0') == SAL718.COSTO.COD.padStart(6, '0'));
+		res = $_costos718.filter(costo => costo.COD.padStart(4, '0') == SAL718.COSTO.COD.padStart(4, '0'));
 		if (res == '') {
 			CON851('03', '03', _validarCentroCost718(), 'error', 'error');
 		} else {
@@ -1020,7 +1021,8 @@ function on_llenarFormCups718() {
 	if (cos == '') { document.getElementById('centrocosto_718').value = '*******' } else { document.getElementById('centrocosto_718').value = cos[0].COD + ' ' + cos[0].DESCRIP }
 
 	document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD + ' ' + SAL718.GRUPOSER.DESCRIP;
-	let ter = $_terceros718.filter(tercero => tercero.COD.trim() == parseInt(SAL718.CUPS.NIT_OTR))
+	let ter = $_terceros718.filter(tercero => parseInt(tercero.COD) == parseInt(SAL718.CUPS.NIT_OTR))
+	console.debug(ter,'tercero.filter');
 	let plan = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == SAL718.CUPS.CTA_OTR.padStart(12, '0'))
 
 	let division1 = $_divisiones718.filter(div => div.COD.trim() == SAL718.CUPS.DIV1);
