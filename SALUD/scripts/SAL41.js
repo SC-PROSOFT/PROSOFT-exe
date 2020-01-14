@@ -323,7 +323,7 @@ function _ventanaCliente_41(e) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         _ventanaDatos({
             titulo: 'VENTANA TERCEROS',
-            indice: ['COD', 'NOMBRE', "DIRREC", "TELEF", "CIUDAD", "FACTOR"],
+            columnas: ['COD', 'NOMBRE', "DIRREC", "TELEF", "CIUDAD", "FACTOR"],
             mascara: ['NOMBRE'],
             data: SAL41.TERCEROS,
             callback_esc: function () {
