@@ -204,6 +204,7 @@ function _infoRm_bat(data) {
         case 'HICLIN\\PYP1':
         case 'HICLIN\\PYP1I':
         case 'HICLIN\\HC003C':
+        case 'HICLIN\\HC003D':
             
             programa = "MENU-HIS-ELECTRON"
             argumentos = `${argumentos}-${$_REG_HC.id_paciente}-${$_REG_HC.suc_folio_hc}-${$_REG_HC.nro_folio_hc}-`;

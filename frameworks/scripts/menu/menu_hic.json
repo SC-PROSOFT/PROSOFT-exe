@@ -22,6 +22,7 @@
             "Descripcion": "Apertura historia clinica",
             "Opc-segu": "ISH3",
             "Tipo": "RM",
+            "Href": "../../HICLIN/paginas/MENU-H03.html",
             "Params": [
                 {
                     "formulario": "MENUH03",

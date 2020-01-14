@@ -111,7 +111,9 @@ function CON851P_MSG(code) {
             break;
         case "54": msj = "Desea eliminar registro ?";
         break;
-        case "55": msj = "Desea modificar el campo ?";
+        case "55": msj = "¿Mostrar los eventos marcados como leídos?";
+            break;
+        case "56": msj = "¿Mostrar las evoluciones?";
             break;
         default: msj = "Error falta actualizar contab";
             break;

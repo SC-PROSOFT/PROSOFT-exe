@@ -73,28 +73,18 @@ function datoUnidad_h03() {
 }
 
 function on_datoUnidad_h03() {
-	obtenerDatosCompletos({
-		"nombreFD": "UNSERV"
-	}, function (data) {
+	obtenerDatosCompletos({ nombreFd: "UNSERV" }, (data) => {
 		POPUP({
-			array: data['UNSERV'],
+			array: data.UNSERV,
 			titulo: "UNIDADES DE SERVICIO",
 			indices: [{
 				id: "COD",
 				label: "DESCRIP"
 			}],
-			callback_f: function () {
-				plantillaToast(
-					"",
-					"No se pudo ingresar. Menu-h03",
-					null,
-					"error",
-					"error"
-				);
-			}
-		},validardatoUnidad_h03)
+			callback_f: _confirmar_medico_h03
+		}, validardatoUnidad_h03)
 
-	})
+	}, 'ONLY')
 }
 
 function validardatoUnidad_h03(unidad) {
@@ -166,46 +156,46 @@ function datoFinalidad_h03() {
 		seleccionarPrograma_h03();
 	} else {
 		POPUP({
-				array: datos_finalidad(
-					$_USUA_GLOBAL[0].NIT,
-					$_REG_HC.sexo_hc,
-					$_REG_HC.edad_hc
-				),
-				titulo: "FINALIDAD",
-				indices: [{
-					id: "codigo",
-					label: "descripcion"
-				}],
-				callback_f: function () {
-					if ($_REG_PROF.datos_prof.ATIENDE_PROF == "3" || $_REG_PROF.datos_prof.ATIENDE_PROF == "6") {
-						CON850_P(
-							function (e) {
-								if (e.id == "S") {
-									plantillaToast(
-										"",
-										"No se pudo ingresar. Menu-h03",
-										null,
-										"error",
-										"error"
-									);
-								} else {
-									seleccionarPrograma_h03();
-								}
-							}, {
-								msj: "Modificar item?"
+			array: datos_finalidad(
+				$_USUA_GLOBAL[0].NIT,
+				$_REG_HC.sexo_hc,
+				$_REG_HC.edad_hc
+			),
+			titulo: "FINALIDAD",
+			indices: [{
+				id: "codigo",
+				label: "descripcion"
+			}],
+			callback_f: function () {
+				if ($_REG_PROF.datos_prof.ATIENDE_PROF == "3" || $_REG_PROF.datos_prof.ATIENDE_PROF == "6") {
+					CON850_P(
+						function (e) {
+							if (e.id == "S") {
+								plantillaToast(
+									"",
+									"No se pudo ingresar. Menu-h03",
+									null,
+									"error",
+									"error"
+								);
+							} else {
+								seleccionarPrograma_h03();
 							}
-						);
-					} else {
-						plantillaToast(
-							"",
-							"No se pudo ingresar. Menu-h03",
-							null,
-							"error",
-							"error"
-						);
+						}, {
+						msj: "Modificar item?"
 					}
+					);
+				} else {
+					plantillaToast(
+						"",
+						"No se pudo ingresar. Menu-h03",
+						null,
+						"error",
+						"error"
+					);
 				}
-			},
+			}
+		},
 			validarFinalidad
 		);
 	}
@@ -295,14 +285,14 @@ function seleccionarPrograma_h03() {
 			esp_prof[0] == "492" ||
 			((esp_prof[1] == "490" || esp_prof[1] == "491" || esp_prof[1] == "492") &&
 				(nit == 900264583))
-			// &&(admin == "GEBC" || admin == "ADMI")
+			&& (admin == "GEBC" || admin == "ADMI")
 		) {
 			buscar_programa_h03("HC-9004");
-			// historia mamografia
 		} else if (nit == 830092718 && esp_prof[0] == "602") {
+			// historia mamografia
 			buscar_programa_h03("HC-14");
-			// historia resumida para albergue de sucurame
 		} else if (nit == 900565371) {
+			// historia resumida para albergue de sucurame
 			buscar_programa_h03("HC-02");
 		} else if (serv == "08") {
 			if (
@@ -366,13 +356,13 @@ function seleccionarPrograma_h03() {
 
 function mostrar_historiaPYP(array) {
 	POPUP({
-			array: array,
-			titulo: "SELECCION HISTORIA PYP",
-			indices: [{
-				id: "esquema",
-				label: "descripcion"
-			}]
-		},
+		array: array,
+		titulo: "SELECCION HISTORIA PYP",
+		indices: [{
+			id: "esquema",
+			label: "descripcion"
+		}]
+	},
 		_data_hcPYP_hc0003
 	);
 }
