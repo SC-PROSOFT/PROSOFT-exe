@@ -7147,30 +7147,24 @@ function _Claseproced_41() {
     _Mostrarproced_41();
 }
 function _Mostrarproced_41() {
-    switch (SAL41.CLASEPROCESTADO) {
-        case '0':
-            break;
-        case '1':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
+    let CLASEPROCESO = {
+        '0' : '       ',
+        '1' : 'ATENCION AMBULATOR',
+        '2' : 'ATENCION HOSPITAL',
+        '3' : 'EN URGENCIA'
+    }
+    CLASEPROCESO = CLASEPROCESO[SAL41.CLASEPROCESTADO];
+    console.debug(CLASEPROCESO);
+    if (CLASEPROCESO){
+        if($('#CLASEPROCE_SAL41').length > 0){
+            $('#CLASEPROCE_SAL41').val(CLASEPROCESO);
+        } else {
+            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12" id="CLASEPROCE_SAL41">' +
                 '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">ATENCION AMBULATOR</label>' +
+                '<label class="col-md-12 col-sm-12 col-xs-12">' + CLASEPROCESO + '</label>' +
                 '</div>' +
                 '</div>');
-            break;
-        case '2':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">ATENCION HOSPITAL</label>' +
-                '</div>' +
-                '</div>');
-            break;
-        case '3':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">EN URGENCIA</label>' +
-                '</div>' +
-                '</div>');
-            break;
+        }
     }
     if ($_CLFACT == '0') {
         $_DIAGNCUP1 = 'N';
@@ -7287,7 +7281,7 @@ function _Leercondic_41() {
     }
     EMBARAZO = EMBARAZO[$_EMBARESTAD];
     if (EMBARAZO) {
-        if ($('#EMBARAZO_SAL41')) {
+        if ($('#EMBARAZO_SAL41').length > 0) {
             $('#EMBARAZO_SAL41').val(EMBARAZO);
         } else {
             $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12" id="EMBARAZO_SAL41">' +
@@ -7358,7 +7352,7 @@ function _Tipoproced2_41() {
         '9': 'NO APLICA'
     };
     if (TIPOPROCESTAD) {
-        if ($('#TIPOPROCEDIMIENTO_SAL41')) {
+        if ($('#TIPOPROCEDIMIENTO_SAL41').length > 0) {
             $('#TIPOPROCEDIMIENTO_SAL41').val(TIPOPROCESTAD[SAL41.TIPOPROCESTAD]);
         } else {
             $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12" id="TIPOPROCEDIMIENTO_SAL41">' +
@@ -8986,7 +8980,7 @@ function _imprimirINV414_SAL97C11() {
 
 function finImpresion_INV411() {
     console.debug('Impresion satisfactoria');
-    // _toggleNav();
+    _toggleNav();
     if (parseInt($_COPAGOESTIMFACT) > 0) {
         let { ipcRenderer } = require("electron");
         ipcRenderer.send('another', 'SALUD/paginas/FAC135C.html');
