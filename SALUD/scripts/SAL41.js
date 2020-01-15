@@ -1079,7 +1079,7 @@ function _validarnumeroctl_SAL41() {
                 $_PREFIJOFACT = SAL41.FACTURA.CTA.substring(0, 1);
                 $_FECHAFACT = fechaMask.value;
                 $_NROCTAFACT = SAL41.FACTURA.CTA.substring(1, 7);
-                SAL41.LLAVEFACT = $('#unidades_SAL41').val() + $('#claseservicio_SAL41').val().substring(0,1) + $('#compr_SAL41').val();
+                SAL41.LLAVEFACT = $('#unidades_SAL41').val() + $('#claseservicio_SAL41').val().substring(0, 1) + $('#compr_SAL41').val();
                 $_DESCRIPPROF = SAL41.FACTURA.DESCRIP_MED1;
                 $_DESCRIPPROF2 = SAL41.FACTURA.DESCRIP_MED2;
                 $_ESPECLAB = SAL41.FACTURA.ESPEC;
@@ -1100,11 +1100,11 @@ function _validarnumeroctl_SAL41() {
                 $TABLA = SAL41.FACTURA.TABLA;
 
                 SAL41.UNIDSERVICIO.forEach(item => {
-                    if(item.COD == SAL41.FACTURA.UNIDAD_SERVICIO) $_UNSER = item.COD + ' ' + item.DESCRIP;
+                    if (item.COD == SAL41.FACTURA.UNIDAD_SERVICIO) $_UNSER = item.COD + ' ' + item.DESCRIP;
                 });
-                let OPCIONES2 = { 
+                let OPCIONES2 = {
                     '09422': _Imprimir9_41,
-                    '09423': _Confirmarborrar_SAL41 
+                    '09423': _Confirmarborrar_SAL41
                 };
                 let opcion2 = new Function();
                 opcion2 = OPCIONES2[SAL41.OPCIONACTIVA];
@@ -1121,7 +1121,7 @@ function _Confirmarborrar_SAL41() {
     CON851P('02', () => { setTimeout(_validarOpcion_SAL41, 300) }, _AceptarAnular_SAL41);
 }
 
-function _AceptarAnular_SAL41(){
+function _AceptarAnular_SAL41() {
     console.debug('Aceptaranular');
 }
 
@@ -7278,80 +7278,27 @@ function _evaluarSER826_41(data) {
 }
 
 function _Leercondic_41() {
-    switch ($_EMBARESTAD) {
-        case '0':
-            if ($('#embarestado_SAL41').length > 0) {
-                $('#embarestado_SAL41').html(
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO APLICA ESTADO</label>'
-                )
-            } else {
-                $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                    '<div class="inline-inputs">' +
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO APLICA ESTADO</label>' +
-                    '</div>' +
-                    '</div>');
-            }
-            _Leercondic2_41()
-            break;
-        case '1':
-            if ($('#embarestado_SAL41').length > 0) {
-                $('#embarestado_SAL41').html(
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">1ER TRIM. EMBARAZO</label>'
-                )
-            } else {
-                $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                    '<div class="inline-inputs">' +
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">1ER TRIM. EMBARAZO</label>' +
-                    '</div>' +
-                    '</div>');
-            }
-            _Leercondic2_41()
-            break;
-        case '2':
-            if ($('#embarestado_SAL41').length > 0) {
-                $('#embarestado_SAL41').html(
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">2DO TRIM. EMBARAZO</label>'
-                )
-            } else {
-                $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                    '<div class="inline-inputs">' +
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">2DO TRIM. EMBARAZO</label>' +
-                    '</div>' +
-                    '</div>');
-            }
-            _Leercondic2_41()
-            break;
-        case '3':
-            if ($('#embarestado_SAL41').length > 0) {
-                $('#embarestado_SAL41').html(
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">3ER TRIM. EMBARAZO</label>'
-                )
-            } else {
-                $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                    '<div class="inline-inputs">' +
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">3ER TRIM. EMBARAZO</label>' +
-                    '</div>' +
-                    '</div>');
-            }
-            _Leercondic2_41()
-            break;
-        case '4':
-            if ($('#embarestado_SAL41').length > 0) {
-                $('#embarestado_SAL41').html(
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO ESTA EMBARAZADA</label>'
-                )
-            } else {
-                $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                    '<div class="inline-inputs">' +
-                    '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">NO ESTA EMBARAZADA</label>' +
-                    '</div>' +
-                    '</div>');
-            }
-            _Leercondic2_41()
-            break;
-        case '8':
-            _Detalle_41();
-            break;
+    let EMBARAZO = {
+        '0': 'NO APLICA',
+        '1': '1ER TRIM. EMBARAZO',
+        '2': '2DO TRIM. EMBARAZO',
+        '3': '3ER TRIM. EMBARAZO',
+        '4': 'NO ESTA EMBARAZADA',
+    }
+    EMBARAZO = EMBARAZO[$_EMBARESTAD];
+    if (EMBARAZO) {
+        if ($('#EMBARAZO_SAL41')) {
+            $('#EMBARAZO_SAL41').val(EMBARAZO);
+        } else {
+            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12" id="EMBARAZO_SAL41">' +
+                '<div class="inline-inputs">' +
+                '<label class="col-md-12 col-sm-12 col-xs-12" id="embarestado_SAL41">' +  + '</label>' +
+                '</div>' +
+                '</div>');
+        }
+        _Leercondic2_41()
+    } else {
+        _Detalle_41();
     }
 }
 function _Leercondic2_41() {
@@ -7369,25 +7316,6 @@ function _Leercondic2_41() {
 }
 
 function _Tipoproced_41() {
-    // if (parseInt($_TIPOPROCESTAD) == 0) {
-    //     switch ($_CLFACT) {
-    //         case '2':
-    //             $_TIPOPROCESTAD = '1'
-    //             break;
-    //         case '3':
-    //             $_TIPOPROCESTAD = '1'
-    //             break;
-    //         case '4':
-    //             $_TIPOPROCESTAD = '2'
-    //             break;
-    //         case '6':
-    //             $_TIPOPROCESTAD = '1'
-    //             break;
-    //         case '7':
-    //             $_TIPOPROCESTAD = '4'
-    //             break;
-    //     }
-    // }
     var tipoprocedimiento = [
         { codigo: '1', descripcion: 'DIAGNOSTICO' },
         { codigo: '2', descripcion: 'TERAPEUTICO' },
@@ -7422,47 +7350,29 @@ function _evaluarSER829_41(data) {
     }
 }
 function _Tipoproced2_41() {
-    switch (SAL41.TIPOPROCESTAD) {
-        case '1':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
+    let TIPOPROCESTAD = {
+        '1': 'DIAGNOSTICO',
+        '2': 'TERAPEUTICO',
+        '3': 'PROTEC. ESPECIFICA',
+        '4': 'DETECCION TEMPRANA',
+        '9': 'NO APLICA'
+    };
+    if (TIPOPROCESTAD) {
+        if ($('#TIPOPROCEDIMIENTO_SAL41')) {
+            $('#TIPOPROCEDIMIENTO_SAL41').val(TIPOPROCESTAD[SAL41.TIPOPROCESTAD]);
+        } else {
+            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12" id="TIPOPROCEDIMIENTO_SAL41">' +
                 '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">DIAGNOSTICO</label>' +
+                '<label class="col-md-12 col-sm-12 col-xs-12">' + TIPOPROCESTAD[SAL41.TIPOPROCESTAD] + '</label>' +
                 '</div>' +
                 '</div>');
-            _Aceptarpersonal_41();
-            break;
-        case '2':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">TERAPEUTICO</label>' +
-                '</div>' +
-                '</div>');
-            _Aceptarpersonal_41();
-            break;
-        case '3':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">PROTEC. ESPECIFICA</label>' +
-                '</div>' +
-                '</div>');
-            _Aceptarpersonal_41();
-            break;
-        case '4':
-            $('#DETALLECITA').append('<div class="col-md-3 col-sm-3 col-xs-12">' +
-                '<div class="inline-inputs">' +
-                '<label class="col-md-12 col-sm-12 col-xs-12">PROTEC.ESPECIFICA</label>' +
-                '</div>' +
-                '</div>');
-            _Aceptarpersonal_41();
-            break;
-        case '9':
-            _Detalle_41();
-            break;
-        default:
-            _Detalle_41();
-            break;
+        }
+        _Aceptarpersonal_41();
+    } else {
+        _Detalle_41();
     }
 }
+
 function _Aceptarpersonal_41() {
     if (($_CLFACT == '2') || ($_CLFACT == '3')) {
         $_PERSONALELAB = '9';
@@ -8111,6 +8021,7 @@ function _Leerfactura2_41() {
     // INITIALIZE
     $_HORAELABFACT = $_HORAELABFACT.substring(0, 2) + $_HORAELABFACT.substring(3, 5);
     let fechaguardado = $_FECHAFACT.split('-');
+    console.debug(fechaguardado);
     SAL41.LLAVEFACT = $_SUCFACT + $_CLFACT + SAL41.NROFACT;
     SAL41['HORAINGESTAD'] = $_FECHAINGESTAD.substring(11, 13) + $_FECHAINGESTAD.substring(14, 16);
     $_FECHAINGESTAD = $_FECHAINGESTAD.substring(0, 4) + $_FECHAINGESTAD.substring(5, 7) + $_FECHAINGESTAD.substring(8, 10);
@@ -8212,7 +8123,7 @@ function _dataCON007X_02_41(data) {
     //     SER108DB(); // IMPRIME FACTURAS (RESUMEN DE COMPROBANTES)
     // }
     // else {
-        _Contabiliarcomp_41();
+    _Contabiliarcomp_41();
     // }
 }
 
@@ -8264,12 +8175,12 @@ function _dataINV020_41(data) {
 }
 
 function _Contabiliarcomp2_41() {
-    if ((SAL41.FINALIDESTAD == '11') && ($_CRONICOPACI != 'S')) {
-        // OPEN I-O EN ARCHIVO PACIENTES 7848
-    }
-    else {
+    // if ((SAL41.FINALIDESTAD == '11') && ($_CRONICOPACI != 'S')) {
+    //     // OPEN I-O EN ARCHIVO PACIENTES 7848
+    // }
+    // else {
         _Generarhl7_41();
-    }
+    // }
 }
 
 function _Generarhl7_41() {
