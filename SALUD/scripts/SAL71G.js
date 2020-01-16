@@ -103,7 +103,6 @@ function _ventanacups71G(e) {
                 $GRUPO_71G = $_LLAVECUPS.substring(0, 2);
                 $CUPS_71G = $_LLAVECUPS.substring(2, 12);
                 $('#cups_71G').val($CUPS_71G)
-                // $('#descrgrp_103').val(data.DESCRIP.trim())
                 _enterInput('#cups_71G');
             }
         });
@@ -711,21 +710,12 @@ function _ubicargrabar_71G() {
 function _tablapaquetetxt() {
     tabla = '';
     $.each($('#TABLAPAQUETEINT_71G tbody tr'), function (k, v) {
-        // let item = $(v).children('td:eq(0)').text();
-        // tabla += item;
-        // tabla += '|';
         let cl = $(v).children('td:eq(1)').text();
         tabla += cl;
         tabla += '|';
-        // let descripcl = $(v).children('td:eq(1)').text();
-        // tabla += descripcl;
-        // tabla += '|';
         let codigoart = $(v).children('td:eq(3)').text();
         tabla += codigoart;
         tabla += '|';
-        // let descripart = $(v).children('td:eq(3)').text();
-        // tabla += descripart;
-        // tabla += '|';
         let cantart = $(v).children('td:eq(5)').text();
         cantart = cantart.replace('.', '');
         tabla += cantart;
@@ -743,7 +733,7 @@ function _tablapaquetetxt() {
         tabla += '|' + "\r\n";
     }
     $_FECHA = moment().format('YYYYMMDDhhmm');
-    var nombrearchivo = 'C:\\PROSOFT\\TEMP\\PAQUETEINT-' + $_FECHA + '.txt';
+    var nombrearchivo = 'C:\\PROSOFT\\TEMP\\PAQUETEINT' + $_FECHA + '.txt';
     fs.writeFile(nombrearchivo, tabla, function (err) {
         if (err) {
             jAlert({ titulo: 'Error 99', mensaje: 'Error escribiendo plano', autoclose: true });
@@ -751,16 +741,16 @@ function _tablapaquetetxt() {
         else {
             $_PAQUETETXT = nombrearchivo;
             if ($_Novedad71G == '9') {
-                _eliminardatos_71G();
+                _eliminardatos_71G($_PAQUETETXT);
             }
             else {
-                _grabardatos_71G();
+                _grabardatos_71G($_PAQUETETXT);
             }
         }
     });
 }
 
-function _eliminardatos_71G() {
+function _eliminardatos_71G($_PAQUETETXT) {
     if ($_Novedad71G == '8') {
         $fechamod_71G = moment().format('YYMMDD');
         $opermod_71G = $_ADMINW;
@@ -778,7 +768,7 @@ function _eliminardatos_71G() {
     });
 }
 
-function _grabardatos_71G() {
+function _grabardatos_71G($_PAQUETETXT) {
     if ($_Novedad71G == '8') {
         $fechamod_71G = moment().format('YYMMDD');
         $opermod_71G = $_ADMINW;
