@@ -56,7 +56,7 @@ function _ventanaFacturacion(e) {
 
         parametros = {
             dll: 'NUMERACION',
-            valoresselect: ['Nombre del tercero'],
+            valoresselect: ['Nombre del tercero', 'buscar paciente'],
             f8data: 'NUMERACION',
             columnas: [{ title: 'COD' }, { title: 'FECHA_ING' }, { title: 'DESCRIP' }, { title: 'NOM_PAC' }, { title: 'CONVENIO' }, { title: 'ESTADO' }],
             callback: (data) => {
@@ -64,12 +64,10 @@ function _ventanaFacturacion(e) {
                 $_NROW  = data.COD; 
                 $_NROW = $_NROW.substring(1,7)
                 $('#factura_108').val($_NROW);
-                // document.querySelector("#factura_108").value = data.COD;
                 _enterInput('#factura_108');
             },
             cancel: () => {
                 _enterInput('#factura_108');
-                // document.querySelector("#idpaciente_108").focus() 
             }
         };
         F8LITE(parametros);
