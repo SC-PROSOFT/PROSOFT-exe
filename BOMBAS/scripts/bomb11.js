@@ -1,4 +1,4 @@
-var $_DATOS_BOMB11, $_FECHA_INI, $_FECHA_FIN, $_FECHA_NUM, $_FECHA_ACT, $_NIT, $_TERCEROS_11;
+var $_DATOS_BOMB11, $_FECHA_INI, $_FECHA_FIN, $_FECHA_NUM, $_FECHA_ACT, $_NIT, $_TERCEROS_11, $_PREFIJO;
 $(document).ready(function () {
     _inputControl('reset');
     _inputControl('disabled');
@@ -60,10 +60,36 @@ function on_crearJsonTerceros(data) {
 function on_eliminarJsonTerce(data) {
     var res = data.split('|');
     if (res[0].trim() == '00') {
-        SolicitarDll({ datosh: datosEnvio() }, on_validarFecha_envio_bomb11, get_url('app/bombas/BOMB11.DLL'));
+        SolicitarPrefijo();
     } else {
         plantillaError('Error ', 'Ha ocurrido un error eliminando archivos <b>.JSON</b>', '');
     }
+}
+
+function SolicitarPrefijo() {
+    var fuente = ''
+        + '<div style="width: 100%; height: 100%;text-align: center;">'
+        + ' <input id="prefijo" type="text" style="outline: none;padding: 5px 12px;box-sizing: border-box;" autofocus/>'
+        + '</div>';
+
+    jAlert({
+        titulo: 'Prefijo',
+        mensaje: fuente,
+        autoclose: false,
+        btnCancel: true
+    }, () => {
+        $_PREFIJO = $('#prefijo').val().trim();
+        if ($_PREFIJO == '7' || $_PREFIJO == '8') {
+            jAlert_close();
+            SolicitarDll({ datosh: datosEnvio() + $_PREFIJO + "|" }, on_validarFecha_envio_bomb11, get_url('app/bombas/BOMB11.DLL'));
+        } else {
+            $('#prefijo').val('').focus();
+            alert('Prefijo invalido')
+        }
+    }, () => {
+        jAlert_close();
+        _toggleNav();
+    });
 }
 
 function on_validarFecha_envio_bomb11(data) {
@@ -184,6 +210,8 @@ function _validarTercero_11() {
                 datos_envio += $_DATOS_BOMB11[2];
                 datos_envio += "|";
                 datos_envio += $_DATOS_BOMB11[4];
+                datos_envio += "|";
+                datos_envio += $_PREFIJO;
                 datos_envio += "|";
 
                 // SolicitarDatos({ datosh: datos_envio }, resptDllBoomb11, get_url("app/bombas/LISTGENERAR-FACT.DLL"));
