@@ -244,19 +244,63 @@ function _validarOpcion_SAL41() {
 }
 
 function _Clavedeacceso_41() {
-    bootbox.prompt({
+    var ventanaclaveacceso = bootbox.dialog({
         size: 'small',
-        title: "CLAVE DE ACCESO",
-        inputType: 'password',
-        callback: data => {
-            if (data.trim() == SAL41.CLAVEOTRUSU.trim()) {
-                _Datosucursal_41();
-            } else {
-                setTimeout(() => { _Clavedeacceso_41() }, 300);
+        onEscape: false,
+        title: 'CLAVE DE ACCESO',
+        message: '<div class="row"> ' +
+            '<div class="col-md-12"> ' +
+            '<div class="form-group"> ' +
+            '<div class="col-md-12" id="VALIDAR1_VENTANA_SAL41"> ' +
+            '<input id="claveacceso_SAL41" type="text" class="form-control input-md" data-orden="1" maxlength="6"> ' +
+            '</div> ' +
+            '</div> ' +
+            '</div>' +
+            '</div>',
+        buttons: {
+            confirm: {
+                label: 'Aceptar',
+                className: 'btn-primary',
+                callback: function () {
+                    ventanaclaveacceso.off('show.bs.modal');
+                    _Datosucursal_41();
+                }
+            },
+            cancelar: {
+                label: 'Cancelar',
+                className: 'btn-danger',
+                callback: function () {
+                    ventanaclaveacceso.off('show.bs.modal');
+                    _toggleNav();
+                }
             }
         }
     });
+    ventanaclaveacceso.init($('.modal-footer').hide(), _Evaluarventanaacceso_SAL41());
+    ventanaclaveacceso.on('shown.bs.modal', function () {
+        $("#claveacceso_SAL41").focus();
+    });
 }
+
+function _Evaluarventanaacceso_SAL41(){
+    validarInputs(
+        {
+            form: "#VALIDAR1_VENTANA_SAL41",
+            orden: '1'
+        },
+        () => {$('.btn-danger').click()},
+        () => {
+            SAL41.CLAVEACCESO = $('#claveacceso_SAL41').val();
+            if (SAL41.CLAVEACCESO.trim() == $_USUA_GLOBAL[0].CLAVE.trim()){
+                $('.btn-primary').click();
+            } else {
+                CON851('03','03',null,'error','error');
+                _Evaluarventanaacceso_SAL41();
+            }
+        }
+    )
+}
+
 
 function FAC135() {
     let { ipcRenderer } = require("electron");
@@ -801,6 +845,7 @@ function _Evaluarsuc_41() {
 
 function _Evaluarservicio_41() {
     clfactMask.updateValue();
+    console.log(clfactMask, 'clfactMask')
     validarInputs(
         {
             form: "#VALIDAR2_SAL41",
@@ -818,6 +863,7 @@ function _Evaluarservicio_41() {
         },
         () => {
             $_CLFACT = clfactMask.value;
+            console.log($_CLFACT, '$_CLFACT')
             if ($_CLFACT) {
                 SAL41.SERVICIOS.forEach(data => {
                     if ($_CLFACT == data.COD) {
