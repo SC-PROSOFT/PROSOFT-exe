@@ -9,7 +9,7 @@ var $_OTRSTAT = '00', $_APEL2TER2W = ' ', $_DESCRIPTER2W = ' ', $_NOMBRECLIW = '
     $_SUETRABTERCEW = '', $_ANTTRABTERCEW = '', $_FECHANACTERCEW = '', $_CIUEXPTERCEW = '', $_FECHAAFILTERCEW = '', $_EMBARGOTERCEW = '', $_ENTIDAFITERCEW = '', $_NOMBRETABLA = ''
 $_PAGOTERCEW = '00', $_CODZONAW = '', $_CODRUTAW = '', $_TIPOIDTERCEW = '', $_REGIVATERCEW = '', $_CALIFITERCEW = '', $_VENDTERCEW = '';
 var $_CODTERCEROLNK, $_NOMTERCEROLNK = '', $_FPAGOLNK, swinvalid;
-var CON110C = [];
+var CON110C = []; var tabla110C = [];
 
 var porcentica_110cMask = new IMask(document.getElementById('porcetica_110c'),
     { mask: Number, min: 0, max: 99999, scale: 3, thousandsSeparator: ',', radix: '.', padFractionalZeros: true }
@@ -2511,14 +2511,23 @@ function _validaciontabla_con110c(orden) {
 }
 
 function _direcciones(datos) {
-    var tabla110C = datos;
-    console.log(tabla110C, 'datos tabla')
+    // tabla110C = datos;
+    // console.log(tabla110C, 'datos tabla')
     $_Nfila = tabla2.rowIndex;
-    $('#item_con110c').val(tabla110C.cells[0].textContent);
-    $('#diresucu_con110c').val(tabla110C.cells[1].textContent);
-    $('#telsucu_con110c').val(tabla110C.cells[2].textContent);
-    $('#ciudadsucu_con110c').val(tabla110C.cells[3].textContent);
-    $('#barriosucu_110c').val(tabla110C.cells[4].textContent);
+    $('#item_con110c').val(datos.cells[0].textContent);
+    $('#diresucu_con110c').val(datos.cells[1].textContent);
+    $('#telsucu_con110c').val(datos.cells[2].textContent);
+    $('#ciudadsucu_con110c').val(datos.cells[3].textContent);
+    $('#barriosucu_110c').val(datos.cells[4].textContent);
+    CON110C.tabla110C = [];
+    let a = {
+        'item': datos.cells[0].textContent,
+        'direccion': datos.cells[1].textContent,
+        'telefono': datos.cells[2].textContent,
+        'ciudad' : datos.cells[3].textContent,
+        'barrio' : datos.cells[4].textContent
+    }
+    CON110C.tabla110C.push(a);
 
     if ($_NOVEDADCON110C == '7') {
         _limpiarcampos_con110c();
@@ -2545,83 +2554,37 @@ function _ubicargrabar_con110c() {
 }
 
 function _tabladiretxt() {
-    // let fecha = moment().format('YY/MM/DD HH:mm:ss:ms');
-    // let nombretxt = $_ADMINW + '_' + fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 8) + fecha.substring(9, 11) + fecha.substring(12, 14) + fecha.substring(15, 17) + fecha.substring(18, 20);
-    // CON110C['NOMBRETABLA'] = nombretxt;
-    // let datosEnvio = {
-    //     nombre_archivo: nombretxt,
-    //     tabla: tabla110C,
-    // };
-    // $.ajax({
-    //     data: datosEnvio,
-    //     type: 'POST',
-    //     async: false,
-    //     url: get_url('SALUD/paginas/_datostabla_SAL71G.php')
-    // }).done(function (data) {
-    //     console.debug(data);
-    //     if (data == '00') {
-    //         let mensaje = '01';
-    //         console.debug(mensaje);
-    //         // CON851P(mensaje, _Cancelar_41, _Confirmargrabar2_41);
-    //         if ($_NOVEDADCON110C == '9') {
-    //             _eliminarregistro_con110c();
-    //         }
-    //         else {
-    //             _grabardatos_con110c();
-    //         }
-    //     } else {
-    //         console.debug('problemas para crear el txt');
-    //     }
-    // });
-
-    tablados = '';
-    $.each($('#TABLADIRECCION_CON110C tbody tr'), function (k, v) {
-        let direccion = $(v).children('td:eq(1)').text();
-        tablados += direccion;
-        tablados += '|';
-        let telefono = $(v).children('td:eq(2)').text();
-        tablados += telefono;
-        tablados += '|';
-        let ciudad = $(v).children('td:eq(3)').text();
-        tablados += ciudad;
-        tablados += '|';
-        let barrio = $(v).children('td:eq(4)').text();
-        tablados += barrio;
-        tablados += '|' + "\r\n";
-    });
-
-    var columnas2 = $('#TABLADIRECCION_CON110C tbody tr').length;
-    columnas2 = columnas2++;
-    for (columnas2; columnas2 < 21; columnas2++) {
-        tablados += '                  ';
-        tablados += '|';
-        tablados += '000000000000';
-        tablados += '|';
-        tablados += '00000';
-        tablados += '|';
-        tablados += '00000000';
-        tablados += '|' + "\r\n";
-    }
-    $_FECHA_CON110C = moment().format('YYYYMMDDhhmm');
-    var nombre_archivo = 'C:\\PROSOFT\\TEMP\\DIRECC-' + $_FECHA_CON110C + '.txt';
-    fs.writeFile(nombre_archivo, tablados, function (err) {
-        if (err) {
-            jAlert({ titulo: 'Error 99', mensaje: 'Error escribiendo plano', autoclose: true });
-        }
-        else {
-            $_NOMBRETABLA = nombre_archivo;
+    let fecha = moment().format('YY/MM/DD HH:mm:ss:ms');
+    let nombretxt = $_ADMINW + '_' + fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 8) + fecha.substring(9, 11) + fecha.substring(12, 14) + fecha.substring(15, 17) + fecha.substring(18, 20) + '.txt';
+    CON110C['NOMBRETABLA'] = nombretxt;
+    console.debug(CON110C.NOMBRETABLA);
+    let datosEnvio = {
+        nombre_archivo: CON110C.NOMBRETABLA,
+        tabla: CON110C.tabla110C,
+    };
+    $.ajax({
+        data: datosEnvio,
+        type: 'POST',
+        async: false,
+        url: get_url('SALUD/paginas/_datostablas_SAL71G.php')
+    }).done(function (data) {
+        console.debug(data);
+        if (data == '00') {
+            let mensaje = '01';
+            console.debug(mensaje);
             if ($_NOVEDADCON110C == '9') {
-                _eliminarregistro_con110c($_NOMBRETABLA);
+                _eliminarregistro_con110c();
             }
             else {
-                _grabardatos_con110c($_NOMBRETABLA);
+                _grabardatos_con110c();
             }
+        } else {
+            console.debug('problemas para crear el txt');
         }
     });
-
 }
 ////////////////////GRABAR REGISTRO///////////////////////
-function _grabardatos_con110c($_NOMBRETABLA) {
+function _grabardatos_con110c() {
 
     $_NOMREF1TERCEW = $('#nombreref1_110c').val();
     $_DIRREF1TERCEW = $('#dirref1_110c').val();
@@ -2666,7 +2629,7 @@ function _grabardatos_con110c($_NOMBRETABLA) {
             $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW,
             $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW, $_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
             $_NOMREF1TERCEW, $_DIRREF1TERCEW, $_TELREF1TERCEW, $_RELREF1TERCEW, $_NOMREF2TERCEW, $_DIRREF2TERCEW, $_TELREF2TERCEW, $_RELREF2TERCEW, $_NOMREF3TERCEW, $_DIRREF3TERCEW, $_TELREF3TERCEW, $_RELREF3TERCEW, $_NOMTRABTERCEW, $_DIRTRABTERCEW, $_TELTRABTERCEW, $_CARTRABTERCEW,
-            $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, $_NOMBRETABLA],
+            $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, CON110C.NOMBRETABLA, $_TIPOEMPRESAUSU],
         callback: _dataCON110C_14,
         nombredll: 'CON110C_14',
         carpeta: 'CONTAB'
@@ -2674,7 +2637,7 @@ function _grabardatos_con110c($_NOMBRETABLA) {
 
 }
 
-function _eliminarregistro_con110c($_NOMBRETABLA) {
+function _eliminarregistro_con110c() {
     $_NOMREF1TERCEW = $('#nombreref1_110c').val();
     $_DIRREF1TERCEW = $('#dirref1_110c').val();
     $_TELREF1TERCEW = $('#telref1_110c').val();
@@ -2717,7 +2680,7 @@ function _eliminarregistro_con110c($_NOMBRETABLA) {
             $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW,
             $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW, $_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
             $_NOMREF1TERCEW, $_DIRREF1TERCEW, $_TELREF1TERCEW, $_RELREF1TERCEW, $_NOMREF2TERCEW, $_DIRREF2TERCEW, $_TELREF2TERCEW, $_RELREF2TERCEW, $_NOMREF3TERCEW, $_DIRREF3TERCEW, $_TELREF3TERCEW, $_RELREF3TERCEW, $_NOMTRABTERCEW, $_DIRTRABTERCEW, $_TELTRABTERCEW, $_CARTRABTERCEW,
-            $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, $_NOMBRETABLA],
+            $_SUETRABTERCEW, $_ANTTRABTERCEW, $_FECHANACTERCEW, $_EMBARGOTERCEW, $_CIUEXPTERCEW, $_ENTIDAFITERCEW, $_FECHAAFILTERCEW, CON110C.NOMBRETABLA, $_TIPOEMPRESAUSU],
         callback: _dataCON110C_14,
         nombredll: 'CON110C_14',
         carpeta: 'CONTAB'
