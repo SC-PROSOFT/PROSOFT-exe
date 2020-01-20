@@ -16,13 +16,13 @@ $(document).ready(function () {
     inicio_110I()
 });
 function inicio_110I(){
-    obtenerDatosCompletos({ nombreFd: 'LOTES' }, recibirLotes_CON110I)
+    obtenerDatosCompletos({ nombreFd: 'LOTES' }, recibirLotes_CON110I, 'ON')
 }
 
 function recibirLotes_CON110I(data) {
     arrayLote_110I = data.LOTES
     arrayLote_110I.pop()
-    obtenerDatosCompletos({ nombreFd: 'PREFIJOS' }, recibirPrefijos_110I)
+    obtenerDatosCompletos({ nombreFd: 'PREFIJOS' }, recibirPrefijos_110I, 'OFF')
 }
 
 

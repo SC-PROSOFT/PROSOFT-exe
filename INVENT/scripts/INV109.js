@@ -101,7 +101,7 @@ function _ventanaAlmacen_109(e) {
 }
 
 function json_Prefijos_inv109() {
-    obtenerDatosCompletos({ nombreFd: 'PREFIJOS' }, recibirPrefijos_109)
+    obtenerDatosCompletos({ nombreFd: 'PREFIJOS' }, recibirPrefijos_109, 'ON')
 }
 
 function recibirPrefijos_109(data) {
@@ -114,7 +114,7 @@ function recibirPrefijos_109(data) {
 function recibirCostos_109(data) {
     arrayCostos_109 = data.COSTO
     arrayCostos_109.pop()
-    obtenerDatosCompletos({ nombreFd: 'LOCALIZACION' }, recibirAlmacenes_109)
+    obtenerDatosCompletos({ nombreFd: 'LOCALIZACION' }, recibirAlmacenes_109, 'OFF')
 }
 
 function recibirAlmacenes_109(data) {
