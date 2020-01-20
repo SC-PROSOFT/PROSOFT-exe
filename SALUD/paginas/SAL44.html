@@ -2,7 +2,7 @@
     <div class="portlet light box-center box-title" style="margin: 0 auto;">
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject bold">9,4,4,1 - Reconsolida facturas</span>
+                <span class="caption-subject bold">9,4,4,1 - Reconsolida comprobante por prefijo</span>
             </div>
         </div>
     </div>
@@ -11,7 +11,7 @@
     <div class="portlet light no-padding">
         <div class="portlet-body no-padding">
             <form class="form-horizontal">
-                <div class="col-md-3 col-sm-3 col-xs-12 no-padding">
+                <div class="col-md-2 col-sm-3 col-xs-12 no-padding">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="inline-inputs">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9 col-sm-9 col-xs-12" style="padding-right: 0; padding-left: 10px;">
+                <div class="col-md-10 col-sm-9 col-xs-12" style="padding-right: 0; padding-left: 10px;">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
                         <div class="col-md-4 col-sm-7 col-xs-7">
                             <div class="inline-inputs">
@@ -37,91 +37,49 @@
                                 </button>
                                 <div class="input-group col-md-10 col-sm-2 col-xs-12">
                                     <input id="descrippref_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                    data-orden="2" onkeyup="this.value = this.value.toUpperCase();">
+                                        data-orden="2" onkeyup="this.value = this.value.toUpperCase();">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-7 col-xs-7">
                             <div class="inline-inputs">
-                                <label class="col-md-6 col-sm-8 col-xs-12">Fecha Inicial:</label>
-                                <div class="input-group col-md-10 col-sm-2 col-xs-12" id="FECHAINIC_9441">
-                                    <input id="fechaini_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="10" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
+                                <label class="col-md-10 col-sm-8 col-xs-12">Fecha Inicial:</label>
+                                <div class="input-group col-md-10 col-sm-2 col-xs-12" id="ANOINIC_9441">
+                                    <input id="anoini_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="4" data-orden="1">
                                 </div>
+                                <div class="input-group col-md-6 col-sm-2 col-xs-12" id="MESINIC_9441">
+                                    <input id="mesini_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="2" data-orden="1">
+                                </div>
+                                <div class="input-group col-md-6 col-sm-2 col-xs-12" id="DIAINIC_9441">
+                                    <input id="diaini_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="2" data-orden="1">
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-7 col-xs-7">
                             <div class="inline-inputs">
-                                <label class="col-md-6 col-sm-8 col-xs-12">Fecha Final:</label>
-                                <div class="input-group col-md-10 col-sm-2 col-xs-12" id="FECHAFINAL_9441">
-                                    <input id="fechafin_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="10" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
+                                <label class="col-md-10 col-sm-8 col-xs-12">Fecha Final:</label>
+                                <div class="input-group col-md-10 col-sm-2 col-xs-12" id="ANOFINAL_9441">
+                                    <input id="anofin_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="4" data-orden="1">
                                 </div>
+                                <div class="input-group col-md-6 col-sm-2 col-xs-12" id="MESFINAL_9441">
+                                    <input id="mesfin_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="2" data-orden="1">
+                                </div>
+                                <div class="input-group col-md-6 col-sm-2 col-xs-12" id="DIAFINAL_9441">
+                                    <input id="diafin_9441" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                        maxlength="2" data-orden="1">
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
-
-            <!-- <form class="form-horizontal">
-                <div class="col-md-12 col-sm-8 col-xs-8 no-padding">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-
-                        <div class="col-md-3 col-sm-12 col-xs-12" id="primerfinalidad">
-                            <div class="inline-inputs">
-                                <label class="col-md-3 col-sm-3 col-xs-12">Fina1: </label>
-                                <div class="input-group col-md-5 col-sm-12 col-xs-12">
-                                    <input id="fina1_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="2" data-orden="1">
-                                </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="descripfina1_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="20">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12 col-xs-12" id="segundfinalidad">
-                            <div class="inline-inputs">
-                                <label class="col-md-3 col-sm-3 col-xs-12">Fina2: </label>
-                                <div class="input-group col-md-5 col-sm-12 col-xs-12">
-                                    <input id="fina2_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="2" data-orden="1">
-                                </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="descripfina2_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="20">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12 col-xs-12" id="tercerfinalidad">
-                            <div class="inline-inputs">
-                                <label class="col-md-3 col-sm-3 col-xs-12">Fina3: </label>
-                                <div class="input-group col-md-5 col-sm-12 col-xs-12">
-                                    <input id="fina3_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="2" data-orden="1">
-                                </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="descripfina3_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="20">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12 col-xs-12" id="cuartafinalidad">
-                            <div class="inline-inputs">
-                                <label class="col-md-3 col-sm-3 col-xs-12">Fina4: </label>
-                                <div class="input-group col-md-5 col-sm-12 col-xs-12">
-                                    <input id="fina4_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="2" data-orden="1">
-                                </div>
-                                <div class="input-group col-md-12 col-sm-12 col-xs-12">
-                                    <input id="descripfina4_713" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                        maxlength="20">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form> -->
         </div>
     </div>
 </div>
