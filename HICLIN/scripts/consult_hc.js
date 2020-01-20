@@ -159,7 +159,7 @@ function consult_tipoDiagn(codigo) {
     return msj;
 }
 
-function consult_finalidad(codigo) {
+function get_finalidadConsulta(codigo) {
     var msj = false;
     switch (codigo) {
         case '0':
@@ -333,92 +333,92 @@ function datos_finalidad(nit, sexo, edad) {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.unid_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '01',
-                'descripcion': consult_finalidad('1')
+                'descripcion': get_finalidadConsulta('1')
             });
         }
 
         if (edad.unid_edad == 'D') {
             datos_finalidad.push({
                 'codigo': '02',
-                'descripcion': consult_finalidad('2')
+                'descripcion': get_finalidadConsulta('2')
             });
         }
 
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 61)) {
             datos_finalidad.push({
                 'codigo': '03',
-                'descripcion': consult_finalidad('3')
+                'descripcion': get_finalidadConsulta('3')
             });
         }
 
         if ((edad.unid_edad == 'D' || edad.unid_edad == 'M') || (edad.unid_edad == 'A' && edad.vlr_edad < 10)) {
             datos_finalidad.push({
                 'codigo': '04',
-                'descripcion': consult_finalidad('4')
+                'descripcion': get_finalidadConsulta('4')
             });
         }
 
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 30)) {
             datos_finalidad.push({
                 'codigo': '05',
-                'descripcion': consult_finalidad('5')
+                'descripcion': get_finalidadConsulta('5')
             });
         }
 
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '06',
-                'descripcion': consult_finalidad('6')
+                'descripcion': get_finalidadConsulta('6')
             });
         }
 
         if (edad.unid_edad == 'A' && edad.vlr_edad > 29) {
             datos_finalidad.push({
                 'codigo': '07',
-                'descripcion': consult_finalidad('7')
+                'descripcion': get_finalidadConsulta('7')
             });
         }
 
         datos_finalidad.push({
             'codigo': '08',
-            'descripcion': consult_finalidad('8')
+            'descripcion': get_finalidadConsulta('8')
         });
 
         if (edad.unid_edad == 'A' && edad.vlr_edad > 17) {
             datos_finalidad.push({
                 'codigo': '09',
-                'descripcion': consult_finalidad('9')
+                'descripcion': get_finalidadConsulta('9')
             });
         }
 
         datos_finalidad.push({
             'codigo': '10',
-            'descripcion': consult_finalidad('10')
+            'descripcion': get_finalidadConsulta('10')
         });
 
         datos_finalidad.push({
             'codigo': '11',
-            'descripcion': consult_finalidad('11')
+            'descripcion': get_finalidadConsulta('11')
         });
     } else {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '01',
-                'descripcion': consult_finalidad('1')
+                'descripcion': get_finalidadConsulta('1')
             });
         }
 
         if (edad.unid_edad == 'D') {
             datos_finalidad.push({
                 'codigo': '02',
-                'descripcion': consult_finalidad('2')
+                'descripcion': get_finalidadConsulta('2')
             });
         }
 
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 61)) {
             datos_finalidad.push({
                 'codigo': '03',
-                'descripcion': consult_finalidad('3')
+                'descripcion': get_finalidadConsulta('3')
             });
         }
 
@@ -453,7 +453,7 @@ function datos_finalidad(nit, sexo, edad) {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '06',
-                'descripcion': consult_finalidad('6')
+                'descripcion': get_finalidadConsulta('6')
             });
         }
 
@@ -475,24 +475,24 @@ function datos_finalidad(nit, sexo, edad) {
 
         datos_finalidad.push({
             'codigo': '08',
-            'descripcion': consult_finalidad('8')
+            'descripcion': get_finalidadConsulta('8')
         });
 
         if (edad.unid_edad == 'A' && edad.vlr_edad > 17) {
             datos_finalidad.push({
                 'codigo': '09',
-                'descripcion': consult_finalidad('9')
+                'descripcion': get_finalidadConsulta('9')
             });
         }
 
         datos_finalidad.push({
             'codigo': '10',
-            'descripcion': consult_finalidad('10')
+            'descripcion': get_finalidadConsulta('10')
         });
 
         datos_finalidad.push({
             'codigo': '11',
-            'descripcion': consult_finalidad('11')
+            'descripcion': get_finalidadConsulta('11')
         });
     }
     return datos_finalidad;

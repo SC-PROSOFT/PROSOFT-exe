@@ -123,7 +123,7 @@ function SER819H(data, esccallback, callback) {
             esccallback();
         });
 }
-async function SER829(seleccion, esccallback, callback) {
+function SER829(seleccion, esccallback, callback) {
     var SER829 = [];
     SER829.PROCEDIMIENTOS = [{ "COD": "1", "DESCRIP": "DIAGNOSTICO" }, { "COD": "2", "DESCRIP": "TERAPEUTICO" }, { "COD": "3", "DESCRIP": "PROTECION ESPECIFICA" }, { "COD": "4", "DESCRIP": "DETEC. TEMPRANA ENF. GENER" }, { "COD": "5", "DESCRIP": "DET. TEMPRANA ENF.PROF" }, { "COD": "9", "DESCRIP": "NO APLICA" }]
     POPUP({
@@ -137,117 +137,117 @@ async function SER829(seleccion, esccallback, callback) {
         callback_f: esccallback
     }, callback)
 }
-async function SER834(data, esccallback, callback) {
-    var SER834 = { NIT: data.NITUSU ? data.NITUSU : false, NACI: data.FECHANACI ? data.FECHANACI : false, SEXO: data.SEXOPACI ? data.SEXOPACI : false }
-    SER834.DATOSV = [];
+function SER834A(data, esccallback, callback) {
+    var SER834A = { NIT: data.NITUSU ? data.NITUSU : false, NACI: data.FECHANACI ? data.FECHANACI : false, SEXO: data.SEXOPACI ? data.SEXOPACI : false }
+    SER834A.DATOS = [];
 
-    if (SER834.NACI) {
-        SER834.EDAD = calcular_edad(NACI);
-        if (SER834.NIT == '844003225') {
-            if ((SER834.SEXO == 'F') && (SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.unid_edad < 51)) {
-                SER834.DATOSV.push({ 'COD': '01', 'DESCRIP': consult_finalidad('1') });
+    if (SER834A.NACI) {
+        SER834A.EDAD = calcular_edad(NACI);
+        if (SER834A.NIT == '844003225') {
+            if ((SER834A.SEXO == 'F') && (SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.unid_edad < 51)) {
+                SER834A.DATOS.push({ 'COD': '01', 'DESCRIP': get_finalidadConsulta('1') });
             }
 
-            if (SER834.EDAD.unid_edad == 'D') {
-                SER834.DATOSV.push({ 'COD': '02', 'DESCRIP': consult_finalidad('2') });
+            if (SER834A.EDAD.unid_edad == 'D') {
+                SER834A.DATOS.push({ 'COD': '02', 'DESCRIP': get_finalidadConsulta('2') });
             }
 
-            if ((SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.vlr_edad < 61)) {
-                SER834.DATOSV.push({ 'COD': '03', 'DESCRIP': consult_finalidad('3') });
+            if ((SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.vlr_edad < 61)) {
+                SER834A.DATOS.push({ 'COD': '03', 'DESCRIP': get_finalidadConsulta('3') });
             }
 
-            if ((SER834.EDAD.unid_edad == 'D' || SER834.EDAD.unid_edad == 'M') || (SER834.EDAD.unid_edad == 'A' && SER834.EDAD.vlr_edad < 10)) {
-                SER834.DATOSV.push({ 'COD': '04', 'DESCRIP': consult_finalidad('4') });
+            if ((SER834A.EDAD.unid_edad == 'D' || SER834A.EDAD.unid_edad == 'M') || (SER834A.EDAD.unid_edad == 'A' && SER834A.EDAD.vlr_edad < 10)) {
+                SER834A.DATOS.push({ 'COD': '04', 'DESCRIP': get_finalidadConsulta('4') });
             }
 
-            if ((SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.vlr_edad < 30)) {
-                SER834.DATOSV.push({ 'COD': '05', 'DESCRIP': consult_finalidad('5') });
+            if ((SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.vlr_edad < 30)) {
+                SER834A.DATOS.push({ 'COD': '05', 'DESCRIP': get_finalidadConsulta('5') });
             }
 
-            if ((SER834.SEXO == 'F') && (SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.vlr_edad < 51)) {
-                SER834.DATOSV.push({ 'COD': '06', 'DESCRIP': consult_finalidad('6') });
+            if ((SER834A.SEXO == 'F') && (SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.vlr_edad < 51)) {
+                SER834A.DATOS.push({ 'COD': '06', 'DESCRIP': get_finalidadConsulta('6') });
             }
 
-            if (SER834.EDAD.unid_edad == 'A' && SER834.EDAD.vlr_edad > 29) {
-                SER834.DATOSV.push({ 'COD': '07', 'DESCRIP': consult_finalidad('7') });
+            if (SER834A.EDAD.unid_edad == 'A' && SER834A.EDAD.vlr_edad > 29) {
+                SER834A.DATOS.push({ 'COD': '07', 'DESCRIP': get_finalidadConsulta('7') });
             }
 
-            SER834.DATOSV.push({ 'COD': '08', 'DESCRIP': consult_finalidad('8') });
+            SER834A.DATOS.push({ 'COD': '08', 'DESCRIP': get_finalidadConsulta('8') });
 
-            if (SER834.EDAD.unid_edad == 'A' && SER834.EDAD.vlr_edad > 17) {
-                SER834.DATOSV.push({ 'COD': '09', 'DESCRIP': consult_finalidad('9') });
+            if (SER834A.EDAD.unid_edad == 'A' && SER834A.EDAD.vlr_edad > 17) {
+                SER834A.DATOS.push({ 'COD': '09', 'DESCRIP': get_finalidadConsulta('9') });
             }
 
-            SER834.DATOSV.push({ 'COD': '10', 'DESCRIP': consult_finalidad('10') }, { 'COD': '11', 'DESCRIP': consult_finalidad('11') });
+            SER834A.DATOS.push({ 'COD': '10', 'DESCRIP': get_finalidadConsulta('10') }, { 'COD': '11', 'DESCRIP': get_finalidadConsulta('11') });
         } else {
-            if ((SER834.SEXO == 'F') && (SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.vlr_edad < 51)) {
-                SER834.DATOSV.push({ 'COD': '01', 'DESCRIP': consult_finalidad('1') });
+            if ((SER834A.SEXO == 'F') && (SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.vlr_edad < 51)) {
+                SER834A.DATOS.push({ 'COD': '01', 'DESCRIP': get_finalidadConsulta('1') });
             }
 
-            if (SER834.EDAD.unid_edad == 'D') {
-                SER834.DATOSV.push({ 'COD': '02', 'DESCRIP': consult_finalidad('2') });
+            if (SER834A.EDAD.unid_edad == 'D') {
+                SER834A.DATOS.push({ 'COD': '02', 'DESCRIP': get_finalidadConsulta('2') });
             }
 
-            if ((SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.vlr_edad < 61)) {
-                SER834.DATOSV.push({ 'COD': '03', 'DESCRIP': consult_finalidad('3') });
+            if ((SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.vlr_edad < 61)) {
+                SER834A.DATOS.push({ 'COD': '03', 'DESCRIP': get_finalidadConsulta('3') });
             }
 
-            if ((SER834.EDAD.unid_edad == 'D' || SER834.EDAD.unid_edad == 'M') || (SER834.EDAD.unid_edad == 'A' && SER834.EDAD.vlr_edad < 12)) {
-                if ((SER834.EDAD.unid_edad == 'D' || SER834.EDAD.unid_edad == 'M') || (SER834.EDAD.unid_edad == 'A' && SER834.EDAD.vlr_edad < 6)) {
-                    SER834.DATOSV.push({ 'COD': '04', 'DESCRIP': "PRIMERA INFANCIA" });
+            if ((SER834A.EDAD.unid_edad == 'D' || SER834A.EDAD.unid_edad == 'M') || (SER834A.EDAD.unid_edad == 'A' && SER834A.EDAD.vlr_edad < 12)) {
+                if ((SER834A.EDAD.unid_edad == 'D' || SER834A.EDAD.unid_edad == 'M') || (SER834A.EDAD.unid_edad == 'A' && SER834A.EDAD.vlr_edad < 6)) {
+                    SER834A.DATOS.push({ 'COD': '04', 'DESCRIP': "PRIMERA INFANCIA" });
                 } else {
-                    SER834.DATOSV.push({ 'COD': '04', 'DESCRIP': "INFANCIA" });
+                    SER834A.DATOS.push({ 'COD': '04', 'DESCRIP': "INFANCIA" });
                 }
             }
 
-            if ((SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 11 && SER834.EDAD.vlr_edad < 29)) {
-                if (SER834.EDAD.vlr_edad > 11 && SER834.EDAD.vlr_edad < 18) {
-                    SER834.DATOSV.push({ 'COD': '05', 'DESCRIP': "ADOLECENCIA" });
+            if ((SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 11 && SER834A.EDAD.vlr_edad < 29)) {
+                if (SER834A.EDAD.vlr_edad > 11 && SER834A.EDAD.vlr_edad < 18) {
+                    SER834A.DATOS.push({ 'COD': '05', 'DESCRIP': "ADOLECENCIA" });
                 } else {
-                    SER834.DATOSV.push({ 'COD': '05', 'DESCRIP': "JUVENTU" });
+                    SER834A.DATOS.push({ 'COD': '05', 'DESCRIP': "JUVENTU" });
                 }
             }
 
-            if ((SER834.SEXO == 'F') && (SER834.EDAD.unid_edad == 'A') && (SER834.EDAD.vlr_edad > 9 && SER834.EDAD.vlr_edad < 51)) {
-                SER834.DATOSV.push({ 'COD': '06', 'DESCRIP': consult_finalidad('6') });
+            if ((SER834A.SEXO == 'F') && (SER834A.EDAD.unid_edad == 'A') && (SER834A.EDAD.vlr_edad > 9 && SER834A.EDAD.vlr_edad < 51)) {
+                SER834A.DATOS.push({ 'COD': '06', 'DESCRIP': get_finalidadConsulta('6') });
             }
 
-            if (SER834.EDAD.unid_edad == 'A') {
-                if (SER834.EDAD.vlr_edad > 28 && SER834.EDAD.vlr_edad < 60) {
-                    SER834.DATOSV.push({ 'COD': '07', 'DESCRIP': "ADULTEZ" });
+            if (SER834A.EDAD.unid_edad == 'A') {
+                if (SER834A.EDAD.vlr_edad > 28 && SER834A.EDAD.vlr_edad < 60) {
+                    SER834A.DATOS.push({ 'COD': '07', 'DESCRIP': "ADULTEZ" });
                 }
 
-                if (SER834.EDAD.vlr_edad > 59) {
-                    SER834.DATOSV.push({ 'COD': '07', 'DESCRIP': "VEJEZ" });
+                if (SER834A.EDAD.vlr_edad > 59) {
+                    SER834A.DATOS.push({ 'COD': '07', 'DESCRIP': "VEJEZ" });
                 }
             }
 
-            SER834.DATOSV.push({ 'COD': '08', 'DESCRIP': consult_finalidad('8') });
+            SER834A.DATOS.push({ 'COD': '08', 'DESCRIP': get_finalidadConsulta('8') });
 
-            if (SER834.EDAD.unid_edad == 'A' && SER834.EDAD.vlr_edad > 17) {
-                SER834.DATOSV.push({ 'COD': '09', 'DESCRIP': consult_finalidad('9') });
+            if (SER834A.EDAD.unid_edad == 'A' && SER834A.EDAD.vlr_edad > 17) {
+                SER834A.DATOS.push({ 'COD': '09', 'DESCRIP': get_finalidadConsulta('9') });
             }
 
-            SER834.DATOSV.push({ 'COD': '10', 'DESCRIP': consult_finalidad('10') }, { 'COD': '11', 'DESCRIP': consult_finalidad('11') });
+            SER834A.DATOS.push({ 'COD': '10', 'DESCRIP': get_finalidadConsulta('10') }, { 'COD': '11', 'DESCRIP': get_finalidadConsulta('11') });
         }
     } else {
-        SER834.DATOSV = [
-            { 'COD': '01', 'DESCRIP': consult_finalidad('1') },
-            { 'COD': '02', 'DESCRIP': consult_finalidad('2') },
-            { 'COD': '03', 'DESCRIP': consult_finalidad('3') },
-            { 'COD': '04', 'DESCRIP': consult_finalidad('4') },
-            { 'COD': '05', 'DESCRIP': consult_finalidad('5') },
-            { 'COD': '06', 'DESCRIP': consult_finalidad('6') },
-            { 'COD': '07', 'DESCRIP': consult_finalidad('7') },
-            { 'COD': '08', 'DESCRIP': consult_finalidad('8') },
-            { 'COD': '09', 'DESCRIP': consult_finalidad('9') },
-            { 'COD': '10', 'DESCRIP': consult_finalidad('10') },
-            { 'COD': '11', 'DESCRIP': consult_finalidad('11') }
+        SER834A.DATOS = [
+            { 'COD': '01', 'DESCRIP': get_finalidadConsulta('1') },
+            { 'COD': '02', 'DESCRIP': get_finalidadConsulta('2') },
+            { 'COD': '03', 'DESCRIP': get_finalidadConsulta('3') },
+            { 'COD': '04', 'DESCRIP': get_finalidadConsulta('4') },
+            { 'COD': '05', 'DESCRIP': get_finalidadConsulta('5') },
+            { 'COD': '06', 'DESCRIP': get_finalidadConsulta('6') },
+            { 'COD': '07', 'DESCRIP': get_finalidadConsulta('7') },
+            { 'COD': '08', 'DESCRIP': get_finalidadConsulta('8') },
+            { 'COD': '09', 'DESCRIP': get_finalidadConsulta('9') },
+            { 'COD': '10', 'DESCRIP': get_finalidadConsulta('10') },
+            { 'COD': '11', 'DESCRIP': get_finalidadConsulta('11') }
         ]
 
     }
     POPUP({
-        array: SER834.DATOSV,
+        array: SER834A.DATOS,
         titulo: 'FINALIDAD DE LA CONSULTA',
         indices: [{
             id: 'COD',
@@ -258,18 +258,51 @@ async function SER834(data, esccallback, callback) {
     }, callback)
 }
 
+function SER818(data, esccallback, callback) {
+    var SER818 = {
+        SWMARCA: data.SWMARCA ? data.SWMARCA : false,
+        SWEVOL: data.SWEVOL ? data.SWEVOL : false,
+        DESDE: data.DESDE ? data.DESDE : false,
+        HASTA: data.HASTA ? data.HASTA : false
+    };
+    var datos_envio = datosEnvio()
+    datos_envio += SER818.SWMARCA + '|'
+    datos_envio += SER818.SWEVOL + '|'
+    datos_envio += SER818.DESDE + '|'
+    datos_envio += SER818.HASTA + '|'
+
+    let URL = get_url("APP/SALUD/SAL451-01.DLL");
+    postData({
+        datosh: datos_envio
+    }, URL)
+        .then((data) => {
+            data.PENDIENTES_FACT_HC.pop();
+            if (data.PENDIENTES_FACT_HC == '') {
+                jAlert({ titulo: 'Error ', mensaje: 'No hay registros de pendientes por facturar HC' }, _toggleNav);
+            } else {
+                POPUP({
+                    array: data.PENDIENTES_FACT_HC,
+                    titulo: 'CONSULTA DE ATENCIÓN MEDICA POR FECHA',
+                    callback_f: esccallback
+                }, callback)
+            }
+        }).catch(err => {
+            console.debug(err);
+        })
+}
+
 function SER830(data, esccallback, callback) {
     var SER830 = [];
     SER830 = [
-        { 'COD': '01', 'DESCRIP': consult_atiendProf('1') },
-        { 'COD': '02', 'DESCRIP': consult_atiendProf('2') },
-        { 'COD': '03', 'DESCRIP': consult_atiendProf('3') },
-        { 'COD': '04', 'DESCRIP': consult_atiendProf('4') },
-        { 'COD': '05', 'DESCRIP': consult_atiendProf('5') },
-        { 'COD': '06', 'DESCRIP': consult_atiendProf('6') },
-        { 'COD': '07', 'DESCRIP': consult_atiendProf('7') },
-        { 'COD': '08', 'DESCRIP': consult_atiendProf('8') },
-        { 'COD': '09', 'DESCRIP': consult_atiendProf('9') },
+        { 'COD': '1', 'DESCRIP': consult_atiendProf('1') },
+        { 'COD': '2', 'DESCRIP': consult_atiendProf('2') },
+        { 'COD': '3', 'DESCRIP': consult_atiendProf('3') },
+        { 'COD': '4', 'DESCRIP': consult_atiendProf('4') },
+        { 'COD': '5', 'DESCRIP': consult_atiendProf('5') },
+        { 'COD': '6', 'DESCRIP': consult_atiendProf('6') },
+        { 'COD': '7', 'DESCRIP': consult_atiendProf('7') },
+        { 'COD': '8', 'DESCRIP': consult_atiendProf('8') },
+        { 'COD': '9', 'DESCRIP': consult_atiendProf('9') },
         { 'COD': 'A', 'DESCRIP': consult_atiendProf('A') },
         { 'COD': 'B', 'DESCRIP': consult_atiendProf('B') },
         { 'COD': 'H', 'DESCRIP': consult_atiendProf('H') },
@@ -311,7 +344,6 @@ function SER822B(data, esccallback, callback) {
         }, callback)
     }
 }
-
 function TIPOSERVICIOS(data, esccallback, callback) {
     var TIPOSER = [
         { 'COD': '01', 'DESCRIP': 'CIRUGIAS' },
@@ -349,7 +381,7 @@ function TIPOSERVICIOS(data, esccallback, callback) {
 }
 /////////// FUNCIONES PARA VENTANAS SALUD//////////
 
-function consult_finalidad(codigo) {
+function get_finalidadConsulta(codigo) {
     var msj = false;
     switch (codigo) {
         case '0':
@@ -485,7 +517,7 @@ function SER825(callbackAtras, callbackSig, orden_w) {
     });
 }
 
-
+// REQUIERE ENVIAR ORDEN-W PARA DETERMINAR CUAL .DAT ABRIR DEL FD-SALUD, SI NO ENVIA ORDEN-W POR LINKAGE, ENVIE '1'
 function paciente_SER825(callbackAtras, callbackSig, orden_w) {
     _toggleF8([{ input: 'paciente', app: 'SER825', funct: (e) => { f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w) } },])
 
@@ -503,26 +535,29 @@ function paciente_SER825(callbackAtras, callbackSig, orden_w) {
             var id_historia = cerosIzq($('#paciente_SER825').val(), 15)
             $('#paciente_SER825').val(id_historia)
 
-            var datos_envio = datosEnvio()
-            datos_envio += id_historia
-            datos_envio += '|'
-            datos_envio += orden_w
-            datos_envio += '|'
-            let URL = get_url("APP/SALUD/SER825.DLL");
-            postData({
-                datosh: datos_envio
-            }, URL)
-                .then((data) => {
-                    validarFacturas_SER825(data, callbackAtras, callbackSig, orden_w);
-                })
-                .catch(error => {
-                    console.error(error)
-                    paciente_SER825(callbackAtras, callbackSig, orden_w)
-                });
-
+            llamado_ventana_SER825(id_historia, callbackAtras, callbackSig, orden_w)
         }
 
     )
+}
+
+function llamado_ventana_SER825(idHistoria, callbackAtras, callbackSig, orden_w) {
+    var datos_envio = datosEnvio()
+    datos_envio += idHistoria
+    datos_envio += '|'
+    datos_envio += orden_w
+    datos_envio += '|'
+    let URL = get_url("APP/SALUD/SER825.DLL");
+    postData({
+        datosh: datos_envio
+    }, URL)
+        .then((data) => {
+            validarFacturas_SER825(data, callbackAtras, callbackSig, orden_w);
+        })
+        .catch(error => {
+            console.error(error)
+            paciente_SER825(callbackAtras, callbackSig, orden_w)
+        });
 }
 
 function validarFacturas_SER825(data, callbackAtras, callbackSig, orden_w) {
@@ -549,7 +584,7 @@ function traerRegistroCompleto_SER825(llave, callbackAtras, callbackSig, orden_w
     var datos_envio = datosEnvio();
     datos_envio += llave
     datos_envio += '|'
-
+    console.log(datos_envio)
     let URL = get_url("APP/SALUD/SAL49.DLL");
 
     postData({
@@ -568,6 +603,7 @@ function f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w) {
     if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
         $('[data-bb-handler="main"]').click();
         parametros = {
+            dll: 'PACIENTES',
             valoresselect: ['Descripcion', 'Identificacion'],
             f8data: 'PACIENTES',
             columnas: [{
@@ -581,8 +617,7 @@ function f8Pacientes_SER825(e, callbackAtras, callbackSig, orden_w) {
             }],
             callback: data => {
                 console.debug(data);
-                $('#paciente_SER825').val(data.COD)
-                _enterInput($('#paciente_SER825'));
+                llamado_ventana_SER825(data.COD, callbackAtras, callbackSig, orden_w)
             },
             cancel: () => {
                 callbackAtras(callbackAtras)
