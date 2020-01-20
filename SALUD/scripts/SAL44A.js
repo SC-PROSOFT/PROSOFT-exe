@@ -368,19 +368,15 @@ function _validargrabado_SAL44A() {
     CON851P('04', _evaluartiposervicio_SAL44A, _grabar_SAL44A)
 }
 function _grabar_SAL44A() {
-    SAL44A.LLAVEFACT = SAL44A.SUCFACT +  SAL44A.CLFACT + SAL44A.NROW; 
+    SAL44A.LLAVEFACT = SAL44A.SUCFACT + SAL44A.CLFACT + SAL44A.NROW;
     console.log('ultimo', SAL44A.LLAVEFACT)
     if (SAL44A.PREFIJO == "A" || "P" || "T" || "B" || "D" || "F"
         || "G" || "H" || "I" || "J" || "K" || "L" || "M" || "N"
         || "O" || "Q" || "R" || "S" || "V" || "W" || "X" || "Y" || "Z") {
-        // let datos_envio = datosEnvio()
-        // datos_envio += SAL41.ADMINW + '|' +  SAL44A.CTAFACT + '|' + SAL44A.ANOFACT + SAL44A.MESFACT + SAL44A.DIAFACT
-        // console.debug(datos_envio);
-        // SolicitarDll({ datosh: datos_envio }, _dataINV020GA_41, get_url('APP/SALUD/INV020GA.DLL'));
         let datos_envio = datosEnvio() + '|' + SAL44A.CTAFACT + '|' + SAL44A.ANOFACT + SAL44A.MESFACT + SAL44A.DIAFACT + '|';
         SolicitarDll({ datosh: datos_envio }, data => {
             if (data.trim() == '00') {
-
+                _ultimavalidaciones_SAL44A(); 
             } else {
                 CON852(data[0], data[1], data[2], _toggleNav);
             }
@@ -391,19 +387,33 @@ function _grabar_SAL44A() {
         SolicitarDll({ datosh: datos_envio }, dato => {
             console.log(dato, 'INV020');
             if (dato[0].trim() == '00') {
-                
+                _ultimavalidaciones_SAL44A(); 
             }
             else {
                 CON852(dato[0], dato[1], dato[2], _toggleNav);
             }
         }, get_url('APP/SALUD/SAL020.DLL'));
+    }else{
+        _ultimavalidaciones_SAL44A(); 
     }
 }
-function _ultimavalidaciones_SAL44A(){
-    if($_NITUSU == '0830092718' || SAL44A.TIPO1COMP > 1){
-
-    }
-    else if(($_INVENTUSU == 'S') && (SAL44A.CLASE == '0' || SAL44A.MACRO_FACT == '1') && (SAL44A.CTR_FACT != '1')){
-
+function _ultimavalidaciones_SAL44A() {
+    if ($_NITUSU == '0830092718' || SAL44A.TIPO1COMP > 1) {
+        _toggleNav();
+    }else if (($_INVENTUSU == 'S') && (SAL44A.CLASE == '0' || SAL44A.MACRO_FACT == '1') && (SAL44A.CTR_FACT != '1')) {
+        SAL44A.SWRECAL = '0';
+        let datos_envio = datosEnvio() + '|' + SAL44A.LLAVEFACT + '|';
+        SolicitarDll({ datosh: datos_envio }, data => {
+            console.debug(data);
+            var date = data.split('|');
+            if (date[0].trim() == '00') {
+                _toggleNav();
+            }
+            else {
+                CON852(dato[0], dato[1], dato[2], _toggleNav);
+            }         
+        }, get_url('APP/SALUD/SAL030.DLL'));
+    }else{
+        _toggleNav();
     }
 }
