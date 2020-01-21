@@ -545,8 +545,8 @@ function buscar_consulta_externa() {
     }
     var datos_env = datosEnvio() + cerosIzq($_REG_PACI[0].cod_paci, 15) + '|' + fecha_lim_consul['ano'] + fecha_lim_consul['mes'] + fecha_lim_consul['dia'] + '|';
     SolicitarDll({
-            datosh: datos_env
-        },
+        datosh: datos_env
+    },
         function (data) {
 
             var res = data.split("|"),
@@ -578,11 +578,11 @@ function buscar_consulta_externa() {
                         // * 900475095 ips san fernando
 
                         if (([
-                                "892000401", "822007038", "900475095", "800175901", "19381427", "17306492",
-                                "31841010", "79152952", "72200727", "900030814", "900161116", "900424844",
-                                "74858598", "900988374", "19233740", "900264583", "900475095", "901146885",
-                                "900450008"
-                            ].filter(empresa => empresa == nit).length > 0) ||
+                            "892000401", "822007038", "900475095", "800175901", "19381427", "17306492",
+                            "31841010", "79152952", "72200727", "900030814", "900161116", "900424844",
+                            "74858598", "900988374", "19233740", "900264583", "900475095", "901146885",
+                            "900450008"
+                        ].filter(empresa => empresa == nit).length > 0) ||
                             (nit == "800162035" && prefijo == "08") ||
                             (nit == "892000458" && serv == "08") ||
                             (nit == "900565371" && serv == "09") ||
@@ -607,13 +607,13 @@ function buscar_consulta_externa() {
     }
 }
 
-function recalcularCenso_hosp(callback,atiende_prof) {
+function recalcularCenso_hosp(callback, atiende_prof) {
     var f = new Date();
     if (f.getHours() > 04 && f.getHours() < 20) {
         let URL = get_url("APP/" + "HICLIN/HC904A.DLL");
         postData({
-                datosh: datosEnvio() + (f.getFullYear() + 1) + "|" + 7+"|"+atiende_prof+"|"
-            }, URL)
+            datosh: datosEnvio() + (f.getFullYear() + 1) + "|" + 7 + "|" + atiende_prof + "|"
+        }, URL)
             .then(() => {
                 callback
             })
@@ -675,4 +675,51 @@ function consultar_detalles_historia(folio_dethc, cods_dethc, llave_dethc, callb
             plantillaError(res[0], res[1], res[2]);
         }
     }, get_url("APP/HICLIN/HCDETAL-ANT.DLL"));
+}
+
+function evaluarFNTriage(data) {
+    let PASOW = '';
+    switch (data.tecla.toUpperCase()) {
+        case 'F2':
+            PASOW = "1"; get_PacientesTriage(data.cancel, data.acept, data.caja, PASOW); break;
+        case 'F8':
+            PASOW = "2"; get_PacientesTriage(data.cancel, data.acept, data.caja, PASOW); break;
+        case 'F9'://IMPRESION
+            PASOW = "3"; get_PacientesTriage(data.cancel, data.acept, data.caja, PASOW); break;
+        case 'F10':
+            PASOW = "4"; get_PacientesTriage(data.cancel, data.acept, data.caja, PASOW); break;
+        default: break;
+    }
+}
+function get_PacientesTriage() {
+    let URL = get_url("APP/" + "CONTAB/CON818" + ".DLL");
+    postData({
+        datosh: datosEnvio() + localStorage['Usuario'] + "|"
+    }, URL)
+        .then((data) => {
+            loader("hide");
+            $_GRADONEG_7767 = data;
+            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+                _ventanaDatos({
+                    titulo: 'VENTANA DE GRADO DE NEGOCIOS',
+                    columnas: ["TIPO", "NOMBRE"],
+                    data: $_GRADONEG_7767.GRNEGOCIO,
+                    callback_esc: function () {
+                        $("#grdnegocio_110c").focus();
+                    },
+                    callback: function (data) {
+                        document.getElementById('grdnegocio_110c').value = data.TIPO;
+                        document.getElementById('grdnegociod_110c').value = data.NOMBRE;
+
+                        _enterInput('#grdnegocio_110c');
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+}
+function onPacientesTriageHC810() {
+
 }

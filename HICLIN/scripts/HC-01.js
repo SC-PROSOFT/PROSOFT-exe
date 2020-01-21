@@ -2413,7 +2413,7 @@ function _llenarDatosPag10() {
     var embar = consult_embar($DATOS_HC_TMP.embarazo_hc);
     var causa = consult_causa($DATOS_HC_TMP.causa_hc);
     var tipo_diag = consult_tipoDiagn($DATOS_HC_TMP.tipo_diag_hc);
-    var finalidad = consult_finalidad($DATOS_HC_TMP.finalidad_hc);
+    var finalidad = get_finalidadConsulta($DATOS_HC_TMP.finalidad_hc);
     var metodPlanif = consult_planifica($DATOS_HC_TMP.planifica_hc);
     var estad_salid = estad_salida($DATOS_HC_TMP.estado_sal_hc);
 
@@ -2559,7 +2559,7 @@ function validarTipoDiagnostico(data) {
         $('#tipo_diagn_hc_01').val(data.id + " - " + tipodiag);
 
         $DATOS_HC_TMP.finalidad_hc = "10";
-        var finalidad = consult_finalidad($DATOS_HC_TMP.finalidad_hc);
+        var finalidad = get_finalidadConsulta($DATOS_HC_TMP.finalidad_hc);
         $('#final_hc_01').val($DATOS_HC_TMP.finalidad_hc + " - " + finalidad);
 
 
