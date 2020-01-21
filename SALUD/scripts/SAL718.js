@@ -275,7 +275,7 @@ function evaluarCups718() {
 
 				_onrestricciones718({ invalid: SAL718.CUPS.ESTADO, seccion: 'CUPS' })
 			})
-			// .catch((error) => { console.debug(error) });
+		// .catch((error) => { console.debug(error) });
 	}
 }
 
@@ -443,15 +443,16 @@ function _validarCentroCost718() {
 		form: "#centrocosto718",
 		orden: '1'
 	},
-		function () {
-			let cis = document.getElementById('cis_718').style.display;
-			if (cis == '') { validarCis718(); } else { validarHl7718(); }
-		}, evaluarCostos718)
+	function () {
+		let cis = document.getElementById('cis_718').style.display;
+		if (cis == '') { validarCis718(); } else { validarHl7718(); }
+	}, evaluarCostos718)
 }
 
 function evaluarCostos718() {
 	let res;
-	SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim().substring(0,4);
+	$('#centrocosto_718').val().indexOf('*') == -1 ? $('#centrocosto_718').val('') : false;
+	SAL718.COSTO.COD = (document.getElementById('centrocosto_718').value).toString().trim().substring(0, 4);
 	if (typeof SAL718.COSTO.COD == "undefined" || SAL718.COSTO.COD == '' || isNaN(SAL718.COSTO.COD)) { CON851('03', '03', _validarCentroCost718(), 'error', 'error'); }
 	else {
 		res = $_costos718.filter(costo => costo.COD.padStart(4, '0') == SAL718.COSTO.COD.padStart(4, '0'));
@@ -459,7 +460,7 @@ function evaluarCostos718() {
 			CON851('03', '03', _validarCentroCost718(), 'error', 'error');
 		} else {
 			SAL718.COSTO = res[0];
-			if (res.length > 0) { SAL718.COSTO.ESTADO = '00'; SAL718.COSTO.DESCRIP = res[0].NOMBRE } else { SAL718.COSTO.ESTADO = '01'; }
+			if (res.length > 0) { SAL718.COSTO.ESTADO = '00'; SAL718.COSTO.DESCRIP = res[0].DESCRIP } else { SAL718.COSTO.ESTADO = '01'; }
 			SAL718.CUPS.COSTO = SAL718.COSTO.COD;
 			_onrestricciones718({ invalid: SAL718.COSTO.ESTADO, seccion: 'COSTO' })
 		}
@@ -841,6 +842,7 @@ function validarcodOficial718() {
 }
 
 function validarDivision718() {
+	$('#division1_718').val().indexOf('*') == -1 ? $('#division1_718').val('') : false;
 	validarInputs({
 		form: "#division1718",
 		orden: '1'
@@ -870,6 +872,7 @@ function evaluarDivision718() {
 }
 
 function validarDivision2718() {
+	
 	validarInputs({
 		form: "#division2718",
 		orden: '1'
@@ -879,6 +882,7 @@ function validarDivision2718() {
 }
 
 function evaluarDivision2718() {
+	$('#division2_718').val().indexOf('*') == -1 ? $('#division2_718').val('') : false;
 	SAL718.CUPS.DIV2 = document.getElementById('division2_718').value.toString().trim().toUpperCase().substring(0, 2);
 	if (typeof SAL718.CUPS.DIV2 == "undefined" || SAL718.CUPS.DIV2 == '') { CON851('03', '03', validarDivision2718(), 'error', 'error'); }
 	else {
@@ -1022,7 +1026,7 @@ function on_llenarFormCups718() {
 
 	document.getElementById('codgrupo_718').value = SAL718.GRUPOSER.COD + ' ' + SAL718.GRUPOSER.DESCRIP;
 	let ter = $_terceros718.filter(tercero => parseInt(tercero.COD) == parseInt(SAL718.CUPS.NIT_OTR))
-	console.debug(ter,'tercero.filter');
+	console.debug(ter, 'tercero.filter');
 	let plan = $_planCuentas718.filter(cuenta => cuenta.LLAVE_MAE.trim() == SAL718.CUPS.CTA_OTR.padStart(12, '0'))
 
 	let division1 = $_divisiones718.filter(div => div.COD.trim() == SAL718.CUPS.DIV1);
@@ -1046,9 +1050,10 @@ function on_llenarFormCups718() {
 		SAL718.CUPS.CIS == '' ? document.getElementById('actHl718').value = ' ' : document.getElementById('actHl718').value = SAL718.CUPS.CIS;
 	} else {
 		SAL718.CUPS.CIS == '' ? document.getElementById('cis718').value = ' ' : document.getElementById('cis718').value = SAL718.CUPS.CIS;
-		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('nitTercer_718').value = ' ' : document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR.trim();
-		SAL718.CUPS.NIT_OTR == '' ? document.getElementById('descripTercer_718').value = document.getElementById('descripTercer_718').value.padStart(10, '*') : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
+		SAL718.CUPS.NIT_OTR == '' || SAL718.CUPS.NIT_OTR == '0000000000' ? document.getElementById('nitTercer_718').value = ' ' : document.getElementById('nitTercer_718').value = SAL718.CUPS.NIT_OTR.trim();
+		SAL718.CUPS.NIT_OTR == '' || SAL718.CUPS.NIT_OTR == '0000000000' ? document.getElementById('descripTercer_718').value = document.getElementById('descripTercer_718').value.padStart(10, '*') : document.getElementById('descripTercer_718').value = ter[0].NOMBRE;
 	}
+
 	if (SAL718.CUPS.LLAVE_ALT[0] == '6') {
 		switch ($_USUA_GLOBAL[0].PUC.toString()) {
 			case '1': case '3':
@@ -1158,7 +1163,8 @@ function _onrestricciones718(params) {
 		case 'COSTO':
 			if (params.invalid == '01') { CON851('01', '01', _validarCentroCost718(), 'error', 'error'); }
 			else {
-				document.getElementById('centrocosto_718').value = SAL718.COSTO.COD + ' ' + SAL718.COSTO.NOMBRE; validarEdadMin718();
+				SAL718.COSTO.COD == '' ? document.getElementById('centrocosto_718').value = '' : document.getElementById('centrocosto_718').value = SAL718.COSTO.COD + ' ' + SAL718.COSTO.NOMBRE;
+				validarEdadMin718();
 			}
 			break;
 
