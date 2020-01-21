@@ -71,14 +71,21 @@ $(document).ready(function () {
 	_inputControl('reset'); _inputControl('disabled');
 	_toggleF8([{ input: 'unser', app: '451', funct: _ventanaUnser451 }]);
 	obtenerDatosCompletos({ nombreFd: 'UNSERV' }, (data) => {
-		$_unser451 = data.CODIGOS;
+		$_unser451 = data.UNSERV;
 		toastr.warning('Si digita "**" \n la consulta se hará en todas las unidades de servicio');
 		mascarasFecha451();
 		document.getElementById('fechadesde_451').value = moment().format('YYYY/MM/DD');
-		validarUnser451();
+		// validarUnser451();
+		FNF2SAL41_451();
 	}, 'ONLY')
 });
-
+//-------------------------Arreglo temporal F2 SAL41-------------------------//
+function FNF2SAL41_451(){
+	let { ipcRenderer } = require("electron");
+	ipcRenderer.send('another', 'SALUD/PAGINAS//SER880.html');
+	vector = ['on', 'Añadiendo paciente a Triage...']
+	_EventocrearSegventana(vector, validarUnser451);
+}
 //------------------------ Funciones FNF8 -----------------------------------//
 // F8 UNIDADES DE SERVICIO //
 function _ventanaUnser451(e) {
@@ -89,9 +96,9 @@ function _ventanaUnser451(e) {
 			data: $_unser451,
 			callback_esc: () => { validarUnser451() },
 			callback: (data) => {
-				SAL718.UNSER.COD = data.COD.toUpperCase(); SAL718.UNSER.DESCRIP = data.DESCRIP;
-				document.getElementById('unser_451').value = SAL718.GRUPOSER.COD + ' - ' + SAL718.GRUPOSER.DESCRIP;
-				validarFechaProceso451();
+				SAL451.UNSER.COD = data.COD.toUpperCase(); SAL451.UNSER.DESCRIP = data.DESCRIP;
+				document.getElementById('unser_451').value = SAL451.UNSER.COD + ' - ' + SAL451.UNSER.DESCRIP;
+				validarFechaDesde451();
 			}
 		});
 	}
@@ -116,9 +123,11 @@ function validarFechaDesde451() {
 		form: "#fechadesde451",
 		orden: '1'
 	}, validarUnser451, () => {
-		if (fechaDesdeMask._value > moment().format('YYYYMMDD')) {
+		if (parseInt(fechaDesdeMask._value) > parseInt(moment().format('YYYYMMDD'))) {
 			CON851('03', '03', validarFechaDesde451(), 'error', 'error');
-		} else validarFechaHasta451();
+		} else {
+			validarFechaHasta451(); SAL451.DESDE = parseInt(fechaDesdeMask._value);
+		}
 	})
 }
 function validarFechaHasta451() {
@@ -126,15 +135,45 @@ function validarFechaHasta451() {
 		form: "#fechahasta451",
 		orden: '1'
 	}, validarFechaDesde451, () => {
-		if (fechaHastaMask._value > fechaDesdeMask._value) CON851('03', '03', validarFechaHasta451(), 'error', 'error');
-		else consultarEventosPendientes451();
+		if (parseInt(fechaHastaMask._value) < parseInt(fechaDesdeMask._value)) {
+			CON851('03', '03', validarFechaHasta451(), 'error', 'error');
+		} else {
+			SAL451.HASTA = parseInt(fechaHastaMask._value);
+			consultarEventosPendientes451();
+		}
 	})
 }
 
 function consultarEventosPendientes451() {
+	CON851P('55', () => {
+		SAL451.SW_MARCA = 'N';
+		CON851P('55', () => { SAL451.SW_EVOL = 'N'; SAL451.SELECCION = PendientesFNF8_451() }, () => {
+			SAL451.SW_EVOL = 'S'; SAL451.SELECCION = PendientesFNF8_451()
+		})
+	}, () => {
+		SAL451.SW_MARCA = 'S';
+		CON851P('56', () => { SAL451.SW_EVOL = 'N'; SAL451.SELECCION = PendientesFNF8_451() }, () => {
+			SAL451.SW_EVOL = 'S'; SAL451.SELECCION = PendientesFNF8_451()
+		})
+	})
 
 }
 
-function ImpPendientesPorFacturar451(){
-	
+function PendientesFNF8_451() {
+	let retorno = '';
+	SER818({ SWMARCA: SAL451.SW_MARCA, SWEVOL: SAL451.SW_EVOL, DESDE: SAL451.DESDE, HASTA: SAL451.HASTA }, validarFechaDesde451, (data) => { retorno = data })
+	return retorno;
+}
+
+function ImpPendientesPorFacturar451() {
+
+}
+
+//Llama programa de apertura de facturacion
+function SER108() {
+	let { ipcRenderer } = require("electron");
+	ipcRenderer.send('another', 'SALUD/PAGINAS//SAL7411.html');
+	vector = ['on', 'Creando apertura de facturación...']
+	_EventocrearSegventana(vector, _Revisardato_41);
+
 }
