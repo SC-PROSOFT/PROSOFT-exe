@@ -58,6 +58,7 @@ $(document).ready(function () {
         { input: 'ciudad', app: '110c', funct: _ventanaciudad_SAL7767 },
         { input: 'lugar', app: '110c', funct: _ventanalugar_SAL7767 },
         { input: 'ocupacion', app: '110c', funct: _ventanaocupaciones_SAL7767 },
+        { input: 'pais', app: '110c', funct: _ventanapais_SAL7767 },
         { input: 'colegio', app: '110c', funct: _ventanacolegios_SAL7767 },
         { input: 'ciudadportab', app: '7767', funct: _ventanaportabilidad_SAL7767 },
         { input: 'eps', app: '110c', funct: _ventanaentidades_SAL7767 },
@@ -107,7 +108,7 @@ function _ventanaPacientes(e) {
             dll: 'PACIENTES',
             valoresselect: ['Nombre del paciente'],
             f8data: 'PACIENTES',
-            columnas: [{title: 'COD' }, { title: 'NOMBRE' }, { title: 'EPS' }],
+            columnas: [{ title: 'COD' }, { title: 'NOMBRE' }, { title: 'EPS' }],
             callback: (data) => {
                 // document.querySelector("#numero_110c").focus();
                 document.querySelector("#numero_110c").value = data.COD;
@@ -187,7 +188,7 @@ function _ventanapais_SAL7767(e) {
             },
             callback: function (data) {
                 document.getElementById('pais_110c').value = data.CODIGO;
-                document.getElementById('paisd_110c').value = data.DESCRIP;
+                // document.getElementById('paisd_110c').value = data.DESCRIP;
                 _enterInput('#pais_110c');
             }
         });
@@ -287,7 +288,7 @@ function _ventanamaestrodospaci_SAL7767(e) {
         };
         console.log(parametros)
         F8LITE(parametros);
-        
+
     }
 }
 
@@ -309,7 +310,7 @@ function _ventanapatologias_SAL7767(e) {
                         $("#patologiacronica_110c").focus();
                     },
                     callback: function (data) {
-                        document.getElementById('patologiacronica_110c').value(data.COD.trim());
+                        $('#patologiacronica_110c').val(data.COD.trim());
                         _enterInput('#patologiacronica_110c');
                     }
                 });
@@ -405,48 +406,48 @@ function _ventanaprofesionales_SAL7767(e) {
 
 var momentFormat = 'YYYY/MM/DD HH:mm';
 
-var momentMask = IMask($("#nacimiento_110c")[0], {
-    mask: Date,
-    pattern: momentFormat,
-    lazy: true,
-    min: new Date(1920, 0, 1),
-    max: new Date(2022, 0, 1),
+// var momentMask = IMask($("#nacimiento_110c")[0], {
+//     mask: Date,
+//     pattern: momentFormat,
+//     lazy: true,
+//     min: new Date(1920, 0, 1),
+//     max: new Date(2022, 0, 1),
 
-    format: function (date) {
-        return moment(date).format(momentFormat);
-    },
-    parse: function (str) {
-        return moment(str, momentFormat);
-    },
+//     format: function (date) {
+//         return moment(date).format(momentFormat);
+//     },
+//     parse: function (str) {
+//         return moment(str, momentFormat);
+//     },
 
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 1920,
-            to: 2022
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-});
+//     blocks: {
+//         YYYY: {
+//             mask: IMask.MaskedRange,
+//             from: 1920,
+//             to: 2022
+//         },
+//         MM: {
+//             mask: IMask.MaskedRange,
+//             from: 1,
+//             to: 12
+//         },
+//         DD: {
+//             mask: IMask.MaskedRange,
+//             from: 1,
+//             to: 31
+//         },
+//         HH: {
+//             mask: IMask.MaskedRange,
+//             from: 0,
+//             to: 23
+//         },
+//         mm: {
+//             mask: IMask.MaskedRange,
+//             from: 0,
+//             to: 59
+//         }
+//     }
+// });
 
 var $_FECHAACTUAL = moment().format('YYYYMMDD');
 $_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
@@ -692,7 +693,7 @@ function _validacionnovedad_7767() {
         LLAMADO_DLL({
             dato: [$_CODPACIW],
             callback: _dataSAL7767_01,
-            nombredll: 'SAL7767_01',
+            nombredll: 'SER110C_01',
             carpeta: 'SALUD'
         });
     }
@@ -829,7 +830,7 @@ function _editarpaci_7767() {
         LLAMADO_DLL({
             dato: [$_CODPACIW],
             callback: _dataSAL7767_02,
-            nombredll: 'SAL7767_02',
+            nombredll: 'SER110C_02',
             carpeta: 'SALUD'
         });
     }
@@ -1081,7 +1082,7 @@ function _validarlugarnaci_7767() {
         LLAMADO_DLL({
             dato: [$_LUGARIDPACIW],
             callback: _dataSAL7767_047,
-            nombredll: 'SAL7767_04',
+            nombredll: 'SER110C_04',
             carpeta: 'SALUD'
         });
     }
@@ -1180,7 +1181,7 @@ function _dataSAL7767_047(data) {
 //         LLAMADO_DLL({
 //             dato: [$_LUGARIDPACIW],
 //             callback: _dataSAL7767_044,
-//             nombredll: 'SAL7767_04',
+//             nombredll: 'SER110C_04',
 //             carpeta: 'SALUD'
 //         });
 //     }
@@ -1329,32 +1330,91 @@ function _validacionipssanfernando_7767() {
         ventalahuelladactilar_7767();
         //// PENDIENTE PREGUNTAR LO DE HUELLA 
     } else {
-        _evaluarfechanac_7767();
+        _evaluaranonac_7767();
     }
 }
 
-function _evaluarfechanac_7767() {
-    momentMask.updateValue();
+function _evaluaranonac_7767() {
+    
     validarInputs({
-        form: "#NACIEMIENTO_110C",
+        form: "#ANONAC_110C",
         orden: "1"
     },
-        function () {
-            _evaluarprimernombre_7767();
-        },
-        validarfecha_7767
+        () => { _evaluarprimernombre_7767(); },
+        () => {
+            $_ANONACIPACW = $('#anonac_110c').val();
+            if ($_ANONACIPACW.trim() == '') {
+                _evaluaranonac_7767();
+            } else if (($_ANONACIPACW > $_ANOACTUALW) || (parseInt($_ANONACIPACW) < 1900)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluaranonac_7767()
+            }else if ($.isNumeric($_ANONACIPACW)){
+                _evaluarmesnac_7767();
+            }else{
+                _evaluaranonac_7767(); 
+            }
+        }
+    )
+}
 
+function _evaluarmesnac_7767() {
+   
+    validarInputs({
+        form: "#MESNAC_110C",
+        orden: "1"
+    },
+        () => { _evaluaranonac_7767(); },
+        () => {
+            $_MESNACIPACW = $('#mesnac_110c').val();
+            if ($_MESNACIPACW.trim() == '') {
+                _evaluarmesnac_7767();
+            } else if ((parseInt($_MESNACIPACW) < 1) || (parseInt($_MESNACIPACW) > 12)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluarmesnac_7767();
+                
+            }else if ($.isNumeric($_MESNACIPACW )){
+                _evaluardianac_7767();
+            }else{
+                _evaluarmesnac_7767(); 
+            }
+        }
+    )
+}
+
+function _evaluardianac_7767() {
+   
+    validarInputs({
+        form: "#DIANAC_110C",
+        orden: "1"
+    },
+        () => { _evaluarmesnac_7767(); },
+        () => {
+            $_DIANACIPACW = $('#dianac_110c').val();
+            if ($_DIANACIPACW.trim() == '') {
+                _evaluardianac_7767();
+            } else if ((parseInt($_DIANACIPACW) < 1) || (parseInt($_DIANACIPACW) > 31)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluardianac_7767();
+                
+            }else if ($.isNumeric($_DIANACIPACW)){
+                $_NACIMPACIW = $_ANONACIPACW + $_MESNACIPACW + $_DIANACIPACW; 
+                _calcularedad_7767();
+                $("#edad_110c").val($_EDADPACW);
+                _validacionesedad7767();
+            }else{
+                _evaluardianac_7767(); 
+            }
+        }
     )
 }
 
 function validarfecha_7767() {
-    $_NACIMPACIW = momentMask.unmaskedValue;
-
+    // $_NACIMPACIW = momentMask.unmaskedValue;
     if ($_NACIMPACIW.trim() == '') {
-        _evaluarfechanac_7767();
+        _evaluaranonac_7767();
     } else if ($_NACIMPACIW > $_FECHAACTUAL) {
         CON851('37', '37', null, 'error', 'error');
-        _evaluarfechanac_7767();
+        _evaluaranonac_7767();
     } else {
         _calcularedad_7767();
         $("#edad_110c").val($_EDADPACW);
@@ -1483,7 +1543,7 @@ function pacienteexistente_7767() {
     LLAMADO_DLL({
         dato: [$_BUSQ['CEDULA']],
         callback: _dataSAL77672_03,
-        nombredll: 'SAL7767_03',
+        nombredll: 'SER110C_03',
         carpeta: 'SALUD'
     });
 }
@@ -1494,7 +1554,7 @@ function _evaluargruposang_7767() {
         orden: "1"
     },
         function () {
-            _evaluarfechanac_7767();
+            _evaluaranonac_7767();
         },
         _datogrpsang_7767
     )
@@ -1925,7 +1985,7 @@ function _datociudad_7767() {
         LLAMADO_DLL({
             dato: [$_CIUPACIW],
             callback: _dataSAL7767_04,
-            nombredll: 'SAL7767_04',
+            nombredll: 'SER110C_04',
             carpeta: 'SALUD'
         });
     }
@@ -1989,7 +2049,7 @@ function _mostrarpais_66717() {
     LLAMADO_DLL({
         dato: [$_PAISPACIW, $_ADMINW],
         callback: _dataSAL7767_05,
-        nombredll: 'SAL7767_05',
+        nombredll: 'SER110C_05',
         carpeta: 'SALUD'
     });
 }
@@ -2046,7 +2106,7 @@ function consultarocupacion_7767() {
     LLAMADO_DLL({
         dato: [$_OCUPPACIW],
         callback: _dataSAL7767_06,
-        nombredll: 'SAL7767_06',
+        nombredll: 'SER110C_06',
         carpeta: 'SALUD'
     });
 }
@@ -2248,7 +2308,7 @@ function _datoeducacion_7767() {
         LLAMADO_DLL({
             dato: [$_INSTITUTOPACIW],
             callback: _dataSAL7767_07,
-            nombredll: 'SAL7767_07',
+            nombredll: 'SER110C_07',
             carpeta: 'SALUD'
         });
     }
@@ -2549,7 +2609,7 @@ function _validarciudadaseg_7767() {
         LLAMADO_DLL({
             dato: [$_CIUDASEGPACIW],
             callback: _dataSAL7767_045,
-            nombredll: 'SAL7767_04',
+            nombredll: 'SER110C_04',
             carpeta: 'SALUD'
         });
     }
@@ -2598,7 +2658,6 @@ function _evaluarentidadafiliada_7767() {
 }
 
 function _datoentidadafiliado_7767() {
-
     $_EPSPACIW = $("#eps_110c").val();
     if ($_NOVEDAD7767 == '7') {
         $_ENTIFACTPACIW = $('#entidad_110c').val($_EPSPACIW);
@@ -2616,7 +2675,7 @@ function _datoentidadafiliado_7767() {
             LLAMADO_DLL({
                 dato: [$_EPSPACIW],
                 callback: _dataSAL7767_08,
-                nombredll: 'SAL7767_08',
+                nombredll: 'SER110C_08',
                 carpeta: 'SALUD'
             });
         }
@@ -2637,7 +2696,7 @@ function _datoentidadafiliado_7767() {
             LLAMADO_DLL({
                 dato: [$_EPSPACIW],
                 callback: _dataSAL7767_08,
-                nombredll: 'SAL7767_08',
+                nombredll: 'SER110C_08',
                 carpeta: 'SALUD'
             });
         }
@@ -3185,7 +3244,7 @@ function _datopatolcronic_7767() {
             LLAMADO_DLL({
                 dato: [$_PATOLCRONICPACIW],
                 callback: _dataSAL7767_09,
-                nombredll: 'SAL7767_09',
+                nombredll: 'SER110C_09',
                 carpeta: 'SALUD'
             });
         }
@@ -3275,7 +3334,7 @@ function _datoclasificacion_7767() {
                 LLAMADO_DLL({
                     dato: [$_CODCLASP],
                     callback: _dataSAL7767_10,
-                    nombredll: 'SAL7767_10',
+                    nombredll: 'SER110C_10',
                     carpeta: 'SALUD'
                 });
 
@@ -4051,7 +4110,7 @@ function _seleccionardiscapacidad_7767(discapacidad) {
         case '5':
         case '6':
             if ($_NOVEDAD7767 == '7') {
-                $("#entidad_110c").val('0');
+                // $("#entidad_110c").val('0');
                 _evaluarentidadfact_7767();
             } else {
                 _evaluarentidadfact_7767();
@@ -4086,7 +4145,7 @@ function _validacionentidadfact_7767() {
                 LLAMADO_DLL({
                     dato: [$_ENTIFACTPACIW],
                     callback: _dataSAL7767_11,
-                    nombredll: 'SAL7767_11',
+                    nombredll: 'SER110C_11',
                     carpeta: 'SALUD'
                 });
                 break;
@@ -4096,7 +4155,7 @@ function _validacionentidadfact_7767() {
                 LLAMADO_DLL({
                     dato: [$_ENTIFACTPACIW],
                     callback: _dataSAL7767_11,
-                    nombredll: 'SAL7767_11',
+                    nombredll: 'SER110C_11',
                     carpeta: 'SALUD'
                 });
                 break;
@@ -4104,61 +4163,71 @@ function _validacionentidadfact_7767() {
                 break;
         }
     } else {
-
-        // $_ENTIFACTPACIW = cerosIzq($('#entidad_110c').val(),10).trim();
+        console.log('ingrese fact')
         $_ENTIFACTPACIW = $("#entidad_110c").val();
         $_ENTIFACTPACIW = $_ENTIFACTPACIW.padStart(10, "0");
         $("#entidad_110c").val($_ENTIFACTPACIW);
 
         if ($_ENTIFACTPACIW == '0') {
+            console.log('0')
             $_ENTIFACTPACIW = $_NITENT;
             $_ENTIFACTPACIW = $_ENTIFACTPACIW.padStart(10, "0");
-            _leernitfact_7767();
+            _evaluarentidadfact_7767();
 
         } else if (($_ENTIFACTPACIW == '0') && ($_NITUSU != '0892000401') && ($_NITUSU != '830092718')) {
+            console.log('otro ingrese fact')
             $_DESCRIPENTIPACIW = '';
             $("#entidadd_110c").val($_DESCRIPENTIPACIW);
             _evaluarembarazoriesgo_7767();
             //////////////////
         } else {
+            console.log('consulta')
             LLAMADO_DLL({
                 dato: [$_ENTIFACTPACIW],
                 callback: _dataSAL7767_11,
-                nombredll: 'SAL7767_11',
+                nombredll: 'SER110C_11',
                 carpeta: 'SALUD'
             });
         }
     }
 }
 
-function _leernitfact_7767() {
-    if ($_ENTIFACTPACIW.trim() == '') {
-        $_DESCRIPENTIPACIW = '';
-        $("#entidadd_110c").val($_DESCRIPENTIPACIW);
-    } else {
-        LLAMADO_DLL({
-            dato: [$_ENTIFACTPACIW],
-            callback: _dataSAL7767_11,
-            nombredll: 'SAL7767_11',
-            carpeta: 'SALUD'
-        });
-    }
-}
+// function _leernitfact_7767() {
+//     console.log( '_leernitfact_7767')
+//     if ($_ENTIFACTPACIW.trim() == '') {
+//         $_DESCRIPENTIPACIW = '';
+//         $("#entidadd_110c").val($_DESCRIPENTIPACIW);
+//     } else {
+//         LLAMADO_DLL({
+//             dato: [$_ENTIFACTPACIW],
+//             callback: _dataSAL7767_11,
+//             nombredll: 'SER110C_11',
+//             carpeta: 'SALUD'
+//         });
+//     }
+// }
 
 function _dataSAL7767_11(data) {
+    console.log(data, 'respuesta nit fact')
+    console.log($_ENTIFACTPACIW,'$_ENTIFACTPACIW')
+    console.log($_NITFACTPACIW, '$_NITFACTPACIW')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_DESCRIPENTIPACIW = date[1].trim();
     if (swinvalid == "00") {
+        console.log( 'bien')
         $("#entidadd_110c").val($_DESCRIPENTIPACIW);
-        if (($_ENTIFACTPACIW > '0') && ($_ENTIFACTPACIW != $_NITFACTPACIW)) {
+        if (($_ENTIFACTPACIW > 0) && ($_ENTIFACTPACIW != $_NITFACTPACIW)) {
+            console.log( 'primer validacion')
             $_FECHANITPACIW = moment().format('YYYYMMDD');
             $("#fechasistd_110c").val($_FECHANITPACIW);
             _evaluarembarazoriesgo_7767();
         } else if ($_NITUSU == '0830092718') {
+            console.log( 'segunda validacion')
             _evaluarantecendentescancer();
         } else {
-            _leernitfact_7767();
+            console.log( 'tercer validacion')
+            _evaluarembarazoriesgo_7767();
         }
     } else if (swinvalid == "01") {
         CON851('01', '01', null, 'error', 'error');
@@ -4228,7 +4297,7 @@ function _datomedicofami_7767() {
             // cerosIzq($_MEDFAMIPACIW, 10).trim()
             dato: [$_MEDFAMIPACIW],
             callback: _dataSAL7767_12,
-            nombredll: 'SAL7767_12',
+            nombredll: 'SER110C_12',
             carpeta: 'SALUD'
         });
     }
@@ -4308,12 +4377,13 @@ function _consultademostrarinf_7767() {
     LLAMADO_DLL({
         dato: [$_CODPACIW],
         callback: _dataSAL7767_03,
-        nombredll: 'SAL7767_03',
+        nombredll: 'SER110C_03',
         carpeta: 'SALUD'
     });
 }
 
 function _dataSAL7767_03(data) {
+    console.log(data, 'llenado de datos')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_CODPACIW = date[1].trim();
@@ -4413,7 +4483,7 @@ function _dataSAL7767_03(data) {
         LLAMADO_DLL({
             dato: [$_CODPACIW],
             callback: _dataSAL7767_03_1,
-            nombredll: 'SAL7767_03_1',
+            nombredll: 'SER110C_03_1',
             carpeta: 'SALUD'
         });
     } else {
@@ -4458,10 +4528,16 @@ function _mostrardatos_7767() {
     $('#apellido2_110c').val($_APELLIDO2PACW);
     $('#nombre1_110c').val($_NOMBRE1PACW);
     $('#nombre2_110c').val($_NOMBRE2PACW);
+
     $_ANONACIMPACIW = $_NACIMPACIW.substring(0, 4);
     $_MESNACIMPACIW = $_NACIMPACIW.substring(4, 6);
     $_DIANACIMPACIW = $_NACIMPACIW.substring(6, 8);
-    $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
+    $('#anonac_110c').val($_ANONACIMPACIW);
+    $('#mesnac_110c').val($_MESNACIMPACIW);
+    $('#dianac_110c').val($_DIANACIMPACIW);
+    
+    
+    // $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
     $_EDADPACW = $_ANOACTUALW - $_ANONACIMPACIW;
     $('#edad_110c').val($_EDADPACW);
     $('#gruposang_110c').val($_GRPSANGPACIW);
@@ -4693,7 +4769,7 @@ function _grabardatos_7767() {
     LLAMADO_DLL({
         dato: [$_NOVEDAD7767, $_CODPACIW, $_TIPOPACIW, $_LUGARIDPACIW, $_APELLIDO1PACW, $_APELLIDO2PACW, $_NOMBRE1PACW, $_NOMBRE2PACW, $_NACIMPACIW, $_HEMOCLASPAC, $_SEXOPACIW, $_ESTCIVILPACIW, $_NIVESTUPACIW, $_ZONAPACIW, $_PADREPACIW, $_MADREPACIW, $_DIRPACIW, $_TELPACIW, $_CELPACIW, $_CIUPACIW, $_OCUPPACIW, $_PAISPACIW, $_ESTRATOPACIW, $_COPAGOPACIW, $_TIPOPACIW, $_INSTITUTOPACIW, $_ETNIAPACIW, $_COMUNIPACW, $_RESGUARPACIW, $_TIPOAFILPACIW, $_PORTABPACIW, $_CIUDASEGPACIW, $_EPSPACIW, $_CONTRATOPACIW, $_FECHAAFILPACIW, $_FICHAPACIW, $_CARNETPACIW, $_FECHAVENCEPACIW, $_FECHADEMPACIW, $_DEMANINDPACIW, $_IDCOTIPACIW, $_PARENTPACIW, $_VICTICONFLICPACIW, $_PROGEPSPACIW, $_ALTCOSPACIW, $_TUTELAPACIW, $_EMPRESAPACIW, $_CRONICOPACIW, $_PATOLCRONICPACIW, $_CLASIFPACIW, $_ACOMPAPACIW, $_TELACOMPACIW, $_CERTESTUDPACIW, $_PERIESTUDPACIW, $_ULTMAMOPACIW, $_CERTECONOPACIW, $_PERIECOPACIW, $_MULTICONSULPACIW, $_RESTRICCIONPACIW, $_VCMPACIW, $_DERECHOPACIW, $_OBSERVPACIW, $_DISCAPPACIW, $_EMBALTOPACIW, $_ENTIFACTPACIW, $_FECHANITPACIW, $_ANTCANCERPACIW, $_MEDFAMIPACIW, $_EMAILPACIW, $_OPERCREAPACIW, $_FECHACREAPACIW, $_HORACREAPACIW, $_OPERMODIFPACIW, $_FECHAMODIFPACIW, $_HORAMODIFPACIW],
         callback: _dataSAL7767_13,
-        nombredll: 'SAL7767_13',
+        nombredll: 'SER110C_13',
         carpeta: 'SALUD'
     });
 }
@@ -4721,7 +4797,7 @@ function _eliminarregistro() {
     LLAMADO_DLL({
         dato: [$_NOVEDAD7767, $_CODPACIW, $_TIPOPACIW, $_LUGARIDPACIW, $_APELLIDO1PACW, $_APELLIDO2PACW, $_NOMBRE1PACW, $_NOMBRE2PACW, $_NACIMPACIW, $_HEMOCLASPAC, $_SEXOPACIW, $_ESTCIVILPACIW, $_NIVESTUPACIW, $_ZONAPACIW, $_PADREPACIW, $_MADREPACIW, $_DIRPACIW, $_TELPACIW, $_CELPACIW, $_CIUPACIW, $_OCUPPACIW, $_PAISPACIW, $_ESTRATOPACIW, $_COPAGOPACIW, $_TIPOPACIW, $_INSTITUTOPACIW, $_ETNIAPACIW, $_COMUNIPACW, $_RESGUARPACIW, $_TIPOAFILPACIW, $_PORTABPACIW, $_CIUDASEGPACIW, $_EPSPACIW, $_CONTRATOPACIW, $_FECHAAFILPACIW, $_FICHAPACIW, $_CARNETPACIW, $_FECHAVENCEPACIW, $_FECHADEMPACIW, $_DEMANINDPACIW, $_IDCOTIPACIW, $_PARENTPACIW, $_VICTICONFLICPACIW, $_PROGEPSPACIW, $_ALTCOSPACIW, $_TUTELAPACIW, $_EMPRESAPACIW, $_CRONICOPACIW, $_PATOLCRONICPACIW, $_CLASIFPACIW, $_ACOMPAPACIW, $_TELACOMPACIW, $_CERTESTUDPACIW, $_PERIESTUDPACIW, $_ULTMAMOPACIW, $_CERTECONOPACIW, $_PERIECOPACIW, $_MULTICONSULPACIW, $_RESTRICCIONPACIW, $_VCMPACIW, $_DERECHOPACIW, $_OBSERVPACIW, $_DISCAPPACIW, $_EMBALTOPACIW, $_ENTIFACTPACIW, $_FECHANITPACIW, $_ANTCANCERPACIW, $_MEDFAMIPACIW, $_EMAILPACIW, $_OPERCREAPACIW, $_FECHACREAPACIW, $_HORACREAPACIW, $_OPERMODIFPACIW, $_FECHAMODIFPACIW, $_HORAMODIFPACIW],
         callback: _dataSAL7767_13,
-        nombredll: 'SAL7767_13',
+        nombredll: 'SER110C_13',
         carpeta: 'SALUD'
     });
 }
@@ -4777,8 +4853,6 @@ function _validacionantecedentes_7767() {
 
 
 function _calcularedad_7767() {
-
-    $_NACIMPACIW = momentMask.unmaskedValue;
 
     $_FECHAINIW = $_NACIMPACIW;
     $_FECHASISTEMA = moment().format('YYYYMMDD');
@@ -5010,7 +5084,7 @@ function _dataSAL77672_03(data) {
         LLAMADO_DLL({
             dato: [$_CODPACIW],
             callback: _dataSAL77672_03_1,
-            nombredll: 'SAL7767_03_1',
+            nombredll: 'SER110C_03_1',
             carpeta: 'SALUD'
         });
     } else {
@@ -5051,7 +5125,11 @@ function _mostrardatos2_7767() {
     $_ANONACIMPACIW = $_NACIMPACIW.substring(0, 4);
     $_MESNACIMPACIW = $_NACIMPACIW.substring(4, 6);
     $_DIANACIMPACIW = $_NACIMPACIW.substring(6, 8);
-    $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
+    $('#anonac_110c').val($_ANONACIMPACIW);
+    $('#mesnac_110c').val($_MESNACIMPACIW);
+    $('#dianac_110c').val($_DIANACIMPACIW);
+    
+    // $('#nacimiento_110c').val($_ANONACIMPACIW + '/' + $_MESNACIMPACIW + '/' + $_DIANACIMPACIW);
     $_EDADPACW = $_ANOACTUALW - $_ANONACIMPACIW;
     $('#edad_110c').val($_EDADPACW);
     $('#gruposang_110c').val($_GRPSANGPACIW);
