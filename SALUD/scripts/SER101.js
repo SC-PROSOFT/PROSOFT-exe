@@ -15,8 +15,19 @@ $(document).ready(function () {
         { input: 'contab', app: '711', funct: _ventanaContab }
 
     ]);
-
-    grupoServicio_711();
+    obtenerDatosCompletos({
+        nombreFd: 'GRUPO-SER'
+    }, function (data) {
+        arraygrpser = data.CODIGOS;
+        arraygrpser.pop()
+        obtenerDatosCompletos({
+            nombreFd: 'CTA-MAYOR'
+        }, function (data) {
+            arraycontab = data.MAESTROS;
+            arraycontab.pop()
+            CON850(_evaluarCON850);
+        }, 'OFF')
+    }, 'ON')     
 });
 
 
@@ -61,32 +72,32 @@ function _ventanaContab(e) {
     }
 }
 
-// llamado DLL GRUPO-SERVICIO
-function grupoServicio_711() {
-    data = [];
-    data.nombreFd = "GRUPO-SER";
-    data.busqueda = '';
-    obtenerDatosCompletos(data, function (data) {
-        arraygrpser = data.CODIGOS;
+// // llamado DLL GRUPO-SERVICIO
+// function grupoServicio_711() {
+//     data = [];
+//     data.nombreFd = "GRUPO-SER";
+//     data.busqueda = '';
+//     obtenerDatosCompletos(data, function (data) {
+//         arraygrpser = data.CODIGOS;
 
-        ctaMayor_711()
-    });
-    console.log(arraygrpser, 'datos llegada' )
+//         ctaMayor_711()
+//     });
+//     console.log(arraygrpser, 'datos llegada' )
 
-}
+// }
 
-// Llamado DLL CUENTA-MAYOR
-function ctaMayor_711() {
-    data = [];
-    data.nombreFd = "CTA-MAYOR";
-    data.busqueda = '';
-    obtenerDatosCompletos(data, function (data) {
-        arraycontab = data.MAESTROS;
-        arraycontab.pop();
+// // Llamado DLL CUENTA-MAYOR
+// function ctaMayor_711() {
+//     data = [];
+//     data.nombreFd = "CTA-MAYOR";
+//     data.busqueda = '';
+//     obtenerDatosCompletos(data, function (data) {
+//         arraycontab = data.MAESTROS;
+//         arraycontab.pop();
 
-    });
-    CON850(_evaluarCON850);
-}
+//     });
+//     CON850(_evaluarCON850);
+// }
 
 // NOVEDAD //
 function _evaluarCON850(novedad) {
@@ -180,7 +191,7 @@ function _llenarDatSer711(data) {
 }
 
 function eliminar711() {
-    var URL = get_url("APP/SALUD/SAL711-02.DLL");
+    var URL = get_url("APP/SALUD/SER101-01.DLL");
     var data = $_NovedSer711 + "|" + $CODG711;
     postData({
         datosh: datosEnvio() + data
@@ -260,15 +271,12 @@ function conContab_711() {
         function () {
             var valor = $('#contab_711').val()
             var busqueda = buscarCodContb(valor)
-            console.log('busqueda',busqueda); 
             switch (busqueda) {
                 case false:
-                    console.log('error'); 
                     CON851('01', '01', null, 'error', 'error');
                     conContab_711()
                     break;
                 default:
-                    console.log('pasa'); 
                     envioDat711()
                     break;
             }
@@ -282,9 +290,8 @@ function envioDat711() {
     var ingre711 = cerosIzq($('#ingre_clin711').val(), 3);
     var contab_711 = cerosIzq($('#contab_711').val(), 11);
 
-    var URL = get_url("APP/SALUD/SAL711-02.DLL");
+    var URL = get_url("APP/SALUD/SER101-01.DLL");
     var data = $_NovedSer711 + "|" + $CODG711 + "|" + descp711 + "|" + ingre711 + "|" + tercero + "|" + contab_711;
-    console.debug(data);
     postData({
         datosh: datosEnvio() + data
     }, URL)
@@ -305,9 +312,8 @@ function envioDat711() {
             },
                 function () {
                     _inputControl('reset');
-                    CON850(_evaluarCON850);
-
-                    console.log('fin del programa')
+                    // CON850(_evaluarCON850);
+                    _toggleNav();
                 });
         })
         .catch((error) => {
@@ -330,7 +336,6 @@ function buscarDescrip_711(data) {
 
 function buscarCodContb(data) {
     var retornar = false;
-    console.log(data,'buscar')
     for (var i in arraycontab) {
         var $CUENTA = arraycontab[i].CTA_MAY
         $CUENTA += arraycontab[i].SUB_CTA
