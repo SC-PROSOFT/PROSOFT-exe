@@ -7,7 +7,7 @@ var $_OTRSTAT = '00', $_APEL2TER2W = ' ', $_DESCRIPTER2W = ' ', $_NOMBRECLIW = '
     $_TELREF1TERCEW = '', $_RELREF1TERCEW = '', $_NOMREF2TERCEW = '', $_DIRREF2TERCEW = '', $_TELREF2TERCEW = '', $_RELREF2TERCEW = '', $_NOMREF3TERCEW = '',
     $_DIRREF3TERCEW = '', $_TELREF3TERCEW = '', $_RELREF3TERCEW = '', $_NOMTRABTERCEW = '', $_DIRTRABTERCEW = '', $_TELTRABTERCEW = '', $_CARTRABTERCEW = '',
     $_SUETRABTERCEW = '', $_ANTTRABTERCEW = '', $_FECHANACTERCEW = '', $_CIUEXPTERCEW = '', $_FECHAAFILTERCEW = '', $_EMBARGOTERCEW = '', $_ENTIDAFITERCEW = '', $_NOMBRETABLA = ''
-$_PAGOTERCEW = '00', $_CODZONAW = '', $_CODRUTAW = '', $_TIPOIDTERCEW = '', $_REGIVATERCEW = '', $_CALIFITERCEW = '', $_VENDTERCEW = '';
+    $_PAGOTERCEW = '00', $_CODZONAW = '', $_CODRUTAW = '', $_TIPOIDTERCEW = '', $_REGIVATERCEW = '', $_CALIFITERCEW = '', $_VENDTERCEW = '';
 var $_CODTERCEROLNK, $_NOMTERCEROLNK = '', $_FPAGOLNK, swinvalid;
 var CON110C = []; var tabla110C = [];
 
@@ -19,6 +19,9 @@ var porcentreten_110cMask = new IMask(document.getElementById('porcentreten_110c
 );
 var plazoUnitMask_110c = new IMask($('#plazo_110c')[0], { mask: Number, thousandsSeparator: ',' });
 
+var factventas_110cMask = new IMask(document.getElementById('factventas_con110c'),
+    { mask: Number, radix: '.', scale: 2, padFractionalZeros: true}
+);
 
 var $_FECHAACTUAL = moment().format('YYYYMMDD');
 $_ANOACTUALW = $_FECHAACTUAL.substring(0, 4);
@@ -66,13 +69,21 @@ $(document).ready(function () {
         { input: 'convenio', app: '110c', funct: _ventanaconvenioCON110C }
 
     ]);
-    obtenerDatosCompletos({ nombreFd: 'TERCEROS' }, _f8terceros)
+    obtenerDatosCompletos({
+        nombreFd: 'TERCEROS'
+    }, function (data) {
+        $_TERCEROS_CON110C = data.TERCEROS
+        $_TERCEROS_CON110C.pop()
+        obtenerDatosCompletos({
+            nombreFd: 'CIUDADES'
+        }, function (data) {
+            $_CIUDAD_CON110C = data.CIUDAD
+            $_TERCEROS_CON110C.pop()
+            _comenzaropccon110c();
+        }, 'OFF')
+    }, 'ON')
 })
-function _f8terceros(data) {
-    $_TERCEROS_CON110C = data.TERCEROS
-    $_TERCEROS_CON110C.pop()
-    _comenzaropccon110c();
-}
+
 
 ////////////////////////////////////F8////////////////////////////////
 
@@ -106,33 +117,21 @@ function _ventanatercerosCON110C(e) {
 }
 
 function _ventanaciudadesCON110C(e) {
-    var $_CIUDAD_CON110C = [];
-    let URL = get_url("APP/" + "CONTAB/CON809" + ".DLL");
-    postData({
-        datosh: datosEnvio() + localStorage['Usuario'] + "|"
-    }, URL)
-        .then((data) => {
-            loader("hide");
-            $_CIUDAD_CON110C = data;
-            if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
-                _ventanaDatos({
-                    titulo: "VENTANA DE CONSULTA DE CIUDADES",
-                    columnas: ["COD", "NOMBRE", "PAIS", "NOM_PAIS", "DEPART"],
-                    data: $_CIUDAD_CON110C.CIUDAD,
-                    callback_esc: function () {
-                        $("#ciudad_con110c").focus();
-                    },
-                    callback: function (data) {
-                        document.getElementById('ciudad_con110c').value = data.COD.trim();
-                        document.getElementById('ciudadd_con110c').value = data.NOMBRE;
-                        _enterInput('#ciudad_con110c');
-                    }
-                });
+    if (e.type == "keydown" && e.which == 119 || e.type == 'click') {
+        _ventanaDatos({
+            titulo: "VENTANA DE CONSULTA DE CIUDADES",
+            columnas: ["COD", "NOMBRE", "PAIS", "NOM_PAIS", "DEPART"],
+            data: $_CIUDAD_CON110C,
+            callback_esc: function () {
+                $("#ciudad_con110c").focus();
+            },
+            callback: function (data) {
+                document.getElementById('ciudad_con110c').value = data.COD.trim();
+                document.getElementById('ciudadd_con110c').value = data.NOMBRE;
+                _enterInput('#ciudad_con110c');
             }
-        })
-        .catch((error) => {
-            console.log(error)
         });
+    }
 }
 
 
@@ -363,6 +362,7 @@ function _ventanaconvenioCON110C(e) {
 /////////////////////////////// OPCION CON110C- MAESTRO DE TERCEROS //////////////////////////////////
 
 function _comenzaropccon110c() {
+
     // ACCEPT FECHA-ACT-CTL FROM DATE.
     // MOVE 20 TO SIG-ACT-CTL.
     $_SW9CON110C = '0';
@@ -570,7 +570,7 @@ function _datodv_con110c() {
             _evaluardatodv_con110c();
         }
         else {
-            _evaluardatocumpleaños_con110c();
+            _evaluarmescumpl_7767();
         }
     } else {
         _calculadigitoverificacion();
@@ -595,34 +595,86 @@ function _dataCON110C_04_110C(data) {
         CON851('9I', '9I', null, 'error', 'Error');
         _evaluardatodv_con110c();
     } else {
-        _evaluardatocumpleaños_con110c();
+        _evaluarmescumpl_7767();
     }
 
 }
 
-function _evaluardatocumpleaños_con110c() {
-    momentMask.updateValue();
+// function _evaluaranocumpl_110C() {
+
+//     validarInputs({
+//         form: "#ANO_CON110C",
+//         orden: "1"
+//     },
+//         () => { _evaluardatodv_con110c(); },
+//         () => {
+//             $_ANOCUMPTERC = $('#anocumpl_con110').val();
+//             if (($_ANOCUMPTERC.trim() == '') || (parseInt($_ANOCUMPTERC) == 0000)) {
+//                 _evaluarmescumpl_7767();
+//             } else if (($_ANOCUMPTERC > $_ANOACTUALW) || (parseInt($_ANOCUMPTERC) < 1900)) {
+//                 CON851('2D', '2D', null, 'error', 'error');
+//                 _evaluaranocumpl_110C();
+//             } else if ($.isNumeric($_ANOCUMPTERC)) {
+//                 _evaluarmescumpl_7767();
+//             } else {
+//                 _evaluaranocumpl_110C();
+//             }
+//         }
+//     )
+// }
+
+function _evaluarmescumpl_7767() {
     validarInputs({
-        form: '#CUMPLE_CON110C',
+        form: "#MES_CON110C",
         orden: "1"
     },
-        function () { _evaluardatodv_con110c(); },
-        _dato1apellido_con110c
+        () => { _evaluarmescumpl_7767(); },
+        () => {
+            $_MESCUMPTERC = $('#mescumpl_con110').val();
+            if (($_MESCUMPTERC.trim() == '') || (parseInt($_MESCUMPTERC) == 0)) {
+                _evaluardiacumpl_7767();
+            } else if ((parseInt($_MESCUMPTERC) < 1) || (parseInt($_MESCUMPTERC) > 12)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluarmescumpl_7767();
+
+            } else if ($.isNumeric($_MESCUMPTERC)) {
+                _evaluardiacumpl_7767();
+            } else {
+                _evaluarmescumpl_7767();
+            }
+        }
     )
 }
 
-function _dato1apellido_con110c() {
-    $_FECHACUMPTERCEW = momentMask.unmaskedValue;
-
-    if ($_FECHACUMPTERCEW.trim() == '') {
-        validacionesnombres();
-    } else {
-        validacionesnombres();
-    }
+function _evaluardiacumpl_7767() {
+    validarInputs({
+        form: "#DIA_CON110C",
+        orden: "1"
+    },
+        () => { _evaluarmescumpl_7767(); },
+        () => {
+            $_DIACUMPTERC = $('#diacumpl_con110').val();
+            if (($_DIACUMPTERC.trim() == '') || (parseInt($_DIACUMPTERC) == 0)) {
+                validacionesnombres();
+            } else if ((parseInt($_DIACUMPTERC) < 1) || (parseInt($_DIACUMPTERC) > 31)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluardiacumpl_7767();
+            } else if ($.isNumeric($_DIACUMPTERC)) {
+                validacionesnombres();
+            } else {
+                _evaluardiacumpl_7767();
+            }
+        }
+    )
 }
 
-function validacionesnombres() {
 
+function validacionesnombres() {
+    // $('#anonac_con110c').val('');
+    $_MESNACEMPL = $_MESCUMPTERC; 
+    $('#mesnac_con110c').val($_MESNACEMPL);
+    $_DIANACEMPL = $_DIACUMPTERC; 
+    $('#dianac_con110c').val($_DIANACEMPL);
     ///VALIDACIONES DE SALUD 
 
     if ((($_CODTERCEROW > '1000') && ($_CODTERCEROW < '100000000')) || (($_CODTERCEROW > '700000000') && ($_CODTERCEROW < '799000000')) || ($_CODTERCEROW > '1000000000')) {
@@ -649,7 +701,7 @@ function _evaluarnombreext_con110c() {
         form: '#PRAPELLIDO_CON110C',
         orden: "1"
     },
-        function () { _evaluardatocumpleaños_con110c(); },
+        function () { _evaluarmescumpl_7767(); },
         _aceptarextensionnom_con110c
     )
 
@@ -721,7 +773,7 @@ function _evaluardato1apellido_con110c(orden) {
         form: '#PRAPELLIDOS_CON110C',
         orden: orden
     },
-        function () { _evaluardatocumpleaños_con110c(); },
+        function () { _evaluarmescumpl_7767(); },
         _aceptarapellido1_con110c
     )
 }
@@ -1196,13 +1248,10 @@ function _evaluartipo_con110c() {
 }
 function _datotipo_con110c() {
     $_TIPOCUPOTERCEW = $('#cupo_con110c').val();
-    // if($_SWSALUD == '1'){
-    //     _evaluarentidad_con110c(); 
-    // }else{
-    // } 
+    console.log($_FACTORTERCEW, '$_FACTORTERCEW')
     if ($_NOVEDADCON110C == '7') {
-        $('#factventas_con110c').val('1');
-        $('#factventasd_con110c').val('0');
+        // $('#factventas_con110c').val(1);
+        // $('#factventasd_con110c').val('00');
         _evaluarfactorvent_con110c();
     } else {
         _evaluarfactorvent_con110c();
@@ -1224,34 +1273,35 @@ function _evaluarfactorvent_con110c() {
     )
 }
 function _datofactorvent_con110c() {
-    $_PORCICATER2W = $('#factventas_con110c').val();
-    if ((($_ACTTERCEW == '20') || ($_ACTTERCEW == '21')) && ($_PORCICATER2W < '1')) {
+    $_FACTORTERCEW = factventas_110cMask.unmaskedValue;
+    console.log($_FACTORTERCEW, '$_FACTORTERCEW')
+    if ((($_ACTTERCEW == '20') || ($_ACTTERCEW == '21')) && ($_FACTORTERCEW < '1')) {
         CON851('34', '34', null, 'error', 'error');
         _evaluarfactorvent_con110c();
     } else {
-        _evaluarfactorvent2_con110c();
+        _evaluarcuposmvm_con110c();
     }
 }
-function _evaluarfactorvent2_con110c() {
-    validarInputs({
-        form: '#FACTPORCET_CON110C',
-        orden: "1"
-    },
-        function () { _evaluarfactorvent_con110c(); },
-        _datofactorvent2_con110c
-    )
-}
-function _datofactorvent2_con110c() {
+// function _evaluarfactorvent2_con110c() {
+//     validarInputs({
+//         form: '#FACTPORCET_CON110C',
+//         orden: "1"
+//     },
+//         function () { _evaluarfactorvent_con110c(); },
+//         _datofactorvent2_con110c
+//     )
+// }
+// function _datofactorvent2_con110c() {
 
-    $_PORCRETTER2W = $('#factventasd_con110c').val();
-    _evaluarcuposmvm_con110c();
-}
+//     $_PORCRETTER2W = $('#factventasd_con110c').val();
+//     _evaluarcuposmvm_con110c();
+// }
 function _evaluarcuposmvm_con110c() {
     validarInputs({
         form: '#SMVM_CON110C',
         orden: "1"
     },
-        function () { _evaluarfactorvent2_con110c(); },
+        function () { _evaluarfactorvent_con110c(); },
         _datcupossmvm_con110c
     )
 }
@@ -2278,18 +2328,78 @@ function _evaluarantigempleador_con110c() {
         orden: "1"
     },
         function () { _evaluarsueldoempleador_con110c(); },
-        _evaluarfechanacempl_con110c
+        _evaluaranonacempl_con110c
     )
 }
-function _evaluarfechanacempl_con110c() {
+
+
+function _evaluaranonacempl_con110c() {
     validarInputs({
-        form: '#FECHANACIM_CON110C',
+        form: "#ANONACIM_CON110C",
         orden: "1"
     },
-        function () { _evaluarantigempleador_con110c(); },
-        _evaluarembargosempl_con110c
+        () => { _evaluarantigempleador_con110c(); },
+        () => {
+            $_ANONACEMPL = $('#anonac_con110c').val();
+            if (($_ANONACEMPL.trim() == '') || (parseInt($_ANONACEMPL) == 0000)) {
+                _evaluarmesnacempl_con110c()
+            } else if (($_ANONACEMPL > $_ANOACTUALW) || (parseInt($_ANONACEMPL) < 1900)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluaranonacempl_con110c()
+            } else if ($.isNumeric($_ANONACEMPL)) {
+                _evaluarmesnacempl_con110c()
+            } else {
+                _evaluaranonacempl_con110c();
+            }
+        }
     )
 }
+
+function _evaluarmesnacempl_con110c() {
+    validarInputs({
+        form: "#MESNACIM_CON110C",
+        orden: "1"
+    },
+        () => { _evaluaranonacempl_con110c(); },
+        () => {
+            $_MESNACEMPL = $('#mesnac_con110c').val();
+            if (($_MESNACEMPL.trim() == '') || (parseInt($_MESNACEMPL) == 0)) {
+                _evaluardianacempl_7767();
+            } else if ((parseInt($_MESNACEMPL) < 1) || (parseInt($_MESNACEMPL) > 12)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluarmesnacempl_con110c();
+
+            } else if ($.isNumeric($_MESNACEMPL)) {
+                _evaluardianacempl_7767();
+            } else {
+                _evaluarmesnacempl_con110c();
+            }
+        }
+    )
+}
+
+function _evaluardianacempl_7767() {
+    validarInputs({
+        form: "#DIANACIM_CON110C",
+        orden: "1"
+    },
+        () => { _evaluarmescumpl_7767(); },
+        () => {
+            $_DIANACEMPL = $('#dianac_con110c').val();
+            if (($_DIANACEMPL.trim() == '') || (parseInt($_DIANACEMPL) == 0)) {
+                _evaluarembargosempl_con110c();
+            } else if ((parseInt($_DIANACEMPL) < 1) || (parseInt($_DIANACEMPL) > 31)) {
+                CON851('2D', '2D', null, 'error', 'error');
+                _evaluardianacempl_7767();
+            } else if ($.isNumeric($_DIANACEMPL)) {
+                _evaluarembargosempl_con110c();
+            } else {
+                _evaluardianacempl_7767();
+            }
+        }
+    )
+}
+
 function _evaluarembargosempl_con110c() {
     validarInputs({
         form: '#EMBARGOS_CON110C',
@@ -2524,8 +2634,8 @@ function _direcciones(datos) {
         'item': datos.cells[0].textContent,
         'direccion': datos.cells[1].textContent,
         'telefono': datos.cells[2].textContent,
-        'ciudad' : datos.cells[3].textContent,
-        'barrio' : datos.cells[4].textContent
+        'ciudad': datos.cells[3].textContent,
+        'barrio': datos.cells[4].textContent
     }
     CON110C.tabla110C.push(a);
 
@@ -2557,7 +2667,6 @@ function _tabladiretxt() {
     let fecha = moment().format('YY/MM/DD HH:mm:ss:ms');
     let nombretxt = $_ADMINW + '_' + fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 8) + fecha.substring(9, 11) + fecha.substring(12, 14) + fecha.substring(15, 17) + fecha.substring(18, 20) + '.txt';
     CON110C['NOMBRETABLA'] = nombretxt;
-    console.debug(CON110C.NOMBRETABLA);
     let datosEnvio = {
         nombre_archivo: CON110C.NOMBRETABLA,
         tabla: CON110C.tabla110C,
@@ -2568,10 +2677,8 @@ function _tabladiretxt() {
         async: false,
         url: get_url('SALUD/paginas/_datostablas_SAL71G.php')
     }).done(function (data) {
-        console.debug(data);
         if (data == '00') {
-            let mensaje = '01';
-            console.debug(mensaje);
+            // let mensaje = '01';
             if ($_NOVEDADCON110C == '9') {
                 _eliminarregistro_con110c();
             }
@@ -2605,7 +2712,6 @@ function _grabardatos_con110c() {
     $_CARTRABTERCEW = $('#cargoempleador_110c').val();
     $_SUETRABTERCEW = $('#sueldoempleador_110c').val();
     $_ANTTRABTERCEW = $('#antigempleador_110c').val();
-    $_FECHANACTERCEW = $('#fechanac_con110c').val();
     $_CIUEXPTERCEW = $('#celempleador_con110c').val();
     $_FECHAAFILTERCEW = $('#fechaafil_con110c').val();
 
@@ -2620,11 +2726,11 @@ function _grabardatos_con110c() {
         $_FECHAMODTERCEW = ' ';
         $_ADMINMODTERCEW = ' ';
     }
-    $_FACTORTERCEW = $_PORCICATER2W.padStart(3, '0') + $_PORCRETTER2W.padEnd(2, '0');
-
-
+    $_FECHANACTERCEW = $_ANONACEMPL + $_MESNACEMPL + $_DIANACEMPL;  
+    
+    // $_FACTORTERCEW = $_PORCICATER2W.padStart(3, '') + $_PORCRETTER2W.padEnd(2, '0');
     LLAMADO_DLL({
-        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_FECHACUMPTERCEW, $_DESCRIPTERW, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW,
+        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_MESCUMPTERC, $_DIACUMPTERC, $_DESCRIPTERW, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW,
             $_OTROSTERCEW, $_CONTACTTERCEW, $_WEBTERCEW, $_CARGOTERCEW, $_EMAILTERCEW, $_ASESORTERCEW, $_TIPOCUPOTERCEW, $_FECHACRETERCEW, $_ADMINCRETERCEW, $_FECHAMODTERCEW, $_ADMINMODTERCEW, $_FACTORTERCEW, $_CUPOTERCEW, $_VENDTERCEW, $_PAGOTERCEW, $_PLAZOTERCEW, $_CODZONAW,
             $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW,
             $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW, $_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
@@ -2671,11 +2777,11 @@ function _eliminarregistro_con110c() {
         $_FECHAMODTERCEW = ' ';
         $_ADMINMODTERCEW = ' ';
     }
-    $_FACTORTERCEW = $_PORCICATER2W.padStart(3, '0') + $_PORCRETTER2W.padEnd(2, '0');
-
+    // $_FACTORTERCEW = $_PORCICATER2W.padStart(3, '0') + $_PORCRETTER2W.padEnd(2, '0');
+    $_FECHANACTERCEW = $_ANONACEMPL + $_MESNACEMPL + $_DIANACEMPL;  
 
     LLAMADO_DLL({
-        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_FECHACUMPTERCEW, $_DESCRIPTERW, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW,
+        dato: [$_NOVEDADCON110C, $_CODTERCEROW.padStart(10, '0'), $_DVTERCEROW, $_MESCUMPTERC, $_DIACUMPTERC, $_DESCRIPTERW, $_DIRECCTERCEW, $_CODCIUTERCEW, $_INDICTERCEW, $_TELTERCEW, $_NITTERCEW, $_TIPOIDTERCEW, $_ENTIDADTERCEW, $_ACTTERCEW, $_CONVENIOTERCEW, $_RUTTERCEW, $_NOMCOMERTERCEW,
             $_OTROSTERCEW, $_CONTACTTERCEW, $_WEBTERCEW, $_CARGOTERCEW, $_EMAILTERCEW, $_ASESORTERCEW, $_TIPOCUPOTERCEW, $_FECHACRETERCEW, $_ADMINCRETERCEW, $_FECHAMODTERCEW, $_ADMINMODTERCEW, $_FACTORTERCEW, $_CUPOTERCEW, $_VENDTERCEW, $_PAGOTERCEW, $_PLAZOTERCEW, $_CODZONAW,
             $_CODRUTAW, $_ORDENTERCEW, $_ACTIVICATERCEW, $_PORCICATERCEW, $_PORCRETTERCEW, $_GRADOTERCEW, $_CLASIFTERCEW, $_REGIVATERCEW, $_CALIFITERCEW, $_GRANCONTRIBTERCEW, $_RETETERCEW, $_VLRBASERETTERCEW, $_RETIVACOMPTERCEW, $_RETIVATERCEW, $_EXENTRETTERCEW, $_SEGUROTERCEW, $_DATACRETERCEW,
             $_ACUEPAGOTERCEW, $_CAPITADOTERCEW, $_NITCLITERCEW, $_RETICAVTERCEW, $_BLOQTERCEW, $_EXIVATERCEW, $_MARCATERCEW, $_EMPRESAVEHTERCEW, $_NROVEHTERCEW, $_PLACAVEHTERCEW, $_IDREPRETERCEW, $_NOMREPRETERCEW, $_EMAILREPTERCEW, $_IDTESORTERCEW, $_NOMTESORTERCEW, $_EMAILTESOTERCEW,
@@ -2687,7 +2793,7 @@ function _eliminarregistro_con110c() {
     });
 }
 function _dataCON110C_14(data) {
-    console.log(data, 'guardar')
+
     var date = data.split('|');
     swinvalid = date[0].trim();
     if (swinvalid == "00") {
@@ -2727,6 +2833,7 @@ function _consultadatos_con110c() {
 }
 
 function _dataCON110C_02(data) {
+    console.log(data, 'mostrar')
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_CODTERCEROW = date[1].trim();
@@ -2762,12 +2869,10 @@ function _dataCON110C_02(data) {
     $_FECHAMODTERCEW = date[30].trim();
     $_ADMINMODTERCEW = date[31].trim();
     $_FACTORTERCEW = date[32].trim();
-    $_PORCICATER2W = $_FACTORTERCEW.substring(0, 3);
-    $_PORCRETTER2W = $_FACTORTERCEW.substring(3, 5);
-
+    // $_PORCICATER2W = $_FACTORTERCEW.substring(0, 3);
+    // $_PORCRETTER2W = $_FACTORTERCEW.substring(3, 5);
     $_CUPOTERCEW = date[33].trim();
     $_VENDTERCEW = date[34].trim();
-
     $_PAGOTERCEW = date[35].trim();
     $_PLAZOTERCEW = date[36].trim();
     $_CODZONAW = date[37].trim();
@@ -2776,7 +2881,6 @@ function _dataCON110C_02(data) {
     $_DESCRIPRUTAW = date[40].trim();
     $_ORDENTERCEW = date[41].trim();
     $_ACTIVICATERCEW = date[42].trim();
-
     $_PORCICATERCEW = date[43].trim();
     $_PORCRETTERCEW = date[44].trim();
     $_GRADOTERCEW = date[45].trim();
@@ -2815,6 +2919,7 @@ function _dataCON110C_02(data) {
 }
 
 function _dataCON110C_03(data) {
+   
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_NROVEHTERCEW = date[1].trim();
@@ -2895,15 +3000,16 @@ function _mostrardatos_con110c() {
 
     $('#codclien_con110c').val($_CODTERCEROW);
     $('#dv_con110c').val($_DVTERCEROW);
-    $_AÑOCUMPLETERCEW = $_FECHACUMPTERCEW.substring(0, 4);
     $_DIACUMPLETERCEW = $_FECHACUMPTERCEW.substring(4, 6);
     $_MESCUMPLETERCEW = $_FECHACUMPTERCEW.substring(6, 8);
-    $('#cumple_con110').val($_DIACUMPLETERCEW + '/' + $_MESCUMPLETERCEW + '/' + $_AÑOCUMPLETERCEW);
+    $('#mescumpl_con110').val($_DIACUMPLETERCEW);
+    $('#diacumpl_con110').val($_MESCUMPLETERCEW);
     $('#nombres_con110c').val($_DESCRIPTERW);
     $('#direcc_con110c').val($_DIRECCTERCEW);
     $('#ciudad_con110c').val($_CODCIUTERCEW);
     $('#ciudadd_con110c').val($_DESCRIPCIUTERW);
     $('#ind_con110c').val($_INDICTERCEW);
+    $_TELTERCEW = $_TELTERCEW.replace(/^0+/, ''); 
     $('#tel_con110c').val($_TELTERCEW);
     $('#cc_con110c').val($_NITTERCEW);
     $('#tipoident_con110c').val($_TIPOIDTERCEW);
@@ -2913,6 +3019,7 @@ function _mostrardatos_con110c() {
     $('#actividadd_con110c').val($_DESCRIPACTTERW);
     $('#convenio_con110c').val($_CONVENIOTERCEW);
     // $('#conveniod_con110c').val();
+    $('#rut_110c').val($_RUTTERCEW);
     $('#nomcom_con110c').val($_NOMCOMERTERCEW);
     $('#datos_con110c').val($_OTROSTERCEW);
     $('#contact_con110c').val($_CONTACTTERCEW);
@@ -2922,40 +3029,47 @@ function _mostrardatos_con110c() {
     $('#email_con110c').val($_EMAILTERCEW);
     $('#asesor_con110c').val($_ASESORTERCEW);
     $('#cupo_con110c').val($_TIPOCUPOTERCEW);
-    $_ANOCRETERCEW = $_FECHACRETERCEW.substring(0, 4);
-    $_MESCRETERCEW = $_FECHACRETERCEW.substring(4, 6);
-    $_DIACRETERCEW = $_FECHACRETERCEW.substring(6, 8);
+    $_ANOCRETERCEW = $_FECHACRETERCEW.substring(0, 2);
+    $_MESCRETERCEW = $_FECHACRETERCEW.substring(2, 4);
+    $_DIACRETERCEW = $_FECHACRETERCEW.substring(4, 6);
     $('#creado_110c').val($_ANOCRETERCEW + '/' + $_MESCRETERCEW + '/' + $_DIACRETERCEW);
     $('#creadod_110c').val($_ADMINCRETERCEW);
-    $_ANOMODTERCEW = $_FECHAMODTERCEW.substring(0, 4);
-    $_MESMODTERCEW = $_FECHAMODTERCEW.substring(4, 6);
-    $_DIAMODTERCEW = $_FECHAMODTERCEW.substring(6, 8);
+    $_ANOMODTERCEW = $_FECHAMODTERCEW.substring(0, 2);
+    $_MESMODTERCEW = $_FECHAMODTERCEW.substring(2, 4);
+    $_DIAMODTERCEW = $_FECHAMODTERCEW.substring(4, 6);
     $('#modificado_110c').val($_ANOMODTERCEW + '/' + $_MESMODTERCEW + '/' + $_DIAMODTERCEW);
     $('#modificadod_103').val($_ADMINMODTERCEW);
 
-    $('#factventas_con110c').val($_PORCICATER2W);
-    $('#factventasd_con110c').val($_PORCRETTER2W);
+    factventas_110cMask.typedValue = $_FACTORTERCEW;
+    console.log($_FACTORTERCEW, '$_FACTORTERCEW')
+    // $('#factventas_con110c').val($_FACTORTERCEW);
+    // $('#factventasd_con110c').val($_PORCRETTER2W);
     $('#smvm_con110c').val($_CUPOTERCEW);
 
     $('#vendedor_con110').val($_VENDTERCEW);
     $('#formapago_110c').val($_PAGOTERCEW);
-    // $('#plazo_110c').val($_PLAZOTERCEW);
     plazoUnitMask_110c.typedValue = $_PLAZOTERCEW;
     $('#zona_110c').val($_CODZONAW);
-    $('#zonad_110c').val($_DESCRIPZONAW);
+    if ($_DESCRIPZONAW == '1') {
+        $_DESCRIPZONAW = '';
+        $('#zonad_110c').val($_DESCRIPZONAW);
+    } else {
+        $('#zonad_110c').val($_DESCRIPZONAW);
+    }
     $('#ruta_110c').val($_CODRUTAW);
-    $('#rutad_110c').val($_DESCRIPRUTAW);
-
+    if ($_DESCRIPRUTAW == '2') {
+        $_DESCRIPRUTAW = '';
+        $('#rutad_110c').val($_DESCRIPRUTAW);
+    } else {
+        $('#rutad_110c').val($_DESCRIPRUTAW);
+    }
     $('#orden_110c').val($_ORDENTERCEW);
     $('#actica_110c').val($_ACTIVICATERCEW);
-    // $('#porcetica_110c').val($_PORCICATERCEW);
     porcentica_110cMask.typedValue = $_PORCICATERCEW;
-    // $('#porcentreten_110c').val($_PORCRETTERCEW);
     porcentreten_110cMask.typedValue = $_PORCRETTERCEW;
     $('#grdnegocio_110c').val($_GRADOTERCEW);
     $('#grdnegociod_110c').val($_DESCRIPGRADTERW);
     $('#clasifclien_110c').val($_CLASIFTERCEW);
-
     $('#iva_110c').val($_REGIVATERCEW);
     $('#calif_110c').val($_CALIFITERCEW);
     $('#contribuyente_con110c').val($_GRANCONTRIBTERCEW);
@@ -2972,19 +3086,16 @@ function _mostrardatos_con110c() {
     $('#icav_con110c').val($_RETICAVTERCEW);
     $('#bloquearvend_con110c').val($_BLOQTERCEW);
     $('#excluiriva_con110c').val($_EXIVATERCEW);
-
     $('#marca_con110c').val($_MARCATERCEW);
     $('#empresa_con110c').val($_EMPRESAVEHTERCEW);
     $('#numero_con110c').val($_NROVEHTERCEW);
     $('#placa_con110c').val($_PLACAVEHTERCEW);
-
     $('#replegal_con110c').val($_IDREPRETERCEW);
     $('#nombrelegal_con110c').val($_NOMREPRETERCEW);
     $('#emailemp_con110c').val($_EMAILREPTERCEW);
     $('#tesorero_con110c').val($_IDTESORTERCEW);
     $('#nombreteso_con110c').val($_NOMTESORTERCEW);
     $('#emailteso_con110c').val($_EMAILTESOTERCEW);
-
     $('#nombreref1_110c').val($_NOMREF1TERCEW);
     $('#dirref1_110c').val($_DIRREF1TERCEW);
     $('#telref1_110c').val($_TELREF1TERCEW);
@@ -3003,17 +3114,19 @@ function _mostrardatos_con110c() {
     $('#cargoempleador_110c').val($_CARTRABTERCEW);
     $('#sueldoempleador_110c').val($_SUETRABTERCEW);
     $('#antigempleador_110c').val($_ANTTRABTERCEW);
-    $_ANONACTERCEW = $_FECHANACTERCEW.substring(0, 4);
-    $_MESNACTERCEW = $_FECHANACTERCEW.substring(4, 6);
-    $_DIANACTERCEW = $_FECHANACTERCEW.substring(6, 8);
-    $('#fechanac_con110c').val($_ANONACTERCEW + '/' + $_MESNACTERCEW + '/' + $_DIANACTERCEW);
+    $_ANONACEMPL = $_FECHANACTERCEW.substring(0, 4);
+    $_MESNACEMPL = $_FECHANACTERCEW.substring(4, 6);
+    $_DIANACEMPL = $_FECHANACTERCEW.substring(6, 8);
+    $('#anonac_con110c').val($_ANONACEMPL);
+    $('#mesnac_con110c').val($_MESNACEMPL);
+    $('#dianac_con110c').val($_DIANACEMPL);
     $('#embargos_con110c').val($_EMBARGOTERCEW);
     $('#celempleador_con110c').val($_CIUEXPTERCEW);
     $('#entidadafil_con110c').val($_ENTIDAFITERCEW);
-    $_ANOAFILTERCEW = $_FECHANACTERCEW.substring(0, 4);
-    $_MESAFILTERCEW = $_FECHANACTERCEW.substring(4, 6);
-    $_DIAAFILTERCEW = $_FECHANACTERCEW.substring(6, 8);
-    $('#fechaafil_con110c').val($_ANOAFILTERCEW + '/' + $_MESAFILTERCEW + '/' + $_DIAAFILTERCEW);
+    // $_ANOAFILTERCEW = $_FECHANACTERCEW.substring(0, 4);
+    // $_MESAFILTERCEW = $_FECHANACTERCEW.substring(4, 6);
+    // $_DIAAFILTERCEW = $_FECHANACTERCEW.substring(6, 8);
+    // $('#fechaafil_con110c').val($_ANOAFILTERCEW + '/' + $_MESAFILTERCEW + '/' + $_DIAAFILTERCEW);
 
     var cont = 0;
     for (var i = 0; i < $_DIRECCI_CON110C.length; i++) {
@@ -3050,50 +3163,3 @@ function _retiroregistro_con110c() {
 
 
 
-/////////////////////// MASCARAS ///////////////////////////
-
-
-var momentFormatcumple = 'YYYY/MM/DD HH:mm';
-
-var momentMask = IMask($("#cumple_con110")[0], {
-    mask: Date,
-    pattern: momentFormatcumple,
-    lazy: true,
-    min: new Date(1890, 0, 1),
-    max: new Date(2019, 0, 1),
-
-    format: function (date) {
-        return moment(date).format(momentFormatcumple);
-    },
-    parse: function (str) {
-        return moment(str, momentFormatcumple);
-    },
-
-    blocks: {
-        YYYY: {
-            mask: IMask.MaskedRange,
-            from: 1920,
-            to: 2020
-        },
-        MM: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 12
-        },
-        DD: {
-            mask: IMask.MaskedRange,
-            from: 1,
-            to: 31
-        },
-        HH: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 23
-        },
-        mm: {
-            mask: IMask.MaskedRange,
-            from: 0,
-            to: 59
-        }
-    }
-});

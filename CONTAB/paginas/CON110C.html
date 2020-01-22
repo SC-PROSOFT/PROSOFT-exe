@@ -71,9 +71,17 @@
                                     <div class="col-md-4 col-sm-4 col-xs-6">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Cumpleaños</label>
-                                            <div class="input-group col-md-9 col-sm-9 col-xs-12" id="CUMPLE_CON110C">
-                                                <input id="cumple_con110" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="10" data-orden="1" placeholder="AAAA/MM/DD">
+                                            <!-- <div class="input-group col-md-3 col-sm-9 col-xs-12" id="ANO_CON110C">
+                                                <input id="anocumpl_con110" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="4" data-orden="1" placeholder="AAAA">
+                                            </div> -->
+                                            <div class="input-group col-md-3 col-sm-9 col-xs-12" id="MES_CON110C">
+                                                <input id="mescumpl_con110" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="2" data-orden="1" placeholder="MM">
+                                            </div>
+                                            <div class="input-group col-md-3 col-sm-9 col-xs-12" id="DIA_CON110C">
+                                                <input id="diacumpl_con110" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="2" data-orden="1" placeholder="DD">
                                             </div>
                                         </div>
                                     </div>
@@ -87,7 +95,7 @@
                                             <label class="col-md-4 col-sm-6 col-xs-12">Nombre</label>
                                             <div class="input-group col-md-10 col-sm-8 col-xs-12" id="PRAPELLIDO_CON110C">
                                                 <input id="nombres_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength=50 data-orden="1">
+                                                    maxlength=50 data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +120,7 @@
                                             <label class="col-md-3 col-sm-6 col-xs-12">Direccion</label>
                                             <div class="input-group col-md-9 col-sm-9 col-xs-12" id="DIRECC_CON110C">
                                                 <input id="direcc_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="25" data-orden="1">
+                                                    maxlength="25" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -230,7 +238,7 @@
                                             <label class="col-md-7 col-sm-5 col-xs-12">Presento RUT</label>
                                             <div class="input-group col-md-7 col-sm-7 col-xs-12" id="RUT_110C">
                                                 <input id="rut_110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="1" data-orden="1" placeholder="N/S">
+                                                    maxlength="1" data-orden="1" placeholder="N/S" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -239,7 +247,7 @@
                                             <label class="col-md-5 col-sm-5 col-xs-12">Nombre comercial</label>
                                             <div class="input-group col-md-7 col-sm-7 col-xs-12" id="NOMCOM_CON110C">
                                                 <input id="nomcom_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="25" data-orden="1">
+                                                    maxlength="25" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -252,7 +260,7 @@
                                             <label class="col-md-3 col-sm-6 col-xs-12">Otros datos</label>
                                             <div class="input-group col-md-9 col-sm-9 col-xs-12" id="DATOS_CON110C">
                                                 <input id="datos_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="45" data-orden="1">
+                                                    maxlength="45" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -261,7 +269,7 @@
                                             <label class="col-md-3 col-sm-6 col-xs-12">Contacto</label>
                                             <div class="input-group col-md-9 col-sm-9 col-xs-12" id="CONTACT_CON110C">
                                                 <input id="contact_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="25" data-orden="1">
+                                                    maxlength="25" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -270,7 +278,7 @@
                                             <label class="col-md-3 col-sm-6 col-xs-12">Web</label>
                                             <div class="input-group col-md-9 col-sm-9 col-xs-12" id="WEB_CON110C">
                                                 <input id="web_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="25" data-orden="1">
+                                                    maxlength="25" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -282,7 +290,7 @@
                                             <label class="col-md-4 col-sm-6 col-xs-12">Cargo contacto</label>
                                             <div class="input-group col-md-9 col-sm-9 col-xs-12" id="CARGO_CON110C">
                                                 <input id="cargo_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="25" data-orden="1">
+                                                    maxlength="25" data-orden="1" onkeyup="this.value = this.value.toUpperCase();">
                                             </div>
                                         </div>
                                     </div>
@@ -291,7 +299,7 @@
                                             <label class="col-md-5 col-sm-6 col-xs-12">Ult. fact</label>
                                             <div class="input-group col-md-9 col-sm-9 col-xs-12" id="ULTFACT_CON110C">
                                                 <input id="ultfact_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="25" data-orden="1">
+                                                    maxlength="25" data-orden="1" >
                                             </div>
                                         </div>
                                     </div>
@@ -375,14 +383,14 @@
                                     <div class="col-md-3 col-sm-3 col-xs-6">
                                         <div class="inline-inputs">
                                             <label class="col-md-6 col-sm-6 col-xs-12">Factor ventas</label>
-                                            <div class="input-group col-md-3 col-sm-2 col-xs-12" id="FACTVENTAS_CON110C">
+                                            <div class="input-group col-md-5 col-sm-2 col-xs-12" id="FACTVENTAS_CON110C">
                                                 <input id="factventas_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="3" data-orden="1">
-                                            </div>
-                                            <div class="input-group col-md-3 col-sm-2 col-xs-12" id="FACTPORCET_CON110C">
-                                                <input id="factventasd_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                                     maxlength="2" data-orden="1">
                                             </div>
+                                            <!-- <div class="input-group col-md-3 col-sm-2 col-xs-12" id="FACTPORCET_CON110C">
+                                                <input id="factventasd_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                    maxlength="2" data-orden="1">
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-4 col-xs-6">
@@ -1081,10 +1089,18 @@
                                     </div>
                                     <div class="col-md-6 col-sm-8 col-xs-5">
                                         <div class="inline-inputs">
-                                            <label class="col-md-4 col-sm-4 col-xs-12">Fecha Nacimiento</label>
-                                            <div class="input-group col-md-8 col-sm-8 col-xs-12" id="FECHANACIM_CON110C">
-                                                <input id="fechanac_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
-                                                    maxlength="10" data-orden="1">
+                                            <label class="col-md-3 col-sm-4 col-xs-12">Fecha Nacimiento</label>
+                                            <div class="input-group col-md-6 col-sm-8 col-xs-12" id="ANONACIM_CON110C">
+                                                <input id="anonac_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                data-orden="1">
+                                            </div>
+                                            <div class="input-group col-md-3 col-sm-8 col-xs-12" id="MESNACIM_CON110C">
+                                                <input id="mesnac_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                data-orden="1">
+                                            </div>
+                                            <div class="input-group col-md-3 col-sm-8 col-xs-12" id="DIANACIM_CON110C">
+                                                <input id="dianac_con110c" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                                data-orden="1">
                                             </div>
                                         </div>
                                     </div>
