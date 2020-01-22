@@ -129,7 +129,7 @@ function _datosSer712(data) {
 
 // ELIMINAR REGISTRO
 function _eliminaDatos712() {
-    var URL = get_url("APP/SALUD/SAL712-02.DLL");
+    var URL = get_url("APP/SALUD/SER106.DLL");
     var data = $_NovedSer712 + "|" + $_CODIGOTARF712;
     postData({
         datosh: datosEnvio() + data
@@ -173,7 +173,7 @@ function detalle712() {
 function envioDatSer712() {
     var desc712 = espaciosDer($('#descripSer712').val(), 25)
 
-    var URL = get_url("APP/SALUD/SAL712-02.DLL");
+    var URL = get_url("APP/SALUD/SER106.DLL");
     var data = $_NovedSer712 + "|" + $_CODIGOTARF712 + "|" + desc712;
     console.debug(data);
     postData({
@@ -195,8 +195,8 @@ function envioDatSer712() {
                 mensaje: msj
             },
                 function () {
+                    _inputControl('reset');
                     _toggleNav();
-                    console.log('fin del programa')
                 });
         })
         .catch((error) => {
