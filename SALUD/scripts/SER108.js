@@ -61,8 +61,8 @@ function _ventanaFacturacion(e) {
             columnas: [{ title: 'COD' }, { title: 'FECHA_ING' }, { title: 'DESCRIP' }, { title: 'NOM_PAC' }, { title: 'CONVENIO' }, { title: 'ESTADO' }],
             callback: (data) => {
                 console.log('data', data)
-                $_NROW  = data.COD; 
-                $_NROW = $_NROW.substring(1,7)
+                $_NROW = data.COD;
+                $_NROW = $_NROW.substring(1, 7)
                 $('#factura_108').val($_NROW);
                 _enterInput('#factura_108');
             },
@@ -512,40 +512,6 @@ function _evaluarprefijo(data) {
     $("#prefijo_108").val(data.COD + " - " + data.DESCRIP);
 }
 
-
-// function _subfacturas() {   ////FILTRO DE FACTURAS ///////////
-//     console.log('subfacturas'); 
-//     var $_FACTURACION_108 = [];
-//     let URL = get_url("APP/" + "SALUD/SER808" + ".DLL");
-//     postData({
-//         datosh: datosEnvio() + localStorage['Usuario'] + "|"
-//     }, URL)
-//         .then((data) => {
-//             loader("hide");
-//             $_FACTURACION_108 = data;
-//          
-//             $.each($_FACTURACION_108.NUMERACION, function (key, value) {
-
-//                 if (value['COD'].substring(0, 1) == 'A') {
-//                     $_facturas_A.push(value);
-//                  
-//                 }
-//                 else if (value['COD'].substring(0, 1) == 'P') {
-//                     $_facturas_P.push(value);
-//                     
-//                 }
-//                 else if (value['COD'].substring(0, 1) == 'T') {
-//                     $_facturas_T.push(value);
-//               
-//                 }
-//             });
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//         });
-// }
-
-
 function _infoSER108_03() {
     LLAMADO_DLL({
         dato: [$_PREFIJOW],
@@ -652,12 +618,7 @@ function _validarfactura() {
         _evaluarfactura();
     }
     else {
-        // LLAMADO_DLL({
-        //     dato: [$_LLAVEW],
-        //     callback: _dataSER108_04,
-        //     nombredll: 'SER108-04',
-        //     carpeta: 'SALUD'
-        // })
+
         LLAMADO_DLL({
             dato: [$_LLAVEW],
             callback: _dataSER108_04,
@@ -702,12 +663,7 @@ function _validarCON007_01() {
         else {
             $("#factura_108").val($_NUMEROCTL);
             $_LLAVEW = $_PREFIJOW + $_NROW;
-            // LLAMADO_DLL({
-            //     dato: [$_LLAVEW],
-            //     callback: _dataSER108_04,
-            //     nombredll: 'SER108-04',
-            //     carpeta: 'SALUD'
-            // })
+
             LLAMADO_DLL({
                 dato: [$_LLAVEW],
                 callback: _dataSER108_04,
@@ -827,6 +783,7 @@ function _validarnit() {
 }
 
 function _dataSER108_05(data) {
+    console.log(data, 'nit')
     var date = data.split("|");
     var swinvalid = date[0];
     $_DESCRIPTER = date[2];
@@ -882,24 +839,24 @@ function _creartercero_7411() {
 
 
 function _validarfacturaparticular() {
-    if (($_PUCUSU == "4") || ($_PUCUSU == "6")) {
-        if ($_NITW == "9999") {
-            $_OPSEGU = "IS41PA";
-            LLAMADO_DLL({
-                dato: [$_OPSEGU],
-                callback: _dataCON904_03,
-                nombredll: 'CON904',
-                carpeta: 'CONTAB'
-            })
-        }
+    console.log('validarfacturaparticular')
+    if ((($_PUCUSU == "4") || ($_PUCUSU == "6")) && ($_NITW == "9999")) {
+        $_OPSEGU = "IS41PA";
+        LLAMADO_DLL({
+            dato: [$_OPSEGU],
+            callback: _dataCON904_03,
+            nombredll: 'CON904',
+            carpeta: 'CONTAB'
+        })
     }
     else {
+        console.log('_evaluarconvenio_SAL7411')
         _evaluarconvenio_SAL7411();
     }
 }
 
 function _dataCON904_03(data) {
-
+    console.log(data, 'con904')
     date = data.split("|");
     if (date[4] == "00") {
         _evaluarconvenio_SAL7411();
@@ -922,6 +879,7 @@ function _evaluarconvenio_SAL7411() {
 function _validarconvenio() {
     $_CONVENIOW = $("#convenio_108").val();
     if ($_CONVENIOTER != $_CONVENIOW) {
+        console.log('diferente')
         $_OPSEGU = "IS41F"
         LLAMADO_DLL({
             dato: [$_ADMINW, $_OPSEGU],
@@ -3529,7 +3487,7 @@ function _reliquidarcomprob_7411() {
 function obtenerComprobantes(arrCompr) {
     let comprobantes = '';
     for (let i = 0; i < arrCompr.length; i++) {
-        if (arrCompr[i].SUCURSAL.trim() !='') {
+        if (arrCompr[i].SUCURSAL.trim() != '') {
             comprobantes += (`<tr><td >${arrCompr[i].SUCURSAL}</td>` + `<td >${arrCompr[i].CLFACT}</td>` + `<td >${arrCompr[i].NROFACT}</td>` + `<td >${arrCompr[i].FECHAFAT}</td></tr>`);
         }
     }
