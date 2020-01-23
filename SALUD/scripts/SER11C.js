@@ -80,7 +80,7 @@ function validacionescoddivision_71C() {
         LLAMADO_DLL({
             dato: [$codigo71C],
             callback: _dataconsultacoddiv_71C,
-            nombredll: 'SAL71C-01',
+            nombredll: 'SER11C-01',
             carpeta: 'SALUD'
         });
     }
@@ -337,7 +337,7 @@ function _envioDatSer71C() {
     LLAMADO_DLL({
         dato: [$_NovedSer71C, $codigo71C, $desc71C, $procedm71C, $laborat71C, $imagen71C, $servicios71C, $consulta71C, $patologia71C, $pyp71C, $medicamn71C],
         callback: _validargrabaropcion,
-        nombredll: 'SAL71C-02',
+        nombredll: 'SER11C-02',
         carpeta: 'SALUD'
     })
 }
@@ -393,7 +393,7 @@ function _eliminaDatos71C() {
     LLAMADO_DLL({
         dato: [$_NovedSer71C, $codigo71C, $desc71C, $procedm71C, $laborat71C, $imagen71C, $servicios71C, $consulta71C, $patologia71C, $pyp71C, $medicamn71C],
         callback: _validargrabaropcion,
-        nombredll: 'SAL71C-02',
+        nombredll: 'SER11C-02',
         carpeta: 'SALUD'
     })
 }
