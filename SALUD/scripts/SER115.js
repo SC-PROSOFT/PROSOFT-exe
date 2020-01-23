@@ -48,10 +48,10 @@ $(document).ready(function () {
                 }, function (data) {
                     $_ART_71G = data.ARTICULOS;
                     CON850(_evaluarCON850);
-                })
+                }, 'OFF')
             })
         })
-    })
+    }, 'ON')
 });
 
 function _ventanatarifas71G(e) {
@@ -254,7 +254,7 @@ function _validarcups_71G() {
         LLAMADO_DLL({
             dato: [$grupos71G],
             callback: _dataconsultacups_71G,
-            nombredll: 'SAL713-04',
+            nombredll: 'SER102-04',
             carpeta: 'SALUD'
         });
 
@@ -295,7 +295,7 @@ function _validargrupos_71G() {
         LLAMADO_DLL({
             dato: [$llavecod71G],
             callback: _datavalidarcups_71G,
-            nombredll: 'SAL713-03',
+            nombredll: 'SER102-03',
             carpeta: 'SALUD'
         });
     }
@@ -328,7 +328,7 @@ function _leerpaquete_71G() {
 
     postData({
         datosh: datosEnvio() + $llavepaquete + '|'
-    }, get_url("APP/SALUD/SAL71G-01.DLL"))
+    }, get_url("APP/SALUD/SER115-01.DLL"))
         .then((data) => {
 
             $_PAQINT = data['PAQINTEGRAL'];
@@ -478,7 +478,7 @@ function _validarartcups_71G() {
         LLAMADO_DLL({
             dato: [$codigoartcups_71G],
             callback: _validarcupsart_71G,
-            nombredll: 'SAL713-03',
+            nombredll: 'SER102-03',
             carpeta: 'SALUD'
         });
     }
@@ -720,7 +720,7 @@ function _eliminardatos_71G() {
     LLAMADO_DLL({
         dato: [$_Novedad71G, $llavepaquete, $observaciones71G, $valor71G, SAL71G.NOMBRETABLA],
         callback: _grabaropcion,
-        nombredll: 'SAL71G-02',
+        nombredll: 'SER115-02',
         carpeta: 'SALUD'
     });
 }
@@ -739,7 +739,7 @@ function _grabardatos_71G() {
     LLAMADO_DLL({
         dato: [$_Novedad71G, $llavepaquete, $observaciones71G, $valor71G, SAL71G.NOMBRETABLA],
         callback: _grabaropcion,
-        nombredll: 'SAL71G-02',
+        nombredll: 'SER115-02',
         carpeta: 'SALUD'
     });
 }
