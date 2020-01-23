@@ -577,162 +577,367 @@
               "Id": "0272",
               "Descripcion": "Procesos contables NIIFS",
               "Opc-segu": "C272",
+              "Tipo": "MULTI",
               "Sub": [
                 {
                   "Id": "02721",
-                  "Descripcion": "Extraer movimiento local",
-                  "Opc-segu": "C2721",
-                  "Tipo": "POWER",
-                  "Params": [
+                  "Descripcion": "Procesos contables NIIFS",
+                  "Opc-segu": "C272",
+                  "Sub": [
                     {
-                      "formulario": "CON2721N",
-                      "dll": "CONTAB\\CON2721N.dll"
+                      "Id": "027212",
+                      "Descripcion": "Extraer movimiento local",
+                      "Opc-segu": "C2721",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2721N",
+                          "dll": "CONTAB\\CON2721N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027212",
+                      "Descripcion": "Nota de bancos",
+                      "Opc-segu": "C2722",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2722N",
+                          "dll": "CONTAB\\CON2722N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027213",
+                      "Descripcion": "Nota de cartera",
+                      "Opc-segu": "C2723",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2723N",
+                          "dll": "CONTAB\\CON2723N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027214",
+                      "Descripcion": "Nota propiedad planta y eq",
+                      "Opc-segu": "C2724",
+                      "Seg-w": [
+                        "1",
+                        "3",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON595N",
+                          "dll": "CONTAB\\CON595N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027215",
+                      "Descripcion": "Nota reclasificaciones",
+                      "Opc-segu": "C2725",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2725N",
+                          "dll": "CONTAB\\CON2725N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027216",
+                      "Descripcion": "Nota NIIF",
+                      "Opc-segu": "C2726",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON005N",
+                          "dll": "CONTAB\\CON005N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027217",
+                      "Descripcion": "Correccion comprobantes",
+                      "Opc-segu": "C2727",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON020N",
+                          "dll": "CONTAB\\CON020N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027218",
+                      "Descripcion": "Impresion comprobantes",
+                      "Opc-segu": "C2728",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "FAC172N",
+                          "dll": "CONTAB\\FAC172N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "027219",
+                      "Descripcion": "Validacion comprobantes",
+                      "Opc-segu": "C2729",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON010N",
+                          "dll": "CONTAB\\CON010N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "02721A",
+                      "Descripcion": "Anular lotes de movimiento",
+                      "Opc-segu": "C272A",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON272A",
+                          "dll": "CONTAB\\CON272A.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "02721B",
+                      "Descripcion": "Trasladar saldos NIIF",
+                      "Opc-segu": "C272B",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON790",
+                          "dll": "CONTAB\\CON790.dll"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "Id": "02722",
-                  "Descripcion": "Nota de bancos",
-                  "Opc-segu": "C2722",
-                  "Tipo": "POWER",
-                  "Params": [
+                  "Descripcion": "Procesos contables NIIFS",
+                  "Opc-segu": "C272",
+                  "Sub": [
                     {
-                      "formulario": "CON2722N",
-                      "dll": "CONTAB\\CON2722N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02723",
-                  "Descripcion": "Nota de cartera",
-                  "Opc-segu": "C2723",
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027221",
+                      "Descripcion": "Extraer movimiento local",
+                      "Opc-segu": "C2721",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2721N",
+                          "dll": "CONTAB\\CON2721N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON2723N",
-                      "dll": "CONTAB\\CON2723N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02724",
-                  "Descripcion": "Nota propiedad planta y eq",
-                  "Opc-segu": "C2724",
-                  "Seg-w": [
-                    "1",
-                    "3",
-                    "7",
-                    "8"
-                  ],
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027222",
+                      "Descripcion": "Nota de bancos",
+                      "Opc-segu": "C2722",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2722N",
+                          "dll": "CONTAB\\CON2722N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON595N",
-                      "dll": "CONTAB\\CON595N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02725",
-                  "Descripcion": "Nota reclasificaciones",
-                  "Opc-segu": "C2725",
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027223",
+                      "Descripcion": "Nota de cartera",
+                      "Opc-segu": "C2723",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2723N",
+                          "dll": "CONTAB\\CON2723N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON2725N",
-                      "dll": "CONTAB\\CON2725N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02726",
-                  "Descripcion": "Nota NIIF",
-                  "Opc-segu": "C2726",
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027224",
+                      "Descripcion": "Nota propiedad planta y eq",
+                      "Opc-segu": "C2724",
+                      "Seg-w": [
+                        "1",
+                        "3",
+                        "7",
+                        "8"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON595N",
+                          "dll": "CONTAB\\CON595N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON005N",
-                      "dll": "CONTAB\\CON005N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02727",
-                  "Descripcion": "Correccion comprobantes",
-                  "Opc-segu": "C2727",
-                  "Seg-w": [
-                    "1",
-                    "2"
-                  ],
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027225",
+                      "Descripcion": "Nota reclasificaciones",
+                      "Opc-segu": "C2725",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON2725N",
+                          "dll": "CONTAB\\CON2725N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON020N",
-                      "dll": "CONTAB\\CON020N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02728",
-                  "Descripcion": "Impresion comprobantes",
-                  "Opc-segu": "C2728",
-                  "Seg-w": [
-                    "1",
-                    "2"
-                  ],
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027226",
+                      "Descripcion": "Nota NIIF",
+                      "Opc-segu": "C2726",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON005N",
+                          "dll": "CONTAB\\CON005N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "FAC172N",
-                      "dll": "CONTAB\\FAC172N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "02729",
-                  "Descripcion": "Validacion comprobantes",
-                  "Opc-segu": "C2729",
-                  "Seg-w": [
-                    "1",
-                    "2"
-                  ],
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027227",
+                      "Descripcion": "Correccion comprobantes",
+                      "Opc-segu": "C2727",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON020N",
+                          "dll": "CONTAB\\CON020N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON010N",
-                      "dll": "CONTAB\\CON010N.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "0272A",
-                  "Descripcion": "Anular lotes de movimiento",
-                  "Opc-segu": "C272A",
-                  "Seg-w": [
-                    "1",
-                    "2"
-                  ],
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027228",
+                      "Descripcion": "Impresion comprobantes",
+                      "Opc-segu": "C2728",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "FAC172N",
+                          "dll": "CONTAB\\FAC172N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON272A",
-                      "dll": "CONTAB\\CON272A.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "0272B",
-                  "Descripcion": "Trasladar saldos NIIF",
-                  "Opc-segu": "C272B",
-                  "Seg-w": [
-                    "1",
-                    "2"
-                  ],
-                  "Tipo": "POWER",
-                  "Params": [
+                      "Id": "027229",
+                      "Descripcion": "Validacion comprobantes",
+                      "Opc-segu": "C2729",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON010N",
+                          "dll": "CONTAB\\CON010N.dll"
+                        }
+                      ]
+                    },
                     {
-                      "formulario": "CON790",
-                      "dll": "CONTAB\\CON790.dll"
+                      "Id": "02722A",
+                      "Descripcion": "Anular lotes de movimiento",
+                      "Opc-segu": "C272A",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON272A",
+                          "dll": "CONTAB\\CON272A.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "02722B",
+                      "Descripcion": "Trasladar saldos NIIF",
+                      "Opc-segu": "C272B",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON790",
+                          "dll": "CONTAB\\CON790.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "02722C",
+                      "Descripcion": "Anular comprobante",
+                      "Opc-segu": "C272B",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "FAC183N",
+                          "dll": "CONTAB\\FAC183N.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "02722D",
+                      "Descripcion": "Trasladar movimiento cuenta",
+                      "Opc-segu": "C272B",
+                      "Seg-w": [
+                        "1",
+                        "2"
+                      ],
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "CON721N",
+                          "dll": "CONTAB\\CON721N.dll"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1094,58 +1299,139 @@
           "Id": "034",
           "Descripcion": "Reimprimir",
           "Opc-segu": "C34",
+          "Tipo": "MULTI",
           "Sub": [
             {
               "Id": "0341",
-              "Descripcion": "Reimprime recibos",
-              "Opc-segu": "C341",
-              "Tipo": "POWER",
-              "Params": [
+              "Descripcion": "Reimprimir",
+              "Opc-segu": "C34",
+              "Sub": [
                 {
-                  "formulario": "FAC157",
-                  "dll": "CONTAB\\FAC157.dll",
-                  "Sucursal": "1",
-                  "Tipo-comp": "1R"
+                  "Id": "03411",
+                  "Descripcion": "Reimprime recibos",
+                  "Opc-segu": "C341",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC157",
+                      "dll": "CONTAB\\FAC157.dll",
+                      "Sucursal": "1",
+                      "Tipo-comp": "1R"
+                    }
+                  ]
+                },
+                {
+                  "Id": "03412",
+                  "Descripcion": "Reimprime comp de egreso",
+                  "Opc-segu": "C342",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC159",
+                      "dll": "CONTAB\\FAC159.dll",
+                      "Sucursal": "1",
+                      "Tipo-comp": "1C"
+                    }
+                  ]
+                },
+                {
+                  "Id": "03413",
+                  "Descripcion": "Reimprime comp de contab",
+                  "Opc-segu": "C343",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC172",
+                      "dll": "CONTAB\\FAC172.dll",
+                      "Sucursal": "1",
+                      "Tipo-comp": "1G"
+                    }
+                  ]
+                },
+                {
+                  "Id": "03414",
+                  "Descripcion": "Reimprimir solo cheque",
+                  "Opc-segu": "C344",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC159C",
+                      "dll": "CONTAB\\FAC159C.dll"
+                    }
+                  ]
                 }
               ]
             },
             {
               "Id": "0342",
-              "Descripcion": "Reimprime comp de egreso",
-              "Opc-segu": "C342",
-              "Tipo": "POWER",
-              "Params": [
+              "Descripcion": "Reimprimir",
+              "Opc-segu": "C34",
+              "Sub": [
                 {
-                  "formulario": "FAC159",
-                  "dll": "CONTAB\\FAC159.dll",
-                  "Sucursal": "1",
-                  "Tipo-comp": "1C"
-                }
-              ]
-            },
-            {
-              "Id": "0343",
-              "Descripcion": "Reimprime comp de contab",
-              "Opc-segu": "C343",
-              "Tipo": "POWER",
-              "Params": [
+                  "Id": "03421",
+                  "Descripcion": "Reimprime recibos",
+                  "Opc-segu": "C341",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC157",
+                      "dll": "CONTAB\\FAC157.dll",
+                      "Sucursal": "1",
+                      "Tipo-comp": "1R"
+                    }
+                  ]
+                },
                 {
-                  "formulario": "FAC172",
-                  "dll": "CONTAB\\FAC172.dll",
-                  "Sucursal": "1",
-                  "Tipo-comp": "1G"
-                }
-              ]
-            },
-            {
-              "Id": "0344",
-              "Descripcion": "Reimprimir solo cheque",
-              "Opc-segu": "C344",
-              "Tipo": "POWER",
-              "Params": [
+                  "Id": "03422",
+                  "Descripcion": "Reimprime comp de egreso",
+                  "Opc-segu": "C342",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC159",
+                      "dll": "CONTAB\\FAC159.dll",
+                      "Sucursal": "1",
+                      "Tipo-comp": "1C"
+                    }
+                  ]
+                },
                 {
-                  "formulario": "FAC159C",
-                  "dll": "CONTAB\\FAC159C.dll"
+                  "Id": "03423",
+                  "Descripcion": "Reimprime comp de contab",
+                  "Opc-segu": "C343",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC172",
+                      "dll": "CONTAB\\FAC172.dll",
+                      "Sucursal": "1",
+                      "Tipo-comp": "1G"
+                    }
+                  ]
+                },
+                {
+                  "Id": "03424",
+                  "Descripcion": "Reimprimir solo cheque",
+                  "Opc-segu": "C344",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC159C",
+                      "dll": "CONTAB\\FAC159C.dll"
+                    }
+                  ]
+                },
+                {
+                  "Id": "03425",
+                  "Descripcion": "Reimprimir nota credito",
+                  "Opc-segu": "C344",
+                  "Tipo": "POWER",
+                  "Params": [
+                    {
+                      "formulario": "FAC172A",
+                      "dll": "CONTAB\\FAC172A.dll"
+                    }
+                  ]
                 }
               ]
             }
@@ -5295,421 +5581,1922 @@
               "Id": "0954",
               "Descripcion": "Informes de ventas",
               "Opc-segu": "I54",
-              "Tipo": "POWER",
+              "Tipo": "MULTI",
               "Sub": [
                 {
                   "Id": "09541",
-                  "Descripcion": "Informe de cartera",
-                  "Opc-segu": "I541",
+                  "Descripcion": "Informes de ventas",
+                  "Opc-segu": "I54",
                   "Tipo": "POWER",
-                  "Params": [
+                  "Sub": [
                     {
-                      "formulario": "INV504",
-                      "dll": "INVENT\\INV504.dll"
+                      "Id": "095411",
+                      "Descripcion": "Informe de cartera",
+                      "Opc-segu": "I541",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV504",
+                          "dll": "INVENT\\INV504.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095412",
+                      "Descripcion": "Informe segunt inventarios",
+                      "Opc-segu": "I542",
+                      "Tipo": "POWER",
+                      "Sub": [
+                        {
+                          "Id": "0954121",
+                          "Descripcion": "Informe NIT-articulo",
+                          "Opc-segu": "I5421",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV505",
+                              "dll": "INVENT\\INV505.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954122",
+                          "Descripcion": "Informe grupo NIT",
+                          "Opc-segu": "I5422",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV512",
+                              "dll": "INVENT\\INV512.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954123",
+                          "Descripcion": "Informe invent X transaccion",
+                          "Opc-segu": "I5423",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV163",
+                              "dll": "INVENT\\INV163.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954124",
+                          "Descripcion": "Informe invent X corte mes",
+                          "Opc-segu": "I5424",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV163B",
+                              "dll": "INVENT\\INV163B.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954125",
+                          "Descripcion": "Inf columnario meses NIT",
+                          "Opc-segu": "I5425",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV515",
+                              "dll": "INVENT\\INV515.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954126",
+                          "Descripcion": "Inf columnario meses artic",
+                          "Opc-segu": "I5426",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV516",
+                              "dll": "INVENT\\INV516.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954127",
+                          "Descripcion": "Inf columnario meses CSV",
+                          "Opc-segu": "I5427",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV517",
+                              "dll": "INVENT\\INV517.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954128",
+                          "Descripcion": "Inf rentabilidad articulo",
+                          "Opc-segu": "I5428",
+                          "Tipo": "POWER",
+                          "Sub": [
+                            {
+                              "Id": "09541281",
+                              "Descripcion": "Inf rentabilidad X clase grupo",
+                              "Opc-segu": "I54281",
+                              "Tipo": "POWER",
+                              "Params": [
+                                {
+                                  "formulario": "INV520",
+                                  "dll": "INVENT\\INV520.dll"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09541282",
+                              "Descripcion": "Inf rentabilidad X marca artic",
+                              "Opc-segu": "I54282",
+                              "Tipo": "POWER",
+                              "Params": [
+                                {
+                                  "formulario": "INV282",
+                                  "dll": "INVENT\\INV282.dll"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954129",
+                          "Descripcion": "Comparativo anual NIT-artic",
+                          "Opc-segu": "I5429",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV521",
+                              "dll": "INVENT\\INV521.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "095412A",
+                          "Descripcion": "Informe general de ventas",
+                          "Opc-segu": "I542K",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV163K",
+                              "dll": "INVENT\\INV163K.dll"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095413",
+                      "Descripcion": "Informe ventas por vendedor",
+                      "Opc-segu": "I543",
+                      "Tipo": "POWER",
+                      "Sub": [
+                        {
+                          "Id": "0954131",
+                          "Descripcion": "Relacion fact forma pago",
+                          "Opc-segu": "I5431",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV506",
+                              "dll": "INVENT\\INV506.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954132",
+                          "Descripcion": "Relacion fact articulo",
+                          "Opc-segu": "I5432",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV506A",
+                              "dll": "INVENT\\INV506A.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954133",
+                          "Descripcion": "Resumen vendedor por articulo",
+                          "Opc-segu": "I5433",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV506C",
+                              "dll": "INVENT\\INV506C.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954134",
+                          "Descripcion": "Acumulado por vendedor",
+                          "Opc-segu": "I5434",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV549",
+                              "dll": "INVENT\\INV549.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954135",
+                          "Descripcion": "Inf comisiones X recaudo",
+                          "Opc-segu": "I5435",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV541",
+                              "dll": "INVENT\\INV541.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954136",
+                          "Descripcion": "Nota contab comision X rec",
+                          "Opc-segu": "I5436",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV542",
+                              "dll": "INVENT\\INV542.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954137",
+                          "Descripcion": "Relacion detallada de artic",
+                          "Opc-segu": "I5437",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV545",
+                              "dll": "INVENT\\INV545.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954138",
+                          "Descripcion": "Resumen vendedor clase/uso",
+                          "Opc-segu": "I5438",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV506E",
+                              "dll": "INVENT\\INV506E.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954139",
+                          "Descripcion": "Estimado intereses X recaud",
+                          "Opc-segu": "I5439",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV541I",
+                              "dll": "INVENT\\INV541I.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "095413A",
+                          "Descripcion": "Informe descuentos X recaud",
+                          "Opc-segu": "I543A",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV541B",
+                              "dll": "INVENT\\INV541B.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "095413B",
+                          "Descripcion": "Columnario de ventas",
+                          "Opc-segu": "I543B",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV543B",
+                              "dll": "INVENT\\INV543B.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "095413C",
+                          "Descripcion": "Inf comisiones X lista venta-reca",
+                          "Opc-segu": "I543C",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV543C",
+                              "dll": "INVENT\\INV543C.dll"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095414",
+                      "Descripcion": "Relacion de fact por fecha",
+                      "Opc-segu": "I544",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV508A",
+                          "dll": "INVENT\\INV508A.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095415",
+                      "Descripcion": "Informe de fact clase uso",
+                      "Opc-segu": "I545",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV547",
+                          "dll": "INVENT\\INV547.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095416",
+                      "Descripcion": "Informe de fact por articulo",
+                      "Opc-segu": "I546",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV548",
+                          "dll": "INVENT\\INV548.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095417",
+                      "Descripcion": "Informe centrales de riesgo",
+                      "Opc-segu": "I547",
+                      "Tipo": "POWER",
+                      "Sub": [
+                        {
+                          "Id": "0954171",
+                          "Descripcion": "Reporte a data credito",
+                          "Opc-segu": "I571",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV544",
+                              "dll": "INVENT\\INV544.dll"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954172",
+                          "Descripcion": "Reporte a CIFIN",
+                          "Opc-segu": "I572",
+                          "Tipo": "POWER",
+                          "Params": [
+                            {
+                              "formulario": "INV5472",
+                              "dll": "INVENT\\INV5472.dll"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095418",
+                      "Descripcion": "Informe para telemercadeo",
+                      "Opc-segu": "I548",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV546",
+                          "dll": "INVENT\\INV546.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "095419",
+                      "Descripcion": "Informe de fact por placa",
+                      "Opc-segu": "I549",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV543",
+                          "dll": "INVENT\\INV543.dll"
+                        }
+                      ]
+                    },
+                    {
+                      "Id": "09541A",
+                      "Descripcion": "Informe de fact por conver",
+                      "Opc-segu": "I54A",
+                      "Tipo": "POWER",
+                      "Params": [
+                        {
+                          "formulario": "INV548C",
+                          "dll": "INVENT\\INV548C.dll"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "Id": "09542",
-                  "Descripcion": "Informe segunt inventarios",
-                  "Opc-segu": "I542",
-                  "Tipo": "POWER",
+                  "Descripcion": "Informes de ventas",
+                  "Opc-segu": "I54",
                   "Sub": [
                     {
                       "Id": "095421",
-                      "Descripcion": "Informe NIT-articulo",
-                      "Opc-segu": "I5421",
-                      "Tipo": "POWER",
-                      "Params": [
+                      "Descripcion": "Informes segun facturacion",
+                      "Opc-segu": "I541",
+                      "Sub": [
                         {
-                          "formulario": "INV505",
-                          "dll": "INVENT\\INV505.dll"
+                          "Id": "0954211",
+                          "Descripcion": "Relacion de comprobantes",
+                          "Opc-segu": "I5411",
+                          "Sub": [
+                            {
+                              "Id": "09542111",
+                              "Descripcion": "Relac. comprob. x tipo",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV541",
+                                  "dll": "SALUD\\INV541"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542112",
+                              "Descripcion": "Relac. comprob. x fecha",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV546",
+                                  "dll": "SALUD\\INV546"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542113",
+                              "Descripcion": "Relac. comprob. x operador",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV549",
+                                  "dll": "SALUD\\INV549"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542114",
+                              "Descripcion": "Relac. comprob. cliente pago",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV542",
+                                  "dll": "SALUD\\INV542"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542115",
+                              "Descripcion": "Relac. comprob. con descto",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV546A",
+                                  "dll": "SALUD\\INV546A"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542116",
+                              "Descripcion": "Relac. comprob. con insumos",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV550",
+                                  "dll": "SALUD\\INV550"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542117",
+                              "Descripcion": "Relac. comprob. x entidad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER542",
+                                  "dll": "SALUD\\SER542"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542118",
+                              "Descripcion": "Detal. comprob. fecha",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER548",
+                                  "dll": "SALUD\\SER548"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542119",
+                              "Descripcion": "Detal. comprob. fecha lab",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER549",
+                                  "dll": "SALUD\\SER549"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954211A",
+                              "Descripcion": "Detal. comprob. x nro envio",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER442R",
+                                  "dll": "SALUD\\SER442R"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954211B",
+                              "Descripcion": "Morbilidad x nro envio cons",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER751G",
+                                  "dll": "SALUD\\SER751G"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954211C",
+                              "Descripcion": "Relac. ccirugias x componente",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV541C",
+                                  "dll": "SALUD\\INV541C"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954211D",
+                              "Descripcion": "Relac. comprob. tercerizado",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV549B",
+                                  "dll": "SALUD\\INV549B"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954211E",
+                              "Descripcion": "Relac. comprob escaneados",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV541E",
+                                  "dll": "SALUD\\INV541E"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954212",
+                          "Descripcion": "Informes para terceros",
+                          "Opc-segu": "I5412",
+                          "Sub": [
+                            {
+                              "Id": "09542121",
+                              "Descripcion": "Informe de atencion salud",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544",
+                                  "dll": "SALUD\\INV544"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542122",
+                              "Descripcion": "Informe de atencion x edad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544M",
+                                  "dll": "SALUD\\INV544M"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542123",
+                              "Descripcion": "Informe de atencion x puerta",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544P",
+                                  "dll": "SALUD\\INV544P"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542124",
+                              "Descripcion": "Informe secretaria de salud",
+                              "Tipo": "RM",
+                              "Sub": [
+                                {
+                                  "Id": "095421241",
+                                  "Descripcion": "Informe resol 3384 PyP",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER543",
+                                      "dll": "SALUD\\SER543"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421242",
+                                  "Descripcion": "Anexo tecnico PyP",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER541",
+                                      "dll": "SALUD\\SER541"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421243",
+                                  "Descripcion": "Informe resol 4505 PyP",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER540",
+                                      "dll": "SALUD\\SER540"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421244",
+                                  "Descripcion": "Informe resol 247 alto costo",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54C",
+                                      "dll": "SALUD\\SER54C"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421245",
+                                  "Descripcion": "Informe centinela",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54D",
+                                      "dll": "SALUD\\SER54D"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421246",
+                                  "Descripcion": "Informe enf en salud publica",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54P",
+                                      "dll": "SALUD\\SER54P"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421247",
+                                  "Descripcion": "Informe resol 2175 de 2015",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER5407",
+                                      "dll": "SALUD\\SER5407"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421248",
+                                  "Descripcion": "Informe resol 1393 artritis",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER5408",
+                                      "dll": "SALUD\\SER5408"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "095421249",
+                                  "Descripcion": "Informe resol 256 de 2016",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER5409",
+                                      "dll": "SALUD\\SER5409"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "09542124A",
+                                  "Descripcion": "Informe resol 2463 de 2014",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER5410A",
+                                      "dll": "SALUD\\SER5410A"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "09542124B",
+                                  "Descripcion": "Indicadores de alerta tempra",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER5410C",
+                                      "dll": "SALUD\\SER5410C"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "09542124C",
+                                  "Descripcion": "Informe resol 4725 de 2011",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER5412S",
+                                      "dll": "SALUD\\SER5412S"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "09542124D",
+                                  "Descripcion": "Informe resol 123 de 2015",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER123-15",
+                                      "dll": "SALUD\\SER123-15"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "09542124E",
+                                  "Descripcion": "Informe gestion del riesgo",
+                                  "Tipo": "RM",
+                                  "Sub": [
+                                    {
+                                      "Id": "09542124E1",
+                                      "Descripcion": "Inf.gestion riesgo gestantes",
+                                      "Tipo": "RM",
+                                      "Params": [
+                                        {
+                                          "formulario": "SER5412E1",
+                                          "dll": "SALUD\\SER5412E1"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Id": "09542124E1",
+                                      "Descripcion": "Inf.gestion riesgo cronicos",
+                                      "Tipo": "RM",
+                                      "Params": [
+                                        {
+                                          "formulario": "SER5412E2",
+                                          "dll": "SALUD\\SER5412E2"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542125",
+                              "Descripcion": "Informe de citas x edad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544D",
+                                  "dll": "SALUD\\INV544D"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542126",
+                              "Descripcion": "Informe de birads",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544Y",
+                                  "dll": "SALUD\\INV544Y"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542127",
+                              "Descripcion": "Informe de oportunidad citas",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544C",
+                                  "dll": "SALUD\\INV544C"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542128",
+                              "Descripcion": "Informe de oport. triage/entrad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544T",
+                                  "dll": "SALUD\\INV544T"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542129",
+                              "Descripcion": "Informe oport. urgenc/entrad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV544U",
+                                  "dll": "SALUD\\INV544U"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212A",
+                              "Descripcion": "Informe imagenologia",
+                              "Sub": [
+                                {
+                                  "Id": "0954212A1",
+                                  "Descripcion": "Informe arp iss",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV544R",
+                                      "dll": "SALUD\\INV544R"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212A2",
+                                  "Descripcion": "Informe anestecoop",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV544Y1",
+                                      "dll": "SALUD\\INV544Y1"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212A1",
+                                  "Descripcion": "Informe nivel complejidad",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV544Y2",
+                                      "dll": "SALUD\\INV544Y2"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212A1",
+                                  "Descripcion": "Informe andar",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV412A4",
+                                      "dll": "SALUD\\INV412A4"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212A1",
+                                  "Descripcion": "Informe servimed",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV412A5",
+                                      "dll": "SALUD\\INV412A5"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212B",
+                              "Descripcion": "Informe por causa externa",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER545",
+                                  "dll": "SALUD\\SER545"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212C",
+                              "Descripcion": "Informe por aseguramiento",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER546",
+                                  "dll": "SALUD\\SER546"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212D",
+                              "Descripcion": "Informe gestion calidad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER547",
+                                  "dll": "SALUD\\SER547"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212E",
+                              "Descripcion": "Informe F.I.A.S",
+                              "Tipo": "RM",
+                              "Sub": [
+                                {
+                                  "Id": "0954212E1",
+                                  "Descripcion": "FIA F2-F3-F4-F5 PACIENTES",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54E1",
+                                      "dll": "SALUD\\SER54E1"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212E2",
+                                  "Descripcion": "FIA F6-F6A MORTALIDAD",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54E2",
+                                      "dll": "SALUD\\SER54E2"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212E3",
+                                  "Descripcion": "FIA F7-F8-F9-F10-F26 MORBILI",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54E3",
+                                      "dll": "SALUD\\SER54E3"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212E4",
+                                  "Descripcion": "FIA F11-F12-F13-F14 CRONICO",
+                                  "Tipo": "RM",
+                                  "Params": [
+                                    {
+                                      "formulario": "SER54E4",
+                                      "dll": "SALUD\\SER54E4"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954212E5",
+                                  "Descripcion": "FIA F15-F15A",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212E6",
+                                  "Descripcion": "FIA F16-F17-F18-F19",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212E7",
+                                  "Descripcion": "FIA F20",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212E8",
+                                  "Descripcion": "FIA F21",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212E9",
+                                  "Descripcion": "FIA F22",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212EA",
+                                  "Descripcion": "FIA F23",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212EB",
+                                  "Descripcion": "FIA F24-F24A",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212EC",
+                                  "Descripcion": "FIA F25-F25A",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212ED",
+                                  "Descripcion": "FIA F26-F27",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                },
+                                {
+                                  "Id": "0954212EE",
+                                  "Descripcion": "FIA F28-F29",
+                                  "Tipo": "ERROR",
+                                  "Cod": "DESHAB"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212G",
+                              "Descripcion": "Informe resultados lab x cup",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "LAB548",
+                                  "dll": "SALUD\\LAB548"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212H",
+                              "Descripcion": "Informe oport. consul/entrad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER548",
+                                  "dll": "SALUD\\SER548"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212I",
+                              "Descripcion": "Informe produccion decr 2193",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER548A",
+                                  "dll": "SALUD\\SER548A"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212J",
+                              "Descripcion": "Informe produccion mavesalud",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER542J",
+                                  "dll": "SALUD\\SER542J"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212K",
+                              "Descripcion": "Informe oport. triage/urgenc",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER542K",
+                                  "dll": "SALUD\\SER542K"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212L",
+                              "Descripcion": "Informe prosoft",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER548G",
+                                  "dll": "SALUD\\SER548G"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212M",
+                              "Descripcion": "Listados sisvan",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER01M",
+                                  "dll": "SALUD\\SER01M"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954212N",
+                              "Descripcion": "Informe eses y dptal",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER549",
+                                  "dll": "SALUD\\SER549"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954213",
+                          "Descripcion": "Productividad",
+                          "Opc-segu": "I5413",
+                          "Sub": [
+                            {
+                              "Id": "09542131",
+                              "Descripcion": "Inf.productiv. medico resumid",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548G",
+                                  "dll": "SALUD\\INV548G"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542132",
+                              "Descripcion": "Inf.productiv. medico hora",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548H",
+                                  "dll": "SALUD\\INV548H"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542133",
+                              "Descripcion": "Inf.productiv. medico clase",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV545",
+                                  "dll": "SALUD\\INV545"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542134",
+                              "Descripcion": "Inf.productiv. cups y c.costo",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548K",
+                                  "dll": "SALUD\\INV548K"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542135",
+                              "Descripcion": "Inf.productiv. cups y medico",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548M",
+                                  "dll": "SALUD\\INV548M"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542136",
+                              "Descripcion": "Inf.productiv. medico grupo",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548N",
+                                  "dll": "SALUD\\INV548N"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542137",
+                              "Descripcion": "Inf.productiv. medico hc",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548P",
+                                  "dll": "SALUD\\INV548P"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542138",
+                              "Descripcion": "Inf.productiv. lab y r.x",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548Q",
+                                  "dll": "SALUD\\INV548Q"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542139",
+                              "Descripcion": "Inf.productiv. asignac.citas",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548R",
+                                  "dll": "SALUD\\INV548R"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954213A",
+                              "Descripcion": "Inf.productiv. x horas",
+                              "Tipo": "RM",
+                              "Sub": [
+                                {
+                                  "Id": "0954213A1",
+                                  "Descripcion": "Facturacion x horas",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV54A1",
+                                      "dll": "INVENT\\INV54A1"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954213A2",
+                                  "Descripcion": "Agendas x horas",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV54A2",
+                                      "dll": "INVENT\\INV54A2"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954213A3",
+                                  "Descripcion": "Transcripcion x horas",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV54A3",
+                                      "dll": "INVENT\\INV54A3"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Id": "0954213A4",
+                                  "Descripcion": "Transcripcion x division",
+                                  "Params": [
+                                    {
+                                      "formulario": "INV54A4",
+                                      "dll": "INVENT\\INV54A4"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954213B",
+                              "Descripcion": "Inf.productiv. x facturador",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV54B",
+                                  "dll": "SALUD\\INV54B"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954213C",
+                              "Descripcion": "Detallado x transcriptor",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV54C",
+                                  "dll": "SALUD\\INV54C"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954214",
+                          "Descripcion": "Productividad",
+                          "Opc-segu": "I5414",
+                          "Sub": [
+                            {
+                              "Id": "09542141",
+                              "Descripcion": "Resumen comprob. cups o art.",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548",
+                                  "dll": "INVENT\\INV548"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542142",
+                              "Descripcion": "Resumen x clase y forma pago",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV547",
+                                  "dll": "INVENT\\INV547"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542143",
+                              "Descripcion": "Resumen comprob. x entidad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV545E",
+                                  "dll": "INVENT\\INV545E"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542144",
+                              "Descripcion": "Resumen comp. x activ. entid",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER544",
+                                  "dll": "INVENT\\SER544"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542145",
+                              "Descripcion": "Resumen facturado x entidad",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER506F",
+                                  "dll": "INVENT\\SER506F"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542146",
+                              "Descripcion": "Resumen facturado x mes",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER166",
+                                  "dll": "INVENT\\SER166"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542147",
+                              "Descripcion": "Resumen facturado x un.serv.",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER506U",
+                                  "dll": "INVENT\\SER506U"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542148",
+                              "Descripcion": "Resumen egresos hospitalar.",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER544B",
+                                  "dll": "INVENT\\SER544B"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542149",
+                              "Descripcion": "Resumen facturacion x divis.",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5449",
+                                  "dll": "INVENT\\SER5449"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214A",
+                              "Descripcion": "Resumen facturac.divis-entid",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5410",
+                                  "dll": "INVENT\\SER5410"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214B",
+                              "Descripcion": "Resumen cups capitado/evento",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5411",
+                                  "dll": "INVENT\\SER5411"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214C",
+                              "Descripcion": "Resumen clase comp x un.serv",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5412",
+                                  "dll": "INVENT\\SER5412"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214D",
+                              "Descripcion": "Resumen contractual",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5413",
+                                  "dll": "INVENT\\SER5413"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214E",
+                              "Descripcion": "Resumen carta presentacion de envios",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5414",
+                                  "dll": "INVENT\\SER5414"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214G",
+                              "Descripcion": "Informe servimedicos",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5415",
+                                  "dll": "INVENT\\SER5415"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954214H",
+                              "Descripcion": "Informe control dispensacion",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER5416",
+                                  "dll": "INVENT\\SER5416"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954215",
+                          "Descripcion": "Asistencial",
+                          "Opc-segu": "I5415",
+                          "Sub": [
+                            {
+                              "Id": "09542151",
+                              "Descripcion": "Censo diario pacientes",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548I",
+                                  "dll": "INVENT\\INV548I"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542152",
+                              "Descripcion": "Resumen general cirugias",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER163",
+                                  "dll": "INVENT\\SER163"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542153",
+                              "Descripcion": "Registro de consultas",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER161",
+                                  "dll": "INVENT\\SER161"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542154",
+                              "Descripcion": "Informe de reingresos H.C.",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "SER162",
+                                  "dll": "INVENT\\SER162"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542155",
+                              "Descripcion": "Informe de act. x paciente",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV548S",
+                                  "dll": "INVENT\\INV548S"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954216",
+                          "Descripcion": "Auditorias",
+                          "Opc-segu": "I5416",
+                          "Sub": [
+                            {
+                              "Id": "09542161",
+                              "Descripcion": "Comparativo fact. / recibos",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV543",
+                                  "dll": "INVENT\\INV543"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542162",
+                              "Descripcion": "Rentabilidad medicamentos",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV506C",
+                                  "dll": "INVENT\\INV506C"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542163",
+                              "Descripcion": "Liquidacion x por operador",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV543F",
+                                  "dll": "INVENT\\INV543F"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542164",
+                              "Descripcion": "Correcion de comprobantes",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV54166",
+                                  "dll": "INVENT\\INV54166"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542165",
+                              "Descripcion": "Comparativo cartera/contabil",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV543J",
+                                  "dll": "INVENT\\INV543J"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542166",
+                              "Descripcion": "Comparativo factur./contabil",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV543K",
+                                  "dll": "INVENT\\INV543K"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542167",
+                              "Descripcion": "Comparat saldo inve/contabil",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV5437",
+                                  "dll": "INVENT\\INV5437"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542168",
+                              "Descripcion": "Comparat recaudos/pres/conta",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV5438",
+                                  "dll": "INVENT\\INV5438"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542169",
+                              "Descripcion": "Comparat reconocimient/pres",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV5439",
+                                  "dll": "INVENT\\INV5439"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954216A",
+                              "Descripcion": "Correccion de agendamiento",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV5416A",
+                                  "dll": "INVENT\\INV5416A"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954216B",
+                              "Descripcion": "Relacion de abonos cartera",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV543L",
+                                  "dll": "INVENT\\INV543L"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "0954216C",
+                              "Descripcion": "Comparativo liqui./recibos",
+                              "Tipo": "RM",
+                              "Params": [
+                                {
+                                  "formulario": "INV543C",
+                                  "dll": "INVENT\\INV543C"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954217",
+                          "Descripcion": "Informes farmasanitas",
+                          "Opc-segu": "I5417",
+                          "Sub": [
+                            {
+                              "Id": "09542171",
+                              "Descripcion": "Informe resumido de facturac",
+                              "Params": [
+                                {
+                                  "formulario": "SER551",
+                                  "dll": "INVENT\\SER551"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542172",
+                              "Descripcion": "Informe detallado facturac.",
+                              "Params": [
+                                {
+                                  "formulario": "SER552",
+                                  "dll": "INVENT\\SER552"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542173",
+                              "Descripcion": "Revision almacen (1) difer.",
+                              "Params": [
+                                {
+                                  "formulario": "SER552X",
+                                  "dll": "INVENT\\SER552X"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542174",
+                              "Descripcion": "Informe det. codigo completo",
+                              "Params": [
+                                {
+                                  "formulario": "SER552C",
+                                  "dll": "INVENT\\SER552C"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954218",
+                          "Descripcion": "Facturacion x",
+                          "Opc-segu": "I5418",
+                          "Sub": [
+                            {
+                              "Id": "09542181",
+                              "Descripcion": "Facturacion x division fact.",
+                              "Params": [
+                                {
+                                  "formulario": "INV548E",
+                                  "dll": "INVENT\\INV548E"
+                                }
+                              ]
+                            },
+                            {
+                              "Id": "09542182",
+                              "Descripcion": "Facturacion x grupos etareos",
+                              "Params": [
+                                {
+                                  "formulario": "INV544M",
+                                  "dll": "INVENT\\INV544M"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "Id": "095422",
-                      "Descripcion": "Informe grupo NIT",
-                      "Opc-segu": "I5422",
-                      "Tipo": "POWER",
-                      "Params": [
+                      "Descripcion": "Informes segun inventarios",
+                      "Opc-segu": "I542",
+                      "Sub": [
                         {
-                          "formulario": "INV512",
-                          "dll": "INVENT\\INV512.dll"
+                          "Id": "0954221",
+                          "Descripcion": "Informe nit - articulo",
+                          "Params": [
+                            {
+                              "formulario": "INV505",
+                              "dll": "INVENT\\INV505"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954222",
+                          "Descripcion": "Informe grupo - nit",
+                          "Params": [
+                            {
+                              "formulario": "INV512",
+                              "dll": "INVENT\\INV512"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954223",
+                          "Descripcion": "Informe para reposicion",
+                          "Params": [
+                            {
+                              "formulario": "INV508A",
+                              "dll": "INVENT\\INV508A"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954224",
+                          "Descripcion": "Informe invent. x transacc.",
+                          "Params": [
+                            {
+                              "formulario": "INV163",
+                              "dll": "INVENT\\INV163"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954225",
+                          "Descripcion": "Informe invent. x corte mes",
+                          "Params": [
+                            {
+                              "formulario": "INV163B",
+                              "dll": "INVENT\\INV163B"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954226",
+                          "Descripcion": "Inf. columnario meses nit",
+                          "Params": [
+                            {
+                              "formulario": "INV515",
+                              "dll": "INVENT\\INV515"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954227",
+                          "Descripcion": "Inf. columnario meses artic",
+                          "Params": [
+                            {
+                              "formulario": "INV516",
+                              "dll": "INVENT\\INV516"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954228",
+                          "Descripcion": "Inf. columnario meses csv",
+                          "Params": [
+                            {
+                              "formulario": "INV517",
+                              "dll": "INVENT\\INV517"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "0954229",
+                          "Descripcion": "Informe sismed",
+                          "Params": [
+                            {
+                              "formulario": "INV518",
+                              "dll": "INVENT\\INV518"
+                            }
+                          ]
+                        },
+                        {
+                          "Id": "095422A",
+                          "Descripcion": "Informe sisdis",
+                          "Params": [
+                            {
+                              "formulario": "INV519",
+                              "dll": "INVENT\\INV519"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "Id": "095423",
-                      "Descripcion": "Informe invent X transaccion",
-                      "Opc-segu": "I5423",
-                      "Tipo": "POWER",
+                      "Descripcion": "Acumulado ventas x prefijo",
+                      "Opc-segu": "I543",
                       "Params": [
                         {
-                          "formulario": "INV163",
-                          "dll": "INVENT\\INV163.dll"
+                          "formulario": "SER111",
+                          "dll": "INVENT\\SER111"
                         }
                       ]
-                    },
-                    {
-                      "Id": "095424",
-                      "Descripcion": "Informe invent X corte mes",
-                      "Opc-segu": "I5424",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV163B",
-                          "dll": "INVENT\\INV163B.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095425",
-                      "Descripcion": "Inf columnario meses NIT",
-                      "Opc-segu": "I5425",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV515",
-                          "dll": "INVENT\\INV515.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095426",
-                      "Descripcion": "Inf columnario meses artic",
-                      "Opc-segu": "I5426",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV516",
-                          "dll": "INVENT\\INV516.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095427",
-                      "Descripcion": "Inf columnario meses CSV",
-                      "Opc-segu": "I5427",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV517",
-                          "dll": "INVENT\\INV517.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095428",
-                      "Descripcion": "Inf rentabilidad articulo",
-                      "Opc-segu": "I5428",
-                      "Tipo": "POWER",
-                      "Sub": [
-                        {
-                          "Id": "0954281",
-                          "Descripcion": "Inf rentabilidad X clase grupo",
-                          "Opc-segu": "I54281",
-                          "Tipo": "POWER",
-                          "Params": [
-                            {
-                              "formulario": "INV520",
-                              "dll": "INVENT\\INV520.dll"
-                            }
-                          ]
-                        },
-                        {
-                          "Id": "0954282",
-                          "Descripcion": "Inf rentabilidad X marca artic",
-                          "Opc-segu": "I54282",
-                          "Tipo": "POWER",
-                          "Params": [
-                            {
-                              "formulario": "INV282",
-                              "dll": "INVENT\\INV282.dll"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095429",
-                      "Descripcion": "Comparativo anual NIT-artic",
-                      "Opc-segu": "I5429",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV521",
-                          "dll": "INVENT\\INV521.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "09542A",
-                      "Descripcion": "Informe general de ventas",
-                      "Opc-segu": "I542K",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV163K",
-                          "dll": "INVENT\\INV163K.dll"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Id": "09543",
-                  "Descripcion": "Informe ventas por vendedor",
-                  "Opc-segu": "I543",
-                  "Tipo": "POWER",
-                  "Sub": [
-                    {
-                      "Id": "095431",
-                      "Descripcion": "Relacion fact forma pago",
-                      "Opc-segu": "I5431",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV506",
-                          "dll": "INVENT\\INV506.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095432",
-                      "Descripcion": "Relacion fact articulo",
-                      "Opc-segu": "I5432",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV506A",
-                          "dll": "INVENT\\INV506A.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095433",
-                      "Descripcion": "Resumen vendedor por articulo",
-                      "Opc-segu": "I5433",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV506C",
-                          "dll": "INVENT\\INV506C.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095434",
-                      "Descripcion": "Acumulado por vendedor",
-                      "Opc-segu": "I5434",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV549",
-                          "dll": "INVENT\\INV549.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095435",
-                      "Descripcion": "Inf comisiones X recaudo",
-                      "Opc-segu": "I5435",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV541",
-                          "dll": "INVENT\\INV541.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095436",
-                      "Descripcion": "Nota contab comision X rec",
-                      "Opc-segu": "I5436",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV542",
-                          "dll": "INVENT\\INV542.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095437",
-                      "Descripcion": "Relacion detallada de artic",
-                      "Opc-segu": "I5437",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV545",
-                          "dll": "INVENT\\INV545.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095438",
-                      "Descripcion": "Resumen vendedor clase/uso",
-                      "Opc-segu": "I5438",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV506E",
-                          "dll": "INVENT\\INV506E.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095439",
-                      "Descripcion": "Estimado intereses X recaud",
-                      "Opc-segu": "I5439",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV541I",
-                          "dll": "INVENT\\INV541I.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "09543A",
-                      "Descripcion": "Informe descuentos X recaud",
-                      "Opc-segu": "I543A",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV541B",
-                          "dll": "INVENT\\INV541B.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "09543B",
-                      "Descripcion": "Columnario de ventas",
-                      "Opc-segu": "I543B",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV543B",
-                          "dll": "INVENT\\INV543B.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "09543C",
-                      "Descripcion": "Inf comisiones X lista venta-reca",
-                      "Opc-segu": "I543C",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV543C",
-                          "dll": "INVENT\\INV543C.dll"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Id": "09544",
-                  "Descripcion": "Relacion de fact por fecha",
-                  "Opc-segu": "I544",
-                  "Tipo": "POWER",
-                  "Params": [
-                    {
-                      "formulario": "INV508A",
-                      "dll": "INVENT\\INV508A.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "09545",
-                  "Descripcion": "Informe de fact clase uso",
-                  "Opc-segu": "I545",
-                  "Tipo": "POWER",
-                  "Params": [
-                    {
-                      "formulario": "INV547",
-                      "dll": "INVENT\\INV547.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "09546",
-                  "Descripcion": "Informe de fact por articulo",
-                  "Opc-segu": "I546",
-                  "Tipo": "POWER",
-                  "Params": [
-                    {
-                      "formulario": "INV548",
-                      "dll": "INVENT\\INV548.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "09547",
-                  "Descripcion": "Informe centrales de riesgo",
-                  "Opc-segu": "I547",
-                  "Tipo": "POWER",
-                  "Sub": [
-                    {
-                      "Id": "095471",
-                      "Descripcion": "Reporte a data credito",
-                      "Opc-segu": "I571",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV544",
-                          "dll": "INVENT\\INV544.dll"
-                        }
-                      ]
-                    },
-                    {
-                      "Id": "095472",
-                      "Descripcion": "Reporte a CIFIN",
-                      "Opc-segu": "I572",
-                      "Tipo": "POWER",
-                      "Params": [
-                        {
-                          "formulario": "INV5472",
-                          "dll": "INVENT\\INV5472.dll"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Id": "09548",
-                  "Descripcion": "Informe para telemercadeo",
-                  "Opc-segu": "I548",
-                  "Tipo": "POWER",
-                  "Params": [
-                    {
-                      "formulario": "INV546",
-                      "dll": "INVENT\\INV546.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "09549",
-                  "Descripcion": "Informe de fact por placa",
-                  "Opc-segu": "I549",
-                  "Tipo": "POWER",
-                  "Params": [
-                    {
-                      "formulario": "INV543",
-                      "dll": "INVENT\\INV543.dll"
-                    }
-                  ]
-                },
-                {
-                  "Id": "0954A",
-                  "Descripcion": "Informe de fact por conver",
-                  "Opc-segu": "I54A",
-                  "Tipo": "POWER",
-                  "Params": [
-                    {
-                      "formulario": "INV548C",
-                      "dll": "INVENT\\INV548C.dll"
                     }
                   ]
                 }
@@ -6366,21 +8153,21 @@
                   "Descripcion": "Actualizar grupos cups",
                   "Opc-segu": "IS11",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL711.html"
+                  "Href": "../../SALUD/paginas/SER101.html"
                 },
                 {
                   "Id": "09712",
                   "Descripcion": "Actualizar nombres tarifas",
                   "Opc-segu": "IS12",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL712.html"
+                  "Href": "../../SALUD/paginas/SER106.html"
                 },
                 {
                   "Id": "09713",
                   "Descripcion": "Actualizar tarifas servicios",
                   "Opc-segu": "IS13",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL713.html"
+                  "Href": "../../SALUD/paginas/SER102.html"
                 },
                 {
                   "Id": "09714",
@@ -6394,7 +8181,7 @@
                   "Descripcion": "Incrementar tarifas",
                   "Opc-segu": "IS15",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL715.html"
+                  "Href": "../../SALUD/paginas/SER105.html"
                 },
                 {
                   "Id": "09716",
@@ -6687,7 +8474,7 @@
                       ],
                       "Opc-segu": "IS41",
                       "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SAL7411.html"
+                      "Href": "../../SALUD/paginas/SER108.html"
                     },
                     {
                       "Id": "097412",
@@ -6734,13 +8521,8 @@
                           "Id": "0974124",
                           "Descripcion": "Dispersion capital salud",
                           "Opc-segu": "IS41",
-                          "Tipo": "RM",
-                          "Params": [
-                            {
-                              "formulario": "SER108G",
-                              "dll": "SALUD\\SER108G"
-                            }
-                          ]
+                          "Tipo": "HTML",
+                          "Href": "../../SALUD/paginas/SAL974124.html"
                         }
                       ]
                     },
@@ -9532,7 +11314,7 @@
                       "Descripcion": "Actualizar pacientes",
                       "Opc-segu": "IS767",
                       "Tipo": "HTML",
-                      "Href": "../../SALUD/paginas/SAL7767.html"
+                      "Href": "../../SALUD/paginas/SER110C.html"
                     },
                     {
                       "Id": "097768",
