@@ -115,7 +115,7 @@ function _validarleercodigo_71E() {
         LLAMADO_DLL({
             dato: [$operadordat_71E],
             callback: _datacodigo_SAL71E,
-            nombredll: 'SAL71E-02',
+            nombredll: 'SER11E-02',
             carpeta: 'SALUD'
         });
     }
@@ -197,7 +197,7 @@ function _dataCON003_SAL71E(data) {
         LLAMADO_DLL({
             dato: [$operadordat_71E, $idoperador_71E],
             callback: _dataconsulta3_sal71E,
-            nombredll: 'SAL71E-03',
+            nombredll: 'SER11E-03',
             carpeta: 'SALUD'
         })
 
@@ -221,7 +221,7 @@ function _grabardatos_SAL71E() {
     LLAMADO_DLL({
         dato: [$_Novedad_71E, $operadordat_71E, $operadorprosf_71E, $idoperador_71E],
         callback: _datograbar_71E,
-        nombredll: 'SAL71E-01',
+        nombredll: 'SER11E-01',
         carpeta: 'SALUD'
     })
 
@@ -268,7 +268,7 @@ function _envDatos_71E() {
     LLAMADO_DLL({
         dato: [$_Novedad_71E, $operadordat_71E, $operadorprosf_71E, $idoperador_71E],
         callback: _datograbar_71E,
-        nombredll: 'SAL71E-01',
+        nombredll: 'SER11E-01',
         carpeta: 'SALUD'
     })
 }
