@@ -299,7 +299,7 @@ function _grabardatos_71B() {
     LLAMADO_DLL({
         dato: [$CODSERV, $DESCRIPSERV, $EDADMINSERV, $EDADMAXSERV, $CODCOSTO, $ACTIVARSERV, $_OPERADOR71B, $_FECHAMOD71B],
         callback: _dataSAL71B_01,
-        nombredll: 'SAL71B',
+        nombredll: 'SER11B',
         carpeta: 'SALUD'
     });
 }

@@ -87,7 +87,6 @@ function validacionescoddivision_71C() {
 }
 
 function _dataconsultacoddiv_71C(data) {
-    console.log(data, 'SAL71C-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $desc71C = date[1].trim();

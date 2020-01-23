@@ -1296,6 +1296,7 @@ function _leerpaciente_SAL7411() {
 }
 
 function _dataSER108_07(data) {
+    console.log(data, 'ser108-07')
     var date = data.split("|");
     var swinvalid = date[0];
     $_DERECHOPACI = date[1];
@@ -1304,6 +1305,7 @@ function _dataSER108_07(data) {
     $_DESCRIPPACIW = date[4].trim();
     if (swinvalid == "00") {
         if (($_NITUSU == '0800037021') && ($_PREFIJOW == 'A')) {
+            console.log('con904s')
             $_OPSEGU = "IS767";
             LLAMADO_DLL({
                 dato: [$_ADMINW, $_OPSEGU],
@@ -1312,6 +1314,7 @@ function _dataSER108_07(data) {
                 carpeta: 'CONTAB'
             })
         } else {
+            console.log('_validandoleerpaciente')
             _validandoleerpaciente();
         }
     }
@@ -1319,7 +1322,7 @@ function _dataSER108_07(data) {
         if ($_SWPAC = '0') {
             $_SWPAC = '1';
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _evaluarpaciente_SAL7411);
         } else {
@@ -1332,6 +1335,7 @@ function _dataSER108_07(data) {
 }
 
 function _dataCON904S_02(data) {
+    console.log(data, '_dataCON904S_02');
     var date = data.split("|");
     var swinvalid = date[3];
     if (swinvalid == "00") {
@@ -1345,7 +1349,7 @@ function _dataCON904S_02(data) {
 
 
 function _validandoleerpaciente() {
-
+    console.log('_validandoleerpaciente'); 
     $("#idpaciented_108").val($_DESCRIPPACIW);
     _calcularedad_7411();
     $("#edad_108").val($_EDADPACW);
@@ -1377,6 +1381,7 @@ function _validandoleerpaciente() {
 }
 
 function _buscarfacturarepetida() {
+    console.log('buscarfacturarepetida')
     if (($_NITUSU == "0845000038") || ($_NITUSU == "0900541158")) {
         _datotipof();
     }
@@ -3630,7 +3635,8 @@ function _cargandoimpresion(estado) {
                         callback: function () {
                             ventanaimpresion.off('show.bs.modal');
                             CON851('39', '39', null, 'success', 'Exito'); // MOMENTANEO MIENTRAS SE APLICA LA IMPRESION
-                            CON850(_dato_novedad_SAL7411);
+                            _toggleNav(); 
+                            // CON850(_dato_novedad_SAL7411);
                         }
                     }
                 }
@@ -3960,7 +3966,8 @@ function _dataSER108_02_02(data) {
     if (swinvalid == "00") {
         toastr.success('Se ha retirado', 'APERTURA DE FACTURACION');
         _inputControl('reset');
-        CON850(_dato_novedad_SAL7411);
+        _toggleNav(); 
+        // CON850(_dato_novedad_SAL7411);
 
     } else if (swinvalid == "01") {
         CON851('ERROR', 'ERROR AL ACTUALIZAR', null, 'error', 'error');

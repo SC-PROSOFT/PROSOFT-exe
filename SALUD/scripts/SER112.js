@@ -81,7 +81,6 @@ function _validacionesdato_717() {
 }
 
 function _dataconsultacodigo_717(data){
-    console.log(data, 'SAL717-01')
     var date = data.split('|');
     var swinvalid = date[0].trim();
     $_descripcod_717 = date[1].trim();
@@ -150,7 +149,7 @@ function _eliminaDatos717() {
     LLAMADO_DLL({
         dato: [$_NovedSer717, $codigo717, $_descripcod_717],
         callback: dataSAL717,
-        nombredll: 'SAL717-02',
+        nombredll: 'SER112-02',
         carpeta: 'SALUD'
     })
 }

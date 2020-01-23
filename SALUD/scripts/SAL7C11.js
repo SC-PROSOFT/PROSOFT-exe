@@ -328,7 +328,7 @@ function _dataCON904S_02_SAL97C11(data) {
     if (swinvalid == "00") {
         // _leerpaciente_SAL97C11();
         let { ipcRenderer } = require("electron");
-        ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+        ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
         vector = ['on', 'Actualizando maestro de pacientes...']
         _EventocrearSegventana(vector, _leerpaciente_SAL97C11);
     } else {
@@ -352,7 +352,7 @@ function _dataCON904S_03_SAL97C11(data) {
             console.debug('LLAMAR PROGRAMA SER11G --- ACTUALIZA MAESTRO DE PACIENTES')
             // LLAMA AL PROGRAMA SER11G --- ACTUALIZA MAESTRO DE PACIENTES
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _leerpaciente_SAL97C11);
 
@@ -361,7 +361,7 @@ function _dataCON904S_03_SAL97C11(data) {
             console.debug('LLAMAR PROGRAMA SER11I --- ACTUALIZA MAESTRO DE PACIENTES SOLO MAGISTERIO')
             // LLAMA AL PROGRAMA SER11I --- ACTUALIZA MAESTRO DE PACIENTES SOLO MAGISTERIO 
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _leerpaciente_SAL97C11);
         }
@@ -370,7 +370,7 @@ function _dataCON904S_03_SAL97C11(data) {
             console.debug('LLAMAR PROGRAMA  SER11G --- ACTUALIZA MAESTRO DE PACIENTES ')
             // LLAMA AL PROGRAMA SER11G --- ACTUALIZA MAESTRO DE PACIENTES 
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _leerpaciente_SAL97C11);
         } else {
@@ -388,7 +388,7 @@ function _dataCON904S_04_SAL97C11(data) {
             //// CONTINUA 
             // LLAMA AL PROGRAMA SER110c --- ACTUALIZA MAESTRO DE PACIENTES 
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _leerpaciente_SAL97C11);
         } else {
@@ -413,7 +413,7 @@ function _dataCON904S_05_SAL97C11(data) {
     if (swinvalid == "00") {
         // LLAMA AL PROGRAMA SER11G --- ACTUALIZA MAESTRO DE PACIENTES 
         let { ipcRenderer } = require("electron");
-        ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+        ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
         vector = ['on', 'Actualizando maestro de pacientes...']
         _EventocrearSegventana(vector, _leerpaciente_SAL97C11);
     }
@@ -459,7 +459,7 @@ function _validarpaciente_SAL97C11() {
                     //     LLAMADO_DLL({
                     //         dato: [SAL97C11.EPSPACIW],
                     //         callback: _consultatercero_7C11,
-                    //         nombredll: 'SAL7767_11',
+                    //         nombredll: 'SER110C_11',
                     //         carpeta: 'SALUD'
                     //     });
                     // } else {
@@ -473,7 +473,7 @@ function _validarpaciente_SAL97C11() {
                     CON852(data[0], data[1], data[2], _toggleNav);
                 }
             },
-            nombredll: 'SAL7767_08',
+            nombredll: 'SER110C_08',
             carpeta: 'SALUD'
         });
     }
@@ -498,7 +498,7 @@ function _validarpaciente2_SAL97C11() {
                     CON852(data[0], data[1], data[2], _toggleNav);
                 }
             },
-            nombredll: 'SAL7767_11',
+            nombredll: 'SER110C_11',
             carpeta: 'SALUD'
         });
     } else {
@@ -710,7 +710,7 @@ function _datomedico_7C11() {
     LLAMADO_DLL({
         dato: [SAL97C11.MEDW],
         callback: _consultaterceromed_7C11,
-        nombredll: 'SAL7767_11',
+        nombredll: 'SER110C_11',
         carpeta: 'SALUD'
     });
 }

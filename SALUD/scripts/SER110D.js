@@ -197,7 +197,7 @@ function _validarciudaddoc_SER110D() {
                 LLAMADO_DLL({
                     dato: [SER110D.LUGARDOC],
                     callback: _consultadocciudad_SER110D,
-                    nombredll: 'SAL7767_04',
+                    nombredll: 'SER110C_04',
                     carpeta: 'SALUD'
                 });
             }
@@ -340,7 +340,7 @@ function _validarciudaddespl_SER110D() {
                 LLAMADO_DLL({
                     dato: [SER110D.CIUDADDESP],
                     callback: _consultaciudaddesp_SER110D,
-                    nombredll: 'SAL7767_04',
+                    nombredll: 'SER110C_04',
                     carpeta: 'SALUD'
                 });
             }
