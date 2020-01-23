@@ -1335,6 +1335,8 @@ function _Actualizarsaldo_SAL41() {
                 .catch(err => {
                     console.error(err);
                 });
+        } if ($TABLAFACT.length - 1 == i){
+            _toggleNav();
         }
     }
 }
@@ -8737,6 +8739,7 @@ function _Imprimir9_41() {
 
 function _evaluarSER811_SAL41(data) {
     SAL41.IMPRESION = new Object;
+    _Releerrips_41();
     switch (data.COD) {
         case '1':
             _imprimirINV411_SAL97C11();
@@ -9160,6 +9163,7 @@ function _imprimirINV414_SAL97C11() {
             SAL41.IMPRESION.REMITD = '__';
             break;
     }
+    console.debug(SAL41.NOMBREENF1, SAL41.NOMBREENF2);
     SAL41.IMPRESION.NOMBREENF1 = SAL41.NOMBREENF1.trim();
     SAL41.IMPRESION.NOMBREENF2 = SAL41.NOMBREENF2.trim();
     SAL41.IMPRESION.TABLA = $TABLAFACT;
