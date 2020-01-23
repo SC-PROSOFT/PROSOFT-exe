@@ -72,7 +72,7 @@ function _calcularconsecutivo_71I(){
     LLAMADO_DLL({
         dato: [],
         callback: _dataSAL71I_consecutivo,
-        nombredll: 'SAL71I-03',
+        nombredll: 'SER117-03',
         carpeta: 'SALUD'
     });
 }
@@ -110,7 +110,7 @@ function _validarcodigores_71I() {
     LLAMADO_DLL({
         dato: [$codigo_71I],
         callback: _dataSAL71I_res,
-        nombredll: 'SAL71I-01',
+        nombredll: 'SER117-01',
         carpeta: 'SALUD'
     });
 }
@@ -185,7 +185,7 @@ function _eliminaDatos71I() {
     LLAMADO_DLL({
         dato: [$_NovedSer71I, $codigo_71I],
         callback: _data71I_02,
-        nombredll: 'SAL71I-02',
+        nombredll: 'SER117-02',
         carpeta: 'SALUD'
     })
 }
@@ -200,7 +200,7 @@ function envioDatSer71I() {
     LLAMADO_DLL({
         dato: [$_NovedSer71I, $codigo_71I, descpr71I],
         callback: _data71I_02,
-        nombredll: 'SAL71I-02',
+        nombredll: 'SER117-02',
         carpeta: 'SALUD'
     })
 }
