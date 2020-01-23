@@ -30,22 +30,15 @@ function _validarArchivos_SC() {
 }
 
 function _cargarUsuario() {
-    var url = localStorage.Modulo == 'TAX' || localStorage.Modulo == 'BOM' || localStorage.Contab == 'TOPALXE19' ? get_url("app/CONTAB/CONUSUA-2.dll") : get_url("app/CONTAB/CONUSUA.dll");
+    var url = get_url("APP/CONTAB/CONUSUA.dll");
     var datos_envio = localStorage.Sesion + '|' + localStorage.Contab + '|' + localStorage.Mes + '|' + localStorage.Usuario;
-    SolicitarDll({ datosh: datos_envio }, _onCargarUsuario, url);
-}
-
-function _onCargarUsuario(data) {
-    var res = data.split('|');
-    var json = res[1].trim();
-    if (res[0].trim() == '00') {
-        var url = get_url("temp/" + json);
-        SolicitarDatos(
-            null,
-            function (data) {
-                cargarMenu();
-                $_USUA_GLOBAL = data.DATOSUSUA;
-                $_USUA_GLOBAL[0].NIT = parseInt($_USUA_GLOBAL[0].NIT);
+    // SolicitarDll({ datosh: datos_envio }, _onCargarUsuario, url);
+    postData({ datosh: datosEnvio() }, url)
+        .then(data => {
+            console.debug(data);
+            $_USUA_GLOBAL = data.DATOSUSUA;
+            cargarMenu();
+            $_USUA_GLOBAL[0].NIT = parseInt($_USUA_GLOBAL[0].NIT);
                 $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
                 $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
                 $_USUA_GLOBAL[0].RUTA_LOGO = path.join('file://', __dirname, '../imagenes/logo/' + $_USUA_GLOBAL[0].NIT + '.BMP');
@@ -63,17 +56,13 @@ function _onCargarUsuario(data) {
 
                 let database = localStorage.Contab + "_" + localStorage.Mes;
                 $CONTROL = localStorage.Contab + "_13";
-                $CONEXION_BD = {
-                    host: localStorage.IP_DATOS,
-                    user: $_USUARIOSQL,
-                    password: $_CLAVESQL,
-                    database: database,
-                    dateStrings: true
-                };
-
-                var arrayEliminar = [];
-                arrayEliminar.push(json);
-                _eliminarJson(arrayEliminar, _onEliminarJsonUSU);
+                // $CONEXION_BD = {
+                //     host: localStorage.IP_DATOS,
+                //     user: $_USUARIOSQL,
+                //     password: $_CLAVESQL,
+                //     database: database,
+                //     dateStrings: true
+                // };
                 if ($_USUA_GLOBAL[0].TIPO_EMPRE == 'H') {
                     $('.loader').html(
                         '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-466.4 259.6 280.2 47.3" enable-background="new -466.4 259.6 280.2 47.3" xml:space="preserve" style="width: 50%; display: block; margin: 0 auto;">' +
@@ -83,24 +72,78 @@ function _onCargarUsuario(data) {
                     $('.loader').css('align-items', 'center');
                     $('.wrapper').css('display', 'contents', 'height', '');
                 }
-            },
-            url
-        );
-    } else {
-        loader('hide');
-        CON852(res[0], res[1], res[2], _toggleNav);
-    }
+        })
+        .catch(err => {
+            console.error(err);
+        });
 }
 
-function _onEliminarJsonUSU(data) {
-    var res = data.split('|');
-    if (res[0].trim() == "00") {
-        console.debug('Finish');
-    } else {
-        console.error(res[1]);
-        jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
-    }
-}
+// function _onCargarUsuario(data) {
+//     var res = data.split('|');
+//     var json = res[1].trim();
+//     if (res[0].trim() == '00') {
+//         var url = get_url("temp/" + json);
+//         SolicitarDatos(
+//             null,
+//             function (data) {
+//                 cargarMenu();
+//                 $_USUA_GLOBAL = data.DATOSUSUA;
+//                 $_USUA_GLOBAL[0].NIT = parseInt($_USUA_GLOBAL[0].NIT);
+//                 $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
+//                 $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
+//                 $_USUA_GLOBAL[0].RUTA_LOGO = path.join('file://', __dirname, '../imagenes/logo/' + $_USUA_GLOBAL[0].NIT + '.BMP');
+
+//                 let mes = evaluarMes_min(localStorage.Mes);
+//                 $('title').html(`
+//                 \\${localStorage.Contab}\\${mes}
+//                 &nbsp&nbsp&nbsp&nbsp&nbsp
+//                 ${localStorage.Usuario} 
+//                 ${localStorage.Nombre} 
+//                 `)
+
+//                 $('#user_menu_user').html(localStorage.Usuario + " - " + localStorage.Nombre);
+//                 $('#lblEmpresa').html($_USUA_GLOBAL[0].NOMBRE);
+
+//                 let database = localStorage.Contab + "_" + localStorage.Mes;
+//                 $CONTROL = localStorage.Contab + "_13";
+//                 $CONEXION_BD = {
+//                     host: localStorage.IP_DATOS,
+//                     user: $_USUARIOSQL,
+//                     password: $_CLAVESQL,
+//                     database: database,
+//                     dateStrings: true
+//                 };
+
+//                 var arrayEliminar = [];
+//                 arrayEliminar.push(json);
+//                 _eliminarJson(arrayEliminar, _onEliminarJsonUSU);
+//                 if ($_USUA_GLOBAL[0].TIPO_EMPRE == 'H') {
+//                     $('.loader').html(
+//                         '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-466.4 259.6 280.2 47.3" enable-background="new -466.4 259.6 280.2 47.3" xml:space="preserve" style="width: 50%; display: block; margin: 0 auto;">' +
+//                         '<polyline fill="none" stroke="#476fAD" class="ekg" stroke-width="1" stroke-linecap="square" stroke-miterlimit="10" points="-465.4,281 -436,281 -435.3,280.6 -431.5,275.2 -426.9,281 -418.9,281 -423.9,281 -363.2,281 -355.2,269 -345.2,303 -335.2,263 -325.2,291 -319.2,281 -187.2,281 "/>' +
+//                         '</svg>'
+//                     )
+//                     $('.loader').css('align-items', 'center');
+//                     $('.wrapper').css('display', 'contents', 'height', '');
+//                 }
+//             },
+//             url
+//         );
+//     } else {
+//         loader('hide');
+//         CON852(res[0], res[1], res[2], _toggleNav);
+//     }
+// }
+
+// function _onEliminarJsonUSU(data) {
+//     var res = data.split('|');
+//     if (res[0].trim() == "00") {
+//         console.debug('Finish');
+//     } else {
+//         console.error(res[1]);
+//         jAlert({ titulo: 'Error ', mensaje: 'Ha ocurrido un error eliminando archivos <b>.JSON</b>' }, _toggleNav);
+//     }
+// }
 
 function CON851(err, code, dll, tipo, titulo) {
     var msj = msjError(cerosIzq(code.trim(), 2));
@@ -226,18 +269,12 @@ function _eliminarJson(arrayFiles, func) {
 $(document).on('click', '.menuToggle', _toggleNav);
 
 function _toggleNav() {
+    console.debug('activado togglenav');
     var nav = $('.navbar-collapse');
     var visible = nav.is(':visible');
     var widthScreen = $(document).width();
     let Window = BrowserWindow.getAllWindows();
 
-    if (!visible) {
-        if (Window.length > 1) {
-            var { ipcRenderer } = require('electron');
-            let vector = ['salir', 'ejemplo']
-            ipcRenderer.send('ventana2', { param: vector });
-        }
-    }
     if (widthScreen > 992) { // Pantalla grande
         if (visible) {
             if (widthScreen > 992) {
@@ -267,6 +304,17 @@ function _toggleNav() {
                 $('.page-fixed-main-content').animate({
                     'margin-left': '280px'
                 });
+                if (Window.length > 1) {
+                    console.debug('segunda ventana');
+                    for(var i in Window){
+                        let Titulo = Window[i].getTitle();
+                        if (Titulo.search('.pdf') == -1) {
+                            var { ipcRenderer } = require('electron');
+                            let vector = ['salir', 'ejemplo']
+                            ipcRenderer.send('ventana2', { param: vector });
+                        }
+                    }
+                } 
             } else {
                 nav.slideToggle('slow', function () {
                     $(this).attr('style', 'display:block!important;');
@@ -603,7 +651,7 @@ require('electron').ipcRenderer.on('closed2', (event, message) => {
     console.debug(message);
     _EventocrearSegventana(['off']);
 });
-
+//----- NOTA: Estas funciones deben ser movidas a un JS de consultas para Salud -----//
 function calcular_edad(fecha) {
     //SC-EDAD
     var fechaNacimiento = moment(fecha, "YYYY-MM-DD"),
@@ -635,92 +683,92 @@ function datos_finalidad(nit, sexo, edad) {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.unid_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '01',
-                'descripcion': consult_finalidad('1')
+                'descripcion': get_finalidadConsulta('1')
             });
         }
 
         if (edad.unid_edad == 'D') {
             datos_finalidad.push({
                 'codigo': '02',
-                'descripcion': consult_finalidad('2')
+                'descripcion': get_finalidadConsulta('2')
             });
         }
 
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 61)) {
             datos_finalidad.push({
                 'codigo': '03',
-                'descripcion': consult_finalidad('3')
+                'descripcion': get_finalidadConsulta('3')
             });
         }
 
         if ((edad.unid_edad == 'D' || edad.unid_edad == 'M') || (edad.unid_edad == 'A' && edad.vlr_edad < 10)) {
             datos_finalidad.push({
                 'codigo': '04',
-                'descripcion': consult_finalidad('4')
+                'descripcion': get_finalidadConsulta('4')
             });
         }
 
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 30)) {
             datos_finalidad.push({
                 'codigo': '05',
-                'descripcion': consult_finalidad('5')
+                'descripcion': get_finalidadConsulta('5')
             });
         }
 
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '06',
-                'descripcion': consult_finalidad('6')
+                'descripcion': get_finalidadConsulta('6')
             });
         }
 
         if (edad.unid_edad == 'A' && edad.vlr_edad > 29) {
             datos_finalidad.push({
                 'codigo': '07',
-                'descripcion': consult_finalidad('7')
+                'descripcion': get_finalidadConsulta('7')
             });
         }
 
         datos_finalidad.push({
             'codigo': '08',
-            'descripcion': consult_finalidad('8')
+            'descripcion': get_finalidadConsulta('8')
         });
 
         if (edad.unid_edad == 'A' && edad.vlr_edad > 17) {
             datos_finalidad.push({
                 'codigo': '09',
-                'descripcion': consult_finalidad('9')
+                'descripcion': get_finalidadConsulta('9')
             });
         }
 
         datos_finalidad.push({
             'codigo': '10',
-            'descripcion': consult_finalidad('10')
+            'descripcion': get_finalidadConsulta('10')
         });
 
         datos_finalidad.push({
             'codigo': '11',
-            'descripcion': consult_finalidad('11')
+            'descripcion': get_finalidadConsulta('11')
         });
     } else {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '01',
-                'descripcion': consult_finalidad('1')
+                'descripcion': get_finalidadConsulta('1')
             });
         }
 
         if (edad.unid_edad == 'D') {
             datos_finalidad.push({
                 'codigo': '02',
-                'descripcion': consult_finalidad('2')
+                'descripcion': get_finalidadConsulta('2')
             });
         }
 
         if ((edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 61)) {
             datos_finalidad.push({
                 'codigo': '03',
-                'descripcion': consult_finalidad('3')
+                'descripcion': get_finalidadConsulta('3')
             });
         }
 
@@ -755,7 +803,7 @@ function datos_finalidad(nit, sexo, edad) {
         if ((sexo == 'F') && (edad.unid_edad == 'A') && (edad.vlr_edad > 9 && edad.vlr_edad < 51)) {
             datos_finalidad.push({
                 'codigo': '06',
-                'descripcion': consult_finalidad('6')
+                'descripcion': get_finalidadConsulta('6')
             });
         }
 
@@ -777,30 +825,30 @@ function datos_finalidad(nit, sexo, edad) {
 
         datos_finalidad.push({
             'codigo': '08',
-            'descripcion': consult_finalidad('8')
+            'descripcion': get_finalidadConsulta('8')
         });
 
         if (edad.unid_edad == 'A' && edad.vlr_edad > 17) {
             datos_finalidad.push({
                 'codigo': '09',
-                'descripcion': consult_finalidad('9')
+                'descripcion': get_finalidadConsulta('9')
             });
         }
 
         datos_finalidad.push({
             'codigo': '10',
-            'descripcion': consult_finalidad('10')
+            'descripcion': get_finalidadConsulta('10')
         });
 
         datos_finalidad.push({
             'codigo': '11',
-            'descripcion': consult_finalidad('11')
+            'descripcion': get_finalidadConsulta('11')
         });
     }
     return datos_finalidad;
 }
 
-function consult_finalidad(codigo) {
+function get_finalidadConsulta(codigo) {
     var msj = false;
     switch (codigo) {
         case '0':
@@ -842,3 +890,27 @@ function consult_finalidad(codigo) {
     }
     return msj;
 }
+function get_parentezcoPaciente(cod) {
+    let msj = false;
+    switch (cod) {
+        case "00": msj = "      "; break;
+        case "01": msj = "CONYUG"; break;
+        case "02": msj = "HIJO  "; break;
+        case "03": msj = "PADRES"; break;
+        case "04": msj = "2 GRAD"; break;
+        case "05": msj = "3 GRAD"; break;
+        case "06": msj = "< 12  "; break;
+        case "07": msj = "SUEGRO"; break;
+        default: msj = "********"; break;
+    }
+    return msj;
+}
+function get_ciudadPaciente(cod) {
+    let msj = false;
+    obtenerDatosCompletos({ nombreFd: 'CIUDADES' }, (data) => {
+        let ciudad = data.CIUDAD.find(ciu => ciu == cod.padStart(5, '0'));
+        if (ciudad == -1) msj = ' '; else msj = ciudad.NOMBRE;
+    }, 'ONLY')
+    return msj;
+}
+//---------------------------------------------------------------------------//
