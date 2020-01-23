@@ -8188,14 +8188,14 @@
                   "Descripcion": "Duplicar tarifas",
                   "Opc-segu": "IS16",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL716.html"
+                  "Href": "../../SALUD/paginas/SER103D.html"
                 },
                 {
                   "Id": "09717",
                   "Descripcion": "Actualizar servicios hospit.",
                   "Opc-segu": "IS17",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL717.html"
+                  "Href": "../../SALUD/paginas/SER112.html"
                 },
                 {
                   "Id": "09718",
@@ -8223,14 +8223,14 @@
                   "Descripcion": "Actualizar unidad atencion",
                   "Opc-segu": "IS1B",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL71B.html"
+                  "Href": "../../SALUD/paginas/SER11B.html"
                 },
                 {
                   "Id": "0971C",
                   "Descripcion": "Actualizar division facturac",
                   "Opc-segu": "IS1C",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL71C.html"
+                  "Href": "../../SALUD/paginas/SER11C.html"
                 },
                 {
                   "Id": "0971D",
@@ -8244,28 +8244,28 @@
                   "Descripcion": "Equivalencia operad. Datalab",
                   "Opc-segu": "IS1E",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL71E.html"
+                  "Href": "../../SALUD/paginas/SER11E.html"
                 },
                 {
                   "Id": "0971G",
                   "Descripcion": "Actualiza paquete integral",
                   "Opc-segu": "IS1G",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL71G.html"
+                  "Href": "../../SALUD/paginas/SER115.html"
                 },
                 {
                   "Id": "0971H",
                   "Descripcion": "Actualiza comunidades",
                   "Opc-segu": "IS1H",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL71H.html"
+                  "Href": "../../SALUD/paginas/SER116.html"
                 },
                 {
                   "Id": "0971I",
                   "Descripcion": "Actualiza resguardos",
                   "Opc-segu": "IS1I",
                   "Tipo": "HTML",
-                  "Href": "../../SALUD/paginas/SAL71I.html"
+                  "Href": "../../SALUD/paginas/SER117.html"
                 }
               ]
             },
