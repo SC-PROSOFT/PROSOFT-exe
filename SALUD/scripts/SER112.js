@@ -74,7 +74,7 @@ function _validacionesdato_717() {
         LLAMADO_DLL({
             dato: [$codigo717],
             callback: _dataconsultacodigo_717,
-            nombredll: 'SAL717-01',
+            nombredll: 'SER112-01',
             carpeta: 'SALUD'
         });
     }
@@ -125,7 +125,7 @@ function _envioDatSer717() {
     LLAMADO_DLL({
         dato: [$_NovedSer717, $codigo717, $_descripcod_717],
         callback: dataSAL717,
-        nombredll: 'SAL717-02',
+        nombredll: 'SER112-02',
         carpeta: 'SALUD'
     })
 }
