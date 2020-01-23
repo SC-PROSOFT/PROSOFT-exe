@@ -267,14 +267,13 @@ function creaVentana() {
   }))
 
   win.webContents.on('did-finish-load', () => {
-    let param;
-
-
-    // console.log('argumento2 -> ' + argv[1]);
-    param = argv[2];
-    console.log(param)
-    win.webContents.send('ping', { param: param });
-
+    win.webContents.session.clearCache(() => {
+      let param;
+      // console.log('argumento2 -> ' + argv[1]);
+      param = argv[2];
+      console.log(param)
+      win.webContents.send('ping', { param: param });
+    });
   });
 
   win.maximize()
@@ -310,7 +309,7 @@ ipcMain.on('another', (e, m) => {
 
   segundaventana.setBounds({ y: 40 });
   segundaventana.loadURL(path.join(__dirname, 'frameworks/paginas/SegundaVentana.html'));
-  var primeraventana =  segundaventana.getParentWindow();
+  var primeraventana = segundaventana.getParentWindow();
   segundaventana.webContents.on('did-finish-load', () => {
     var dir = path.join(__dirname, m);
     segundaventana.webContents.send('finish', [dir, primeraventana]);
@@ -318,6 +317,6 @@ ipcMain.on('another', (e, m) => {
 });
 
 ipcMain.on('ventana2', (e, m) => {
-  segundaventana.close();
+  segundaventana.destroy();
   win.webContents.send('closed2');
 })
