@@ -51,7 +51,7 @@ function validarPaciente_SER880() {
 							else {
 								if (result == true) {
 									let { ipcRenderer } = require("electron");
-									ipcRenderer.send('another', 'SALUD/PAGINAS/SAL7767.html');
+									ipcRenderer.send('another', 'SALUD/PAGINAS/SER110C.html');
 									vector = ['on', 'Creando nuevo paciente...']
 									_EventocrearSegventana(vector, validarPaciente_SER880);
 								}

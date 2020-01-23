@@ -32,7 +32,7 @@ function get_mensajesPacientes_SER810B() {
 			LLAMADO_DLL({
 				dato: [SAL97C11.EPSPACIW],
 				callback: _mostrarentidad_7C11,
-				nombredll: 'SAL7767_08',
+				nombredll: 'SER110C_08',
 				carpeta: 'SALUD'
 			})
 		})
@@ -93,7 +93,7 @@ function ventanaNtasPaciente(parametros) {
 						LLAMADO_DLL({
 							dato: [SAL97C11.EPSPACIW],
 							callback: _mostrarentidad_7C11,
-							nombredll: 'SAL7767_08',
+							nombredll: 'SER110C_08',
 							carpeta: 'SALUD'
 						})
 					}

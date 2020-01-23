@@ -172,7 +172,7 @@ function ImpPendientesPorFacturar451() {
 //Llama programa de apertura de facturacion
 function SER108() {
 	let { ipcRenderer } = require("electron");
-	ipcRenderer.send('another', 'SALUD/PAGINAS//SAL7411.html');
+	ipcRenderer.send('another', 'SALUD/PAGINAS//SER108.html');
 	vector = ['on', 'Creando apertura de facturación...']
 	_EventocrearSegventana(vector, _Revisardato_41);
 

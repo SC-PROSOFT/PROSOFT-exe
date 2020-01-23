@@ -189,7 +189,7 @@ function ventanaTipProced71A() {
 function ventanaFinalidad71A() {
     SAL71A.FINALIDAD_ESCUP = document.getElementById('finalidad71A').value;
     setTimeout(() => {
-        (SER834({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, (data) => {
+        (SER834A({ seleccion: SAL71A.FINALIDAD_ESCUP }, validarPYP71A, (data) => {
             SAL71A.FINALIDAD_ESCUP = data.COD; document.getElementById('finalidad71A').value = SAL71A.FINALIDAD_ESCUP + ' - ' + data.DESCRIP; validarSexoAplica71A();
         }))
     }, 400)
