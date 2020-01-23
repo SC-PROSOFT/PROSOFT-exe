@@ -97,7 +97,7 @@ function _validacionesorigen_716() {
         LLAMADO_DLL({
             dato: [$codigo716],
             callback: _dataCONSULTANOMTAR_716,
-            nombredll: 'SAL715_01',
+            nombredll: 'SER105_01',
             carpeta: 'SALUD'
         });
     }
@@ -139,7 +139,7 @@ function _validaciondestino_716() {
         LLAMADO_DLL({
             dato: [$codigoDst716],
             callback: _dataCONSULTADESTINO_716,
-            nombredll: 'SAL715_01',
+            nombredll: 'SER105_01',
             carpeta: 'SALUD'
         });
     }
@@ -171,7 +171,7 @@ function validacionCodigos716() {
     LLAMADO_DLL({
         dato: [$codigoDst716],
         callback: validador716,
-        nombredll: 'SAL716-TAB',
+        nombredll: 'SER103D-TAB',
         carpeta: 'SALUD'
     })
     
@@ -202,7 +202,7 @@ function envioDatos716() {
     LLAMADO_DLL({
         dato: [$codigo716, $codigoDst716],
         callback: registroDatos716,
-        nombredll: 'SAL716-01',
+        nombredll: 'SER103D-01',
         carpeta: 'SALUD'
     })
 }
