@@ -226,7 +226,7 @@ function _validacionestarifa_713() {
         LLAMADO_DLL({
             dato: [SAL713.$codigo713],
             callback: _dataCONSULTANOMTAR_713,
-            nombredll: 'SAL715_01',
+            nombredll: 'SER105_01',
             carpeta: 'SALUD'
         });
     }
