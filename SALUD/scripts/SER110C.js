@@ -28,6 +28,11 @@ var $_COLEGIO_PACI = [];
 // });
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">9,7,7,6,7 - Maestro de Pacientes  </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl("reset");
     _inputControl("disabled");
 

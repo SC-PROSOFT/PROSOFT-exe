@@ -7,6 +7,11 @@ var ingrterc711_Mask = new IMask(document.getElementById('ingr_terc711'),
 );
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">9,7,1,1 - Actualizacion de grupos de servicios </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl('reset');
     _inputControl('disabled');
 

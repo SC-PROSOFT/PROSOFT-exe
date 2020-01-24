@@ -12,6 +12,11 @@ var vlrmonto_713Mask = new IMask(document.getElementById('monto_713'),
 );
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">9,7,1,3- Actualizacion del Maestro Tabla de Tarifas </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl('reset');
     _inputControl('disabled');
     $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;

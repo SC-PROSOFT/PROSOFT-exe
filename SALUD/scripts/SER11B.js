@@ -3,6 +3,7 @@ var UNSERVICIO = [];
 var $NOMBRECOSTO, $CODSERV, $DESCRIPSERV, $EDADMINSERV, $EDADMAXSERV, $CODCOSTO, $ACTIVARSERV, $_OPERADOR71B, $_FECHAMOD71B; 
 
 $(document).ready(function () {
+    nombreOpcion('9,7,1,B - Actualizacion Unidades de Atencion'); 
     _inputControl('reset');
     _inputControl('disabled');
     $_IP_DATOS = localStorage.ip_server ? localStorage.ip_server : false;

@@ -2,7 +2,7 @@
 var $_CODTAB716,$_DESCRIPDESTINO_716,  $_DESCRIPNOMTAR_716; 
 
 $(document).ready(function () {
-
+    nombreOpcion('9,7,1,6 - Duplica una tarifa de servicios'); 
     _inputControl("reset");
     _inputControl('disabled');
     _toggleF8([

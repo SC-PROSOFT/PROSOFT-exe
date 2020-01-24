@@ -3,6 +3,7 @@
 var $_NovedSer71I, $arraygrpresgu, $_CODRESGU, $_NOMRESGU, $codigo_71I, descpr71I;
 
 $(document).ready(function () {
+    nombreOpcion('9,7,1,I -Actualizacion de Nombres Resguardos');
     _inputControl('reset');
     _inputControl('disabled');
     _toggleF8([

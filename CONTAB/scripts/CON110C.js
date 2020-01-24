@@ -31,6 +31,11 @@ $_DIAACTUAL = $_FECHAACTUAL.substring(6, 8);
 ////////////////////////////////MAESTRO ARTICULOS///////////////////////////////7
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">1,3,1 - Maestro de Terceros  </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl("reset");
     _inputControl("disabled");
     loader('hide');
@@ -1248,9 +1253,9 @@ function _evaluartipo_con110c() {
 }
 function _datotipo_con110c() {
     $_TIPOCUPOTERCEW = $('#cupo_con110c').val();
-    console.log($_FACTORTERCEW, '$_FACTORTERCEW')
+   
     if ($_NOVEDADCON110C == '7') {
-        // $('#factventas_con110c').val(1);
+        $('#factventas_con110c').val(1);
         // $('#factventasd_con110c').val('00');
         _evaluarfactorvent_con110c();
     } else {
@@ -1274,7 +1279,6 @@ function _evaluarfactorvent_con110c() {
 }
 function _datofactorvent_con110c() {
     $_FACTORTERCEW = factventas_110cMask.unmaskedValue;
-    console.log($_FACTORTERCEW, '$_FACTORTERCEW')
     if ((($_ACTTERCEW == '20') || ($_ACTTERCEW == '21')) && ($_FACTORTERCEW < '1')) {
         CON851('34', '34', null, 'error', 'error');
         _evaluarfactorvent_con110c();
@@ -2342,6 +2346,8 @@ function _evaluaranonacempl_con110c() {
         () => {
             $_ANONACEMPL = $('#anonac_con110c').val();
             if (($_ANONACEMPL.trim() == '') || (parseInt($_ANONACEMPL) == 0000)) {
+                $_ANONACEMPL = '0000'; 
+                $('#anonac_con110c').val($_ANONACEMPL);
                 _evaluarmesnacempl_con110c()
             } else if (($_ANONACEMPL > $_ANOACTUALW) || (parseInt($_ANONACEMPL) < 1900)) {
                 CON851('2D', '2D', null, 'error', 'error');
@@ -2383,7 +2389,7 @@ function _evaluardianacempl_7767() {
         form: "#DIANACIM_CON110C",
         orden: "1"
     },
-        () => { _evaluarmescumpl_7767(); },
+        () => { _evaluarmesnacempl_con110c(); },
         () => {
             $_DIANACEMPL = $('#dianac_con110c').val();
             if (($_DIANACEMPL.trim() == '') || (parseInt($_DIANACEMPL) == 0)) {
@@ -2405,7 +2411,7 @@ function _evaluarembargosempl_con110c() {
         form: '#EMBARGOS_CON110C',
         orden: "1"
     },
-        function () { _evaluarfechanacempl_con110c(); },
+        function () { _evaluardianacempl_7767(); },
         _datoembargosempl_con110c
     )
 }
@@ -2833,7 +2839,7 @@ function _consultadatos_con110c() {
 }
 
 function _dataCON110C_02(data) {
-    console.log(data, 'mostrar')
+  
     var date = data.split("|");
     var swinvalid = date[0].trim();
     $_CODTERCEROW = date[1].trim();
@@ -3041,7 +3047,6 @@ function _mostrardatos_con110c() {
     $('#modificadod_103').val($_ADMINMODTERCEW);
 
     factventas_110cMask.typedValue = $_FACTORTERCEW;
-    console.log($_FACTORTERCEW, '$_FACTORTERCEW')
     // $('#factventas_con110c').val($_FACTORTERCEW);
     // $('#factventasd_con110c').val($_PORCRETTER2W);
     $('#smvm_con110c').val($_CUPOTERCEW);

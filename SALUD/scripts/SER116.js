@@ -3,6 +3,7 @@
 var $_NovedSer71H, $_CODCOMU, $_NOMCOMU, $_COD71H, desc71H;
 
 $(document).ready(function () {
+    nombreOpcion('9,7,1,H -Actualizacion de Nombres Comunidad');
     _inputControl('reset');
     _inputControl('disabled');
     _toggleF8([

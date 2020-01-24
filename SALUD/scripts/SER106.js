@@ -3,6 +3,11 @@
 var $_NovedSer712, arraytarifas;
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">9,7,1,2 - Actualizacion  de Nombres de Tarifas </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl("reset");
     _inputControl("disabled");
     _toggleF8([

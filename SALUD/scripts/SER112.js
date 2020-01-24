@@ -3,6 +3,7 @@
 var $_NovedSer717, arrayservhsp, $_descripcod_717;
 
 $(document).ready(function () {
+    nombreOpcion('9,7,1,7 -Actualizacion de Servicios Hospitalarios'); 
     _inputControl('reset');
     _inputControl('disabled');
     $_ADMINW = localStorage.Usuario ? localStorage.Usuario : false;

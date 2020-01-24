@@ -2,6 +2,7 @@ var $_NovedSer71C, $desc71C, $procedm71C, $laborat71C, $imagen71C, $servicios71C
     $medicamn71C;
 
 $(document).ready(function () {
+    nombreOpcion('9,7,1,C -Actualizacion Divisiones Facturacion');
     _inputControl('reset');
     _inputControl('disabled');
 

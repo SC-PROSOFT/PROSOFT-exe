@@ -1,7 +1,7 @@
 var SAL77621 = [];
 
 $(document).ready(function () {
-
+    nombreOpcion('9,7,7,6,2,1- Unifica movimiento de pacientes');
     _inputControl("reset");
     _inputControl('disabled');
     _toggleF8([

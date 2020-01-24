@@ -1,6 +1,7 @@
 var $operadordat_71E, $operadorprosf_71E, $idoperador_71E, $nombreoper_71E, $_Novedad_71E;
 
 $(document).ready(function () {
+    nombreOpcion('9,7,1,E -Actualiza equivalencias de codigo de operador con DATALAB');
     _inputControl('reset');
     _inputControl('disabled');
 

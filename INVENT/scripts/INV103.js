@@ -72,6 +72,11 @@ var filtropresentacion = [];
 var filtromedida = [];
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">9,3,1 - Maestro de Articulos </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl("reset");
     _inputControl("disabled");
     loader('hide');
@@ -136,13 +141,13 @@ $(document).ready(function () {
                         }, function (data) {
                             $_ALMAC_103 = data.LOCALIZACION;
                             _buscarrestriccion();
-                        })
+                        },'OFF')
 
                     })
                 })
             })
         })
-    })
+    },'ON')
 })
 
 
@@ -3567,7 +3572,7 @@ function _unidadmesalud() {
     $_LLAVEPREME2 = $_TIPOPREME2 + $_UNIDADARTW;
     if ($_UNIDADARTW.trim() == '') {
         CON851('01', '01', null, 'error', 'error');
-        evaluarunidadmedsalud();
+        _evaluarunidadmedsalud();
     } else {
         LLAMADO_DLL({
             dato: [$_LLAVEPREME2],
