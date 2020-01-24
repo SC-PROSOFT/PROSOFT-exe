@@ -7,7 +7,7 @@ function re_liquidar_SALUD(data, tarifas, callback) {
     var maest_Artic = []
     var medicamentos = []
 
-    console.log(dato)
+    // console.log(dato)
 
     dato.VALOR_IVA = ''
 
@@ -37,9 +37,8 @@ function re_liquidar_SALUD(data, tarifas, callback) {
                         dato['VALOR_BASE1_IVA'] = ''
                         dato['VALOR_BASE2_IVA'] = ''
                         dato['VALOR_BASE3_IVA'] = ''
-                        dato['VALOR_IVA_FACT'] = ''
                         dato['FACTOR_INCREM'] = ''
-                        
+
 
                         switch (tarifas_liq.BASE_MED) {
                             case '1':
@@ -69,6 +68,7 @@ function re_liquidar_SALUD(data, tarifas, callback) {
                         }
                     }
                 }
+                callback(callback(dato))
             }, 'OFF')
         }, 'ON')
 
@@ -76,22 +76,22 @@ function re_liquidar_SALUD(data, tarifas, callback) {
         obtenerDatosCompletos({ nombreFd: 'TABLAS' }, function (tablas) {
             tablas_liq = tablas.TABLA;
             tablas_liq.pop()
-            console.log(tablas_liq)
+            // console.log(tablas_liq)
 
             sw_Cl = dato.CLASE
             if (dato.CLASE == '7') sw_Cl = '5'
 
-            tablas_liq = tablas_liq.filter(tabla => tabla.TIPO == dato.CLASE && tabla.COD == tarifas_liq.TABLA[sw_Cl])
+            tablas_liq = tablas_liq.filter(tabla => (tabla.TIPO == dato.CLASE) && (tabla.COD == tarifas_liq.TABLA[sw_Cl].COD_TABLA))
             console.log(tablas_liq)
 
             for (var i in dato.TABLA) {
                 if (dato.TABLA[i].GRUPO.trim() != '') {
                     var busquedaTabla_Articulo = tablas_liq.find(tab => tab.COD_SER.trim() == dato.TABLA[i].ARTICULO.trim())
-                    console.log(busquedaTabla_Articulo)
+
                     if (busquedaTabla_Articulo) leerMonto_SALUD(dato, i, tarifas_liq, busquedaTabla_Articulo)
                 }
             }
-            console.log(dato)
+            callback(dato)
 
         }, 'ONLY');
     }
@@ -131,7 +131,6 @@ function leer_convenio_SALUD(dato, i, busquedaArtic, tarifas_liq, medicamentos) 
     }
 
     //AHORA SIGUE PROCESO DATO-DROGAS
-
     if (tarifas_liq.BASE_MED == '1' || tarifas_liq.BASE_MED == '2' || tarifas_liq.BASE_MED == '3' || tarifas_liq.BASE_MED == '4') {
         switch (dato.TABLA[i].GRUPO) {
             case 'PO': dato.FACTOR_INCREM = parseFloat(tarifas_liq.PORC_PO) / 100
@@ -149,54 +148,72 @@ function leer_convenio_SALUD(dato, i, busquedaArtic, tarifas_liq, medicamentos) 
 
     if (busquedaArtic.IVA.trim() != '') {
         switch (busquedaArtic.IVA) {
-            case '1': dato.VALOR_BASE1_IVA = dato.VALOR_BASE1_IVA + parseFloat(busquedaArtic.VR_VENTA_1)
+            case '1': dato.VALOR_BASE1_IVA = parseFloat(dato.VALOR_BASE1_IVA) + parseFloat(busquedaArtic.VR_VENTA_1)
                 break;
-            case '2': dato.VALOR_BASE2_IVA = dato.VALOR_BASE2_IVA + parseFloat(busquedaArtic.VR_VENTA_1)
+            case '2': dato.VALOR_BASE2_IVA = parseFloat(dato.VALOR_BASE2_IVA) + parseFloat(busquedaArtic.VR_VENTA_1)
                 break;
-            case '3': dato.VALOR_BASE3_IVA = dato.VALOR_BASE3_IVA + parseFloat(busquedaArtic.VR_VENTA_1)
+            case '3': dato.VALOR_BASE3_IVA = parseFloat(dato.VALOR_BASE3_IVA) + parseFloat(busquedaArtic.VR_VENTA_1)
                 break;
         }
     }
+    var valor_Fact_W = (dato.VALOR_BASE1_IVA * parseInt($_USUA_GLOBAL[0].IVA1)) + (dato.VALOR_BASE2_IVA * parseInt($_USUA_GLOBAL[0].IVA2)) + (dato.VALOR_BASE3_IVA * parseInt($_USUA_GLOBAL[0].IVA3))
 
-    dato.VALOR_IVA_FACT = (dato.VALOR_BASE1_IVA * parseInt($_USUA_GLOBAL[0].IVA1)) + (dato.VALOR_BASE2_IVA * parseInt($_USUA_GLOBAL[0].IVA2)) + (dato.VALOR_BASE3_IVA * parseInt($_USUA_GLOBAL[0].IVA3))
-    
+    dato.VALOR_IVA = dato.VALOR_IVA + (parseFloat(valor_Fact_W) * parseFloat(dato.TABLA[i].CANTIDAD))
+
+    dato.TABLA[i].VALOR_FACT = Math.round((parseFloat(busquedaArtic.VR_VENTA_1) * dato.FACTOR_INCREM) * parseFloat(dato.TABLA[i].CANTIDAD))
+
+    if (($_USUA_GLOBAL[0].NIT == 830512772) && (busqMedicamentos.REGUL == 'S')) {
+        var vlr_Regulado_w
+
+        if (dato.TABLA[i].VALOR_FACT > busqMedicamentos.VLR_LIMITE) {
+            vlr_Regulado_w = dato.TABLA[i].VALOR_FACT * parseFloat(busqMedicamentos.PORCE_MIN) / 100
+        } else {
+            vlr_Regulado_w = dato.TABLA[i].VALOR_FACT * parseFloat(busqMedicamentos.PORCE_MAX) / 100
+        }
+        dato.TABLA[i].VALOR_FACT = dato.TABLA[i].VALOR_FACT + vlr_Regulado_w
+    }
 }
 
 function leerMonto_SALUD(dato, i, tarifas_liq, tabla) {
     var SW_APR
-    console.log(tabla)
 
     if ((tabla.COD == 'I4' || tabla.COD == 'I4') && (dato.PREFIJO == 'P') && (tabla.GR_SER == '93')) {
         if ((tabla.CD_SER == '1000') || (tabla.CD_SER == '9400') || (tabla.CD_SER == '8300') || (tabla.CD_SER == '7000')) {
+            console.log('entro a 1')
             tabla.MONTO = parseFloat(tabla.MONTO) * 1.1
         }
     }
 
     var numerico = $.isNumeric(tarifas_liq.SAL_MIN)
-    if (tarifas_liq.SAL_MIN == '000000000' || numerico == false) tarifas_liq.SAL_MIN = $_USUA_GLOBAL[0].SAL_MIN / 30
+    if (tarifas_liq.SAL_MIN == '000000000' || numerico == false) {
+        tarifas_liq.SAL_MIN = $_USUA_GLOBAL[0].SAL_MIN / 30
+        console.log('entro a 2')
+    }
 
+    console.log(tabla.FORMA_LIQ + 'forma liq')
     switch (tabla.FORMA_LIQ) {
         case '1':
-            SW_APR = '1'
-            dato.TABLA[i].VALOR_UNIT = Math.round(parseFloat(tabla.MONTO) * tarifas_liq.HN_QUIR)
+            SW_APR = 1
+            dato.TABLA[i].VALOR_UNIT = Math.round(parseFloat(tabla.MONTO) * parseFloat(tarifas_liq.HN_QUIR))
             break;
         case '2':
-            SW_APR = '100'
-            dato.TABLA[i].VALOR_UNIT = tabla.MONTO
+            SW_APR = 100
+            dato.TABLA[i].VALOR_UNIT = parseFloat(tabla.MONTO)
             break;
         case '4':
-            SW_APR = '100'
-            dato.TABLA[i].VALOR_UNIT = Math.round(parseFloat(tabla.MONTO) * tarifas_liq.SAL_MIN)
+            SW_APR = 100
+            dato.TABLA[i].VALOR_UNIT = Math.round(parseFloat(tabla.MONTO) * parseFloat(tarifas_liq.SAL_MIN))
             break;
         default:
-            SW_APR = '10'
+            SW_APR = 10
             dato.TABLA[i].VALOR_UNIT = parseFloat(tabla.MONTO)
             break;
     }
+    console.log(dato.TABLA[i].VALOR_UNIT + 'valor unit')
     //buscar-incremento
+    console.log(tabla.INCREM + 'increm')
     if (tabla.INCREM == '0') {
         if (dato.CLASE == '7') {
-
             switch (dato.TABLA[i].GRUPO) {
                 case '90':
                     tabla.INCREM = '2'
@@ -224,10 +241,11 @@ function leerMonto_SALUD(dato, i, tarifas_liq, tabla) {
         }
     }
 
-    if (tabla.INCREM = '9') {
-        dato.FACTOR_W = '1'
+    if (tabla.INCREM == '9') {
+        dato.FACTOR_W = 1
     } else {
         dato.FACTOR_W = Math.round(parseFloat(tarifas_liq.TABLA[tabla.INCREM].PORC_TABLA) / 100)
+        console.log(dato.FACTOR_W + 'factor_W')
     }
     //
 
@@ -240,6 +258,7 @@ function leerMonto_SALUD(dato, i, tarifas_liq, tabla) {
     }
 
     dato.TABLA[i].VALOR_UNIT = Math.round(dato.TABLA[i].VALOR_UNIT * dato.FACTOR_W)
+    console.log(dato.TABLA[i].VALOR_UNIT + 'valor unit calc')
 
     if (tarifas_liq.COD = 'H4') {
         VALOR_APROX = Math.round(dato.TABLA[i].VALOR_UNIT * 1)
@@ -247,13 +266,16 @@ function leerMonto_SALUD(dato, i, tarifas_liq, tabla) {
 
     } else if (tabla.INCREM != '9') {
         VALOR_APROX = Math.round(dato.TABLA[i].VALOR_UNIT / SW_APR)
+        console.log(VALOR_APROX + 'valor aprox')
         dato.TABLA[i].VALOR_UNIT = Math.round(VALOR_APROX * SW_APR)
+        console.log(dato.TABLA[i].VALOR_UNIT + 'valor aprox 2')
     }
 
     if (tarifas_liq.COD == 'PP') {
-        dato.TABLA[i].VALOR_FACT = Math(dato.TABLA[i].VALOR_UNIT * dato.TABLA[i].CANTIDAD)
+        dato.TABLA[i].VALOR_FACT = Math(dato.TABLA[i].VALOR_UNIT * parseFloat(dato.TABLA[i].CANTIDAD))
     } else {
-        dato.TABLA[i].VALOR_FACT = Math.round(dato.TABLA[i].VALOR_UNIT * dato.TABLA[i].CANTIDAD)
+        dato.TABLA[i].VALOR_FACT = Math.round(dato.TABLA[i].VALOR_UNIT * parseFloat(dato.TABLA[i].CANTIDAD))
+        console.log(dato.TABLA[i].VALOR_FACT + 'valor factura')
         dato.TABLA[i].VALOR_FACT.toString()
     }
 }

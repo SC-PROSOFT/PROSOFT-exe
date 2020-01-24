@@ -6,6 +6,10 @@
     .box-center {
         padding: 10px;
     }
+
+    #TABLA_491 th {
+        text-align: center;
+    }
 </style>
 <div class="col-md-12 col-sm-12" style="float: none; margin: 0 auto;">
     <div class="portlet light box-center box-title" style="margin: 0 auto;">
@@ -47,15 +51,15 @@
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-4 col-xs-12">Compr:</label>
                             <div class="input-group col-md-8 col-sm-8 col-xs-12" id="COMPR_491">
-                                <input id="comprob_SAL491" type="text" 
-                                data-orden="1" maxlength="6" class="form-control col-md-12 col-sm-12 col-xs-12">
+                                <input id="comprob_SAL491" type="text" data-orden="1" maxlength="6"
+                                    class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-12">
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-4 col-xs-12">Fecha:</label>
-                            <div class="input-group col-md-8 col-sm-8 col-xs-12" id="FECHA_41">
+                            <div class="input-group col-md-8 col-sm-8 col-xs-12">
                                 <input id="fecha_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
                                     data-orden="1" maxlength="10">
                             </div>
@@ -64,15 +68,14 @@
                     <div class="col-md-2 col-sm-2 col-xs-12">
                         <div class="inline-inputs">
                             <label class="col-md-4 col-sm-4 col-xs-12">Factura:</label>
-                            <div class="input-group col-md-2 col-sm-2 col-xs-12" id="FACTURA_41">
+                            <div class="input-group col-md-2 col-sm-2 col-xs-12" id="FACTURA_491">
                                 <input id="factura_SAL491" type="text"
                                     class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" maxlength="1">
                             </div>
-                            <button type="button" id="facturaBtn_SAL491"
-                                class="btn f8-Btn col-md-1 col-sm-1 col-xs-1">
+                            <button type="button" id="facturaBtn_SAL491" class="btn f8-Btn col-md-1 col-sm-1 col-xs-1">
                                 <i class="icon-magnifier"></i>
                             </button>
-                            <div class="input-group col-md-5 col-sm-5 col-xs-12" id="FACTURAD_41">
+                            <div class="input-group col-md-5 col-sm-5 col-xs-12" id="FACTURAD_491">
                                 <input id="facturad_SAL491" data-orden="1" maxlength="6"
                                     class="form-control col-md-12 col-sm-12 col-xs-12">
                             </div>
@@ -95,8 +98,7 @@
                                 <input id="cliente_SAL491" class="form-control col-md-12 col-sm-12 col-xs-12"
                                     data-orden="1" maxlength="12">
                             </div>
-                            <button type="button" id="clienteBtn_SAL491"
-                                class="btn f8-Btn col-md-1 col-sm-1 col-xs-1">
+                            <button type="button" id="clienteBtn_SAL491" class="btn f8-Btn col-md-1 col-sm-1 col-xs-1">
                                 <i class="icon-magnifier"></i>
                             </button>
                             <div class="input-group col-md-7 col-sm-7 col-xs-12">
@@ -105,15 +107,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="col-md-5 col-sm-4 col-xs-12">
                         <div class="inline-inputs">
                             <label class="col-md-3 col-sm-3 col-xs-12">Paciente:</label>
                             <div class="input-group col-md-4 col-sm-4 col-xs-12" id="PACIENTE_41">
                                 <input id="paciente_SAL491" type="text"
                                     class="form-control col-md-12 col-sm-12 col-xs-12" data-orden="1" maxlength="15">
                             </div>
-                            <button type="button" id="pacienteBtn_SAL491"
-                                class="btn f8-Btn col-md-1 col-sm-1 col-xs-1">
+                            <button type="button" id="pacienteBtn_SAL491" class="btn f8-Btn col-md-1 col-sm-1 col-xs-1">
                                 <i class="icon-magnifier"></i>
                             </button>
                             <div class="input-group col-md-9 col-sm-9 col-xs-12">
@@ -121,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-6">
+                    <div class="col-md-1 col-sm-2 col-xs-6">
                         <div class="inline-inputs">
                             <label class="col-md-6 col-sm-8 col-xs-12">Sexo:</label>
                             <div class="input-group col-md-6 col-sm-4 col-xs-12">
@@ -223,36 +224,23 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center">
-                <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="elementos-adicionales">
-                    <table id="TABLA_401" class="table table-light table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Cod.servicio</th>
-                                <th>Detalle</th>
-                                <th>Almac</th>
-                                <th>Cant</th>
-                                <th>Und</th>
-                                <th>Valor Unit</th>
-                                <th>Valor Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+            <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="elementos-adicionales">
+                <table id="TABLA_491" class="table table-light table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cod.servicio</th>
+                            <th>Detalle</th>
+                            <th>Almac</th>
+                            <th>Cant</th>
+                            <th>Und</th>
+                            <th>Valor Unit</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
 
 
@@ -393,7 +381,7 @@
                 </div>
             </div>
             <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="DIVFACTURA">
-                <div class="col-md-5 col-sm-4 col-xs-4">
+                <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="inline-inputs">
                         <label class="col-md-6 col-sm-6 col-xs-6">Divis. fact.</label>
                         <div class="input-group col-md-6 col-sm-6 col-xs-6" id="CAP_41">
@@ -402,13 +390,73 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-2 col-sm-3 col-xs-12">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Oper Elab:</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="operElab_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="5" data-orden="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-3 col-xs-12">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Oper Correc:</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="operCorrec_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="5" data-orden="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Secu. Copago:</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="secuCopago_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="5" data-orden="1">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-group col-md-12 col-sm-12 col-xs-12 box-center" id="ULTIMOSDATOS_41">
-                <div class="col-md-5 col-sm-4 col-xs-4">
+                <div class="col-md-3 col-sm-4 col-xs-4">
                     <div class="inline-inputs">
                         <label class="col-md-6 col-sm-6 col-xs-6">Ciudad</label>
                         <div class="input-group col-md-6 col-sm-6 col-xs-6">
                             <input id="ciudad_SAL491" class="form-control col-md-12 col-sm-12 col-xs-12">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-sm-3 col-xs-12">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Refact:</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="refactura_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="5" data-orden="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-3 col-xs-12">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Destino:</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="destino_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="5" data-orden="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="inline-inputs">
+                        <label class="col-md-6 col-sm-6 col-xs-6">Fecha atencion:</label>
+                        <div class="input-group col-md-6 col-sm-6 col-xs-6">
+                            <input id="fechaAten_SAL491" type="text" class="form-control col-md-12 col-sm-12 col-xs-12"
+                                maxlength="5" data-orden="1">
                         </div>
                     </div>
                 </div>

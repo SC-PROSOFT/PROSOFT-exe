@@ -65,6 +65,8 @@
                 'DESPLAZADO':    'SALUD/SER810D',
                 'ESPCUPS':       'SALUD/SAL71A-C', // se puede filtrar por cod-cups
                 'CUPS':          'SALUD/SER802C',
+                'MEDICAMENTOS':  'SALUD/SER104C', 
+                'SALDOS':        'INVENT/INV507', 
                 'PROFESION': {
                     'PROFESION': [
                         { 'COD': '1', 'DESCRIP': 'MEDICO ESPECIALISTA' },
