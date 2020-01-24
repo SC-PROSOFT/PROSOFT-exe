@@ -112,6 +112,7 @@
             // Insertar formulario
             $('<select />', {
                 id: $.F8LITE.id_select
+
             })
                 .css({
                     width: '40%',
@@ -242,7 +243,7 @@
                     'NUMERACION': 'APP/SALUD/SER808.DLL'
                 }
                 let rutaDLL = DLL[$.F8LITE.dll];
-                $('span').remove();
+                $('#content-f8_lite_body span').remove();
                 let URL = get_url(rutaDLL);
                 $(`#${$.F8LITE.id_input}`).hide(); $(`#${$.F8LITE.id_select}`).hide();
                 $('#content-f8_lite_body').append('<div id="cargando_F8cargarndo" style="display:flex;justify-content:center;"><i class="fa fa-spin fa-spinner fa-3x"></i></div>');
@@ -250,7 +251,7 @@
                     datosh: datosEnvio() + $(`#${$.F8LITE.id_select}`).val() + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
                 }, URL)
                     .then(data => {
-                        console.debug(data);
+                        console.log(data, 'datanumeracion');
                         $('#cargando_F8cargarndo').remove();
                         var array = data[$.F8LITE.f8data];
                         table = [];
@@ -329,7 +330,7 @@
                     CON851('', 'Ingresar minimo 3 caracteres', null, 'error', 'Error');
                     $(`#${$.F8LITE.id_input}`).focus();
                 } else {
-                    $('span').remove();
+                    $('#content-f8_lite_body span').remove();
                     let URL = get_url("APP/SALUD/SER810.DLL");
                     $(`#${$.F8LITE.id_input}`).hide(); $(`#${$.F8LITE.id_select}`).hide();
                     $('#content-f8_lite_body').append('<div id="cargando_F8cargarndo" style="display:flex;justify-content:center;"><i class="fa fa-spin fa-spinner fa-3x"></i></div>');
@@ -337,7 +338,7 @@
                         datosh: datosEnvio() + $(`#${$.F8LITE.id_select}`).val() + '|' + $(`#${$.F8LITE.id_input}`).val().toUpperCase()
                     }, URL)
                         .then(data => {
-                            console.debug(data);
+                            console.log(data, 'PACIENTES');
                             $('#cargando_F8cargarndo').remove();
                             var array = data[$.F8LITE.f8data];
                             table = [];

@@ -2447,7 +2447,7 @@ function _dataSAL41_04(data) {
 
 function _Crearcliente_41() {
     let { ipcRenderer } = require("electron");
-    ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
+    ipcRenderer.send('another', 'SALUD/paginas/SER110C.html');
     vector = ['on', 'Actualizando maestro de pacientes...']
     _EventocrearSegventana(vector, _Evaluarcliente_41);
 }
@@ -3132,7 +3132,7 @@ function _dataCON904S_01_41(data) {
             $_SWCREAR = '1';
             // ACTUALIZACION DE MAESTRO DE PACIENTES SER110C
             let { ipcRenderer } = require("electron");
-            ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
+            ipcRenderer.send('another', 'SALUD/paginas/SER110C.html');
             vector = ['on', 'Actualizando maestro de pacientes...']
             _EventocrearSegventana(vector, _Evaluaridhistoriafact_41);
         } else {
@@ -3145,7 +3145,7 @@ function _dataCON904S_01_41(data) {
     }
 }
 // function _Actualizacionmaestrosu_41() {
-//     ipcRenderer.send('another', { html:'SALUD/PAGINAS/SAL7767.html'});
+//     ipcRenderer.send('another', { html:'SALUD/PAGINAS/SER110C.html'});
 // }
 function _Validarpaciente_41() {
     if (SAL41.NITUSU == "0900019291") {
@@ -3210,7 +3210,7 @@ function _dataCON904S_03_41(data) {
                 // CALL SER11G Y DESPUES GO TO LEER-PACIENTE
                 console.debug('segunda ventana de actualizar paciente SER11G')
                 let { ipcRenderer } = require("electron");
-                ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
+                ipcRenderer.send('another', 'SALUD/paginas/SER110C.html');
                 vector = ['on', 'Actualizando maestro de pacientes...']
                 _EventocrearSegventana(vector, _Validandocliente3_41);
                 // _Validandocliente3_41();
@@ -3219,7 +3219,7 @@ function _dataCON904S_03_41(data) {
                 // CALL SER11I Y DESPUES GO TO LEER PACIENTE
                 console.debug('segunda ventana de actualizar paciente SER11I')
                 let { ipcRenderer } = require("electron");
-                ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
+                ipcRenderer.send('another', 'SALUD/paginas/SER110C.html');
                 vector = ['on', 'Actualizando maestro de pacientes...']
                 _EventocrearSegventana(vector, _Validandocliente3_41);
                 // _Validandocliente3_41();
@@ -3231,7 +3231,7 @@ function _dataCON904S_03_41(data) {
                 // CALL SER11G Y DESPUES GO TO PACIENTE
                 console.debug('segunda ventana de actualizar paciente SER11G')
                 let { ipcRenderer } = require("electron");
-                ipcRenderer.send('another', 'SALUD/paginas/SAL7767.html');
+                ipcRenderer.send('another', 'SALUD/paginas/SER110C.html');
                 vector = ['on', 'Actualizando maestro de pacientes...']
                 _EventocrearSegventana(vector, _Validandocliente3_41);
                 // _Validandocliente3_41();
@@ -6486,18 +6486,15 @@ function _Aceptarautorizacion2_41() {
     $_NROAUTORELAB = $('#autorizacion_SAL41').val();
     if ((SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0900005594') || (SAL41.NITUSU == '019233740')) {
         _Aceptarautorizacion3_41();
-    }
-    else {
+    }  else {
         if (($_NROAUTORELAB.trim() == '') && (parseInt($_NITFACT) > 9999) && ($_UNSERW == '02')) {
             CON851('02', '02', null, 'error', 'Error');
             if (($_CLFACT == '5') && (($_ACTTER == '55') || ($_ACTTER == '21') || ($_ACTTER == '22') || ($_ACTTER == '23'))) {
-                _Detalle_41();
-            }
-            else {
+                _Evaluarautorizacion_41();
+            } else {
                 _Aceptarautorizacion3_41();
             }
-        }
-        else {
+        } else {
             _Aceptarautorizacion3_41();
         }
     }
@@ -6506,9 +6503,8 @@ function _Aceptarautorizacion3_41() {
     console.debug('aceptarautorizacion3')
     if (($_NROAUTORELAB.trim() == '') && ((SAL41.NITUSU == '0830092718') || (SAL41.NITUSU == '0900193162'))) {
         CON851('02', '02', null, 'error', 'Error');
-        _Detalle_41();
-    }
-    else if (SAL41.NITUSU == '0900405505') {
+        _Evaluarautorizacion_41();
+    } else if (SAL41.NITUSU == '0900405505') {
         $_NROAUTOREDIT = $_NROAUTORINUM
         if ($_NROAUTOREDIT.trim() == '') {
             $('.btn-primary').click();
@@ -6544,8 +6540,7 @@ function _Aceptarautorizacion3_41() {
             }
         }
 
-    }
-    else {
+    } else {
         $('.btn-primary').click();
         // _Datodiagnosticos_41();
     }
@@ -6553,7 +6548,11 @@ function _Aceptarautorizacion3_41() {
 
 function _Datodiagnosticos_41() {
     console.debug('datodiagnostico');
-    setTimeout(_Ventanadiagnostico_41, 200);
+    if ((SAL41.NITUSU == '0830512772' || SAL41.NITUSU == '0900264583' || SAL41.NITUSU == '0800037021') && (SAL41.UNSERW == '02' || SAL41.UNSERW == '08')){
+        setTimeout(_Ventanadiagnostico_41, 200);
+    } else {
+        _Datopaqintegral_41();
+    }
 }
 
 function _Ventanadiagnostico_41() {
@@ -10220,7 +10219,7 @@ function _Sumarvaloresciru_41() {
         cantidad = cantidad.replace(',', '');
         cantidad = parseFloat(cantidad);
         console.debug(cantidad);
-        $.isNaN(cantidad) ? cantidad = 0 : cantidad = cantidad;
+        isNaN(cantidad) ? cantidad = 0 : cantidad = cantidad;
         $_VALORBRUTO = $_VALORBRUTO + cantidad;
         console.debug($_VALORBRUTO)
     }

@@ -39,39 +39,39 @@ function _cargarUsuario() {
             $_USUA_GLOBAL = data.DATOSUSUA;
             cargarMenu();
             $_USUA_GLOBAL[0].NIT = parseInt($_USUA_GLOBAL[0].NIT);
-                $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
-                $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
-                $_USUA_GLOBAL[0].RUTA_LOGO = path.join('file://', __dirname, '../imagenes/logo/' + $_USUA_GLOBAL[0].NIT + '.BMP');
+            $_CLAVESQL = $_USUA_GLOBAL[0].CLAVE_SQL.trim();
+            $_USUARIOSQL = $_USUA_GLOBAL[0].USUAR_SQL.trim();
+            $_USUA_GLOBAL[0].RUTA_LOGO = path.join('file://', __dirname, '../imagenes/logo/' + $_USUA_GLOBAL[0].NIT + '.BMP');
 
-                let mes = evaluarMes_min(localStorage.Mes);
-                $('title').html(`
+            let mes = evaluarMes_min(localStorage.Mes);
+            $('title').html(`
                 \\${localStorage.Contab}\\${mes}
                 &nbsp&nbsp&nbsp&nbsp&nbsp
                 ${localStorage.Usuario} 
                 ${localStorage.Nombre} 
                 `)
 
-                $('#user_menu_user').html(localStorage.Usuario + " - " + localStorage.Nombre);
-                $('#lblEmpresa').html($_USUA_GLOBAL[0].NOMBRE);
+            $('#user_menu_user').html(localStorage.Usuario + " - " + localStorage.Nombre);
+            $('#lblEmpresa').html($_USUA_GLOBAL[0].NOMBRE);
 
-                let database = localStorage.Contab + "_" + localStorage.Mes;
-                $CONTROL = localStorage.Contab + "_13";
-                // $CONEXION_BD = {
-                //     host: localStorage.IP_DATOS,
-                //     user: $_USUARIOSQL,
-                //     password: $_CLAVESQL,
-                //     database: database,
-                //     dateStrings: true
-                // };
-                if ($_USUA_GLOBAL[0].TIPO_EMPRE == 'H') {
-                    $('.loader').html(
-                        '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-466.4 259.6 280.2 47.3" enable-background="new -466.4 259.6 280.2 47.3" xml:space="preserve" style="width: 50%; display: block; margin: 0 auto;">' +
-                        '<polyline fill="none" stroke="#476fAD" class="ekg" stroke-width="1" stroke-linecap="square" stroke-miterlimit="10" points="-465.4,281 -436,281 -435.3,280.6 -431.5,275.2 -426.9,281 -418.9,281 -423.9,281 -363.2,281 -355.2,269 -345.2,303 -335.2,263 -325.2,291 -319.2,281 -187.2,281 "/>' +
-                        '</svg>'
-                    )
-                    $('.loader').css('align-items', 'center');
-                    $('.wrapper').css('display', 'contents', 'height', '');
-                }
+            let database = localStorage.Contab + "_" + localStorage.Mes;
+            $CONTROL = localStorage.Contab + "_13";
+            // $CONEXION_BD = {
+            //     host: localStorage.IP_DATOS,
+            //     user: $_USUARIOSQL,
+            //     password: $_CLAVESQL,
+            //     database: database,
+            //     dateStrings: true
+            // };
+            if ($_USUA_GLOBAL[0].TIPO_EMPRE == 'H') {
+                $('.loader').html(
+                    '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-466.4 259.6 280.2 47.3" enable-background="new -466.4 259.6 280.2 47.3" xml:space="preserve" style="width: 50%; display: block; margin: 0 auto;">' +
+                    '<polyline fill="none" stroke="#476fAD" class="ekg" stroke-width="1" stroke-linecap="square" stroke-miterlimit="10" points="-465.4,281 -436,281 -435.3,280.6 -431.5,275.2 -426.9,281 -418.9,281 -423.9,281 -363.2,281 -355.2,269 -345.2,303 -335.2,263 -325.2,291 -319.2,281 -187.2,281 "/>' +
+                    '</svg>'
+                )
+                $('.loader').css('align-items', 'center');
+                $('.wrapper').css('display', 'contents', 'height', '');
+            }
         })
         .catch(err => {
             console.error(err);
@@ -296,6 +296,20 @@ function _toggleNav() {
             let active = $('#navegacion').find('li.opcion-menu.active');
             if (active) active.removeClass('active');
 
+            if (Window.length > 1) {
+                console.debug('segunda ventana');
+                for (var i in Window) {
+                    if (i > 0) {
+                        let Titulo = Window[i].getTitle();
+                        if (Titulo.search('.pdf') == -1) {
+                            var { ipcRenderer } = require('electron');
+                            let vector = ['salir', 'ejemplo']
+                            ipcRenderer.send('ventana2', { param: vector });
+                        }
+                    }
+                }
+            }
+
             if (widthScreen > 992) {
                 nav.show('slide', function () {
                     $(this).removeAttr('style');
@@ -304,17 +318,6 @@ function _toggleNav() {
                 $('.page-fixed-main-content').animate({
                     'margin-left': '280px'
                 });
-                if (Window.length > 1) {
-                    console.debug('segunda ventana');
-                    for(var i in Window){
-                        let Titulo = Window[i].getTitle();
-                        if (Titulo.search('.pdf') == -1) {
-                            var { ipcRenderer } = require('electron');
-                            let vector = ['salir', 'ejemplo']
-                            ipcRenderer.send('ventana2', { param: vector });
-                        }
-                    }
-                } 
             } else {
                 nav.slideToggle('slow', function () {
                     $(this).attr('style', 'display:block!important;');
@@ -630,9 +633,9 @@ function _EventocrearSegventana(data, callbackfunction, cancelfunction) {
                 buttons: {
                     aceptar: {
                         label: 'Continue',
-                        className: 'btn-primary',
+                        className: 'btn-success',
                         callback: function () {
-                            console.debug(callbackfunction);
+                            console.debug('callbackfunction');
                             callbackfunction();
                         }
                     }
@@ -641,14 +644,14 @@ function _EventocrearSegventana(data, callbackfunction, cancelfunction) {
             ventanaespera.init($('.modal-footer').hide());
         }
     } else if (data[0] == 'off') {
-        $('.btn-primary').click();
+        $('.btn-success').click();
     } else if (data[0] == 'cancelar') {
         $('.btn-danger').click();
     }
 }
 
 require('electron').ipcRenderer.on('closed2', (event, message) => {
-    console.debug(message);
+    console.debug(event, message);
     _EventocrearSegventana(['off']);
 });
 //----- NOTA: Estas funciones deben ser movidas a un JS de consultas para Salud -----//
