@@ -77,6 +77,11 @@ function _Nitmedico_41() {
 
 
 $(document).ready(function () {
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="lblEmpresa">9,4,1 - Elaboración de Facturas                    </a>' +
+        '</li>' +
+        '</ul>')
     _inputControl("reset");
     _inputControl("disabled");
     SAL41['ADMINW'] = localStorage.getItem('Usuario').trim() ? localStorage.getItem('Usuario').trim() : false;
@@ -1335,7 +1340,7 @@ function _Actualizarsaldo_SAL41() {
                 .catch(err => {
                     console.error(err);
                 });
-        } if ($TABLAFACT.length - 1 == i){
+        } if ($TABLAFACT.length - 1 == i) {
             _toggleNav();
         }
     }
@@ -6486,7 +6491,7 @@ function _Aceptarautorizacion2_41() {
     $_NROAUTORELAB = $('#autorizacion_SAL41').val();
     if ((SAL41.NITUSU == '0900405505') || (SAL41.NITUSU == '0900005594') || (SAL41.NITUSU == '019233740')) {
         _Aceptarautorizacion3_41();
-    }  else {
+    } else {
         if (($_NROAUTORELAB.trim() == '') && (parseInt($_NITFACT) > 9999) && ($_UNSERW == '02')) {
             CON851('02', '02', null, 'error', 'Error');
             if (($_CLFACT == '5') && (($_ACTTER == '55') || ($_ACTTER == '21') || ($_ACTTER == '22') || ($_ACTTER == '23'))) {
@@ -6548,7 +6553,7 @@ function _Aceptarautorizacion3_41() {
 
 function _Datodiagnosticos_41() {
     console.debug('datodiagnostico');
-    if ((SAL41.NITUSU == '0830512772' || SAL41.NITUSU == '0900264583' || SAL41.NITUSU == '0800037021') && (SAL41.UNSERW == '02' || SAL41.UNSERW == '08')){
+    if ((SAL41.NITUSU == '0830512772' || SAL41.NITUSU == '0900264583' || SAL41.NITUSU == '0800037021') && (SAL41.UNSERW == '02' || SAL41.UNSERW == '08')) {
         setTimeout(_Ventanadiagnostico_41, 200);
     } else {
         _Datopaqintegral_41();
@@ -8345,12 +8350,12 @@ function _Contabiliarcomp_41() {
             let datos_envio = datosEnvio()
             datos_envio += SAL41.ADMINW + '|' + $_LLAVENUM + $_NROCTAFACT.padStart(6, '0') + '|' + $_FECHA_LNK + '|' + SAL41.NITUSU + '|' + $_SALMINUSU
             console.debug(datos_envio);
-            SolicitarDll({ datosh: datos_envio }, _dataINV020GA_41, get_url('APP/SALUD/INV020GA.DLL'));
+            SolicitarDll({ datosh: datos_envio }, _dataINV020GA_41, get_url('APP/SALUD/SAL020GA.DLL'));
         }
         else if (($_PREFIJOFACT == 'E') || ($_PREFIJOFACT == 'C')) {
             let datos_envio = datosEnvio();
             datos_envio += SAL41.ADMINW + '|' + SAL41.LLAVEFACT + '|' + $_FECHA_LNK + '|' + SAL41.NITUSU + '|' + $_SALMINUSU + '|' + $_CONTADOUSU + '|' + $_PUCUSU + '|' + $_PREFIJOUSU + '|' + $_CONTABPOSUSU + '|' + $_RETCREEUSU + '|' + $_PEDIDOUSU + '|' + $_AUTORETUSU + '|' + $_RETENEDORUSU + '|' + $_NOMBREUSU.substring(0, 7) + '|' + $_SEPARACAJAUSU
-            SolicitarDll({ datosh: datos_envio }, _dataINV020_41, get_url('APP/SALUD/INV020.DLL'));
+            SolicitarDll({ datosh: datos_envio }, _dataINV020_41, get_url('APP/SALUD/SAL20.DLL'));
         }
         else {
             _Contabiliarcomp2_41();
@@ -8627,20 +8632,21 @@ function _Imprimir6_41() {
         _Imprimir7_41();
     } else {
         if (($_UNSERVFACT == '01') && ($_CLFACT == '5')) {
-            let datos_envio = datosEnvio()
-            datos_envio += '|' + SAL41.LLAVEFACT
-            datos_envio += '|' + $_FECHAFACT // convertir a fecha legible en .net
-            datos_envio += '|' + $_IDHISTORIAFACT
-            SolicitarDll({ datosh: datos_envio }, _dataSER880TG_41, get_url("APP/SALUD/SER880TG.DLL"));
+            let fecha = $_FECHAFACT.split('-');
+            let URL = get_url("APP/SALUD/SER880TG.DLL");
+                    postData({ datosh: datosEnvio() + SAL41.LLAVEFACT + '|' + fecha[0].substring(2,4) + fecha[1] + fecha[2] + '|' + $_IDHISTORIAFACT + '|' }, URL)
+                        .then(data => {
+                            console.debug(data);
+                            console.debug('con090');
+                            _Imprimir7_41();
+                        })
+                        .catch(err => {
+                            console.debug(err);
+                        })
         } else {
             _Imprimir7_41();
         }
     }
-}
-
-function _dataSER880TG_41(data) {
-    data = data.split('|');
-    _Imprimir7_41();
 }
 
 function _Imprimir7_41() {
@@ -9204,10 +9210,13 @@ function finImpresion_INV411() {
             ipcRenderer.send('another', 'SALUD/paginas/FAC135C.html');
             vector = ['on', 'Ventana de Copagos']
             _EventocrearSegventana(vector, _toggleNav);
+            $('.page-breadcrumb')[1].remove()
         } else {
+            $('.page-breadcrumb')[1].remove()
             _toggleNav();
         }
     } else {
+        $('.page-breadcrumb')[1].remove()
         _toggleNav();
     }
 }
@@ -9575,8 +9584,6 @@ function _Datohonorarios_41() {
                 $_VLRMATW = 0;
             } else {
                 if ($_CRUENTAFACT == '2') {
-                    // INV401BC
-                    // LINEA 8460
                     let URL = get_url("APP/SALUD/SAL401BC.DLL");
                     postData({ datosh: datosEnvio() + $_PREFIJOFACT + $_NROCTAFAC + '|' + 4 + '|' + 'XX39305' }, URL)
                         .then(data => {
@@ -9587,6 +9594,7 @@ function _Datohonorarios_41() {
                             console.debug(err);
                         })
                 } else {
+                    $_VLRMATW = 0;
                     $_VLRMATW = $_TABLATAR[$_J].MATQUITAR;
                 }
             }
