@@ -77,11 +77,7 @@ function _Nitmedico_41() {
 
 
 $(document).ready(function () {
-    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
-        '<li>' +
-        '<a href="#" id="lblEmpresa">9,4,1 - Elaboración de Facturas                    </a>' +
-        '</li>' +
-        '</ul>')
+    nombreOpcion('9,4,1 - Elaboración de Facturas');
     _inputControl("reset");
     _inputControl("disabled");
     SAL41['ADMINW'] = localStorage.getItem('Usuario').trim() ? localStorage.getItem('Usuario').trim() : false;
@@ -8367,16 +8363,17 @@ function _Contabiliarcomp_41() {
 
 function _dataINV020GA_41(data) {
     console.debug(data);
-    data = data.split('|');
-    if (data[0].trim() == '00' || data[0].trim() == '01' || data[0].trim() == '8O' || data[0].trim() == '8P' || data[0].trim() == '8Q' || data[0].trim() == '8R' || data[0].trim() == '8S') {
-        if (data[0].trim() == '01' || data[0].trim() == '8O' || data[0].trim() == '8P' || data[0].trim() == '8Q' || data[0].trim() == '8R' || data[0].trim() == '8S') {
-            CON851(data[0].trim(), data[0].trim(), null, 'warning', 'Advertencia!');
-        }
-        _Contabiliarcomp2_41();
-    }
-    else {
-        CON852(data[0], data[1], data[2], _toggleNav);
-    }
+    _Contabiliarcomp2_41();
+    // data = data.split('|');
+    // if (data[0].trim() == '00' || data[0].trim() == '01' || data[0].trim() == '8O' || data[0].trim() == '8P' || data[0].trim() == '8Q' || data[0].trim() == '8R' || data[0].trim() == '8S') {
+    //     if (data[0].trim() == '01' || data[0].trim() == '8O' || data[0].trim() == '8P' || data[0].trim() == '8Q' || data[0].trim() == '8R' || data[0].trim() == '8S') {
+    //         CON851(data[0].trim(), data[0].trim(), null, 'warning', 'Advertencia!');
+    //     }
+
+    // }
+    // else {
+    //     CON852(data[0], data[1], data[2], _toggleNav);
+    // }
 }
 
 function _dataINV020_41(data) {
@@ -8634,15 +8631,16 @@ function _Imprimir6_41() {
         if (($_UNSERVFACT == '01') && ($_CLFACT == '5')) {
             let fecha = $_FECHAFACT.split('-');
             let URL = get_url("APP/SALUD/SER880TG.DLL");
-                    postData({ datosh: datosEnvio() + SAL41.LLAVEFACT + '|' + fecha[0].substring(2,4) + fecha[1] + fecha[2] + '|' + $_IDHISTORIAFACT + '|' }, URL)
-                        .then(data => {
-                            console.debug(data);
-                            console.debug('con090');
-                            _Imprimir7_41();
-                        })
-                        .catch(err => {
-                            console.debug(err);
-                        })
+            postData({ datosh: datosEnvio() + SAL41.LLAVEFACT + '|' + fecha[0].substring(2, 4) + fecha[1] + fecha[2] + '|' + $_IDHISTORIAFACT + '|' }, URL)
+                .then(data => {
+                    console.debug(data);
+                    console.debug('con090');
+                    _Imprimir7_41();
+                })
+                .catch(err => {
+                    console.debug(err);
+                    _Imprimir7_41();
+                })
         } else {
             _Imprimir7_41();
         }
@@ -9210,13 +9208,11 @@ function finImpresion_INV411() {
             ipcRenderer.send('another', 'SALUD/paginas/FAC135C.html');
             vector = ['on', 'Ventana de Copagos']
             _EventocrearSegventana(vector, _toggleNav);
-            $('.page-breadcrumb')[1].remove()
         } else {
-            $('.page-breadcrumb')[1].remove()
             _toggleNav();
         }
     } else {
-        $('.page-breadcrumb')[1].remove()
+        // $('.page-breadcrumb')[1].remove()
         _toggleNav();
     }
 }

@@ -295,6 +295,7 @@ function _toggleNav() {
         } else {
             let active = $('#navegacion').find('li.opcion-menu.active');
             if (active) active.removeClass('active');
+            if ($('.page-breadcrumb')[1]) $('.page-breadcrumb')[1].remove();
 
             if (Window.length > 1) {
                 console.debug('segunda ventana');
@@ -915,5 +916,13 @@ function get_ciudadPaciente(cod) {
         if (ciudad == -1) msj = ' '; else msj = ciudad.NOMBRE;
     }, 'ONLY')
     return msj;
+}
+
+function nombreOpcion(nombre){
+    $('.page-content-fixed-header').append('<ul class="page-breadcrumb">' +
+        '<li>' +
+        '<a href="#" id="nombreOpcion">' + nombre + '</a>' +
+        '</li>' +
+        '</ul>')
 }
 //---------------------------------------------------------------------------//
